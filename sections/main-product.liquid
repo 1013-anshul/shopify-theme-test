@@ -7,7 +7,7 @@
 
     <div class="pdp-grid">
 
-      <!-- Left: Bottle illustration column -->
+      <!-- Left: Product media column -->
       <div class="pdp-bottle-column">
         <div class="pdp-bottle-frame">
 
@@ -19,33 +19,22 @@
           {%- if product.featured_image != blank -%}
             <img src="{{ product.featured_image | image_url: width: 600 }}" 
                  alt="{{ product.featured_image.alt | escape }}" 
-                 class="pdp-bottle-art"
+                 class="pdp-main-image"
                  id="MainProductImage"
                  loading="eager">
           {%- else -%}
-            <img src="{{ 'flower-bouquet.png' | asset_url }}" 
+            <img src="{{ 'vura-bottle-still.png' | asset_url }}" 
                  alt="" 
-                 class="pdp-bottle-art" 
+                 class="pdp-main-image" 
                  aria-hidden="true">
           {%- endif -%}
 
-          <div class="pdp-bottle-wordmark vura-wordmark">VURA</div>
-          <div class="pdp-bottle-hindi dev" lang="hi">वूरा</div>
-          <div class="pdp-bottle-strap">MINERAL BODYCARE · EST. INDIA</div>
-
-          <div class="pdp-bottle-subcard">
-            <div style="font-size:13px;color:var(--fg);font-weight:500;">
-              {{ product.title | upcase }}
-            </div>
-            {%- if product.metafields.vura.tagline != blank -%}
-              <div style="font-size:11px;color:var(--fg-muted);letter-spacing:0.16em;margin-top:6px;">
-                {{ product.metafields.vura.tagline | upcase }}
-              </div>
-            {%- endif -%}
-            <div style="margin-top:14px;border-top:1px dashed var(--border);padding-top:12px;font-size:11px;color:var(--fg-faint);letter-spacing:0.16em;">
-              SERIES 01
-            </div>
-          </div>
+          <!-- Subtle floral background behind the product -->
+          <img src="{{ 'flower-bouquet.png' | asset_url }}" 
+               alt="" 
+               class="pdp-bottle-floral-bg" 
+               style="opacity: 0.25;"
+               aria-hidden="true">
 
         </div>
 

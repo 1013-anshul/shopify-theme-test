@@ -1,5 +1,12 @@
 <section class="hero-section">
 
+  <!-- Background Video Loop -->
+  {%- if section.settings.show_video_bg and section.settings.video_url != blank -%}
+    <video autoplay loop muted playsinline class="hero-video-bg">
+      <source src="{{ section.settings.video_url }}" type="video/mp4">
+    </video>
+  {%- endif -%}
+
   <!-- Botanical florals (decorative, aria-hidden) -->
   <img src="{{ 'flower-marigold.png' | asset_url }}" 
        alt="" 
@@ -54,6 +61,18 @@
 {
   "name": "Hero",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_video_bg",
+      "label": "Enable Background Video",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Background Video URL",
+      "default": "https://assets.mixkit.co/videos/preview/mixkit-pouring-hot-water-into-a-cup-with-tea-leaves-43034-large.mp4"
+    },
     {
       "type": "text",
       "id": "eyebrow",
