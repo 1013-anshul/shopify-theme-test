@@ -4,40 +4,41 @@
       "search": "Search",
       "no_results": "No results found for \"{{ terms }}\"",
       "results_with_count": {
-        "one": "1 result found",
-        "other": "{{ count }} results found"
+        "one": "1 result",
+        "other": "{{ count }} results"
       },
-      "placeholder": "Search our store..."
+      "placeholder": "Search the Archive..."
     },
     "404": {
       "title": "Page not found",
       "subtext": "The page you are looking for does not exist.",
-      "continue_shopping": "Continue shopping"
+      "continue_shopping": "Browse the Archive"
     }
   },
   "products": {
     "product": {
-      "add_to_cart": "Add to cart",
-      "sold_out": "Sold out",
+      "add_to_order": "Add to Order",
+      "add_to_cart": "Add to Order",
+      "sold_out": "Sold Out",
       "unavailable": "Unavailable",
       "quantity": "Quantity",
       "price": "Price",
       "on_sale": "Sale",
       "regular_price": "Regular price",
       "sale_price": "Sale price",
-      "description": "Description",
-      "view_details": "View details"
+      "description": "Ritual",
+      "view_details": "Read more"
     }
   },
   "cart": {
     "general": {
-      "title": "Shopping Cart",
-      "empty": "Your cart is empty",
+      "title": "Your Order",
+      "empty": "Your order is empty.",
       "subtotal": "Subtotal",
-      "checkout": "Checkout",
-      "view_cart": "View Cart",
-      "continue_shopping": "Continue shopping",
-      "quantity": "Quantity",
+      "checkout": "Proceed to Checkout",
+      "view_cart": "View full order",
+      "continue_shopping": "Browse the Archive",
+      "quantity": "Qty",
       "remove": "Remove",
       "items_count": {
         "one": "1 item",

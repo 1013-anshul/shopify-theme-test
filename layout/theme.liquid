@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_primary }}">
+    <meta name="theme-color" content="#162D24">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
@@ -24,69 +24,51 @@
 
     {% render 'meta-tags' %}
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS Custom Properties (Theme Tokens) -->
-    <style>
-      :root {
-        --color-bg: {{ settings.color_bg | default: '#09090b' }};
-        --color-surface: {{ settings.color_surface | default: '#18181b' }};
-        --color-text: {{ settings.color_text | default: '#fafafa' }};
-        --color-text-muted: {{ settings.color_text_muted | default: '#a1a1aa' }};
-        --color-primary: {{ settings.color_primary | default: '#6366f1' }};
-        --color-accent: {{ settings.color_accent | default: '#14b8a6' }};
-        --color-border: {{ settings.color_border | default: '#27272a' }};
-        --page-width: {{ settings.page_width | default: 1280 }}px;
-        
-        --font-heading: 'Outfit', sans-serif;
-        --font-body: 'Plus Jakarta Sans', sans-serif;
-      }
-    </style>
-
-    <!-- Theme Stylesheet -->
+    <!-- Vura Brand Stylesheet -->
     {{ 'theme.css' | asset_url | stylesheet_tag }}
 
-    <!-- Shopify Required Injections -->
+    <!-- Lucide Icons (UI icon substitution — 1.5px stroke, per design system) -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+
+    <!-- Shopify Required -->
     {{ content_for_header }}
 
     <script>
       document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
       window.theme = {
         strings: {
-          addToCart: {{ 'products.product.add_to_cart' | t | json }},
-          soldOut: {{ 'products.product.sold_out' | t | json }},
-          unavailable: {{ 'products.product.unavailable' | t | json }}
+          addToOrder:  {{ 'products.product.add_to_order' | t | json }},
+          soldOut:     {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          cartEmpty:   {{ 'cart.general.empty' | t | json }}
         },
         moneyFormat: {{ shop.money_format | json }}
       };
     </script>
   </head>
 
-  <body class="gradient">
-    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+  <body>
+    <a class="skip-to-content-link visually-hidden" href="#MainContent">
       Skip to content
     </a>
 
-    <!-- Theme Header Group -->
+    <!-- Sections -->
     {% section 'announcement-bar' %}
     {% section 'header' %}
 
-    <!-- Slide-out AJAX Cart Drawer -->
-    <div id="CartDrawer" class="cart-drawer-container" aria-hidden="true">
+    <!-- AJAX Cart Drawer -->
+    <div id="CartDrawer" class="cart-drawer-container" aria-hidden="true" role="dialog" aria-label="Shopping cart">
       <div class="cart-drawer-overlay" onclick="window.theme.CartDrawer.close()"></div>
-      <div class="cart-drawer-content glass-card">
+      <div class="cart-drawer-content">
         <div class="cart-drawer-header">
           <h2 class="cart-drawer-title">{{ 'cart.general.title' | t }}</h2>
           <button class="cart-drawer-close" onclick="window.theme.CartDrawer.close()" aria-label="Close cart">
-            {% render 'icons', icon: 'close' %}
+            <i data-lucide="x" style="width:20px;height:20px;stroke-width:1.5"></i>
           </button>
         </div>
-        
-        <div id="CartDrawerItems" class="cart-drawer-items-wrapper">
-          <!-- Dynamically populated by theme.js -->
+
+        <div id="CartDrawerItems" class="cart-drawer-items">
+          <!-- Populated by theme.js -->
         </div>
 
         <div class="cart-drawer-footer">
@@ -104,15 +86,21 @@
       </div>
     </div>
 
-    <!-- Main Page Layout Content -->
-    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+    <!-- Main Content -->
+    <main id="MainContent" class="content-for-layout" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 
-    <!-- Theme Footer -->
     {% section 'footer' %}
 
-    <!-- Theme Javascript -->
+    <!-- Theme JS -->
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+
+    <!-- Initialize Lucide icons after DOM -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        if (window.lucide) lucide.createIcons();
+      });
+    </script>
   </body>
 </html>

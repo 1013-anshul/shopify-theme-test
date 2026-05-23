@@ -1,143 +1,116 @@
-<section class="hero-section text-{{ section.settings.alignment }}">
-  <div class="container">
-    <div class="hero-grid">
-      
-      <!-- Hero Text Content -->
-      <div class="hero-content" style="order: {% if section.settings.image_position == 'left' %}2{% else %}1{% endif %};">
-        {%- if section.settings.subtitle != blank -%}
-          <span class="hero-subtitle">{{ section.settings.subtitle | escape }}</span>
-        {%- endif -%}
-        
-        {%- if section.settings.title != blank -%}
-          <h1 class="hero-title">{{ section.settings.title | escape }}</h1>
-        {%- endif -%}
-        
-        {%- if section.settings.text != blank -%}
-          <p class="hero-text text-muted">{{ section.settings.text | escape }}</p>
-        {%- endif -%}
-        
-        <div class="hero-buttons">
-          {%- if section.settings.btn_label != blank and section.settings.btn_link != blank -%}
-            <a href="{{ section.settings.btn_link }}" class="button button-primary">
-              {{ section.settings.btn_label | escape }}
-            </a>
-          {%- endif -%}
-          {%- if section.settings.sec_btn_label != blank and section.settings.sec_btn_link != blank -%}
-            <a href="{{ section.settings.sec_btn_link }}" class="button button-secondary">
-              {{ section.settings.sec_btn_label | escape }}
-            </a>
-          {%- endif -%}
-        </div>
-      </div>
+<section class="hero-section">
 
-      <!-- Hero Visual Column -->
-      <div class="hero-image-wrapper" style="order: {% if section.settings.image_position == 'left' %}1{% else %}2{% endif %};">
-        <div class="hero-image-glow"></div>
-        {%- if section.settings.image != blank -%}
-          <img 
-            src="{{ section.settings.image | image_url: width: 800 }}" 
-            alt="{{ section.settings.image.alt | default: 'Hero image' | escape }}" 
-            class="hero-img"
-            loading="eager"
-            width="800"
-            height="600"
-          >
-        {%- else -%}
-          {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-img' }}
-        {%- endif -%}
-      </div>
+  <!-- Botanical florals (decorative, aria-hidden) -->
+  <img src="{{ 'flower-marigold.png' | asset_url }}" 
+       alt="" 
+       class="hero-floral-right" 
+       aria-hidden="true">
+  <img src="{{ 'flower-bouquet.png' | asset_url }}" 
+       alt="" 
+       class="hero-floral-left" 
+       aria-hidden="true">
 
+  <!-- Mineral Archive Seal -->
+  <img src="{{ 'seal-mineral-archive.png' | asset_url }}" 
+       alt="Mineral Archive Registry" 
+       class="hero-seal" 
+       aria-hidden="true">
+
+  <div class="hero-content">
+
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="eyebrow">{{ section.settings.eyebrow | escape }}</div>
+    {%- endif -%}
+
+    <h1 class="hero-title">{{ section.settings.title | default: shop.name | escape }}</h1>
+
+    {%- if section.settings.devanagari != blank -%}
+      <div class="hero-devanagari dev" lang="hi">{{ section.settings.devanagari | escape }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.text != blank -%}
+      <p class="hero-lede">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+
+    <div class="hero-cta">
+      {%- if section.settings.btn_label != blank -%}
+        <a href="{{ section.settings.btn_link | default: '/collections/all' }}" 
+           class="button button-primary">
+          {{ section.settings.btn_label | escape }}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.ghost_btn_label != blank -%}
+        <a href="{{ section.settings.ghost_btn_link | default: '/collections/all' }}" 
+           class="button button-ghost">
+          {{ section.settings.ghost_btn_label | escape }} &rarr;
+        </a>
+      {%- endif -%}
     </div>
+
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Hero Section",
+  "name": "Hero",
   "settings": [
     {
       "type": "text",
-      "id": "subtitle",
-      "label": "Subtitle / Tagline",
-      "default": "Elevate Your Style"
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Mineral Bodycare · Est. India"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Heading",
-      "default": "Shopify Premium Custom Theme"
+      "label": "Wordmark / Heading",
+      "default": "VURA"
+    },
+    {
+      "type": "text",
+      "id": "devanagari",
+      "label": "Devanagari (Hindi)",
+      "default": "वूरा"
     },
     {
       "type": "textarea",
       "id": "text",
-      "label": "Description",
-      "default": "Experience high performance rendering, customizable glassmorphism widgets, and instant AJAX checkouts built from scratch."
+      "label": "Tagline",
+      "default": "Single-mineral skincare, pressed from earth and dissolved into rose. Each release filed in the Mineral Archive, bottled in small batches."
     },
     {
       "type": "header",
-      "content": "Primary Call to Action"
+      "content": "Primary Button"
     },
     {
       "type": "text",
       "id": "btn_label",
-      "label": "Primary Button Label",
-      "default": "Shop Catalog"
+      "label": "Label",
+      "default": "Read Series 01"
     },
     {
       "type": "url",
       "id": "btn_link",
-      "label": "Primary Button Link"
+      "label": "Link"
     },
     {
       "type": "header",
-      "content": "Secondary Call to Action"
+      "content": "Secondary Button"
     },
     {
       "type": "text",
-      "id": "sec_btn_label",
-      "label": "Secondary Button Label",
-      "default": "Learn More"
+      "id": "ghost_btn_label",
+      "label": "Label",
+      "default": "Browse the Archive"
     },
     {
       "type": "url",
-      "id": "sec_btn_link",
-      "label": "Secondary Button Link"
-    },
-    {
-      "type": "header",
-      "content": "Layout Settings"
-    },
-    {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Hero Image"
-    },
-    {
-      "type": "select",
-      "id": "image_position",
-      "label": "Image Position",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "right"
-    },
-    {
-      "type": "select",
-      "id": "alignment",
-      "label": "Text Alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" }
-      ],
-      "default": "left"
+      "id": "ghost_btn_link",
+      "label": "Link"
     }
   ],
   "presets": [
-    {
-      "name": "Hero Banner",
-      "category": "Image"
-    }
+    { "name": "Vura Hero" }
   ]
 }
 {% endschema %}

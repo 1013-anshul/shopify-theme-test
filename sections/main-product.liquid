@@ -1,81 +1,131 @@
-<section class="product-detail-wrapper container">
-  <div class="product-detail-grid">
-    
-    <!-- 1. Left Column: Product Gallery -->
-    <div class="product-gallery">
-      <div class="product-main-image-wrapper">
-        {%- if product.featured_image != blank -%}
-          <img 
-            id="MainProductImage"
-            src="{{ product.featured_image | image_url: width: 800 }}" 
-            alt="{{ product.featured_image.alt | escape }}" 
-            class="product-main-image"
-            width="800"
-            height="800"
-          >
-        {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'product-main-image' }}
+<section class="pdp-section">
+  <div class="shell">
+
+    <a href="{{ routes.root_url }}collections/all" class="button button-ghost" style="margin-bottom:2.5rem;display:inline-flex;">
+      &larr; Back to the Archive
+    </a>
+
+    <div class="pdp-grid">
+
+      <!-- Left: Bottle illustration column -->
+      <div class="pdp-bottle-column">
+        <div class="pdp-bottle-frame">
+
+          <img src="{{ 'seal-mineral-archive.png' | asset_url }}" 
+               alt="Mineral Archive Registry" 
+               class="pdp-bottle-seal" 
+               aria-hidden="true">
+
+          {%- if product.featured_image != blank -%}
+            <img src="{{ product.featured_image | image_url: width: 600 }}" 
+                 alt="{{ product.featured_image.alt | escape }}" 
+                 class="pdp-bottle-art"
+                 id="MainProductImage"
+                 loading="eager">
+          {%- else -%}
+            <img src="{{ 'flower-bouquet.png' | asset_url }}" 
+                 alt="" 
+                 class="pdp-bottle-art" 
+                 aria-hidden="true">
+          {%- endif -%}
+
+          <div class="pdp-bottle-wordmark vura-wordmark">VURA</div>
+          <div class="pdp-bottle-hindi dev" lang="hi">वूरा</div>
+          <div class="pdp-bottle-strap">MINERAL BODYCARE · EST. INDIA</div>
+
+          <div class="pdp-bottle-subcard">
+            <div style="font-size:13px;color:var(--fg);font-weight:500;">
+              {{ product.title | upcase }}
+            </div>
+            {%- if product.metafields.vura.tagline != blank -%}
+              <div style="font-size:11px;color:var(--fg-muted);letter-spacing:0.16em;margin-top:6px;">
+                {{ product.metafields.vura.tagline | upcase }}
+              </div>
+            {%- endif -%}
+            <div style="margin-top:14px;border-top:1px dashed var(--border);padding-top:12px;font-size:11px;color:var(--fg-faint);letter-spacing:0.16em;">
+              SERIES 01
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Thumbnail strip -->
+        {%- if product.images.size > 1 -%}
+          <div style="display:flex;gap:0.5rem;margin-top:1rem;overflow-x:auto;padding-bottom:0.25rem;">
+            {%- for image in product.images -%}
+              <button class="pdp-thumb{% if forloop.first %} active{% endif %}" 
+                      data-src="{{ image | image_url: width: 600 }}"
+                      style="width:64px;height:64px;border:1px solid var(--border-soft);border-radius:var(--r-2);overflow:hidden;padding:0;cursor:pointer;background:var(--vura-forest-lift);flex-shrink:0;transition:border-color var(--t-fast);">
+                <img src="{{ image | image_url: width: 120 }}" 
+                     alt="{{ image.alt | escape }}" 
+                     style="width:100%;height:100%;object-fit:cover;">
+              </button>
+            {%- endfor -%}
+          </div>
         {%- endif -%}
       </div>
 
-      <!-- Thumbnails -->
-      {%- if product.images.size > 1 -%}
-        <div class="product-thumbnails">
-          {%- for image in product.images -%}
-            <div 
-              class="product-thumbnail {% if forloop.first %}active{% endif %}"
-              data-image-src="{{ image | image_url: width: 800 }}"
-            >
-              <img src="{{ image | image_url: width: 100 }}" alt="{{ image.alt | escape }}" width="80" height="80" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
-    </div>
+      <!-- Right: Info column -->
+      <div class="pdp-info-column">
 
-    <!-- 2. Right Column: Transaction Options (Blocks-based) -->
-    <div class="product-info-column">
-      {%- for block in section.blocks -%}
-        <div {{ block.shopify_attributes }}>
+        {%- for block in section.blocks -%}
+          <div {{ block.shopify_attributes }}>
           {%- case block.type -%}
-            
+
             {%- when '@app' -%}
               {% render block %}
 
+            {%- when 'eyebrow' -%}
+              <div class="eyebrow">Series 01 · {{ product.type }}</div>
+
             {%- when 'title' -%}
-              <h1 class="product-title">{{ product.title }}</h1>
+              <h1 class="pdp-product-title vura-wordmark" style="color:var(--fg);text-shadow:none;">
+                {{ product.title }}
+              </h1>
+              {%- if product.metafields.vura.hindi != blank -%}
+                <div class="pdp-product-hindi dev" lang="hi">
+                  {{ product.metafields.vura.hindi }}
+                </div>
+              {%- endif -%}
 
             {%- when 'price' -%}
-              <div class="product-price-container" id="ProductPrice-{{ section.id }}">
-                {%- if product.compare_at_price > product.price -%}
-                  <span class="price-sale" style="color: #ef4444; margin-right: 10px;">{{ product.price | money }}</span>
-                  <span class="price-compare" style="text-decoration: line-through; color: var(--color-text-muted); font-size: 1.2rem;">{{ product.compare_at_price | money }}</span>
-                {%- else -%}
-                  <span class="price-regular">{{ product.price | money }}</span>
-                {%- endif -%}
+              <div id="ProductPrice-{{ section.id }}">
+                <hr class="rule-dashed">
+                <div class="pdp-price-line">
+                  {%- if product.compare_at_price > product.price -%}
+                    <span class="pdp-price" style="color:var(--vura-saffron);">
+                      {{ product.price | money }}
+                    </span>
+                    <span class="pdp-price-size" style="text-decoration:line-through;">
+                      {{ product.compare_at_price | money }}
+                    </span>
+                  {%- else -%}
+                    <span class="pdp-price">{{ product.price | money }}</span>
+                  {%- endif -%}
+                  {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+                    <span class="pdp-price-size">· {{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}</span>
+                  {%- endif -%}
+                </div>
               </div>
 
             {%- when 'variant_picker' -%}
               {%- unless product.has_only_default_variant -%}
-                <div class="product-variants-container">
+                <div>
                   {%- for option in product.options_with_values -%}
-                    <div class="option-group">
-                      <label class="option-group-title">{{ option.name }}</label>
-                      <div class="option-swatches">
+                    <div style="margin-bottom:1rem;">
+                      <div class="eyebrow" style="margin-bottom:0.5rem;">{{ option.name }}</div>
+                      <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
                         {%- for value in option.values -%}
-                          {%- assign checked = false -%}
-                          {%- if option.selected_value == value -%}
-                            {%- assign checked = true -%}{%- endif -%}
-                          <input 
-                            type="radio" 
-                            id="{{ section.id }}-{{ option.name }}-{{ forloop.index }}" 
-                            name="options[{{ option.name }}]" 
-                            value="{{ value | escape }}"
-                            class="swatch-input"
-                            {% if checked %}checked{% endif %}
-                          >
-                          <label for="{{ section.id }}-{{ option.name }}-{{ forloop.index }}" class="swatch-label">
-                            {{ value }}
+                          <label style="display:inline-flex;align-items:center;">
+                            <input type="radio"
+                                   name="options[{{ option.name }}]"
+                                   value="{{ value | escape }}"
+                                   id="opt-{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
+                                   {% if option.selected_value == value %}checked{% endif %}
+                                   style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">
+                            <span style="display:inline-flex;align-items:center;height:40px;padding:0 1rem;border:1px solid var(--border);border-radius:var(--r-2);font-size:var(--size-sm);color:var(--fg-muted);cursor:pointer;transition:all var(--t-fast) var(--ease-out);">
+                              {{ value }}
+                            </span>
                           </label>
                         {%- endfor -%}
                       </div>
@@ -84,83 +134,88 @@
                 </div>
               {%- endunless -%}
 
-            {%- when 'quantity_selector' -%}
-              <div class="quantity-selector-container">
-                <label class="option-group-title" style="display: block; margin-bottom: 0.5rem;">{{ 'products.product.quantity' | t }}</label>
-                <div class="quantity-selector" style="width: fit-content;">
-                  <button type="button" class="quantity-btn" onclick="var el = this.nextElementSibling; var val = parseInt(el.value); if(val>1) el.value = val-1;">-</button>
-                  <input type="text" name="quantity" class="quantity-input" value="1" id="Quantity-{{ section.id }}">
-                  <button type="button" class="quantity-btn" onclick="var el = this.previousElementSibling; var val = parseInt(el.value); el.value = val+1;">+</button>
-                </div>
-              </div>
-
             {%- when 'buy_buttons' -%}
-              <div class="product-buy-buttons">
-                <form method="post" action="/cart/add" id="product-form-{{ section.id }}">
-                  <!-- First available variant fallback -->
-                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" id="ProductVariantId-{{ section.id }}">
-                  <!-- Double link quantity selector value -->
-                  <input type="hidden" name="quantity" value="1" id="HiddenQuantity-{{ section.id }}">
-                  
-                  <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                      var qInput = document.getElementById('Quantity-{{ section.id }}');
-                      var hInput = document.getElementById('HiddenQuantity-{{ section.id }}');
-                      if(qInput && hInput) {
-                        qInput.addEventListener('change', function() {
-                          hInput.value = qInput.value;
-                        });
-                        // Also hook up custom buttons increment/decrement clicks
-                        document.querySelectorAll('.quantity-btn').forEach(function(btn) {
-                          btn.addEventListener('click', function() {
-                            hInput.value = qInput.value;
-                          });
-                        });
-                      }
-                    });
-                  </script>
+              <form method="post" action="/cart/add" id="product-form-{{ section.id }}">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" id="ProductVariantId-{{ section.id }}">
 
-                  <button 
-                    type="submit" 
-                    name="add" 
-                    class="button button-primary button-full-width"
-                    {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
-                  >
+                <div class="pdp-qty-row">
+                  <div class="qty-selector">
+                    <button type="button" class="qty-btn" onclick="var i=document.getElementById('qty-{{ section.id }}');var v=parseInt(i.value);if(v>1)i.value=v-1;" aria-label="Decrease quantity">&minus;</button>
+                    <input type="text" id="qty-{{ section.id }}" name="quantity" class="qty-input" value="1" aria-label="Quantity">
+                    <button type="button" class="qty-btn" onclick="var i=document.getElementById('qty-{{ section.id }}');i.value=parseInt(i.value)+1;" aria-label="Increase quantity">+</button>
+                  </div>
+                  <button type="submit" name="add" class="button button-primary" style="flex:1;"
+                    {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
                     {%- if product.selected_or_first_available_variant.available -%}
-                      {{ 'products.product.add_to_cart' | t }}
+                      {{ 'products.product.add_to_order' | t }}
                     {%- else -%}
                       {{ 'products.product.sold_out' | t }}
                     {%- endif -%}
                   </button>
-                </form>
+                </div>
+
+                <div class="pdp-ship-note">
+                  <i data-lucide="truck" style="width:16px;height:16px;stroke-width:1.5;color:var(--fg-faint);flex-shrink:0;"></i>
+                  <span>Ships across India in 2&ndash;3 working days &middot; Free over ₹999</span>
+                </div>
+              </form>
+
+            {%- when 'tabs' -%}
+              <hr class="rule-dashed">
+              <div class="pdp-tabs" id="PdpTabs-{{ section.id }}">
+                <button class="pdp-tab active" data-tab="ritual">Ritual</button>
+                <button class="pdp-tab" data-tab="ingredients">Ingredients</button>
+                <button class="pdp-tab" data-tab="caution">Caution</button>
               </div>
 
-            {%- when 'description' -%}
-              {%- if product.description != blank -%}
-                <div class="product-description-container" style="line-height: 1.6; margin-top: 1rem;">
-                  <h3 class="option-group-title" style="margin-bottom: 0.5rem;">{{ 'products.product.description' | t }}</h3>
-                  <div class="product-description text-muted">
-                    {{ product.description }}
-                  </div>
-                </div>
-              {%- endif -%}
-
-            {%- when 'collapsible_tab' -%}
-              <div class="accordion" style="margin-top: 1rem;">
-                <div class="accordion-item">
-                  <button class="accordion-title">
-                    <span>{{ block.settings.heading | escape }}</span>
-                    <span class="accordion-icon">{% render 'icons', icon: 'chevron-down' %}</span>
-                  </button>
-                  <div class="accordion-content">
-                    {{ block.settings.content }}
-                  </div>
-                </div>
+              <div class="pdp-tab-body" id="pdp-tab-ritual-{{ section.id }}">
+                {%- if product.description != blank -%}
+                  {{ product.description }}
+                {%- else -%}
+                  <p>Wet a small piece of phitkari. Pass it once across clean skin — after shaving, after a workout, after a long day. Let it air-dry. Do not rinse.</p>
+                {%- endif -%}
               </div>
+
+              <div class="pdp-tab-body" id="pdp-tab-ingredients-{{ section.id }}" style="display:none;">
+                {%- if product.metafields.vura.ingredients != blank -%}
+                  {{ product.metafields.vura.ingredients }}
+                {%- else -%}
+                  <p style="margin-bottom:1rem;">Five ingredients. No more.</p>
+                  <ul class="pdp-ingredients">
+                    <li><strong>Aqua</strong> &mdash; distilled water</li>
+                    <li><strong>Rosa Damascena Flower Water</strong> &mdash; copper-still hydrosol</li>
+                    <li><strong>Potassium Alum</strong> &mdash; the mineral</li>
+                    <li><strong>Aloe Barbadensis Leaf Extract</strong> &mdash; fresh, cold-pressed</li>
+                    <li><strong>Glycerin, Propanediol</strong> &mdash; gentle solvents</li>
+                  </ul>
+                {%- endif -%}
+              </div>
+
+              <div class="pdp-tab-body" id="pdp-tab-caution-{{ section.id }}" style="display:none;">
+                <p>For external use only. Avoid contact with eyes. If contact occurs, rinse thoroughly with water. Keep out of reach of children. Store in a cool, dry place away from direct sunlight.</p>
+              </div>
+
+              <script>
+                (function(){
+                  var tabs = document.querySelectorAll('#PdpTabs-{{ section.id }} .pdp-tab');
+                  tabs.forEach(function(btn){
+                    btn.addEventListener('click', function(){
+                      tabs.forEach(function(b){ b.classList.remove('active'); });
+                      btn.classList.add('active');
+                      ['ritual','ingredients','caution'].forEach(function(id){
+                        var el = document.getElementById('pdp-tab-'+id+'-{{ section.id }}');
+                        if(el) el.style.display = (id === btn.dataset.tab) ? 'block' : 'none';
+                      });
+                    });
+                  });
+                })();
+              </script>
 
           {%- endcase -%}
-        </div>
-      {%- endfor -%}
+          </div>
+        {%- endfor -%}
+
+      </div>
     </div>
 
   </div>
@@ -170,66 +225,22 @@
 {
   "name": "Product Information",
   "blocks": [
-    {
-      "type": "@app"
-    },
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1
-    },
-    {
-      "type": "variant_picker",
-      "name": "Variant Picker",
-      "limit": 1
-    },
-    {
-      "type": "quantity_selector",
-      "name": "Quantity Selector",
-      "limit": 1
-    },
-    {
-      "type": "buy_buttons",
-      "name": "Buy Buttons",
-      "limit": 1
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1
-    },
-    {
-      "type": "collapsible_tab",
-      "name": "Collapsible Tab",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "default": "Details & Specifications",
-          "label": "Heading"
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "default": "<p>Introduce technical details, shipping speed, materials, or size charts here.</p>",
-          "label": "Content"
-        }
-      ]
-    }
+    { "type": "@app" },
+    { "type": "eyebrow", "name": "Series Label", "limit": 1 },
+    { "type": "title",   "name": "Title", "limit": 1 },
+    { "type": "price",   "name": "Price", "limit": 1 },
+    { "type": "variant_picker", "name": "Variant Picker", "limit": 1 },
+    { "type": "buy_buttons", "name": "Buy Buttons", "limit": 1 },
+    { "type": "tabs", "name": "Ritual / Ingredients / Caution", "limit": 1 }
   ],
   "default": {
     "blocks": [
+      { "type": "eyebrow" },
       { "type": "title" },
       { "type": "price" },
       { "type": "variant_picker" },
-      { "type": "quantity_selector" },
       { "type": "buy_buttons" },
-      { "type": "description" }
+      { "type": "tabs" }
     ]
   }
 }

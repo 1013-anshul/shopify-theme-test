@@ -1,11 +1,11 @@
-<div class="announcement-bar" role="region" aria-label="Announcement">
+<div class="announcement-bar">
   {%- if section.settings.link != blank -%}
-    <a href="{{ section.settings.link }}" class="announcement-bar-link">
-      {{ section.settings.text | escape }}
-    </a>
+    <a href="{{ section.settings.link }}">{{ section.settings.text | escape }}</a>
   {%- else -%}
     <span>{{ section.settings.text | escape }}</span>
   {%- endif -%}
+  <span style="opacity:0.35">·</span>
+  <span>MADE IN INDIA WITH CARE</span>
 </div>
 
 {% schema %}
@@ -15,8 +15,8 @@
     {
       "type": "text",
       "id": "text",
-      "label": "Announcement Text",
-      "default": "Welcome to our store! Enjoy free shipping on orders over $50."
+      "label": "Announcement",
+      "default": "FREE SHIPPING ACROSS INDIA OVER ₹999"
     },
     {
       "type": "url",
