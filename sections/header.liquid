@@ -9,13 +9,19 @@
 
     <!-- Navigation -->
     <nav id="HeaderNav" class="header-nav" role="navigation">
-      {%- for link in linklists[section.settings.menu].links -%}
-        <a href="{{ link.url }}" 
-           class="header-nav-link{% if link.active %} active{% endif %}"
-           {% if link.current %}aria-current="page"{% endif %}>
-          {{ link.title }}
-        </a>
-      {%- endfor -%}
+      {%- if section.settings.use_anchor_menu -%}
+        <a href="#FeaturedProduct" class="header-nav-link" onclick="document.getElementById('HeaderNav').classList.remove('mobile-open')">The Block</a>
+        <a href="#FeaturedProduct" class="header-nav-link" onclick="document.getElementById('HeaderNav').classList.remove('mobile-open'); setTimeout(function(){var tab = document.querySelector('[data-tab^=\'ritual\']'); if(tab) tab.click();}, 50);">The Ritual</a>
+        <a href="#Pillars" class="header-nav-link" onclick="document.getElementById('HeaderNav').classList.remove('mobile-open')">The Origin</a>
+      {%- else -%}
+        {%- for link in linklists[section.settings.menu].links -%}
+          <a href="{{ link.url }}" 
+             class="header-nav-link{% if link.active %} active{% endif %}"
+             {% if link.current %}aria-current="page"{% endif %}>
+            {{ link.title }}
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
     </nav>
 
     <!-- Actions -->
@@ -54,6 +60,12 @@
 {
   "name": "Header",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_anchor_menu",
+      "label": "Use One-Product Anchor Menu",
+      "default": true
+    },
     {
       "type": "link_list",
       "id": "menu",

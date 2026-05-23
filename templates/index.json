@@ -7,23 +7,19 @@
         "title": "VURA",
         "devanagari": "वूरा",
         "text": "Single-mineral skincare, pressed from earth and dissolved into rose. Each release filed in the Mineral Archive, bottled in small batches.",
-        "btn_label": "Read Series 01",
-        "ghost_btn_label": "Browse the Archive"
+        "btn_label": "Order Series 01",
+        "btn_link": "#FeaturedProduct",
+        "ghost_btn_label": "Our Ritual",
+        "ghost_btn_link": "#FeaturedProduct"
       }
     },
     "pillars": {
       "type": "pillars",
       "settings": {}
     },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "From the Mineral Archive",
-        "subtitle": "Series 01",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "show_view_all": true
-      }
+    "featured_product": {
+      "type": "featured-product",
+      "settings": {}
     },
     "custom_liquid": {
       "type": "custom-liquid",
@@ -33,7 +29,7 @@
   "order": [
     "hero",
     "pillars",
-    "featured_collection",
+    "featured_product",
     "custom_liquid"
   ]
 }

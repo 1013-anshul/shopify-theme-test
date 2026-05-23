@@ -217,14 +217,20 @@ small, .caption { font-size: var(--size-xs); color: var(--fg-faint); }
    LAYOUT
    ============================================================ */
 
-.shell {
+.shell,
+.container {
   max-width: var(--page-width);
   margin: 0 auto;
   padding: 0 var(--s-10);
 }
 
 @media (max-width: 768px) {
-  .shell { padding: 0 var(--s-5); }
+  .shell,
+  .container { padding: 0 var(--s-5); }
+}
+
+.grid {
+  display: grid;
 }
 
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-8); }
