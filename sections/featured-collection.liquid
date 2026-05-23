@@ -1,0 +1,110 @@
+<section class="featured-collection-section" style="padding: 5rem 0;">
+  <div class="container">
+    
+    <!-- Section Header -->
+    <div class="section-header text-center" style="margin-bottom: 3rem;">
+      {%- if section.settings.subtitle != blank -%}
+        <span class="hero-subtitle" style="font-size: 0.85rem; letter-spacing: 0.15em;">{{ section.settings.subtitle | escape }}</span>
+      {%- endif -%}
+      {%- if section.settings.title != blank -%}
+        <h2 style="font-size: 2.2rem; margin-top: 0.5rem;">{{ section.settings.title | escape }}</h2>
+      {%- endif -%}
+    </div>
+
+    <!-- Products Grid -->
+    {%- assign collection = collections[section.settings.collection] -%}
+    <div class="grid grid-{{ section.settings.columns_desktop }}">
+      {%- for product in collection.products limit: section.settings.products_to_show -%}
+        {%- render 'card-product', card_product: product -%}
+      {%- else -%}
+        
+        <!-- Placeholder Products for Empty/Draft Theme Editor State -->
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <div class="product-card glass-card">
+            <div class="product-card-image-wrapper">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'product-card-img' }}
+            </div>
+            <div class="product-card-info">
+              <span class="product-card-vendor text-muted">Vendor Name</span>
+              <h3 class="product-card-title">Placeholder Product Title {{ i }}</h3>
+              <div class="product-card-price-wrapper">
+                <span class="price-regular">$99.00</span>
+              </div>
+              <div style="margin-top: 1.2rem;">
+                <button class="button button-primary button-full-width button-disabled" disabled>
+                  {{ 'products.product.add_to_cart' | t }}
+                </button>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+
+      {%- endfor -%}
+    </div>
+
+    <!-- View All Link -->
+    {%- if section.settings.show_view_all and collection.all_products_count > section.settings.products_to_show -%}
+      <div class="text-center" style="margin-top: 3rem;">
+        <a href="{{ collection.url }}" class="button button-secondary">
+          View All Products
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Curated for you"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Maximum Products to Show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Number of Columns on Desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Enable 'View all' Button"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection Grid",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

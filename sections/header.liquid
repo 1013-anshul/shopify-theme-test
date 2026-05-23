@@ -1,0 +1,124 @@
+<header class="header-wrapper glass-navbar" id="ThemeHeader">
+  <div class="container flex flex-between header">
+    
+    <!-- Header Logo -->
+    <div class="header-logo">
+      <a href="/" class="logo-link">
+        {%- if section.settings.logo != blank -%}
+          {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+          <img 
+            src="{{ section.settings.logo | image_url: width: 250 }}" 
+            alt="{{ logo_alt }}"
+            style="max-width: {{ section.settings.logo_width }}px; height: auto; display: block;"
+            loading="lazy"
+          >
+        {%- else -%}
+          <span>{{ shop.name }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
+    <!-- Burger Menu (Mobile Toggle) -->
+    <button class="mobile-menu-toggle header-icon display-mobile" aria-label="Toggle menu">
+      {% render 'icons', icon: 'menu' %}
+    </button>
+
+    <!-- Navigation Menu -->
+    <nav class="header-navigation" role="navigation">
+      <ul class="nav-links">
+        {%- for link in linklists[section.settings.menu].links -%}
+          <li class="nav-item">
+            <a href="{{ link.url }}" class="nav-link {% if link.active %}active{% endif %}">
+              {{ link.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <!-- Header Actions (Icons) -->
+    <div class="header-icons">
+      <!-- Search Trigger Link -->
+      <a href="/search" class="header-icon" aria-label="Search">
+        {% render 'icons', icon: 'search' %}
+      </a>
+
+      <!-- Account Login Link (if enabled) -->
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header-icon" aria-label="Account">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </a>
+      {%- endif -%}
+
+      <!-- Cart Drawer Trigger Button -->
+      <button class="header-icon cart-trigger-btn" onclick="window.theme.CartDrawer.open()" aria-label="Open cart">
+        {% render 'icons', icon: 'cart' %}
+        <span class="cart-count-badge" style="{% if cart.item_count == 0 %}display: none;{% endif %}">
+          {{ cart.item_count }}
+        </span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<style>
+  .display-mobile {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .display-mobile {
+      display: block;
+    }
+    .header-navigation {
+      display: none;
+    }
+    /* Mobile slide down styles */
+    .nav-links.mobile-active {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 1.5rem;
+      gap: 1rem;
+      z-index: 99;
+    }
+    .nav-links {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 100,
+      "unit": "px",
+      "label": "Custom Logo Width"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

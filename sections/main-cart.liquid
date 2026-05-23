@@ -1,0 +1,81 @@
+<section class="cart-page-section container" style="padding: 4rem 0;">
+  <div style="max-width: 800px; margin: 0 auto;">
+    
+    <h1 style="font-size: 2.5rem; margin-bottom: 2rem; text-align: center;">{{ 'cart.general.title' | t }}</h1>
+
+    {%- if cart.item_count > 0 -%}
+      <form action="/cart" method="post" novalidate class="glass-card" style="padding: 2rem;">
+        
+        <!-- Cart Table List -->
+        <div class="cart-items-list" style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 2rem;">
+          {%- for item in cart.items -%}
+            <div class="cart-item-row" style="display: flex; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
+              
+              <!-- Item Image -->
+              <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--color-border);">
+              
+              <!-- Item Details -->
+              <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 0.25rem;">
+                <h2 style="font-size: 1.2rem; font-weight: 600;"><a href="{{ item.url }}">{{ item.product_title }}</a></h2>
+                {%- unless item.product.has_only_default_variant -%}
+                  <span class="text-muted" style="font-size: 0.9rem;">{{ item.variant_title }}</span>
+                {%- endunless -%}
+                
+                <span style="font-weight: 600; margin-top: auto;">{{ item.final_line_price | money }}</span>
+              </div>
+
+              <!-- Item Quantity / Actions -->
+              <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;">
+                
+                <div class="quantity-selector">
+                  <!-- Custom inline triggers updating Shopify form action -->
+                  <button type="button" class="quantity-btn" onclick="var el = this.nextElementSibling; var val = parseInt(el.value); if(val>1) { el.value = val-1; this.form.submit(); }">-</button>
+                  <input type="text" name="updates[]" class="quantity-input" value="{{ item.quantity }}" readonly>
+                  <button type="button" class="quantity-btn" onclick="var el = this.previousElementSibling; var val = parseInt(el.value); el.value = val+1; this.form.submit();">+</button>
+                </div>
+
+                <a href="/cart/change?line={{ forloop.index }}&quantity=0" class="cart-drawer-item-remove" style="margin-top: 0.8rem;">
+                  {{ 'cart.general.remove' | t }}
+                </a>
+              </div>
+
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Summary & Subtotal -->
+        <div class="cart-page-footer flex flex-between" style="border-top: 1px solid var(--color-border); padding-top: 2rem;">
+          <div class="cart-page-subtotal">
+            <span class="text-muted" style="font-size: 1.1rem; margin-right: 10px;">{{ 'cart.general.subtotal' | t }}</span>
+            <span style="font-size: 1.5rem; font-weight: 700;">{{ cart.total_price | money }}</span>
+          </div>
+
+          <div style="display: flex; gap: 1rem;">
+            <button type="submit" name="update" class="button button-secondary">
+              Update Cart
+            </button>
+            <button type="submit" name="checkout" class="button button-primary">
+              {{ 'cart.general.checkout' | t }}
+            </button>
+          </div>
+        </div>
+
+      </form>
+    {%- else -%}
+      <!-- Empty Cart View -->
+      <div class="text-center glass-card" style="padding: 4rem 2rem;">
+        <p class="text-muted" style="font-size: 1.2rem; margin-bottom: 2rem;">{{ 'cart.general.empty' | t }}</p>
+        <a href="/collections/all" class="button button-primary">
+          {{ 'cart.general.continue_shopping' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart Page"
+}
+{% endschema %}

@@ -1,0 +1,20 @@
+{
+  "current": {
+    "settings": {
+      "color_bg": "#09090b",
+      "color_surface": "#18181b",
+      "color_text": "#fafafa",
+      "color_text_muted": "#a1a1aa",
+      "color_primary": "#6366f1",
+      "color_accent": "#14b8a6",
+      "color_border": "#27272a",
+      "font_heading": "Outfit",
+      "font_body": "Plus Jakarta Sans",
+      "page_width": 1280,
+      "social_twitter_link": "https://twitter.com/shopify",
+      "social_instagram_link": "https://instagram.com/shopify",
+      "social_facebook_link": "https://facebook.com/shopify"
+    }
+  },
+  "presets": {}
+}

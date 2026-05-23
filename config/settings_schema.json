@@ -1,0 +1,119 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Antigravity Custom Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Antigravity AI",
+    "theme_documentation_url": "https://github.com",
+    "theme_support_url": "https://github.com"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Theme Color Palette"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#09090b"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface (Cards/Drawers)",
+        "default": "#18181b"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Body Text",
+        "default": "#fafafa"
+      },
+      {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Muted Text",
+        "default": "#a1a1aa"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Accent (Indigo)",
+        "default": "#6366f1"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Secondary Accent (Teal)",
+        "default": "#14b8a6"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Borders",
+        "default": "#27272a"
+      }
+    ]
+  },
+  {
+    "name": "Layout & Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "text",
+        "id": "font_heading",
+        "label": "Heading Font Name",
+        "default": "Outfit"
+      },
+      {
+        "type": "text",
+        "id": "font_body",
+        "label": "Body Font Name",
+        "default": "Plus Jakarta Sans"
+      },
+      {
+        "type": "header",
+        "content": "Layout Width"
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1000,
+        "max": 1600,
+        "step": 40,
+        "unit": "px",
+        "label": "Page Width",
+        "default": 1280
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter Link",
+        "default": "https://twitter.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram Link",
+        "default": "https://instagram.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook Link",
+        "default": "https://facebook.com/shopify"
+      }
+    ]
+  }
+]

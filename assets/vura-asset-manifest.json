@@ -1,0 +1,157 @@
+{
+  "version": "1.0",
+  "brand": "Vura · Mineral Skincare",
+  "qa_criteria": {
+    "warm_color_temperature": "Image reads warm — ochre, terracotta, walnut, brass. Not cool/blue.",
+    "deep_shadows_present": "Intentional deep shadows visible. Not bright/flat lit.",
+    "no_studio_white_background": "No studio cyclorama, no white backdrop, no glossy retouch.",
+    "no_direct_eye_contact": "No faces looking at camera. Keeps work allusive, not personal.",
+    "no_competing_brand_logos": "No visible competing brand names, labels, or logos.",
+    "no_location_signage": "No readable location-specific signs or geographic identifiers.",
+    "consistent_with_vura_mood": "Feels like subko.coffee — documentary, slow, craft, warm.",
+    "correct_aspect_ratio": "File matches expected aspect ratio (4:5, 3:2, or 1:1).",
+    "no_stereotyped_indian_aesthetic": "No mandala overlays, color-powder explosions, or exotic-decoration tropes."
+  },
+  "assets": [
+    {
+      "id": "vura-photo-mineral",
+      "file": "assets/vura-mineral-hero.png",
+      "slot": "Hero — The Mineral",
+      "expected_aspect": "4:5",
+      "subject": "Hands cradling raw mineral crystal, walnut wood, brass tray, window light",
+      "source": "AI generated",
+      "checks": {
+        "warm_color_temperature": true,
+        "deep_shadows_present": true,
+        "no_studio_white_background": true,
+        "no_direct_eye_contact": true,
+        "no_competing_brand_logos": true,
+        "no_location_signage": true,
+        "consistent_with_vura_mood": true,
+        "correct_aspect_ratio": "pending_crop",
+        "no_stereotyped_indian_aesthetic": true
+      },
+      "status": "approved",
+      "notes": "Excellent. Hands mid-action, deep shadows, brass tray visible, forest-green drapery in bg."
+    },
+    {
+      "id": "vura-photo-process",
+      "file": "assets/vura-process-wide.png",
+      "slot": "Process — The Workshop",
+      "expected_aspect": "3:2",
+      "subject": "Workshop bench, amber bottles, paper labels, brass measure, overhead lamp, hands working",
+      "source": "AI generated",
+      "checks": {
+        "warm_color_temperature": true,
+        "deep_shadows_present": true,
+        "no_studio_white_background": true,
+        "no_direct_eye_contact": true,
+        "no_competing_brand_logos": false,
+        "no_location_signage": true,
+        "consistent_with_vura_mood": true,
+        "correct_aspect_ratio": "pending_crop",
+        "no_stereotyped_indian_aesthetic": true
+      },
+      "status": "approved_with_note",
+      "notes": "CAUTION: Bottle labels have readable text (Lavender Tincture, Calendula Oil etc). Acceptable for now as brand-neutral craft context, but commission Vura-specific photography for production."
+    },
+    {
+      "id": "vura-photo-bottle",
+      "file": "assets/vura-bottle-still.png",
+      "slot": "Still Life — The Bottle",
+      "expected_aspect": "1:1",
+      "subject": "Apothecary bottle on linen, aloe sprig, dried rose, forest green drape",
+      "source": "AI generated",
+      "checks": {
+        "warm_color_temperature": true,
+        "deep_shadows_present": true,
+        "no_studio_white_background": true,
+        "no_direct_eye_contact": true,
+        "no_competing_brand_logos": false,
+        "no_location_signage": true,
+        "consistent_with_vura_mood": true,
+        "correct_aspect_ratio": "pending_crop",
+        "no_stereotyped_indian_aesthetic": true
+      },
+      "status": "approved_with_note",
+      "notes": "CAUTION: Bottle has placeholder label text 'ASTRINGENT / ALOE & ROSE WATER'. Perfect composition and mood. Replace with Vura phitkari-label.png overlay in production, or commission real product photography."
+    },
+    {
+      "id": "vura-photo-petals",
+      "file": "assets/vura-petals-wide.png",
+      "slot": "Process — Rose Petals",
+      "expected_aspect": "3:2",
+      "subject": "Hands sorting damask rose petals, linen, wicker basket, golden morning light",
+      "source": "AI generated",
+      "checks": {
+        "warm_color_temperature": true,
+        "deep_shadows_present": false,
+        "no_studio_white_background": true,
+        "no_direct_eye_contact": true,
+        "no_competing_brand_logos": true,
+        "no_location_signage": true,
+        "consistent_with_vura_mood": true,
+        "correct_aspect_ratio": "pending_crop",
+        "no_stereotyped_indian_aesthetic": true
+      },
+      "status": "approved",
+      "notes": "Slightly brighter than ideal (Vura prefers deeper shadows). Golden morning light is on-brand. Acceptable for secondary/editorial use."
+    },
+    {
+      "id": "vura-photo-still",
+      "file": "assets/vura-still-tall.png",
+      "slot": "Hero — The Copper Still",
+      "expected_aspect": "4:5",
+      "subject": "Copper distillation vessel, steam, brick walls, window light, dust motes",
+      "source": "AI generated",
+      "checks": {
+        "warm_color_temperature": true,
+        "deep_shadows_present": true,
+        "no_studio_white_background": true,
+        "no_direct_eye_contact": true,
+        "no_competing_brand_logos": true,
+        "no_location_signage": true,
+        "consistent_with_vura_mood": true,
+        "correct_aspect_ratio": "pending_crop",
+        "no_stereotyped_indian_aesthetic": true
+      },
+      "status": "approved",
+      "notes": "Excellent. Cinematic and documentary. Deep shadows, brick architecture, copper warmth, steam. Strong for 'The Process' editorial section."
+    },
+    {
+      "id": "vura-photo-specimen",
+      "file": "assets/vura-specimen-tall.png",
+      "slot": "Archive — The Specimen",
+      "expected_aspect": "4:5",
+      "subject": "Pressed herbarium specimen, calendula + rose, metal clip, wooden table, window light",
+      "source": "AI generated",
+      "checks": {
+        "warm_color_temperature": true,
+        "deep_shadows_present": false,
+        "no_studio_white_background": true,
+        "no_direct_eye_contact": true,
+        "no_competing_brand_logos": false,
+        "no_location_signage": false,
+        "consistent_with_vura_mood": true,
+        "correct_aspect_ratio": "pending_crop",
+        "no_stereotyped_indian_aesthetic": true
+      },
+      "status": "approved_with_note",
+      "notes": "CAUTION: Specimen card has readable text — 'HERBARIUM', 'Calendula Officinalis', 'Rosa Damascena', 'Collected: June 2023, Somerset'. The location (Somerset) is a specific geographic marker which is off-brand per PHOTOGRAPHY.md. Use for internal reference / mood board. Do not ship as-is. Regenerate with no readable text for production."
+    }
+  ],
+  "summary": {
+    "total": 6,
+    "approved": 3,
+    "approved_with_note": 3,
+    "rejected": 0,
+    "pending": 0
+  },
+  "next_steps": [
+    "Crop all assets to correct aspect ratios (4:5, 3:2, 1:1) before use",
+    "Regenerate vura-specimen-tall without readable location text for production",
+    "Replace placeholder bottle label with Vura phitkari-label overlay",
+    "Commission real product photography for production launch",
+    "Run qa-assets.sh before any theme deployment"
+  ]
+}

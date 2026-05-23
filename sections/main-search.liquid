@@ -1,0 +1,81 @@
+{%- paginate search.results by 12 -%}
+<section class="search-page container" style="padding: 4rem 0;">
+  
+  <div style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 4rem;">
+    <h1 style="font-size: 2.5rem; margin-bottom: 2rem;">Search Results</h1>
+    
+    <!-- Search Form -->
+    <form action="/search" method="get" role="search" class="glass-card" style="padding: 1.5rem; display: flex; gap: 1rem; max-width: 600px; margin: 0 auto;">
+      <input 
+        type="search" 
+        name="q" 
+        value="{{ search.terms | escape }}" 
+        placeholder="{{ 'general.search.placeholder' | t }}"
+        style="flex-grow: 1; border: 1px solid var(--color-border); border-radius: 6px; padding: 0.6rem 1rem; font-size: 1rem; background: rgba(255, 255, 255, 0.02);"
+        required
+      >
+      <button type="submit" class="button button-primary">
+        {{ 'general.search.search' | t }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Search Results Count/Indicator -->
+  {%- if search.performed -%}
+    <p class="text-center text-muted" style="font-size: 1.1rem; margin-bottom: 3rem;">
+      {{ 'general.search.results_with_count' | t: count: search.results_count }}
+    </p>
+
+    {%- if search.results_count > 0 -%}-
+      <!-- Results Grid -->
+      <div class="grid grid-4">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {%- render 'card-product', card_product: item -%}
+          {%- else -%}
+            <!-- Non-product page result card -->
+            <div class="product-card glass-card">
+              <div class="product-card-info">
+                <span class="product-card-vendor text-muted">Page</span>
+                <h3 class="product-card-title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                <div style="margin-top: 1.2rem;">
+                  <a href="{{ item.url }}" class="button button-secondary button-full-width">
+                    View Page
+                  </a>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <!-- Pagination Links -->
+      {%- if paginate.pages > 1 -%}
+        <div class="pagination flex flex-center" style="margin-top: 4rem; gap: 1.5rem; font-size: 1.1rem;">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="button button-secondary">&laquo; Previous</a>
+          {%- endif -%}
+          
+          <span class="pagination-page text-muted">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="button button-secondary">Next &raquo;</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      <div class="text-center">
+        <p class="text-muted">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Search Results Page"
+}
+{% endschema %}

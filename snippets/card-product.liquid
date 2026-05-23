@@ -1,0 +1,68 @@
+{% comment %}
+    Renders a product card
+    Accepts:
+    - card_product: {Object} Product Liquid object
+{% endcomment %}
+
+<div class="product-card glass-card">
+  <div class="product-card-image-wrapper">
+    <a href="{{ card_product.url }}" aria-label="View {{ card_product.title | escape }}">
+      {%- if card_product.featured_image != blank -%}
+        <img 
+          src="{{ card_product.featured_image | image_url: width: 500 }}" 
+          alt="{{ card_product.featured_image.alt | escape }}" 
+          class="product-card-img"
+          loading="lazy"
+          width="500"
+          height="500"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-card-img' }}
+      {%- endif -%}
+    </a>
+
+    <div class="product-card-badges">
+      {%- if card_product.available == false -%}
+        <span class="badge badge-sold-out">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif card_product.compare_at_price > card_product.price -%}
+        <span class="badge badge-sale">{{ 'products.product.on_sale' | t }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="product-card-info">
+    {%- if card_product.vendor -%}
+      <span class="product-card-vendor text-muted">{{ card_product.vendor }}</span>
+    {%- endif -%}
+
+    <h3 class="product-card-title">
+      <a href="{{ card_product.url }}">{{ card_product.title }}</a>
+    </h3>
+
+    <div class="product-card-price-wrapper">
+      {%- if card_product.compare_at_price > card_product.price -%}
+        <span class="price-sale">{{ card_product.price | money }}</span>
+        <span class="price-compare">{{ card_product.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="price-regular">{{ card_product.price | money }}</span>
+      {%- endif -%}
+    </div>
+
+    <!-- Quick Add to Cart Form -->
+    <div class="product-card-quick-add" style="margin-top: 1.2rem;">
+      {%- if card_product.available -%}
+        <form method="post" action="/cart/add" class="quick-add-form">
+          <input type="hidden" name="id" value="{{ card_product.first_available_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="button button-primary button-full-width">
+            {{ 'products.product.add_to_cart' | t }}
+          </button>
+        </form>
+      {%- else -%}
+        <button class="button button-secondary button-full-width button-disabled" disabled>
+          {{ 'products.product.sold_out' | t }}
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

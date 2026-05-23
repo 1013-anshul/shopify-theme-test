@@ -1,0 +1,172 @@
+<footer class="footer">
+  <div class="container">
+    
+    <!-- Dynamic Footer Columns -->
+    <div class="footer-columns">
+      {%- for block in section.blocks -%}
+        <div class="footer-column" {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            
+            {%- when 'link_list' -%}
+              {%- if block.settings.heading != blank -%}
+                <h3 class="footer-heading">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.menu != blank -%}
+                <ul class="footer-links">
+                  {%- for link in linklists[block.settings.menu].links -%}
+                    <li>
+                      <a href="{{ link.url }}" class="footer-link">{{ link.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+            {%- when 'text' -%}
+              {%- if block.settings.heading != blank -%}
+                <h3 class="footer-heading">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              <div class="footer-text text-muted">
+                {{ block.settings.subtext }}
+              </div>
+
+            {%- when 'newsletter' -%}
+              {%- if block.settings.heading != blank -%}
+                <h3 class="footer-heading">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              <p class="text-muted" style="font-size: 0.95rem;">{{ block.settings.subtext }}</p>
+              
+              {%- form 'customer', class: 'footer-newsletter-form' -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <input 
+                  type="email" 
+                  name="contact[email]" 
+                  class="footer-newsletter-input" 
+                  value="{{ form.email }}"
+                  placeholder="Enter your email"
+                  required
+                  aria-label="Email Address"
+                >
+                <button type="submit" class="button button-primary" aria-label="Subscribe">
+                  Subscribe
+                </button>
+              {%- endform -%}
+
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Footer Copyright & Payment Info -->
+    <div class="footer-bottom flex flex-between">
+      <div class="footer-copyright">
+        &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: '/' }}. All rights reserved.
+      </div>
+      
+      {%- if section.settings.show_payment_methods -%}
+        <div class="footer-payment-icons">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  .payment-icon {
+    width: 38px;
+    height: auto;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_methods",
+      "default": true,
+      "label": "Show Payment Methods"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Navigation Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Quick Links",
+          "label": "Heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "About Us",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Our Brand",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "default": "<p>Share store details, promotions, or brand content with your customers.</p>",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Subscribe",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "default": "Sign up for exclusive offers, stories, and news.",
+          "label": "Subtext"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "text",
+        "settings": {}
+      },
+      {
+        "type": "link_list",
+        "settings": {}
+      },
+      {
+        "type": "newsletter",
+        "settings": {}
+      }
+    ]
+  }
+}
+{% endschema %}

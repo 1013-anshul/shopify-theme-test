@@ -1,0 +1,118 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {% render 'meta-tags' %}
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Custom Properties (Theme Tokens) -->
+    <style>
+      :root {
+        --color-bg: {{ settings.color_bg | default: '#09090b' }};
+        --color-surface: {{ settings.color_surface | default: '#18181b' }};
+        --color-text: {{ settings.color_text | default: '#fafafa' }};
+        --color-text-muted: {{ settings.color_text_muted | default: '#a1a1aa' }};
+        --color-primary: {{ settings.color_primary | default: '#6366f1' }};
+        --color-accent: {{ settings.color_accent | default: '#14b8a6' }};
+        --color-border: {{ settings.color_border | default: '#27272a' }};
+        --page-width: {{ settings.page_width | default: 1280 }}px;
+        
+        --font-heading: 'Outfit', sans-serif;
+        --font-body: 'Plus Jakarta Sans', sans-serif;
+      }
+    </style>
+
+    <!-- Theme Stylesheet -->
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    <!-- Shopify Required Injections -->
+    {{ content_for_header }}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+      window.theme = {
+        strings: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }}
+        },
+        moneyFormat: {{ shop.money_format | json }}
+      };
+    </script>
+  </head>
+
+  <body class="gradient">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      Skip to content
+    </a>
+
+    <!-- Theme Header Group -->
+    {% section 'announcement-bar' %}
+    {% section 'header' %}
+
+    <!-- Slide-out AJAX Cart Drawer -->
+    <div id="CartDrawer" class="cart-drawer-container" aria-hidden="true">
+      <div class="cart-drawer-overlay" onclick="window.theme.CartDrawer.close()"></div>
+      <div class="cart-drawer-content glass-card">
+        <div class="cart-drawer-header">
+          <h2 class="cart-drawer-title">{{ 'cart.general.title' | t }}</h2>
+          <button class="cart-drawer-close" onclick="window.theme.CartDrawer.close()" aria-label="Close cart">
+            {% render 'icons', icon: 'close' %}
+          </button>
+        </div>
+        
+        <div id="CartDrawerItems" class="cart-drawer-items-wrapper">
+          <!-- Dynamically populated by theme.js -->
+        </div>
+
+        <div class="cart-drawer-footer">
+          <div class="cart-drawer-summary">
+            <span class="cart-drawer-subtotal-label">{{ 'cart.general.subtotal' | t }}</span>
+            <span id="CartDrawerSubtotal" class="cart-drawer-subtotal-value"></span>
+          </div>
+          <form action="/cart" method="post" novalidate>
+            <button type="submit" name="checkout" class="button button-primary button-full-width">
+              {{ 'cart.general.checkout' | t }}
+            </button>
+          </form>
+          <a href="/cart" class="cart-drawer-view-link">{{ 'cart.general.view_cart' | t }}</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Page Layout Content -->
+    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    <!-- Theme Footer -->
+    {% section 'footer' %}
+
+    <!-- Theme Javascript -->
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+  </body>
+</html>

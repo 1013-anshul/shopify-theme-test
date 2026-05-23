@@ -1,0 +1,236 @@
+<section class="product-detail-wrapper container">
+  <div class="product-detail-grid">
+    
+    <!-- 1. Left Column: Product Gallery -->
+    <div class="product-gallery">
+      <div class="product-main-image-wrapper">
+        {%- if product.featured_image != blank -%}
+          <img 
+            id="MainProductImage"
+            src="{{ product.featured_image | image_url: width: 800 }}" 
+            alt="{{ product.featured_image.alt | escape }}" 
+            class="product-main-image"
+            width="800"
+            height="800"
+          >
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'product-main-image' }}
+        {%- endif -%}
+      </div>
+
+      <!-- Thumbnails -->
+      {%- if product.images.size > 1 -%}
+        <div class="product-thumbnails">
+          {%- for image in product.images -%}
+            <div 
+              class="product-thumbnail {% if forloop.first %}active{% endif %}"
+              data-image-src="{{ image | image_url: width: 800 }}"
+            >
+              <img src="{{ image | image_url: width: 100 }}" alt="{{ image.alt | escape }}" width="80" height="80" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- 2. Right Column: Transaction Options (Blocks-based) -->
+    <div class="product-info-column">
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          {%- case block.type -%}
+            
+            {%- when '@app' -%}
+              {% render block %}
+
+            {%- when 'title' -%}
+              <h1 class="product-title">{{ product.title }}</h1>
+
+            {%- when 'price' -%}
+              <div class="product-price-container" id="ProductPrice-{{ section.id }}">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="price-sale" style="color: #ef4444; margin-right: 10px;">{{ product.price | money }}</span>
+                  <span class="price-compare" style="text-decoration: line-through; color: var(--color-text-muted); font-size: 1.2rem;">{{ product.compare_at_price | money }}</span>
+                {%- else -%}
+                  <span class="price-regular">{{ product.price | money }}</span>
+                {%- endif -%}
+              </div>
+
+            {%- when 'variant_picker' -%}
+              {%- unless product.has_only_default_variant -%}
+                <div class="product-variants-container">
+                  {%- for option in product.options_with_values -%}
+                    <div class="option-group">
+                      <label class="option-group-title">{{ option.name }}</label>
+                      <div class="option-swatches">
+                        {%- for value in option.values -%}
+                          {%- assign checked = false -%}
+                          {%- if option.selected_value == value -%}
+                            {%- assign checked = true -%}{%- endif -%}
+                          <input 
+                            type="radio" 
+                            id="{{ section.id }}-{{ option.name }}-{{ forloop.index }}" 
+                            name="options[{{ option.name }}]" 
+                            value="{{ value | escape }}"
+                            class="swatch-input"
+                            {% if checked %}checked{% endif %}
+                          >
+                          <label for="{{ section.id }}-{{ option.name }}-{{ forloop.index }}" class="swatch-label">
+                            {{ value }}
+                          </label>
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              {%- endunless -%}
+
+            {%- when 'quantity_selector' -%}
+              <div class="quantity-selector-container">
+                <label class="option-group-title" style="display: block; margin-bottom: 0.5rem;">{{ 'products.product.quantity' | t }}</label>
+                <div class="quantity-selector" style="width: fit-content;">
+                  <button type="button" class="quantity-btn" onclick="var el = this.nextElementSibling; var val = parseInt(el.value); if(val>1) el.value = val-1;">-</button>
+                  <input type="text" name="quantity" class="quantity-input" value="1" id="Quantity-{{ section.id }}">
+                  <button type="button" class="quantity-btn" onclick="var el = this.previousElementSibling; var val = parseInt(el.value); el.value = val+1;">+</button>
+                </div>
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              <div class="product-buy-buttons">
+                <form method="post" action="/cart/add" id="product-form-{{ section.id }}">
+                  <!-- First available variant fallback -->
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" id="ProductVariantId-{{ section.id }}">
+                  <!-- Double link quantity selector value -->
+                  <input type="hidden" name="quantity" value="1" id="HiddenQuantity-{{ section.id }}">
+                  
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      var qInput = document.getElementById('Quantity-{{ section.id }}');
+                      var hInput = document.getElementById('HiddenQuantity-{{ section.id }}');
+                      if(qInput && hInput) {
+                        qInput.addEventListener('change', function() {
+                          hInput.value = qInput.value;
+                        });
+                        // Also hook up custom buttons increment/decrement clicks
+                        document.querySelectorAll('.quantity-btn').forEach(function(btn) {
+                          btn.addEventListener('click', function() {
+                            hInput.value = qInput.value;
+                          });
+                        });
+                      }
+                    });
+                  </script>
+
+                  <button 
+                    type="submit" 
+                    name="add" 
+                    class="button button-primary button-full-width"
+                    {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}
+                  >
+                    {%- if product.selected_or_first_available_variant.available -%}
+                      {{ 'products.product.add_to_cart' | t }}
+                    {%- else -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- endif -%}
+                  </button>
+                </form>
+              </div>
+
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}
+                <div class="product-description-container" style="line-height: 1.6; margin-top: 1rem;">
+                  <h3 class="option-group-title" style="margin-bottom: 0.5rem;">{{ 'products.product.description' | t }}</h3>
+                  <div class="product-description text-muted">
+                    {{ product.description }}
+                  </div>
+                </div>
+              {%- endif -%}
+
+            {%- when 'collapsible_tab' -%}
+              <div class="accordion" style="margin-top: 1rem;">
+                <div class="accordion-item">
+                  <button class="accordion-title">
+                    <span>{{ block.settings.heading | escape }}</span>
+                    <span class="accordion-icon">{% render 'icons', icon: 'chevron-down' %}</span>
+                  </button>
+                  <div class="accordion-content">
+                    {{ block.settings.content }}
+                  </div>
+                </div>
+              </div>
+
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1
+    },
+    {
+      "type": "quantity_selector",
+      "name": "Quantity Selector",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "Collapsible Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Details & Specifications",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>Introduce technical details, shipping speed, materials, or size charts here.</p>",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "title" },
+      { "type": "price" },
+      { "type": "variant_picker" },
+      { "type": "quantity_selector" },
+      { "type": "buy_buttons" },
+      { "type": "description" }
+    ]
+  }
+}
+{% endschema %}

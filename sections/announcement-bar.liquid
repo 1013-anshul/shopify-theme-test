@@ -1,0 +1,28 @@
+<div class="announcement-bar" role="region" aria-label="Announcement">
+  {%- if section.settings.link != blank -%}
+    <a href="{{ section.settings.link }}" class="announcement-bar-link">
+      {{ section.settings.text | escape }}
+    </a>
+  {%- else -%}
+    <span>{{ section.settings.text | escape }}</span>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Announcement Text",
+      "default": "Welcome to our store! Enjoy free shipping on orders over $50."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ]
+}
+{% endschema %}

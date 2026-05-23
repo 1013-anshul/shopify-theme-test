@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title": "Shopify Premium Custom Theme",
+        "subtitle": "Elevate Your Style",
+        "text": "Experience high performance rendering, customizable glassmorphism widgets, and instant AJAX checkouts built from scratch."
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured Collection",
+        "subtitle": "Curated for you",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "show_view_all": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured_collection"
+  ]
+}
