@@ -40,7 +40,7 @@
             {%- if section.settings.image_3 != blank -%}
               <img src="{{ section.settings.image_3 | image_url: width: 800 }}" alt="{{ section.settings.caption_3 | escape }}" loading="lazy">
             {%- else -%}
-              <img src="{{ 'vura-bottle-still.png' | asset_url }}" alt="The Bottle" loading="lazy">
+              <img src="{{ 'vura-specimen-tall.png' | asset_url }}" alt="The Specimen" loading="lazy">
             {%- endif -%}
           </div>
           <div class="btp-cap">{{ section.settings.caption_3 | escape }}</div>
@@ -122,7 +122,7 @@
       "type": "text",
       "id": "caption_3",
       "label": "Caption",
-      "default": "The Bottle"
+      "default": "The Specimen"
     },
     {
       "type": "header",

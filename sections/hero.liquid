@@ -25,38 +25,51 @@
        class="hero-seal vura-spin-hover" 
        aria-hidden="true">
 
-  <div class="hero-content">
+  <div class="container">
+    <div class="hero-split-grid">
+      <!-- Left Column: Copy & Actions -->
+      <div class="hero-split-text">
+        {%- if section.settings.eyebrow != blank -%}
+          <div class="eyebrow" style="margin-bottom: var(--s-3);">{{ section.settings.eyebrow | escape }}</div>
+        {%- endif -%}
 
-    {%- if section.settings.eyebrow != blank -%}
-      <div class="eyebrow">{{ section.settings.eyebrow | escape }}</div>
-    {%- endif -%}
+        <h1 class="hero-title">{{ section.settings.title | default: shop.name | escape }}</h1>
 
-    <h1 class="hero-title">{{ section.settings.title | default: shop.name | escape }}</h1>
+        {%- if section.settings.devanagari != blank -%}
+          <div class="hero-devanagari dev" lang="hi">{{ section.settings.devanagari | escape }}</div>
+        {%- endif -%}
 
-    {%- if section.settings.devanagari != blank -%}
-      <div class="hero-devanagari dev" lang="hi">{{ section.settings.devanagari | escape }}</div>
-    {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="hero-lede">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
 
-    {%- if section.settings.text != blank -%}
-      <p class="hero-lede">{{ section.settings.text | escape }}</p>
-    {%- endif -%}
+        <div class="hero-cta">
+          {%- if section.settings.btn_label != blank -%}
+            <a href="{{ section.settings.btn_link | default: '#FeaturedProduct' }}" 
+               class="button button-primary">
+              {{ section.settings.btn_label | escape }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.ghost_btn_label != blank -%}
+            <a href="{{ section.settings.ghost_btn_link | default: '#FeaturedProduct' }}" 
+               class="button button-ghost">
+              {{ section.settings.ghost_btn_label | escape }} &rarr;
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
 
-    <div class="hero-cta">
-      {%- if section.settings.btn_label != blank -%}
-        <a href="{{ section.settings.btn_link | default: '/collections/all' }}" 
-           class="button button-primary">
-          {{ section.settings.btn_label | escape }}
-        </a>
-      {%- endif -%}
-      {%- if section.settings.ghost_btn_label != blank -%}
-        <a href="{{ section.settings.ghost_btn_link | default: '/collections/all' }}" 
-           class="button button-ghost">
-          {{ section.settings.ghost_btn_label | escape }} &rarr;
-        </a>
-      {%- endif -%}
+      <!-- Right Column: Premium Floating Product Visual (vura-bottle-still) -->
+      <div class="hero-split-visual">
+        <img src="{{ 'vura-bottle-still.png' | asset_url }}" 
+             alt="Vura Apothecary" 
+             class="hero-floating-bottle vura-drift"
+             style="--vura-drift-base-rotate: 0deg;"
+             loading="eager">
+      </div>
     </div>
-
   </div>
+
 </section>
 
 {% schema %}
@@ -107,7 +120,7 @@
       "type": "text",
       "id": "btn_label",
       "label": "Label",
-      "default": "Read Series 01"
+      "default": "Order Series 01"
     },
     {
       "type": "url",
@@ -122,7 +135,7 @@
       "type": "text",
       "id": "ghost_btn_label",
       "label": "Label",
-      "default": "Browse the Archive"
+      "default": "Our Ritual"
     },
     {
       "type": "url",
