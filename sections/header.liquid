@@ -10,9 +10,9 @@
     <!-- Navigation -->
     <nav id="HeaderNav" class="header-nav" role="navigation">
       {%- if section.settings.use_anchor_menu -%}
-        <a href="#FeaturedProduct" class="header-nav-link" onclick="document.getElementById('HeaderNav').classList.remove('mobile-open')">The Block</a>
-        <a href="#FeaturedProduct" class="header-nav-link" onclick="document.getElementById('HeaderNav').classList.remove('mobile-open'); setTimeout(function(){var tab = document.querySelector('[data-tab^=\'ritual\']'); if(tab) tab.click();}, 50);">The Ritual</a>
-        <a href="#Pillars" class="header-nav-link" onclick="document.getElementById('HeaderNav').classList.remove('mobile-open')">The Origin</a>
+        <a href="#FeaturedProduct" class="header-nav-link">The Block</a>
+        <a href="#FeaturedProduct" class="header-nav-link" data-action="open-ritual">The Ritual</a>
+        <a href="#Pillars" class="header-nav-link">The Origin</a>
       {%- else -%}
         {%- for link in linklists[section.settings.menu].links -%}
           <a href="{{ link.url }}" 
@@ -47,8 +47,8 @@
 
       <!-- Mobile toggle -->
       <button class="header-mobile-toggle" 
-              onclick="document.getElementById('HeaderNav').classList.toggle('mobile-open')"
-              aria-label="Toggle menu">
+              aria-label="Toggle menu"
+              aria-expanded="false">
         <i data-lucide="menu" style="width:22px;height:22px;stroke-width:1.5"></i>
       </button>
     </div>

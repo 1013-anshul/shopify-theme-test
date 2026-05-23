@@ -1,4 +1,4 @@
-<section id="FeaturedProduct" class="pdp-section featured-product-section" style="padding: 5rem 0;">
+<section id="FeaturedProduct" class="pdp-section featured-product-section">
   <div class="container">
 
     {%- assign product = all_products[section.settings.product] | default: collections.all.products.first -%}
@@ -10,9 +10,10 @@
         <div class="pdp-bottle-column">
           <div class="pdp-bottle-frame">
 
+            <!-- Circular registry seal stamp with spin-hover -->
             <img src="{{ 'seal-mineral-archive.png' | asset_url }}" 
                  alt="Mineral Archive Registry" 
-                 class="pdp-bottle-seal" 
+                 class="pdp-bottle-seal vura-spin-hover" 
                  aria-hidden="true">
 
             {%- if product.featured_image != blank -%}
@@ -28,26 +29,23 @@
                    aria-hidden="true">
             {%- endif -%}
 
-            <!-- Subtle floral background behind the product -->
+            <!-- Subtle floral background behind the product with drift/sway animation -->
             <img src="{{ 'flower-bouquet.png' | asset_url }}" 
                  alt="" 
-                 class="pdp-bottle-floral-bg" 
-                 style="opacity: 0.25;"
+                 class="pdp-bottle-floral-bg vura-drift" 
                  aria-hidden="true">
 
           </div>
 
-          <!-- Thumbnail strip using .product-thumbnail and data-image-src for theme.js -->
+          <!-- Thumbnail strip -->
           {%- if product.images.size > 1 -%}
-            <div style="display:flex;gap:0.5rem;margin-top:1rem;overflow-x:auto;padding-bottom:0.25rem;">
+            <div class="pdp-thumbnails">
               {%- for image in product.images -%}
                 <button class="product-thumbnail{% if forloop.first %} active{% endif %}" 
                         data-image-src="{{ image | image_url: width: 600 }}"
-                        id="FeaturedThumb-{{ section.id }}-{{ forloop.index }}"
-                        style="width:64px;height:64px;border:1px solid var(--border-soft);border-radius:var(--r-2);overflow:hidden;padding:0;cursor:pointer;background:var(--vura-forest-lift);flex-shrink:0;transition:border-color var(--t-fast);">
+                        id="FeaturedThumb-{{ section.id }}-{{ forloop.index }}">
                   <img src="{{ image | image_url: width: 120 }}" 
-                       alt="{{ image.alt | escape }}" 
-                       style="width:100%;height:100%;object-fit:cover;pointer-events:none;">
+                       alt="{{ image.alt | escape }}">
                 </button>
               {%- endfor -%}
             </div>
@@ -59,16 +57,16 @@
           
           <div class="eyebrow">Series 01 · {{ product.type | default: 'Single-Mineral' }}</div>
 
-          <h2 class="pdp-product-title vura-wordmark" style="color:var(--fg);text-shadow:none;margin-top:0.5rem;">
+          <h2 class="pdp-product-title">
             {{ product.title }}
           </h2>
           
           {%- if product.metafields.vura.hindi != blank -%}
-            <div class="pdp-product-hindi dev" lang="hi" style="margin-top:0.2rem;margin-bottom:1rem;">
+            <div class="pdp-product-hindi dev" lang="hi">
               {{ product.metafields.vura.hindi }}
             </div>
           {%- else -%}
-            <div class="pdp-product-hindi dev" lang="hi" style="margin-top:0.2rem;margin-bottom:1rem;">फिटकरी</div>
+            <div class="pdp-product-hindi dev" lang="hi">फिटकरी</div>
           {%- endif -%}
 
           <div id="ProductPrice-{{ section.id }}">
@@ -76,15 +74,15 @@
             <div class="pdp-price-line">
               {%- assign variant = product.selected_or_first_available_variant -%}
               {%- if variant.compare_at_price > variant.price -%}
-                <span class="pdp-price" id="PriceDisplay-{{ section.id }}" style="color:var(--vura-saffron);">
+                <span class="pdp-price price-sale" id="PriceDisplay-{{ section.id }}">
                   {{ variant.price | money }}
                 </span>
-                <span class="pdp-price-size" id="ComparePriceDisplay-{{ section.id }}" style="text-decoration:line-through;">
+                <span class="pdp-price-size price-compare" id="ComparePriceDisplay-{{ section.id }}">
                   {{ variant.compare_at_price | money }}
                 </span>
               {%- else -%}
                 <span class="pdp-price" id="PriceDisplay-{{ section.id }}">{{ variant.price | money }}</span>
-                <span class="pdp-price-size" id="ComparePriceDisplay-{{ section.id }}" style="display:none;"></span>
+                <span class="pdp-price-size price-compare" id="ComparePriceDisplay-{{ section.id }}" style="display:none;"></span>
               {%- endif -%}
               
               {%- if variant.unit_price_measurement -%}
@@ -94,7 +92,7 @@
           </div>
 
           <!-- Product description summary / short text above buy button -->
-          <div style="font-size:var(--size-sm);color:var(--fg-muted);line-height:1.6;margin-top:1.5rem;margin-bottom:1.5rem;">
+          <div class="pdp-description-short">
             {%- if product.description != blank -%}
               {{ product.description | strip_html | truncatewords: 30 }}
             {%- else -%}
@@ -104,22 +102,21 @@
 
           <!-- Variant Selector (if multiple variants exist) -->
           {%- unless product.has_only_default_variant -%}
-            <div id="VariantSelector-{{ section.id }}" style="margin-bottom:1.5rem;">
+            <div id="VariantSelector-{{ section.id }}" class="pdp-variant-selector">
               {%- for option in product.options_with_values -%}
-                <div style="margin-bottom:1rem;">
-                  <div class="eyebrow" style="margin-bottom:0.5rem;">{{ option.name }}</div>
-                  <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+                <div class="pdp-variant-group">
+                  <div class="eyebrow pdp-variant-label">{{ option.name }}</div>
+                  <div class="pdp-variant-swatches">
                     {%- for value in option.values -%}
-                      <label style="display:inline-flex;align-items:center;position:relative;">
+                      <label class="pdp-swatch-label">
                         <input type="radio"
                                name="options[{{ option.name }}]"
                                value="{{ value | escape }}"
-                               class="variant-radio-{{ section.id }}"
+                               class="variant-radio-{{ section.id }} pdp-swatch-input"
                                data-option-position="{{ option.position }}"
                                id="opt-{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
-                               {% if option.selected_value == value %}checked{% endif %}
-                               style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">
-                        <span class="variant-swatch" style="display:inline-flex;align-items:center;height:40px;padding:0 1.2rem;border:1px solid var(--border);border-radius:var(--r-2);font-size:var(--size-sm);color:var(--fg-muted);cursor:pointer;transition:all var(--t-fast) var(--ease-out);">
+                               {% if option.selected_value == value %}checked{% endif %}>
+                        <span class="variant-swatch">
                           {{ value }}
                         </span>
                       </label>
@@ -137,10 +134,10 @@
             <div class="pdp-qty-row">
               <div class="qty-selector">
                 <button type="button" class="qty-btn" onclick="var i=document.getElementById('qty-{{ section.id }}');var v=parseInt(i.value);if(v>1)i.value=v-1;" aria-label="Decrease quantity">&minus;</button>
-                <input type="text" id="qty-{{ section.id }}" name="quantity" class="qty-input" value="1" aria-label="Quantity">
+                <input type="text" id="qty-{{ section.id }}" name="quantity" class="qty-input" value="1" aria-label="Quantity" readonly>
                 <button type="button" class="qty-btn" onclick="var i=document.getElementById('qty-{{ section.id }}');i.value=parseInt(i.value)+1;" aria-label="Increase quantity">+</button>
               </div>
-              <button type="submit" name="add" id="AddToCartBtn-{{ section.id }}" class="button button-primary" style="flex:1;"
+              <button type="submit" name="add" id="AddToCartBtn-{{ section.id }}" class="button button-primary"
                 {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
                 {%- if product.selected_or_first_available_variant.available -%}
                   {{ 'products.product.add_to_order' | t }}
@@ -151,23 +148,23 @@
             </div>
 
             <!-- Trust Badges & Shipping details -->
-            <div style="margin-top:1.5rem;border-top:1px dashed var(--border-soft);padding-top:1.5rem;display:grid;grid-template-columns:repeat(3, 1fr);gap:1rem;text-align:center;">
-              <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;">
-                <img src="{{ 'icon-pure-drops.png' | asset_url }}" alt="" style="width:24px;height:24px;object-fit:contain;opacity:0.8;" aria-hidden="true">
-                <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-muted);">Pure Drops</span>
+            <div class="pdp-trust-badges">
+              <div class="pdp-trust-badge">
+                <img src="{{ 'icon-pure-drops.png' | asset_url }}" alt="" aria-hidden="true">
+                <span>Pure Drops</span>
               </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;">
-                <img src="{{ 'icon-mineral.png' | asset_url }}" alt="" style="width:24px;height:24px;object-fit:contain;opacity:0.8;" aria-hidden="true">
-                <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-muted);">100% Mineral</span>
+              <div class="pdp-trust-badge">
+                <img src="{{ 'icon-mineral.png' | asset_url }}" alt="" aria-hidden="true">
+                <span>100% Mineral</span>
               </div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:0.4rem;">
-                <img src="{{ 'icon-made-in-india.png' | asset_url }}" alt="" style="width:24px;height:24px;object-fit:contain;opacity:0.8;" aria-hidden="true">
-                <span style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--fg-muted);">Made In India</span>
+              <div class="pdp-trust-badge">
+                <img src="{{ 'icon-made-in-india.png' | asset_url }}" alt="" aria-hidden="true">
+                <span>Made In India</span>
               </div>
             </div>
 
-            <div class="pdp-ship-note" style="margin-top:1.5rem;justify-content:center;">
-              <i data-lucide="truck" style="width:16px;height:16px;stroke-width:1.5;color:var(--fg-faint);flex-shrink:0;"></i>
+            <div class="pdp-ship-note">
+              <i data-lucide="truck" aria-hidden="true"></i>
               <span>Ships across India in 2&ndash;3 working days &middot; Free over ₹999</span>
             </div>
           </form>
@@ -215,122 +212,6 @@
       <script type="application/json" id="ProductJson-{{ section.id }}">
         {{ product | json }}
       </script>
-
-      <!-- Inline Variant Selection Logic -->
-      <script>
-        (function() {
-          const sectionId = "{{ section.id }}";
-          const productJsonEl = document.getElementById('ProductJson-' + sectionId);
-          if (!productJsonEl) return;
-
-          const product = JSON.parse(productJsonEl.textContent);
-          const radios = document.querySelectorAll('.variant-radio-' + sectionId);
-          const hiddenInput = document.getElementById('ProductVariantId-' + sectionId);
-          const priceDisplay = document.getElementById('PriceDisplay-' + sectionId);
-          const compareDisplay = document.getElementById('ComparePriceDisplay-' + sectionId);
-          const buyButton = document.getElementById('AddToCartBtn-' + sectionId);
-          const mainImage = document.getElementById('FeaturedProductImage-' + sectionId);
-
-          function updateVariant() {
-            // Get currently selected options
-            let selectedOptions = [];
-            const checkedRadios = document.querySelectorAll('.variant-radio-' + sectionId + ':checked');
-            checkedRadios.forEach(radio => {
-              const position = parseInt(radio.dataset.optionPosition) - 1;
-              selectedOptions[position] = radio.value;
-            });
-
-            // Find matching variant
-            const variant = product.variants.find(v => {
-              return v.options.every((opt, idx) => opt === selectedOptions[idx]);
-            });
-
-            if (variant) {
-              // Update variant ID
-              hiddenInput.value = variant.id;
-
-              // Update price formatting helper
-              function formatMoney(cents) {
-                return '₹' + (cents / 100).toFixed(2);
-              }
-
-              // Update Price
-              priceDisplay.textContent = formatMoney(variant.price);
-              if (variant.compare_at_price > variant.price) {
-                compareDisplay.textContent = formatMoney(variant.compare_at_price);
-                compareDisplay.style.display = 'inline';
-              } else {
-                compareDisplay.style.display = 'none';
-              }
-
-              // Update Add to Cart Button
-              if (variant.available) {
-                buyButton.disabled = false;
-                buyButton.classList.remove('button-disabled');
-                buyButton.textContent = "Add to Order";
-              } else {
-                buyButton.disabled = true;
-                buyButton.classList.add('button-disabled');
-                buyButton.textContent = "Sold Out";
-              }
-
-              // Update image if variant has a featured image
-              if (variant.featured_image && mainImage) {
-                mainImage.src = variant.featured_image.src;
-              }
-            }
-          }
-
-          // Listen to swatch clicks
-          radios.forEach(radio => {
-            radio.addEventListener('change', updateVariant);
-          });
-
-          // Custom Tabs Switcher
-          const tabs = document.querySelectorAll('#PdpTabs-' + sectionId + ' .pdp-tab');
-          tabs.forEach(btn => {
-            btn.addEventListener('click', function() {
-              tabs.forEach(b => b.classList.remove('active'));
-              btn.classList.add('active');
-
-              const selectedTabId = btn.dataset.tab;
-              ['ritual-' + sectionId, 'ingredients-' + sectionId, 'caution-' + sectionId].forEach(id => {
-                const el = document.getElementById('pdp-tab-' + id);
-                if (el) {
-                  el.style.display = (id === selectedTabId) ? 'block' : 'none';
-                }
-              });
-            });
-          });
-
-          // Set up thumbnails to change main image on click (in case ProductGallery fails or needs reinforcement)
-          const thumbnails = document.querySelectorAll('[id^="FeaturedThumb-' + sectionId + '"]');
-          thumbnails.forEach(thumb => {
-            thumb.addEventListener('click', function() {
-              thumbnails.forEach(t => t.classList.remove('active'));
-              thumb.classList.add('active');
-              const newSrc = thumb.getAttribute('data-image-src');
-              if (newSrc && mainImage) {
-                mainImage.src = newSrc;
-              }
-            });
-          });
-
-        })();
-      </script>
-
-      <!-- Custom variant swatch CSS -->
-      <style>
-        .variant-radio-{{ section.id }}:checked + .variant-swatch {
-          border-color: var(--vura-saffron) !important;
-          color: var(--vura-saffron) !important;
-          background: rgba(255, 192, 63, 0.05);
-        }
-        .variant-swatch:hover {
-          border-color: var(--vura-cream-mute);
-          color: var(--fg);
-        }
-      </style>
 
     {%- else -%}
       <div style="text-align:center;padding:5rem 0;border:1px dashed var(--border);border-radius:var(--r-3);">

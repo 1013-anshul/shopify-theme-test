@@ -1,16 +1,16 @@
 <section class="archive-note-section">
   <div class="shell-narrow archive-note-inner">
     
-    <!-- Floating Floral Detail -->
+    <!-- Floating Floral Detail with breeze-drift animation -->
     {%- if section.settings.show_floral -%}
       <img src="{% if section.settings.floral_image != blank %}{{ section.settings.floral_image | image_url: width: 320 }}{% else %}{{ 'flower-burgundy-tall.png' | asset_url }}{% endif %}" 
            alt="" 
-           class="archive-note-floral" 
+           class="archive-note-floral vura-drift" 
            loading="lazy"
            aria-hidden="true">
     {%- endif -%}
 
-    <div class="eyebrow" style="margin-bottom: 18px;">{{ section.settings.eyebrow | escape }}</div>
+    <div class="eyebrow archive-note-eyebrow">{{ section.settings.eyebrow | escape }}</div>
     
     <h2 class="archive-note-heading">
       {{ section.settings.heading | escape }}

@@ -904,6 +904,9 @@ hr, .rule-dashed {
   max-width: 720px;
   color: var(--fg);
 }
+.archive-note-eyebrow {
+  margin-bottom: var(--s-4);
+}
 .archive-note-tagline {
   margin-top: var(--s-6);
   font-size: var(--size-sm);
@@ -1059,6 +1062,9 @@ hr, .rule-dashed {
   gap: var(--s-4);
   align-items: stretch;
 }
+.pdp-qty-row button[type="submit"] {
+  flex: 1;
+}
 
 .qty-selector {
   display: flex;
@@ -1090,7 +1096,132 @@ hr, .rule-dashed {
   display: flex;
   gap: var(--s-3);
   align-items: center;
+  justify-content: center;
+  margin-top: var(--s-6);
   font-size: var(--size-xs);
+  color: var(--fg-muted);
+}
+.pdp-ship-note svg,
+.pdp-ship-note i {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.5;
+  color: var(--fg-faint);
+  flex-shrink: 0;
+}
+
+/* PDP Gallery & Thumbnails */
+.pdp-thumbnails {
+  display: flex;
+  gap: var(--s-2);
+  margin-top: var(--s-4);
+  overflow-x: auto;
+  padding-bottom: var(--s-1);
+}
+.product-thumbnail {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-2);
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  background: var(--vura-forest-lift);
+  flex-shrink: 0;
+  transition: border-color var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+.product-thumbnail:hover, .product-thumbnail.active {
+  border-color: var(--vura-saffron);
+}
+.product-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* PDP Swatches & Variant Selectors */
+.pdp-variant-selector {
+  margin-bottom: var(--s-6);
+}
+.pdp-variant-group {
+  margin-bottom: var(--s-4);
+}
+.pdp-variant-label {
+  margin-bottom: var(--s-2);
+}
+.pdp-variant-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.pdp-swatch-label {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+.pdp-swatch-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.variant-swatch {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 var(--s-5);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  font-size: var(--size-sm);
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: border-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out), background-color var(--t-fast) var(--ease-out);
+}
+.pdp-swatch-input:checked + .variant-swatch {
+  border-color: var(--vura-saffron) !important;
+  color: var(--vura-saffron) !important;
+  background: rgba(255, 192, 63, 0.05);
+}
+
+.pdp-description-short {
+  font-size: var(--size-sm);
+  color: var(--fg-muted);
+  line-height: 1.6;
+  margin-top: var(--s-6);
+  margin-bottom: var(--s-6);
+}
+
+/* PDP Trust Badges */
+.pdp-trust-badges {
+  margin-top: var(--s-6);
+  border-top: 1px dashed var(--border-soft);
+  padding-top: var(--s-6);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-4);
+  text-align: center;
+}
+.pdp-trust-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-2);
+}
+.pdp-trust-badge img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  opacity: 0.8;
+}
+.pdp-trust-badge span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--fg-muted);
 }
 
@@ -1427,3 +1558,27 @@ hr, .rule-dashed {
   transition: top var(--t-fast);
 }
 .skip-to-content-link:focus { top: var(--s-4); }
+
+/* ============================================================
+   VURA BRAND ANIMATIONS (tasteskill.dev principles)
+   ============================================================ */
+
+/* Slow breeze-drift animation for pressed-paper specimen botanicals */
+@keyframes vuraDrift {
+  0% { transform: translateY(0) rotate(var(--vura-drift-base-rotate, 0deg)); }
+  50% { transform: translateY(-8px) rotate(calc(var(--vura-drift-base-rotate, 0deg) + 2deg)); }
+  100% { transform: translateY(0) rotate(var(--vura-drift-base-rotate, 0deg)); }
+}
+.vura-drift {
+  animation: vuraDrift 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+/* Rotation hover transition for circular registry seals */
+.vura-spin-hover {
+  transition: transform 1.2s var(--ease-out);
+  will-change: transform;
+}
+.vura-spin-hover:hover {
+  transform: rotate(360deg);
+}

@@ -7,20 +7,22 @@
     </video>
   {%- endif -%}
 
-  <!-- Botanical florals (decorative, aria-hidden) -->
+  <!-- Botanical florals (decorative, aria-hidden, with breeze-drift animations) -->
   <img src="{{ 'flower-marigold.png' | asset_url }}" 
        alt="" 
-       class="hero-floral-right" 
+       class="hero-floral-right vura-drift" 
+       style="--vura-drift-base-rotate: 6deg;"
        aria-hidden="true">
   <img src="{{ 'flower-bouquet.png' | asset_url }}" 
        alt="" 
-       class="hero-floral-left" 
+       class="hero-floral-left vura-drift" 
+       style="--vura-drift-base-rotate: -8deg;"
        aria-hidden="true">
 
-  <!-- Mineral Archive Seal -->
+  <!-- Mineral Archive Seal with rotation hover -->
   <img src="{{ 'seal-mineral-archive.png' | asset_url }}" 
        alt="Mineral Archive Registry" 
-       class="hero-seal" 
+       class="hero-seal vura-spin-hover" 
        aria-hidden="true">
 
   <div class="hero-content">
