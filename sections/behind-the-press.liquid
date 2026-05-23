@@ -1,0 +1,151 @@
+<section class="btp-section">
+  <div class="shell">
+    
+    <div class="btp-head">
+      <div class="eyebrow" style="margin-bottom: 14px;">{{ section.settings.eyebrow | escape }}</div>
+      <h2 class="btp-title">{{ section.settings.title | escape }}</h2>
+      <p class="btp-lede">{{ section.settings.text | escape }}</p>
+    </div>
+
+    <div class="btp-grid">
+      <!-- Left / Tall Image Block -->
+      <div class="btp-tall">
+        <div class="btp-image-wrapper btp-aspect-tall">
+          {%- if section.settings.image_1 != blank -%}
+            <img src="{{ section.settings.image_1 | image_url: width: 800 }}" alt="{{ section.settings.caption_1 | escape }}" loading="lazy">
+          {%- else -%}
+            <img src="{{ 'vura-mineral-hero.png' | asset_url }}" alt="The Mineral" loading="lazy">
+          {%- endif -%}
+        </div>
+        <div class="btp-cap">{{ section.settings.caption_1 | escape }}</div>
+      </div>
+
+      <!-- Right Column (Wide + Short) -->
+      <div class="btp-col">
+        <!-- Wide Block -->
+        <div class="btp-wide">
+          <div class="btp-image-wrapper btp-aspect-wide">
+            {%- if section.settings.image_2 != blank -%}
+              <img src="{{ section.settings.image_2 | image_url: width: 800 }}" alt="{{ section.settings.caption_2 | escape }}" loading="lazy">
+            {%- else -%}
+              <img src="{{ 'vura-process-wide.png' | asset_url }}" alt="The Process" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="btp-cap">{{ section.settings.caption_2 | escape }}</div>
+        </div>
+
+        <!-- Short Block -->
+        <div class="btp-short">
+          <div class="btp-image-wrapper btp-aspect-short">
+            {%- if section.settings.image_3 != blank -%}
+              <img src="{{ section.settings.image_3 | image_url: width: 800 }}" alt="{{ section.settings.caption_3 | escape }}" loading="lazy">
+            {%- else -%}
+              <img src="{{ 'vura-bottle-still.png' | asset_url }}" alt="The Bottle" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="btp-cap">{{ section.settings.caption_3 | escape }}</div>
+        </div>
+      </div>
+    </div>
+
+    {%- if section.settings.show_direction_note -%}
+      <p class="btp-direction">
+        <strong>Photography direction:</strong> {{ section.settings.direction_note | escape }}
+      </p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Behind The Press",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Behind the Press"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "One mineral at a time"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Each Vura formula begins with a single mineral and ends with five ingredients on the label. Refined, dissolved, and bottled in small batches. Made in India with care."
+    },
+    {
+      "type": "header",
+      "content": "Image Slot 1 (Tall)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "caption_1",
+      "label": "Caption",
+      "default": "The Mineral"
+    },
+    {
+      "type": "header",
+      "content": "Image Slot 2 (Wide)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "caption_2",
+      "label": "Caption",
+      "default": "The Process"
+    },
+    {
+      "type": "header",
+      "content": "Image Slot 3 (Short)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "caption_3",
+      "label": "Caption",
+      "default": "The Bottle"
+    },
+    {
+      "type": "header",
+      "content": "Photography Guidelines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_direction_note",
+      "label": "Show Photography Guidelines",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "direction_note",
+      "label": "Guidelines Text",
+      "default": "low-key, warm earth-tone documentary in the spirit of subko.coffee. Hands, raw material, brass, linen, slight film grain — never studio gloss."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Behind The Press",
+      "category": "Brand"
+    }
+  ]
+}
+{% endschema %}

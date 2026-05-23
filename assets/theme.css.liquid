@@ -772,6 +772,152 @@ hr, .rule-dashed {
 }
 
 /* ============================================================
+   BEHIND THE PRESS SECTION
+   ============================================================ */
+.btp-section {
+  padding: var(--s-16) 0 var(--s-24);
+  border-top: 1px dashed var(--border);
+}
+.btp-head {
+  max-width: 640px;
+  margin-bottom: var(--s-12);
+}
+.btp-title {
+  font-family: var(--font-display);
+  font-size: var(--size-2xl);
+  line-height: var(--lh-2xl);
+  color: var(--fg);
+  letter-spacing: var(--track-tight);
+}
+.btp-lede {
+  margin-top: var(--s-4);
+  font-size: var(--size-base);
+  line-height: 1.7;
+  color: var(--fg-muted);
+}
+.btp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: var(--s-6);
+  align-items: stretch;
+}
+.btp-tall {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  height: 540px;
+}
+.btp-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  height: 540px;
+}
+.btp-wide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  flex: 1;
+}
+.btp-short {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  height: 220px;
+}
+.btp-image-wrapper {
+  overflow: hidden;
+  border-radius: var(--r-3);
+  border: 1px dashed var(--border);
+  background: var(--vura-forest-lift);
+  flex-grow: 1;
+  display: flex;
+}
+.btp-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.btp-cap {
+  font-size: var(--size-xs);
+  color: var(--fg-faint);
+  letter-spacing: var(--track-loose);
+  text-transform: uppercase;
+}
+.btp-direction {
+  margin-top: var(--s-8);
+  font-size: 12px;
+  color: var(--fg-faint);
+  letter-spacing: 0.04em;
+  max-width: 760px;
+}
+@media (max-width: 768px) {
+  .btp-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .btp-tall, .btp-col {
+    height: auto;
+  }
+  .btp-tall .btp-image-wrapper {
+    aspect-ratio: 4/5;
+  }
+  .btp-wide .btp-image-wrapper {
+    aspect-ratio: 3/2;
+  }
+  .btp-short .btp-image-wrapper {
+    aspect-ratio: 3/1;
+  }
+}
+
+/* ============================================================
+   ARCHIVE NOTE SECTION
+   ============================================================ */
+.archive-note-section {
+  padding: var(--s-24) 0;
+  border-top: 1px dashed var(--border);
+}
+.shell-narrow {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--s-10);
+}
+.archive-note-inner {
+  text-align: center;
+  position: relative;
+}
+.archive-note-floral {
+  position: absolute;
+  left: -40px;
+  top: -60px;
+  width: 160px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+.archive-note-heading {
+  font-family: var(--font-display);
+  font-size: var(--size-2xl);
+  line-height: 1.15;
+  margin: 0 auto;
+  letter-spacing: var(--track-tight);
+  max-width: 720px;
+  color: var(--fg);
+}
+.archive-note-tagline {
+  margin-top: var(--s-6);
+  font-size: var(--size-sm);
+  color: var(--fg-muted);
+  letter-spacing: var(--track-loose);
+  text-transform: uppercase;
+}
+@media (max-width: 768px) {
+  .archive-note-floral {
+    display: none;
+  }
+}
+
+/* ============================================================
    PRODUCT DETAIL PAGE (PDP)
    ============================================================ */
 

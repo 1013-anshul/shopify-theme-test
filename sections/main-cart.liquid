@@ -1,34 +1,33 @@
 <section class="cart-page-section container" style="padding: 4rem 0;">
   <div style="max-width: 800px; margin: 0 auto;">
     
-    <h1 style="font-size: 2.5rem; margin-bottom: 2rem; text-align: center;">{{ 'cart.general.title' | t }}</h1>
+    <h1 style="font-size: var(--size-2xl); margin-bottom: 2rem; text-align: center; font-family: var(--font-display);">{{ 'cart.general.title' | t }}</h1>
 
     {%- if cart.item_count > 0 -%}
-      <form action="/cart" method="post" novalidate class="glass-card" style="padding: 2rem;">
+      <form action="/cart" method="post" novalidate class="vura-card" style="padding: 2rem;">
         
         <!-- Cart Table List -->
         <div class="cart-items-list" style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 2rem;">
           {%- for item in cart.items -%}
-            <div class="cart-item-row" style="display: flex; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
+            <div class="cart-item-row" style="display: flex; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border-soft);">
               
               <!-- Item Image -->
-              <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--color-border);">
+              <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}" style="width: 100px; height: 100px; object-fit: cover; border-radius: var(--r-2); border: 1px solid var(--border-soft);">
               
               <!-- Item Details -->
               <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 0.25rem;">
-                <h2 style="font-size: 1.2rem; font-weight: 600;"><a href="{{ item.url }}">{{ item.product_title }}</a></h2>
+                <h2 style="font-size: var(--size-base); font-weight: 500; font-family: var(--font-body);"><a href="{{ item.url }}" style="color: inherit; border-bottom: none;">{{ item.product_title }}</a></h2>
                 {%- unless item.product.has_only_default_variant -%}
-                  <span class="text-muted" style="font-size: 0.9rem;">{{ item.variant_title }}</span>
+                  <span style="font-size: var(--size-xs); color: var(--fg-faint);">{{ item.variant_title }}</span>
                 {%- endunless -%}
                 
-                <span style="font-weight: 600; margin-top: auto;">{{ item.final_line_price | money }}</span>
+                <span style="font-family: var(--font-display); font-size: var(--size-md); margin-top: auto; color: var(--vura-saffron);">{{ item.final_line_price | money }}</span>
               </div>
 
               <!-- Item Quantity / Actions -->
               <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;">
                 
                 <div class="quantity-selector">
-                  <!-- Custom inline triggers updating Shopify form action -->
                   <button type="button" class="quantity-btn" onclick="var el = this.nextElementSibling; var val = parseInt(el.value); if(val>1) { el.value = val-1; this.form.submit(); }">-</button>
                   <input type="text" name="updates[]" class="quantity-input" value="{{ item.quantity }}" readonly>
                   <button type="button" class="quantity-btn" onclick="var el = this.previousElementSibling; var val = parseInt(el.value); el.value = val+1; this.form.submit();">+</button>
@@ -44,14 +43,14 @@
         </div>
 
         <!-- Summary & Subtotal -->
-        <div class="cart-page-footer flex flex-between" style="border-top: 1px solid var(--color-border); padding-top: 2rem;">
+        <div class="cart-page-footer flex flex-between" style="border-top: 1px dashed var(--border); padding-top: 2rem; align-items: baseline;">
           <div class="cart-page-subtotal">
-            <span class="text-muted" style="font-size: 1.1rem; margin-right: 10px;">{{ 'cart.general.subtotal' | t }}</span>
-            <span style="font-size: 1.5rem; font-weight: 700;">{{ cart.total_price | money }}</span>
+            <span class="eyebrow" style="margin-right: 10px;">{{ 'cart.general.subtotal' | t }}</span>
+            <span style="font-family: var(--font-display); font-size: var(--size-xl); color: var(--fg);">{{ cart.total_price | money }}</span>
           </div>
 
           <div style="display: flex; gap: 1rem;">
-            <button type="submit" name="update" class="button button-secondary">
+            <button type="submit" name="update" class="button button-ghost">
               Update Cart
             </button>
             <button type="submit" name="checkout" class="button button-primary">
@@ -63,8 +62,8 @@
       </form>
     {%- else -%}
       <!-- Empty Cart View -->
-      <div class="text-center glass-card" style="padding: 4rem 2rem;">
-        <p class="text-muted" style="font-size: 1.2rem; margin-bottom: 2rem;">{{ 'cart.general.empty' | t }}</p>
+      <div class="text-center vura-card" style="padding: 4rem 2rem;">
+        <p style="font-size: var(--size-md); color: var(--fg-muted); margin-bottom: 2rem;">{{ 'cart.general.empty' | t }}</p>
         <a href="/collections/all" class="button button-primary">
           {{ 'cart.general.continue_shopping' | t }}
         </a>

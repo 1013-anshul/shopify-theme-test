@@ -21,6 +21,14 @@
       "type": "featured-product",
       "settings": {}
     },
+    "behind_the_press": {
+      "type": "behind-the-press",
+      "settings": {}
+    },
+    "archive_note": {
+      "type": "archive-note",
+      "settings": {}
+    },
     "custom_liquid": {
       "type": "custom-liquid",
       "settings": {}
@@ -30,6 +38,8 @@
     "hero",
     "pillars",
     "featured_product",
+    "behind_the_press",
+    "archive_note",
     "custom_liquid"
   ]
 }
