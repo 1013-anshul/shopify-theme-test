@@ -48,9 +48,9 @@
 
           <!-- Right side copy text -->
           <div class="hero-copy">
-            <span class="eyebrow">{{ section.settings.hero_eyebrow | default: "Mineral skincare, slowly made" | escape }}</span>
-            <h1 class="hero-h1">{{ section.settings.hero_title | default: "A herbarium for <em>your skin</em>." }}</h1>
-            <p class="hero-lede">{{ section.settings.hero_text | default: "Vura formulations start with a single mineral and at most three botanicals — logged, dated, and tied back to the lot it came from. No marketing actives. No proprietary blends. Just the archive." | escape }}</p>
+            <span class="eyebrow">{{ section.settings.hero_eyebrow | default: "Natural deodorant, slowly made" | escape }}</span>
+            <h1 class="hero-h1">{{ section.settings.hero_title | default: "A mineral shield for <em>freshness</em>." }}</h1>
+            <p class="hero-lede">{{ section.settings.hero_text | default: "Vura underarm mist starts with raw geothermal alum crystals and organic botanicals to prevent body odor. No aluminum chlorohydrate. No parabens. Just the archive." | escape }}</p>
             <div class="hero-actions">
               {%- if product != blank -%}
                 <form method="post" action="/cart/add" style="display:inline;">
@@ -58,13 +58,13 @@
                   <button type="submit" class="btn-press lg">Add to Cart · {{ product.selected_or_first_available_variant.price | money }}</button>
                 </form>
               {%- else -%}
-                <a href="#Vura3DExplorer" class="btn-press lg">Add to Cart · ₹1,240</a>
+                <a href="#Vura3DExplorer" class="btn-press lg">Add to Cart · ₹600</a>
               {%- endif -%}
               <a href="#Vura3DExplorer" class="btn-link">Read the formulation →</a>
             </div>
             <div class="hero-stats">
-              <div class="stat"><span class="num">01</span><span class="label">Mineral per batch</span></div>
-              <div class="stat"><span class="num">≤3</span><span class="label">Botanicals max</span></div>
+              <div class="stat"><span class="num">01</span><span class="label">Mineral active</span></div>
+              <div class="stat"><span class="num">24h</span><span class="label">Odor control</span></div>
               <div class="stat"><span class="num">100<em>·</em>ml</span><span class="label">Per bottle</span></div>
             </div>
           </div>
@@ -76,7 +76,7 @@
           <div class="trust-bar-wrapper">
             <div class="trust-item">
               <i data-lucide="shield-check"></i>
-              <span>100% Active Minerals</span>
+              <span>Active Minerals</span>
             </div>
             <div class="trust-item">
               <i data-lucide="droplet"></i>
@@ -88,11 +88,11 @@
             </div>
             <div class="trust-item">
               <i data-lucide="package-check"></i>
-              <span>Small Batch Registry</span>
+              <span>24h Odor Shield</span>
             </div>
             <div class="trust-item">
               <i data-lucide="award"></i>
-              <span>Apothecary Quality</span>
+              <span>Zero Toxic Chemicals</span>
             </div>
           </div>
         </div>
@@ -628,19 +628,19 @@
       "type": "text",
       "id": "hero_eyebrow",
       "label": "Hero Eyebrow",
-      "default": "Mineral skincare, slowly made"
+      "default": "Natural deodorant, slowly made"
     },
     {
       "type": "text",
       "id": "hero_title",
       "label": "Hero Title",
-      "default": "A herbarium for <em>your skin</em>."
+      "default": "A mineral shield for <em>freshness</em>."
     },
     {
       "type": "textarea",
       "id": "hero_text",
       "label": "Hero Tagline",
-      "default": "Vura formulations start with a single mineral and at most three botanicals — logged, dated, and tied back to the lot it came from. No marketing actives. No proprietary blends. Just the archive."
+      "default": "Vura underarm mist starts with raw geothermal alum crystals and organic botanicals to prevent body odor. No aluminum chlorohydrate. No parabens. Just the archive."
     },
     {
       "type": "text",
