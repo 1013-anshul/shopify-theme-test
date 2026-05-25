@@ -1,385 +1,675 @@
-<!-- 3D Interactive Product Explorer Section -->
-<section id="Vura3DExplorer" class="vura-3d-section">
-  <div class="container">
-    <div class="vura-3d-grid">
+<!-- Unified Hero + 3D Product Explorer (Tactile Apothecary Theme) -->
+{%- assign product = all_products[section.settings.product] | default: collections.all.products.first -%}
+
+<div class="vura-hero-explorer-pin-wrapper">
+  <div class="vura-pin-content">
+
+    <!-- Pinned Spline Canvas Wrapper -->
+    <div class="vura-spline-wrapper floating" id="vuraSplineWrapper">
+      <canvas id="canvas3d" data-spline-url="{{ section.settings.spline_url | default: 'https://prod.spline.design/kXTSqgQH8fas0rHZ/scene.splinecode' }}"></canvas>
       
-      <!-- Left Column: The 3D WebGL Canvas -->
-      <div class="vura-3d-visual-column">
-        <div class="vura-3d-canvas-wrapper">
-          <div id="vura-3d-canvas-container" class="vura-3d-canvas-container"></div>
-          
-          <!-- Micro-interaction helper prompt -->
-          <div class="vura-3d-drag-hint">
-            <i data-lucide="orbit" class="hint-icon" aria-hidden="true"></i>
-            <span>Drag to rotate · Scroll to zoom</span>
-          </div>
+      <!-- Rotating SVG Seal Sticker (Apothecary Stamp Overlay) -->
+      <svg class="seal-sticker-wrapper spin" viewBox="0 0 400 400" aria-hidden="true">
+        <defs>
+          <path id="arc-top" d="M 200,200 m -140,0 a 140,140 0 1,1 280,0"/>
+          <path id="arc-bot" d="M 60,200 a 140,140 0 0,0 280,0"/>
+        </defs>
+        <circle cx="200" cy="200" r="190" fill="var(--vura-saffron)" stroke="var(--vura-forest-deep)" stroke-width="3"/>
+        <circle cx="200" cy="200" r="170" fill="none" stroke="var(--vura-forest-deep)" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.8"/>
+        <text font-family="Roca One, Georgia, serif" font-size="24" letter-spacing="6" fill="var(--vura-forest-deep)" font-weight="700">
+          <textPath href="#arc-top" startOffset="50%" text-anchor="middle">ARCHIVE</textPath>
+        </text>
+        <text font-family="Roca One, Georgia, serif" font-size="24" letter-spacing="6" fill="var(--vura-forest-deep)" font-weight="700">
+          <textPath href="#arc-bot" startOffset="50%" text-anchor="middle">MINERAL ✦ REGISTRY</textPath>
+        </text>
+        <g fill="var(--vura-forest-deep)" opacity="0.85">
+          <path d="M 64,200 l 4,-12 l 4,12 l -4,4 z" />
+          <path d="M 332,200 l 4,-12 l 4,12 l -4,4 z" />
+        </g>
+        <text x="200" y="226" text-anchor="middle" font-family="Roca One, serif" font-size="105" font-weight="700" fill="var(--vura-forest-deep)">01</text>
+      </svg>
 
-          <!-- Decorative Specimen ID badge -->
-          <div class="vura-3d-specimen-badge">
-            <span class="specimen-label">ARCHIVE REF:</span>
-            <span class="specimen-val">S1-PHITKARI</span>
-          </div>
-        </div>
+      <!-- Canvas Active Interaction Overlay -->
+      <div class="vura-canvas-overlay" id="splineTouchOverlay">
+        <button class="vura-interact-btn" id="activateSplineBtn">
+          <i data-lucide="orbit" class="btn-icon"></i>
+          <span>Activate 3D Orbit</span>
+        </button>
       </div>
-
-      <!-- Right Column: Lab Controls & Details -->
-      <div class="vura-3d-info-column">
-        <div class="eyebrow" style="color: var(--vura-saffron);">{{ section.settings.eyebrow | default: "Interactive Lab" }}</div>
-        
-        <h2 class="vura-3d-heading">{{ section.settings.heading | default: "Mineral Alchemy" }}</h2>
-        <p class="vura-3d-subheading">{{ section.settings.description | default: "Explore the raw active ingredients inside Series 01. Click an ingredient to distill and transform the bottle's formula." }}</p>
-
-        <!-- Lab Controller Swatches/Tabs -->
-        <div class="lab-controls">
-          <button class="lab-control-tab active" data-ingredient="alum">
-            <span class="tab-dot" style="background-color: #f6f6f2;"></span>
-            <span class="tab-text">Alum Crystal</span>
-          </button>
-          
-          <button class="lab-control-tab" data-ingredient="rose">
-            <span class="tab-dot" style="background-color: #8d3b2d;"></span>
-            <span class="tab-text">Rose Hydrosol</span>
-          </button>
-
-          <button class="lab-control-tab" data-ingredient="aloe">
-            <span class="tab-dot" style="background-color: #3e5e48;"></span>
-            <span class="tab-text">Aloe Juice</span>
-          </button>
-        </div>
-
-        <!-- Detail Panels (Swapped dynamically by Javascript) -->
-        <div class="lab-details-container">
-          <!-- Alum Panel -->
-          <div id="detail-alum" class="lab-detail-panel" style="display: block;">
-            <div class="lab-detail-header">
-              <span class="ingredient-scientific">Potassium Alum</span>
-              <span class="ingredient-formula">KAl(SO₄)₂·12H₂O</span>
-            </div>
-            <p class="ingredient-desc">
-              Raw crystal mineral blocks sourced from natural geothermal deposits. Pressed and shaped by hand. Acts as a powerful natural astringent that tightens pores, calms irritation, and seals skin post-wash.
-            </p>
-          </div>
-
-          <!-- Rose Panel -->
-          <div id="detail-rose" class="lab-detail-panel" style="display: none;">
-            <div class="lab-detail-header">
-              <span class="ingredient-scientific">Rosa Damascena</span>
-              <span class="ingredient-formula">Kannauj Distillate</span>
-            </div>
-            <p class="ingredient-desc">
-              Damask rose petals hand-harvested at dawn and steam-distilled in traditional copper vessels. This ancient copper-still hydrosol cools, tones, and infuses the formula with active, hydrating properties.
-            </p>
-          </div>
-
-          <!-- Aloe Panel -->
-          <div id="detail-aloe" class="lab-detail-panel" style="display: none;">
-            <div class="lab-detail-header">
-              <span class="ingredient-scientific">Aloe Barbadensis</span>
-              <span class="ingredient-formula">Cold-Pressed Gel</span>
-            </div>
-            <p class="ingredient-desc">
-              Succulent leaves cold-pressed within hours of harvest to retain polysaccharides. Delivers instant skin cell hydration, forms a breathable moisture barrier, and accelerates healing of micro-abrasions.
-            </p>
-          </div>
-        </div>
-
-        <!-- CTA & Links -->
-        <div class="vura-3d-actions">
-          <a href="{{ section.settings.btn_link | default: '#FeaturedProduct' }}" class="button button-primary">
-            {{ section.settings.btn_label | default: "Order Series 01" }}
-          </a>
-          <span class="vura-3d-action-note">Small-batch run of 250 bottles.</span>
-        </div>
-
-      </div>
-
     </div>
-  </div>
-</section>
 
-<!-- CSS Styles for the 3D Section -->
+    <!-- Hero Section Layer -->
+    <section class="hero-section">
+      <div class="container hero-container">
+        <div class="hero-main-grid">
+          
+          <!-- Left side placeholder to align with floating Canvas wrapper -->
+          <div class="hero-placeholder-block"></div>
+
+          <!-- Right side copy text -->
+          <div class="hero-copy">
+            <span class="eyebrow">{{ section.settings.hero_eyebrow | default: "Mineral skincare, slowly made" | escape }}</span>
+            <h1 class="hero-h1">{{ section.settings.hero_title | default: "A herbarium for <em>your skin</em>." }}</h1>
+            <p class="hero-lede">{{ section.settings.hero_text | default: "Vura formulations start with a single mineral and at most three botanicals — logged, dated, and tied back to the lot it came from. No marketing actives. No proprietary blends. Just the archive." | escape }}</p>
+            <div class="hero-actions">
+              {%- if product != blank -%}
+                <form method="post" action="/cart/add" style="display:inline;">
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <button type="submit" class="btn-press lg">Add to Cart · {{ product.selected_or_first_available_variant.price | money }}</button>
+                </form>
+              {%- else -%}
+                <a href="#Vura3DExplorer" class="btn-press lg">Add to Cart · ₹1,240</a>
+              {%- endif -%}
+              <a href="#Vura3DExplorer" class="btn-link">Read the formulation →</a>
+            </div>
+            <div class="hero-stats">
+              <div class="stat"><span class="num">01</span><span class="label">Mineral per batch</span></div>
+              <div class="stat"><span class="num">≤3</span><span class="label">Botanicals max</span></div>
+              <div class="stat"><span class="num">100<em>·</em>ml</span><span class="label">Per bottle</span></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Hero Bottom Trust Indicators -->
+        <div class="hero-trust-bar">
+          <div class="trust-bar-wrapper">
+            <div class="trust-item">
+              <i data-lucide="shield-check"></i>
+              <span>100% Active Minerals</span>
+            </div>
+            <div class="trust-item">
+              <i data-lucide="droplet"></i>
+              <span>Copper-Still Rosewater</span>
+            </div>
+            <div class="trust-item">
+              <i data-lucide="leaf"></i>
+              <span>Wild Aloe Infused</span>
+            </div>
+            <div class="trust-item">
+              <i data-lucide="package-check"></i>
+              <span>Small Batch Registry</span>
+            </div>
+            <div class="trust-item">
+              <i data-lucide="award"></i>
+              <span>Apothecary Quality</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3D Explorer Layer -->
+    <section id="Vura3DExplorer" class="vura-3d-section">
+      <div class="container">
+        <div class="vura-3d-layout">
+          
+          <!-- Left Column: Specs -->
+          <div class="vura-layout-column vura-layout-left">
+            <div>
+              <p class="specs-eyebrow">{{ section.settings.specs_eyebrow | default: "Registry Entry No. 001" | escape }}</p>
+              <h3 class="specs-title">{{ product.title | default: "Phitkari Spray" | escape }}</h3>
+              <p class="specs-desc">{{ product.description | strip_html | truncatewords: 15 | default: "Crystalline mineral salt bar spritz bottled in small batches." | escape }}</p>
+            </div>
+            <div style="border-left: 2px solid var(--vura-terracotta); padding-left: var(--s-3); margin-top: var(--s-2);">
+              <p class="ingredients-eyebrow">Registry specifications</p>
+              <p class="ingredients-desc" style="font-family: var(--font-mono); font-size: 11px; line-height: 1.7;">
+                <b>LOT NUMBER:</b> {{ section.settings.lot_number | default: "24·17·002" | escape }}<br>
+                <b>BOTTLED:</b> {{ section.settings.bottled_date | default: "14 May 2026" | escape }}<br>
+                <b>REGISTRY:</b> {{ section.settings.registry_info | default: "Series 01 / Batch 02" | escape }}<br>
+                <b>ORIGIN:</b> Hyderabad, IN
+              </p>
+            </div>
+          </div>
+
+          <!-- Center Column (Empty Target Card) -->
+          <div class="vura-layout-column vura-layout-center">
+            <div class="vura-spline-placeholder"></div>
+          </div>
+
+          <!-- Right Column: Formulation Log Table -->
+          <div class="vura-layout-column vura-layout-right">
+            <div>
+              <p class="intro-eyebrow">Formulation log · weight metrics</p>
+              <div class="formulation-mini-table">
+                <div class="form-mini-row">
+                  <span class="name">Rosa damascena hydrosol</span>
+                  <span class="percent">68.20%</span>
+                </div>
+                <div class="form-mini-row">
+                  <span class="name">Aloe barbadensis leaf extract</span>
+                  <span class="percent">22.40%</span>
+                </div>
+                <div class="form-mini-row">
+                  <span class="name">Hamamelis virginiana distillate</span>
+                  <span class="percent">6.10%</span>
+                </div>
+                <div class="form-mini-row">
+                  <span class="name">Glycerin (vegetable)</span>
+                  <span class="percent">1.80%</span>
+                </div>
+                <div class="form-mini-row">
+                  <span class="name">Kalium alum sulfas (Phitkari)</span>
+                  <span class="percent">0.80%</span>
+                </div>
+                <div class="form-mini-row">
+                  <span class="name">Preservative / pH Adjusters</span>
+                  <span class="percent">0.70%</span>
+                </div>
+              </div>
+              <div class="form-mini-foot">
+                <span>pH 4.6 · Stable</span>
+                <span>Tested @ 40°C</span>
+              </div>
+            </div>
+            <div style="margin-top: var(--s-2);">
+              {%- if product != blank -%}
+                <form method="post" action="/cart/add">
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <button type="submit" class="btn-press" style="width: 100%;">Add to Cart · {{ product.selected_or_first_available_variant.price | money }}</button>
+                </form>
+              {%- else -%}
+                <button class="btn-press" style="width: 100%;">Add to Cart · ₹1,240</button>
+              {%- endif -%}
+              <span class="vura-small-note">Series 02 formulation in registry preparation.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
 <style>
-.vura-3d-section {
-  padding: var(--s-20) 0;
-  background-color: var(--vura-forest-deep);
-  border-bottom: 1px dashed var(--border);
+/* =====================================================================
+   UNIFIED HERO & EXPLORER PIN LAYOUT
+   ===================================================================== */
+.vura-hero-explorer-pin-wrapper {
   position: relative;
+  width: 100%;
+  background-color: var(--vura-paper);
+}
+
+.vura-pin-content {
+  position: relative;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 
-.vura-3d-grid {
+/* Morphing Canvas Container */
+.vura-spline-wrapper.floating {
+  position: absolute;
+  width: 44vw;
+  height: 52vh;
+  left: 6vw;
+  top: 24vh;
+  z-index: 5;
+  background: var(--vura-forest);
+  border: 1px solid var(--vura-hairline-soft);
+  border-radius: var(--r-3);
+  overflow: visible;
+  box-shadow: 0 15px 40px rgba(14, 33, 24, 0.25);
+  pointer-events: none;
+  aspect-ratio: auto;
+}
+
+.vura-spline-wrapper.floating.interactive {
+  pointer-events: auto;
+  box-shadow: 0 8px 24px rgba(14, 33, 24, 0.15);
+}
+
+.vura-spline-placeholder {
+  width: 100%;
+  height: 520px;
+  border: 1px dashed var(--vura-hairline);
+  border-radius: var(--r-3);
+  background: transparent;
+  box-sizing: border-box;
+}
+
+#canvas3d {
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+  border-radius: inherit;
+}
+
+/* Rotating Seal Sticker inside the Canvas wrapper */
+.seal-sticker-wrapper {
+  position: absolute;
+  right: -36px;
+  top: -36px;
+  width: 120px;
+  height: 120px;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(4px 4px 0 var(--vura-terracotta));
+  transition: transform 0.3s ease, opacity 0.5s ease;
+}
+
+.seal-sticker-wrapper.spin {
+  animation: slowspin 38s linear infinite;
+}
+
+@keyframes slowspin {
+  to { transform: rotate(360deg); }
+}
+
+/* Hero Section Layer */
+.vura-pin-content .hero-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  z-index: 2;
+  background-color: transparent;
+}
+
+.hero-container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.hero-main-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.05fr 1fr;
   gap: var(--s-16);
   align-items: center;
 }
 
-.vura-3d-visual-column {
+/* Empty Left Block of Hero */
+.hero-placeholder-block {
+  aspect-ratio: 4 / 5;
   width: 100%;
+  height: 52vh;
 }
 
-.vura-3d-canvas-wrapper {
-  background: radial-gradient(circle at center, var(--vura-forest-lift) 0%, var(--vura-forest-deep) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--r-4);
-  position: relative;
-  height: 580px;
-  overflow: hidden;
-}
-
-.vura-3d-canvas-container {
-  width: 100%;
-  height: 100%;
-  cursor: grab;
-}
-.vura-3d-canvas-container:active {
-  cursor: grabbing;
-}
-
-.vura-3d-drag-hint {
-  position: absolute;
-  bottom: var(--s-5);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  background: rgba(14, 33, 24, 0.75);
-  border: 1px solid var(--border-soft);
-  backdrop-filter: blur(8px);
-  padding: var(--s-2) var(--s-4);
-  border-radius: var(--r-pill);
-  font-size: var(--size-xs);
-  color: var(--fg-muted);
-  pointer-events: none;
-  letter-spacing: var(--track-mid);
-  text-transform: uppercase;
-}
-
-.hint-icon {
-  width: 14px;
-  height: 14px;
-  stroke-width: 1.5;
-}
-
-.vura-3d-specimen-badge {
-  position: absolute;
-  top: var(--s-5);
-  left: var(--s-5);
-  font-family: monospace;
-  font-size: var(--size-xs);
-  background: rgba(22, 45, 36, 0.85);
-  padding: var(--s-1) var(--s-3);
-  border: 1px dashed var(--border-soft);
-  border-radius: var(--r-2);
-  pointer-events: none;
-}
-
-.specimen-label {
-  color: var(--fg-faint);
-  margin-right: var(--s-1);
-}
-
-.specimen-val {
-  color: var(--vura-saffron);
-  font-weight: 600;
-}
-
-/* Info Column & Details */
-.vura-3d-info-column {
+.hero-copy {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
-  padding-left: var(--s-4);
+  gap: var(--s-5);
 }
 
-.vura-3d-heading {
-  font-size: clamp(36px, 4vw, 54px);
-  line-height: 1.1;
-  color: var(--fg);
-  margin: var(--s-2) 0 var(--s-4);
-}
-
-.vura-3d-subheading {
-  font-size: var(--size-base);
-  line-height: 1.6;
-  color: var(--fg-muted);
-  margin-bottom: var(--s-8);
-  max-width: 480px;
-}
-
-/* Lab Controls Swatches */
-.lab-controls {
-  display: flex;
-  gap: var(--s-3);
-  width: 100%;
-  margin-bottom: var(--s-6);
-  flex-wrap: wrap;
-}
-
-.lab-control-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-3);
-  background: var(--vura-forest-lift);
-  border: 1px solid var(--border-soft);
-  color: var(--fg-muted);
-  padding: var(--s-3) var(--s-5);
-  border-radius: var(--r-pill);
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: var(--size-sm);
-  font-weight: 500;
-  transition: all var(--t-base) var(--ease-out);
-}
-
-.lab-control-tab:hover {
-  border-color: var(--vura-hairline);
-  color: var(--fg);
-}
-
-.lab-control-tab.active {
-  background: var(--vura-forest-card);
-  border-color: var(--vura-saffron);
-  color: var(--fg);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-}
-
-.tab-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
-.tab-text {
-  letter-spacing: var(--track-mid);
-  text-transform: uppercase;
-  font-size: 12px;
-}
-
-/* Details panels */
-.lab-details-container {
-  width: 100%;
-  min-height: 180px;
-  margin-bottom: var(--s-8);
-  background: rgba(30, 58, 45, 0.3);
-  border: 1px dashed var(--border-soft);
-  border-radius: var(--r-3);
-  padding: var(--s-6);
-  position: relative;
-}
-
-.lab-detail-panel {
-  width: 100%;
-}
-
-.lab-detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  border-bottom: 1px dashed var(--border-soft);
-  padding-bottom: var(--s-3);
-  margin-bottom: var(--s-4);
-}
-
-.ingredient-scientific {
+.hero-h1 {
   font-family: var(--font-display);
-  font-size: var(--size-lg);
-  color: var(--vura-saffron);
+  font-weight: 400;
+  font-size: clamp(48px, 6vw, 84px);
+  line-height: 0.98;
+  letter-spacing: var(--track-tight);
+  color: var(--vura-forest-deep);
+  margin: 0;
+}
+.hero-h1 em {
+  font-style: normal;
+  color: var(--vura-terracotta);
+  position: relative;
+  white-space: nowrap;
+  z-index: 1;
+}
+.hero-h1 em::after {
+  content: "";
+  position: absolute;
+  left: -2%; right: -2%; bottom: 6%;
+  height: 0.18em;
+  background: var(--vura-saffron);
+  z-index: -1;
+  transform: skew(-8deg, -2deg);
 }
 
-.ingredient-formula {
-  font-family: monospace;
-  font-size: var(--size-xs);
-  color: var(--fg-faint);
-}
-
-.ingredient-desc {
-  font-size: var(--size-sm);
-  line-height: 1.6;
-  color: var(--fg-muted);
+.hero-lede {
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--vura-paper-ink-muted);
+  max-width: 44ch;
   margin: 0;
 }
 
-/* Actions */
-.vura-3d-actions {
+.hero-actions {
   display: flex;
+  gap: var(--s-5);
   align-items: center;
-  gap: var(--s-6);
   flex-wrap: wrap;
 }
 
-.vura-3d-action-note {
-  font-size: var(--size-xs);
-  color: var(--fg-faint);
-  letter-spacing: var(--track-mid);
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-6);
+  width: 100%;
+  margin-top: var(--s-2);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--vura-hairline);
+}
+.stat .num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  line-height: 1;
+  color: var(--vura-forest-deep);
+  display: block;
+}
+.stat .label {
+  font-family: var(--font-mono);
+  font-size: 10px;
   text-transform: uppercase;
+  letter-spacing: var(--track-loose);
+  color: var(--vura-paper-ink-faint);
+  margin-top: var(--s-1);
+  display: block;
+}
+.stat .num em {
+  color: var(--vura-terracotta);
+  font-style: normal;
+  font-size: 20px;
 }
 
-/* Responsiveness */
+.hero-trust-bar {
+  border-top: 1px solid var(--vura-hairline-soft);
+  padding-top: var(--s-6);
+  width: 100%;
+}
+.trust-bar-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-6);
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--vura-paper-ink-faint);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: var(--track-mid);
+  font-weight: 500;
+}
+.trust-item i {
+  color: var(--vura-terracotta);
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.5;
+}
+
+/* 3D Explorer Section Layer */
+.vura-pin-content .vura-3d-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.vura-3d-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1.1fr;
+  gap: var(--s-8);
+  align-items: center;
+  width: 100%;
+}
+.vura-layout-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+/* Specs Styles */
+.specs-eyebrow, .ingredients-eyebrow, .intro-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--vura-terracotta);
+  text-transform: uppercase;
+  letter-spacing: var(--track-loose);
+  margin: 0 0 var(--s-2);
+}
+.specs-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3.5vw, 44px);
+  line-height: 1.1;
+  color: var(--vura-forest-deep);
+  margin: 0 0 var(--s-2);
+}
+.specs-desc, .ingredients-desc, .intro-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--vura-paper-ink-muted);
+  margin: 0;
+}
+
+/* Formulation Table inside Explorer (Right Column) */
+.formulation-mini-table {
+  border-top: 1px solid var(--vura-hairline);
+  margin: var(--s-4) 0;
+  display: flex;
+  flex-direction: column;
+}
+.form-mini-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--vura-hairline-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--vura-paper-ink-muted);
+}
+.form-mini-row .name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--vura-paper-ink);
+}
+.form-mini-row .percent {
+  color: var(--vura-terracotta);
+  font-weight: 500;
+}
+.form-mini-foot {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--vura-paper-ink-faint);
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  letter-spacing: var(--track-mid);
+}
+
+.vura-small-note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--vura-paper-ink-faint);
+  display: block;
+  margin-top: var(--s-2);
+  text-transform: uppercase;
+  letter-spacing: var(--track-mid);
+}
+
+/* Touch Canvas overlay */
+.vura-canvas-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(14, 33, 24, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out);
+}
+.vura-canvas-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.vura-canvas-overlay.active {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vura-interact-btn {
+  background: rgba(22, 45, 36, 0.95);
+  border: 1px solid var(--vura-hairline);
+  backdrop-filter: blur(8px);
+  color: var(--vura-cream);
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--track-loose);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  box-shadow: 2px 2px 0 0 var(--vura-terracotta);
+  transition: all var(--t-fast) var(--ease-out);
+}
+.vura-interact-btn:hover {
+  border-color: var(--vura-saffron);
+  color: var(--vura-saffron);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 0 var(--vura-terracotta);
+}
+.vura-interact-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 0 0 var(--vura-terracotta);
+}
+
 @media (max-width: 991px) {
-  .vura-3d-grid {
+  .hero-main-grid, .vura-3d-layout {
     grid-template-columns: 1fr;
-    gap: var(--s-10);
+    gap: var(--s-12);
   }
-  .vura-3d-canvas-wrapper {
-    height: 480px;
+  .vura-spline-wrapper.floating {
+    width: 85vw;
+    height: 42vh;
+    left: 7.5vw;
+    top: 29vh;
   }
-  .vura-3d-info-column {
-    padding-left: 0;
+  .vura-spline-placeholder {
+    height: 400px;
   }
 }
 </style>
 
-<!-- Load Script libraries in order -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<!-- Load GSAP, ScrollTrigger, and Spline Loader Scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script type="module" src="{{ 'vura-3d.js' | asset_url }}"></script>
+
 <script>
-  window.Vura3DModelUrl = "{{ 'vura-bottle.glb' | asset_url }}";
+  const initOverlay = () => {
+    const overlay = document.getElementById('splineTouchOverlay');
+    const button = document.getElementById('activateSplineBtn');
+    
+    if (overlay && button) {
+      button.addEventListener('click', () => {
+        overlay.classList.add('active');
+        document.body.classList.add('spline-interacting');
+      });
+
+      document.addEventListener('pointerdown', (e) => {
+        const canvas = document.getElementById('canvas3d');
+        if (canvas && !canvas.contains(e.target) && !button.contains(e.target)) {
+          overlay.classList.remove('active');
+          document.body.classList.remove('spline-interacting');
+        }
+      });
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initOverlay);
+  } else {
+    initOverlay();
+  }
 </script>
-<script src="{{ 'vura-3d.js' | asset_url }}"></script>
 
 {% schema %}
 {
-  "name": "3D Interactive Explorer",
+  "name": "3D Explorer (Spline)",
   "settings": [
     {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow Label",
-      "default": "Interactive Lab"
+      "type": "product",
+      "id": "product",
+      "label": "Product to Showcase"
     },
     {
       "type": "text",
-      "id": "heading",
-      "label": "Section Heading",
-      "default": "The Mineral Archive"
+      "id": "spline_url",
+      "label": "Spline Scene URL",
+      "default": "https://prod.spline.design/kXTSqgQH8fas0rHZ/scene.splinecode"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Hero Eyebrow",
+      "default": "Mineral skincare, slowly made"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "A herbarium for <em>your skin</em>."
     },
     {
       "type": "textarea",
-      "id": "description",
-      "label": "Description Text",
-      "default": "Explore the raw active ingredients inside Series 01. Click an ingredient to distill and transform the bottle's formula."
+      "id": "hero_text",
+      "label": "Hero Tagline",
+      "default": "Vura formulations start with a single mineral and at most three botanicals — logged, dated, and tied back to the lot it came from. No marketing actives. No proprietary blends. Just the archive."
     },
     {
       "type": "text",
-      "id": "btn_label",
-      "label": "Button Label",
-      "default": "Order Series 01"
+      "id": "specs_eyebrow",
+      "label": "Explorer Specs Eyebrow",
+      "default": "Registry Entry No. 001"
     },
     {
-      "type": "url",
-      "id": "btn_link",
-      "label": "Button Link"
+      "type": "text",
+      "id": "lot_number",
+      "label": "Lot Number",
+      "default": "24·17·002"
+    },
+    {
+      "type": "text",
+      "id": "bottled_date",
+      "label": "Bottled Date",
+      "default": "14 May 2026"
+    },
+    {
+      "type": "text",
+      "id": "registry_info",
+      "label": "Registry Info",
+      "default": "Series 01 / Batch 02"
     }
   ],
   "presets": [
     {
-      "name": "3D Interactive Explorer"
+      "name": "3D Explorer (Spline)"
     }
   ]
 }

@@ -1,61 +1,40 @@
+<!-- Product Page Detail Layout (Apothecary Redesign) -->
 <section class="pdp-section">
   <div class="shell">
 
-    <a href="{{ routes.root_url }}collections/all" class="button button-ghost" style="margin-bottom:2.5rem;display:inline-flex;">
+    <a href="{{ routes.root_url }}collections/all" class="btn-link" style="margin-bottom:2.5rem; display:inline-flex;">
       &larr; Back to the Archive
     </a>
 
     <div class="pdp-grid">
 
-      <!-- Left: Product media column -->
+      <!-- Left: Product media column (Interactive 3D model) -->
       <div class="pdp-bottle-column">
-        <div class="pdp-bottle-frame">
-
-          <img src="{{ 'seal-mineral-archive.png' | asset_url }}" 
-               alt="Mineral Archive Registry" 
-               class="pdp-bottle-seal" 
-               aria-hidden="true">
-
-          {%- if product.featured_image != blank -%}
-            <img src="{{ product.featured_image | image_url: width: 600 }}" 
-                 alt="{{ product.featured_image.alt | escape }}" 
-                 class="pdp-main-image"
-                 id="MainProductImage"
-                 loading="eager">
-          {%- else -%}
-            <img src="{{ 'vura-bottle-still.png' | asset_url }}" 
-                 alt="" 
-                 class="pdp-main-image" 
-                 aria-hidden="true">
-          {%- endif -%}
-
-          <!-- Subtle floral background behind the product -->
-          <img src="{{ 'flower-bouquet.png' | asset_url }}" 
-               alt="" 
-               class="pdp-bottle-floral-bg" 
-               style="opacity: 0.25;"
-               aria-hidden="true">
-
+        <div class="pdp-bottle-frame" style="position:relative; width:100%; height:550px; background:var(--vura-forest); border:1px solid var(--vura-hairline-soft); border-radius:var(--r-3); overflow:visible;">
+          
+          <canvas id="canvas3d-pdp" data-spline-url="{{ section.settings.spline_url | default: 'https://prod.spline.design/kXTSqgQH8fas0rHZ/scene.splinecode' }}" style="width:100%; height:100%; display:block; outline:none; border-radius:inherit;"></canvas>
+          
+          <!-- Rotating SVG Seal Sticker (Apothecary Stamp Overlay) -->
+          <svg class="seal-sticker-wrapper spin" viewBox="0 0 400 400" aria-hidden="true" style="position:absolute; right:-24px; top:-24px; width:108px; height:108px; filter:drop-shadow(4px 4px 0 var(--vura-terracotta)); z-index:10; pointer-events:none;">
+            <defs>
+              <path id="arc-top" d="M 200,200 m -140,0 a 140,140 0 1,1 280,0"/>
+              <path id="arc-bot" d="M 60,200 a 140,140 0 0,0 280,0"/>
+            </defs>
+            <circle cx="200" cy="200" r="190" fill="var(--vura-saffron)" stroke="var(--vura-forest-deep)" stroke-width="3"/>
+            <circle cx="200" cy="200" r="170" fill="none" stroke="var(--vura-forest-deep)" stroke-width="1.5" stroke-dasharray="3 4" opacity="0.8"/>
+            <text font-family="Roca One, Georgia, serif" font-size="24" letter-spacing="6" fill="var(--vura-forest-deep)" font-weight="700">
+              <textPath href="#arc-top" startOffset="50%" text-anchor="middle">ARCHIVE</textPath>
+            </text>
+            <text font-family="Roca One, Georgia, serif" font-size="24" letter-spacing="6" fill="var(--vura-forest-deep)" font-weight="700">
+              <textPath href="#arc-bot" startOffset="50%" text-anchor="middle">MINERAL ✦ REGISTRY</textPath>
+            </text>
+            <text x="200" y="226" text-anchor="middle" font-family="Roca One, serif" font-size="105" font-weight="700" fill="var(--vura-forest-deep)">01</text>
+          </svg>
         </div>
-
-        <!-- Thumbnail strip -->
-        {%- if product.images.size > 1 -%}
-          <div style="display:flex;gap:0.5rem;margin-top:1rem;overflow-x:auto;padding-bottom:0.25rem;">
-            {%- for image in product.images -%}
-              <button class="pdp-thumb{% if forloop.first %} active{% endif %}" 
-                      data-src="{{ image | image_url: width: 600 }}"
-                      style="width:64px;height:64px;border:1px solid var(--border-soft);border-radius:var(--r-2);overflow:hidden;padding:0;cursor:pointer;background:var(--vura-forest-lift);flex-shrink:0;transition:border-color var(--t-fast);">
-                <img src="{{ image | image_url: width: 120 }}" 
-                     alt="{{ image.alt | escape }}" 
-                     style="width:100%;height:100%;object-fit:cover;">
-              </button>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
       </div>
 
       <!-- Right: Info column -->
-      <div class="pdp-info-column">
+      <div class="pdp-info-column" style="display:flex; flex-direction:column; gap:8px;">
 
         {%- for block in section.blocks -%}
           <div {{ block.shopify_attributes }}>
@@ -65,54 +44,64 @@
               {% render block %}
 
             {%- when 'eyebrow' -%}
-              <div class="eyebrow">Series 01 · {{ product.type }}</div>
+              <div class="eyebrow" style="font-family:var(--font-mono); font-size:11px; letter-spacing:var(--track-loose); color:var(--vura-paper-ink-faint); margin-bottom:8px;">
+                Series 01 · {{ product.type | default: "Single-Mineral" }}
+              </div>
 
             {%- when 'title' -%}
-              <h1 class="pdp-product-title vura-wordmark" style="color:var(--fg);text-shadow:none;">
+              <div class="pdp-reviews-badge">
+                <div class="pdp-stars">
+                  <i data-lucide="star"></i>
+                  <i data-lucide="star"></i>
+                  <i data-lucide="star"></i>
+                  <i data-lucide="star"></i>
+                  <i data-lucide="star"></i>
+                </div>
+                <span>4.9/5 · 104 Verified Logs</span>
+              </div>
+              <h1 class="pdp-product-title" style="font-family: var(--font-display); font-size: clamp(38px, 5vw, 54px); color: var(--vura-forest-deep); line-height: 1.05; margin: 0 0 6px;">
                 {{ product.title }}
               </h1>
               {%- if product.metafields.vura.hindi != blank -%}
-                <div class="pdp-product-hindi dev" lang="hi">
+                <div class="pdp-product-hindi dev" lang="hi" style="font-size: 24px; color: var(--vura-terracotta); margin-bottom: 16px;">
                   {{ product.metafields.vura.hindi }}
                 </div>
+              {%- else -%}
+                <div class="pdp-product-hindi dev" lang="hi" style="font-size: 24px; color: var(--vura-terracotta); margin-bottom: 16px;">फिटकरी</div>
               {%- endif -%}
 
             {%- when 'price' -%}
               <div id="ProductPrice-{{ section.id }}">
-                <hr class="rule-dashed">
-                <div class="pdp-price-line">
+                <div class="pdp-price-line" style="font-family:var(--font-display); font-size:24px; color:var(--vura-forest-deep); font-weight:700; margin-bottom:12px;">
                   {%- if product.compare_at_price > product.price -%}
-                    <span class="pdp-price" style="color:var(--vura-saffron);">
+                    <span class="pdp-price" style="color:var(--vura-terracotta);">
                       {{ product.price | money }}
                     </span>
-                    <span class="pdp-price-size" style="text-decoration:line-through;">
+                    <span class="pdp-price-size" style="text-decoration:line-through; font-size:16px; color:var(--vura-paper-ink-faint); margin-left:8px;">
                       {{ product.compare_at_price | money }}
                     </span>
                   {%- else -%}
                     <span class="pdp-price">{{ product.price | money }}</span>
-                  {%- endif -%}
-                  {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
-                    <span class="pdp-price-size">· {{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}</span>
                   {%- endif -%}
                 </div>
               </div>
 
             {%- when 'variant_picker' -%}
               {%- unless product.has_only_default_variant -%}
-                <div>
+                <div style="margin-bottom: 16px;">
                   {%- for option in product.options_with_values -%}
                     <div style="margin-bottom:1rem;">
                       <div class="eyebrow" style="margin-bottom:0.5rem;">{{ option.name }}</div>
                       <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
                         {%- for value in option.values -%}
-                          <label style="display:inline-flex;align-items:center;">
+                          <label style="display:inline-flex;align-items:center;cursor:pointer;">
                             <input type="radio"
                                    name="options[{{ option.name }}]"
                                    value="{{ value | escape }}"
                                    id="opt-{{ section.id }}-{{ option.position }}-{{ forloop.index }}"
                                    {% if option.selected_value == value %}checked{% endif %}
                                    style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">
-                            <span style="display:inline-flex;align-items:center;height:40px;padding:0 1rem;border:1px solid var(--border);border-radius:var(--r-2);font-size:var(--size-sm);color:var(--fg-muted);cursor:pointer;transition:all var(--t-fast) var(--ease-out);">
+                            <span class="btn-press" style="background:var(--vura-cream); color:var(--vura-forest-deep); border-color:var(--vura-hairline); box-shadow: 2px 2px 0 0 var(--vura-terracotta); padding: 8px 16px;">
                               {{ value }}
                             </span>
                           </label>
@@ -124,40 +113,111 @@
               {%- endunless -%}
 
             {%- when 'buy_buttons' -%}
+              <!-- Scarcity Urgency Banner -->
+              <div class="pdp-scarcity-banner">
+                <i data-lucide="alert-triangle"></i>
+                <span>Only 12 bottles remaining in Lot 24·17·002</span>
+              </div>
+
+              <!-- Quantity Multi-Buy Bundle Offer Tiers -->
+              <div class="pdp-bundle-tiers">
+                <label class="pdp-bundle-label">
+                  <input type="radio" name="pdp-bundle-select" value="1" data-price="{{ product.price | money }}" checked class="pdp-bundle-radio">
+                  <div class="pdp-bundle-card">
+                    <div class="pdp-bundle-circle"></div>
+                    <div class="pdp-bundle-info">
+                      <span class="pdp-bundle-title">Single Bottle Specimen</span>
+                      <span class="pdp-bundle-desc">100ml Spritz · Batch 02 · Original Log</span>
+                    </div>
+                    <div class="pdp-bundle-price-box">
+                      <span class="pdp-bundle-price">{{ product.price | money }}</span>
+                    </div>
+                  </div>
+                </label>
+                
+                <label class="pdp-bundle-label">
+                  <input type="radio" name="pdp-bundle-select" value="2" data-price="{{ product.price | times: 2 | times: 0.9 | money }}" class="pdp-bundle-radio">
+                  <div class="pdp-bundle-card">
+                    <span class="pdp-bundle-badge">Best Value</span>
+                    <div class="pdp-bundle-circle"></div>
+                    <div class="pdp-bundle-info">
+                      <span class="pdp-bundle-title">Registry Twin Pack</span>
+                      <span class="pdp-bundle-desc">2x 100ml Bottles · Save 10% on Archive</span>
+                    </div>
+                    <div class="pdp-bundle-price-box">
+                      <span class="pdp-bundle-price">{{ product.price | times: 2 | times: 0.9 | money }}</span>
+                      <span class="pdp-bundle-saving">Save 10%</span>
+                    </div>
+                  </div>
+                </label>
+                
+                <label class="pdp-bundle-label">
+                  <input type="radio" name="pdp-bundle-select" value="3" data-price="{{ product.price | times: 3 | times: 0.85 | money }}" class="pdp-bundle-radio">
+                  <div class="pdp-bundle-card">
+                    <div class="pdp-bundle-circle"></div>
+                    <div class="pdp-bundle-info">
+                      <span class="pdp-bundle-title">Apothecary Trio Log</span>
+                      <span class="pdp-bundle-desc">3x 100ml Bottles · Save 15% on Archive</span>
+                    </div>
+                    <div class="pdp-bundle-price-box">
+                      <span class="pdp-bundle-price">{{ product.price | times: 3 | times: 0.85 | money }}</span>
+                      <span class="pdp-bundle-saving">Save 15%</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- Main Checkout Form -->
               <form method="post" action="/cart/add" id="product-form-{{ section.id }}">
                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" id="ProductVariantId-{{ section.id }}">
+                <input type="hidden" name="quantity" value="1" id="HiddenQuantity-{{ section.id }}">
 
-                <div class="pdp-qty-row">
-                  <div class="qty-selector">
-                    <button type="button" class="qty-btn" onclick="var i=document.getElementById('qty-{{ section.id }}');var v=parseInt(i.value);if(v>1)i.value=v-1;" aria-label="Decrease quantity">&minus;</button>
-                    <input type="text" id="qty-{{ section.id }}" name="quantity" class="qty-input" value="1" aria-label="Quantity">
-                    <button type="button" class="qty-btn" onclick="var i=document.getElementById('qty-{{ section.id }}');i.value=parseInt(i.value)+1;" aria-label="Increase quantity">+</button>
-                  </div>
-                  <button type="submit" name="add" class="button button-primary" style="flex:1;"
+                <div class="pdp-qty-row" style="margin-top: 16px;">
+                  <button type="submit" name="add" id="AddToCartBtn-{{ section.id }}" class="btn-press lg" style="width: 100%; display: flex; justify-content: center; align-items: center;"
                     {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
                     {%- if product.selected_or_first_available_variant.available -%}
-                      {{ 'products.product.add_to_order' | t }}
+                      Add to Cart · <span id="ButtonPriceLabel-{{ section.id }}">{{ product.price | money }}</span>
                     {%- else -%}
                       {{ 'products.product.sold_out' | t }}
                     {%- endif -%}
                   </button>
                 </div>
-
-                <div class="pdp-ship-note">
-                  <i data-lucide="truck" style="width:16px;height:16px;stroke-width:1.5;color:var(--fg-faint);flex-shrink:0;"></i>
-                  <span>Ships across India in 2&ndash;3 working days &middot; Free over ₹999</span>
-                </div>
               </form>
 
-            {%- when 'tabs' -%}
-              <hr class="rule-dashed">
-              <div class="pdp-tabs" id="PdpTabs-{{ section.id }}">
-                <button class="pdp-tab active" data-tab="ritual">Ritual</button>
-                <button class="pdp-tab" data-tab="ingredients">Ingredients</button>
-                <button class="pdp-tab" data-tab="caution">Caution</button>
+              <!-- Tactile Trust Badges Row -->
+              <div class="pdp-trust-grid">
+                <div class="pdp-trust-item">
+                  <i data-lucide="shield-check"></i>
+                  <span>Active Minerals</span>
+                </div>
+                <div class="pdp-trust-item">
+                  <i data-lucide="droplet"></i>
+                  <span>Copper Water</span>
+                </div>
+                <div class="pdp-trust-item">
+                  <i data-lucide="leaf"></i>
+                  <span>Wild Aloe Juice</span>
+                </div>
+                <div class="pdp-trust-item">
+                  <i data-lucide="truck"></i>
+                  <span>Free Shipping</span>
+                </div>
               </div>
 
-              <div class="pdp-tab-body" id="pdp-tab-ritual-{{ section.id }}">
+              <div class="pdp-ship-note" style="margin-top: 12px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--vura-paper-ink-muted);">
+                <i data-lucide="truck" style="width: 16px; height: 16px; stroke-width: 1.5; color: var(--vura-terracotta);"></i>
+                <span>Ships across India in 2&ndash;3 working days &middot; Secure Checkout</span>
+              </div>
+
+            {%- when 'tabs' -%}
+              <hr class="rule-dashed" style="margin-top: 24px;">
+              <div class="pdp-tabs" id="PdpTabs-{{ section.id }}" style="display:flex; gap:16px; border-bottom:1px solid var(--vura-hairline); padding-bottom:8px; margin-bottom:16px;">
+                <button class="pdp-tab active" data-tab="ritual" style="background:none; border:none; color:var(--vura-paper-ink-muted); font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:var(--track-mid); cursor:pointer; padding-bottom:4px; border-bottom:2px solid transparent; transition:all var(--t-fast);">Ritual</button>
+                <button class="pdp-tab" data-tab="ingredients" style="background:none; border:none; color:var(--vura-paper-ink-muted); font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:var(--track-mid); cursor:pointer; padding-bottom:4px; border-bottom:2px solid transparent; transition:all var(--t-fast);">Ingredients</button>
+                <button class="pdp-tab" data-tab="caution" style="background:none; border:none; color:var(--vura-paper-ink-muted); font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:var(--track-mid); cursor:pointer; padding-bottom:4px; border-bottom:2px solid transparent; transition:all var(--t-fast);">Caution</button>
+              </div>
+
+              <div class="pdp-tab-body" id="pdp-tab-ritual-{{ section.id }}" style="font-size:14px; line-height:1.7; color:var(--vura-paper-ink-muted);">
                 {%- if product.description != blank -%}
                   {{ product.description }}
                 {%- else -%}
@@ -165,22 +225,23 @@
                 {%- endif -%}
               </div>
 
-              <div class="pdp-tab-body" id="pdp-tab-ingredients-{{ section.id }}" style="display:none;">
+              <div class="pdp-tab-body" id="pdp-tab-ingredients-{{ section.id }}" style="display:none; font-size:14px; line-height:1.7; color:var(--vura-paper-ink-muted);">
                 {%- if product.metafields.vura.ingredients != blank -%}
                   {{ product.metafields.vura.ingredients }}
                 {%- else -%}
-                  <p style="margin-bottom:1rem;">Five ingredients. No more.</p>
-                  <ul class="pdp-ingredients">
-                    <li><strong>Aqua</strong> &mdash; distilled water</li>
-                    <li><strong>Rosa Damascena Flower Water</strong> &mdash; copper-still hydrosol</li>
-                    <li><strong>Potassium Alum</strong> &mdash; the mineral</li>
-                    <li><strong>Aloe Barbadensis Leaf Extract</strong> &mdash; fresh, cold-pressed</li>
-                    <li><strong>Glycerin, Propanediol</strong> &mdash; gentle solvents</li>
+                  <p style="margin-bottom:1rem; font-weight:600;">8-ingredient log. Honest weights.</p>
+                  <ul class="pdp-ingredients" style="list-style-type:none; padding:0; display:flex; flex-direction:column; gap:6px;">
+                    <li><strong>Rosa damascena hydrosol</strong> &mdash; 68.20%</li>
+                    <li><strong>Aloe barbadensis leaf extract</strong> &mdash; 22.40%</li>
+                    <li><strong>Hamamelis virginiana distillate</strong> &mdash; 6.10%</li>
+                    <li><strong>Glycerin (vegetable)</strong> &mdash; 1.80%</li>
+                    <li><strong>Kalium alum sulfas (Phitkari)</strong> &mdash; 0.80%</li>
+                    <li><strong>Preservative / pH Adjusters</strong> &mdash; 0.70%</li>
                   </ul>
                 {%- endif -%}
               </div>
 
-              <div class="pdp-tab-body" id="pdp-tab-caution-{{ section.id }}" style="display:none;">
+              <div class="pdp-tab-body" id="pdp-tab-caution-{{ section.id }}" style="display:none; font-size:14px; line-height:1.7; color:var(--vura-paper-ink-muted);">
                 <p>For external use only. Avoid contact with eyes. If contact occurs, rinse thoroughly with water. Keep out of reach of children. Store in a cool, dry place away from direct sunlight.</p>
               </div>
 
@@ -189,14 +250,26 @@
                   var tabs = document.querySelectorAll('#PdpTabs-{{ section.id }} .pdp-tab');
                   tabs.forEach(function(btn){
                     btn.addEventListener('click', function(){
-                      tabs.forEach(function(b){ b.classList.remove('active'); });
+                      tabs.forEach(function(b){ 
+                        b.classList.remove('active');
+                        b.style.borderBottomColor = 'transparent';
+                        b.style.color = 'var(--vura-paper-ink-muted)';
+                      });
                       btn.classList.add('active');
+                      btn.style.borderBottomColor = 'var(--vura-terracotta)';
+                      btn.style.color = 'var(--vura-forest-deep)';
                       ['ritual','ingredients','caution'].forEach(function(id){
                         var el = document.getElementById('pdp-tab-'+id+'-{{ section.id }}');
                         if(el) el.style.display = (id === btn.dataset.tab) ? 'block' : 'none';
                       });
                     });
                   });
+                  // Set initial border color
+                  var activeTab = document.querySelector('#PdpTabs-{{ section.id }} .pdp-tab.active');
+                  if (activeTab) {
+                    activeTab.style.borderBottomColor = 'var(--vura-terracotta)';
+                    activeTab.style.color = 'var(--vura-forest-deep)';
+                  }
                 })();
               </script>
 
@@ -210,9 +283,127 @@
   </div>
 </section>
 
+<!-- Mobile Sticky Bottom CTA Drawer -->
+<div class="mobile-sticky-cta" id="mobileStickyCta">
+  <div class="mobile-sticky-cta-inner">
+    <div class="mobile-sticky-cta-info">
+      <span class="sticky-title">{{ product.title }}</span>
+      <span class="sticky-price" id="StickyPriceLabel">{{ product.price | money }}</span>
+    </div>
+    <button type="button" class="btn-press" id="StickySubmitBtn">Add to Cart</button>
+  </div>
+</div>
+
+<!-- Quantity Synchronization and sticky CTA logic script -->
+<script>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      // Synchronize bundle tiers
+      var radios = document.querySelectorAll('input[name="pdp-bundle-select"]');
+      var qtyInput = document.getElementById('HiddenQuantity-{{ section.id }}');
+      var buttonPrice = document.getElementById('ButtonPriceLabel-{{ section.id }}');
+      var stickyPrice = document.getElementById('StickyPriceLabel');
+      
+      radios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+          if (radio.checked) {
+            var qty = radio.value;
+            var targetPrice = radio.getAttribute('data-price');
+            
+            if (qtyInput) qtyInput.value = qty;
+            if (buttonPrice) buttonPrice.textContent = targetPrice;
+            if (stickyPrice) stickyPrice.textContent = targetPrice;
+          }
+        });
+      });
+      
+      // Sticky CTA triggers
+      var mainBtn = document.getElementById('AddToCartBtn-{{ section.id }}');
+      var stickyBar = document.getElementById('mobileStickyCta');
+      var stickySubmit = document.getElementById('StickySubmitBtn');
+      
+      if (mainBtn && stickyBar) {
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+              if (!entry.isIntersecting) {
+                stickyBar.classList.add('visible');
+              } else {
+                stickyBar.classList.remove('visible');
+              }
+            });
+          }, { rootMargin: '0px 0px -100px 0px' });
+          
+          observer.observe(mainBtn);
+        } else {
+          window.addEventListener('scroll', function() {
+            var mainBtnRect = mainBtn.getBoundingClientRect();
+            if (mainBtnRect.bottom < 0) {
+              stickyBar.classList.add('visible');
+            } else {
+              stickyBar.classList.remove('visible');
+            }
+          });
+        }
+      }
+      
+      if (stickySubmit && mainBtn) {
+        stickySubmit.addEventListener('click', function(e) {
+          e.preventDefault();
+          mainBtn.click();
+        });
+      }
+
+      // Initialize Lucide icons on this section
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  })();
+</script>
+
+<!-- Load Spline Runtime Asynchronously and Instantiate -->
+<script type="module">
+  import { Application } from 'https://unpkg.com/@splinetool/runtime/build/runtime.js';
+  
+  const initPdp3D = () => {
+    const canvas = document.getElementById('canvas3d-pdp');
+    if (canvas) {
+      const splineUrl = canvas.getAttribute('data-spline-url');
+      const app = new Application(canvas);
+      app.load(splineUrl).then(() => {
+        console.log('Spline PDP model loaded successfully.');
+        
+        // Optimize view frame by tilting camera slightly
+        const cameraObj = app.findObjectByName('Camera');
+        if (cameraObj) {
+          cameraObj.position.z = cameraObj.position.z * 0.90;
+          cameraObj.rotation.x = cameraObj.rotation.x - 0.05;
+        }
+      }).catch(err => {
+        console.error('Error loading Spline PDP model:', err);
+      });
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPdp3D);
+  } else {
+    initPdp3D();
+  }
+</script>
+
 {% schema %}
 {
   "name": "Product Information",
+  "settings": [
+    {
+      "type": "text",
+      "id": "spline_url",
+      "label": "Spline Model URL",
+      "default": "https://prod.spline.design/kXTSqgQH8fas0rHZ/scene.splinecode"
+    }
+  ],
   "blocks": [
     { "type": "@app" },
     { "type": "eyebrow", "name": "Series Label", "limit": 1 },

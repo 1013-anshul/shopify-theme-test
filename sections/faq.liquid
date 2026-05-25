@@ -1,0 +1,174 @@
+<!-- FAQ Section (Tactile Paper-Ink Theme) -->
+<section id="faq" class="vura-faq-section">
+  <div class="container narrow">
+    
+    <div class="vura-faq-head">
+      <h2 class="faq-heading">{{ section.settings.title | default: "Frequently Asked Questions" | escape }}</h2>
+    </div>
+
+    <div class="vura-faq-accordion-list">
+      
+      <!-- FAQ Item 1 -->
+      <div class="faq-accordion-item">
+        <button class="faq-accordion-trigger">
+          <span class="faq-question">What is a Phitkari Spritz block?</span>
+          <div class="faq-accordion-icon"><i data-lucide="plus"></i></div>
+        </button>
+        <div class="faq-accordion-content">
+          <div class="faq-answer">Our Phitkari block spritz is a natural skin mist composed of pressed potassium alum crystal mineral, distilled Kannauj copper-still rosewater, and wild cold-pressed aloe vera. It acts as an organic, chemical-free astringent that tightens pores, calms irritation, and protects the skin barrier.</div>
+        </div>
+      </div>
+
+      <!-- FAQ Item 2 -->
+      <div class="faq-accordion-item">
+        <button class="faq-accordion-trigger">
+          <span class="faq-question">How often should I use it?</span>
+          <div class="faq-accordion-icon"><i data-lucide="plus"></i></div>
+        </button>
+        <div class="faq-accordion-content">
+          <div class="faq-answer">We recommend using it twice daily—immediately after cleansing your face in the morning, and at night before bed. Spray 2-3 pumps directly onto clean face or spray on your hands and pat into the skin.</div>
+        </div>
+      </div>
+
+      <!-- FAQ Item 3 -->
+      <div class="faq-accordion-item">
+        <button class="faq-accordion-trigger">
+          <span class="faq-question">What does "small-batch registry" mean?</span>
+          <div class="faq-accordion-icon"><i data-lucide="plus"></i></div>
+        </button>
+        <div class="faq-accordion-content">
+          <div class="faq-answer">To maintain absolute mineral potency and freshness, we craft Vura in small runs of exactly 200 bottles. Each bottle is hand-labeled and printed with a unique batch registry number (e.g. Series 01 / Lot No. 24·17·002) indicating its origin.</div>
+        </div>
+      </div>
+
+      <!-- FAQ Item 4 -->
+      <div class="faq-accordion-item">
+        <button class="faq-accordion-trigger">
+          <span class="faq-question">Are there any artificial chemicals?</span>
+          <div class="faq-accordion-icon"><i data-lucide="plus"></i></div>
+        </button>
+        <div class="faq-accordion-content">
+          <div class="faq-answer">No. VURA strictly follows a 5-ingredient limit. We use zero artificial fragrances, parabens, synthetic colors, or preservatives. The natural antiseptic properties of potassium alum serve as a organic self-preservative for the formula.</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+.vura-faq-section {
+  padding: var(--s-16) 0;
+  background-color: var(--vura-paper-deep);
+}
+.vura-faq-head {
+  text-align: center;
+  margin-bottom: var(--s-12);
+}
+.faq-heading {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  color: var(--vura-forest-deep);
+  margin: 0;
+}
+.vura-faq-accordion-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--vura-hairline);
+  max-width: 760px;
+  margin: 0 auto;
+}
+.faq-accordion-item {
+  border-bottom: 1px solid var(--vura-hairline);
+}
+.faq-accordion-trigger {
+  width: 100%;
+  background: transparent;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--s-5) 0;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
+}
+.faq-question {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--vura-paper-ink);
+  transition: color var(--t-fast) var(--ease-out);
+}
+.faq-accordion-trigger:hover .faq-question {
+  color: var(--vura-terracotta);
+}
+.faq-accordion-icon {
+  color: var(--vura-terracotta);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform var(--t-base) var(--ease-out);
+}
+.faq-accordion-item.active .faq-accordion-icon {
+  transform: rotate(45deg);
+}
+.faq-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--t-base) var(--ease-out);
+}
+.faq-answer {
+  padding-bottom: var(--s-5);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--vura-paper-ink-muted);
+}
+.narrow {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const faqItems = document.querySelectorAll('.faq-accordion-item');
+    faqItems.forEach((item) => {
+      const trigger = item.querySelector('.faq-accordion-trigger');
+      const content = item.querySelector('.faq-accordion-content');
+      if (trigger && content) {
+        trigger.addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+          faqItems.forEach((oi) => {
+            oi.classList.remove('active');
+            oi.querySelector('.faq-accordion-content').style.maxHeight = '0px';
+          });
+          if (!isActive) {
+            item.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        });
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ"
+    }
+  ]
+}
+{% endschema %}

@@ -3,54 +3,47 @@
     "hero": {
       "type": "hero",
       "settings": {
-        "eyebrow": "Mineral Bodycare · Est. India",
-        "title": "VURA",
+        "eyebrow": "Premium Skincare",
+        "title": "VURA SKINCARE",
         "devanagari": "वूरा",
-        "text": "Single-mineral skincare, pressed from earth and dissolved into rose. Each release filed in the Mineral Archive, bottled in small batches.",
+        "text": "Pure. Mineral-Powered. Apothecary-Tradition. Handcrafted small batches from India's geothermal deposits.",
         "btn_label": "Order Series 01",
-        "btn_link": "#FeaturedProduct",
-        "ghost_btn_label": "Our Ritual",
-        "ghost_btn_link": "#FeaturedProduct"
+        "btn_link": "#Vura3DExplorer"
       }
     },
     "vura_3d_explorer": {
       "type": "vura-3d-explorer",
       "settings": {
-        "eyebrow": "Interactive Lab",
-        "heading": "The Mineral Archive",
-        "description": "Explore the raw active ingredients inside Series 01. Click an ingredient to distill and transform the bottle's formula.",
-        "btn_label": "Order Series 01",
-        "btn_link": "#FeaturedProduct"
+        "hero_eyebrow": "Mineral skincare, slowly made",
+        "hero_title": "A herbarium for <em>your skin</em>.",
+        "hero_text": "Vura formulations start with a single mineral and at most three botanicals — logged, dated, and tied back to the lot it came from. No marketing actives. No proprietary blends. Just the archive.",
+        "specs_eyebrow": "Registry Entry No. 001",
+        "lot_number": "24·17·002",
+        "bottled_date": "14 May 2026",
+        "registry_info": "Series 01 / Batch 02"
       }
-    },
-    "pillars": {
-      "type": "pillars",
-      "settings": {}
-    },
-    "featured_product": {
-      "type": "featured-product",
-      "settings": {}
     },
     "behind_the_press": {
       "type": "behind-the-press",
+      "settings": {
+        "eyebrow": "About VURA",
+        "title": "Where Nature Meets Alchemy",
+        "text": "Each Vura formula begins with a single mineral and ends with five ingredients on the label. Clean, simple, and bottled in small batches with local rosewater and fresh aloe juice."
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
       "settings": {}
     },
-    "archive_note": {
-      "type": "archive-note",
-      "settings": {}
-    },
-    "custom_liquid": {
-      "type": "custom-liquid",
+    "faq": {
+      "type": "faq",
       "settings": {}
     }
   },
   "order": [
-    "hero",
     "vura_3d_explorer",
-    "pillars",
-    "featured_product",
     "behind_the_press",
-    "archive_note",
-    "custom_liquid"
+    "testimonials",
+    "faq"
   ]
 }
