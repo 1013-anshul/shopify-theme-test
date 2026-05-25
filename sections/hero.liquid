@@ -59,16 +59,187 @@
         </div>
       </div>
 
-      <!-- Right Column: Premium Floating Product Visual (vura-bottle-still) -->
+      <!-- Right Column: Premium Floating Product Visual (Vura Can Video) -->
       <div class="hero-split-visual">
-        <img src="{{ 'vura-bottle-still.png' | asset_url }}" 
-             alt="Vura Apothecary" 
-             class="hero-floating-bottle vura-drift"
-             style="--vura-drift-base-rotate: 0deg;"
-             loading="eager">
+        <div class="can-stage" aria-label="Rotate to view the Vura can">
+          <div class="can-float">
+            <div class="can-wobble">
+              <video
+                class="can-video"
+                src="{{ 'Vura_can_rotating_360_degrees_202605251302.mp4' | asset_url }}#t=0.1"
+                preload="auto"
+                muted
+                playsinline
+                disablepictureinpicture
+                aria-hidden="true">
+              </video>
+            </div>
+          </div>
+          <div class="can-hint" data-hint>Drag to rotate</div>
+        </div>
       </div>
     </div>
   </div>
+
+  <style>
+    .can-stage {
+      position: relative;
+      width: min(520px, 80vw);
+      aspect-ratio: 1 / 1;
+      margin-inline: auto;
+      touch-action: pan-y;        /* let vertical scroll work; we own horizontal */
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      z-index: 5;
+    }
+    .can-stage:active,
+    .can-stage.dragging { cursor: grabbing; }
+
+    .can-float {
+      width: 100%; height: 100%;
+      animation: can-bob 3.2s ease-in-out infinite;
+      will-change: transform;
+    }
+    .can-wobble {
+      width: 100%; height: 100%;
+      animation: can-wobble 5.7s ease-in-out infinite;
+      transform-origin: 50% 60%;   /* tilt pivot near base of can */
+      will-change: transform;
+    }
+    .can-video {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      display: block;
+      background: var(--vura-paper);
+      pointer-events: none;        /* drag handled by parent */
+      border-radius: 18px;
+    }
+
+    @keyframes can-bob {
+      0%, 100% { transform: translateY(-6px); }
+      50%      { transform: translateY( 6px); }
+    }
+    @keyframes can-wobble {
+      0%, 100% { transform: rotate(-1.6deg); }
+      50%      { transform: rotate( 1.6deg); }
+    }
+
+    .can-hint {
+      position: absolute;
+      bottom: -28px; left: 50%;
+      translate: -50% 0;
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: var(--track-loose);
+      text-transform: uppercase;
+      color: var(--vura-cream-dim);
+      opacity: 1;
+      transition: opacity 600ms var(--ease-out);
+      pointer-events: none;
+    }
+    .can-stage.touched .can-hint { opacity: 0; }
+
+    /* Reduced motion: kill float + wobble, but allow user drag. */
+    @media (prefers-reduced-motion: reduce) {
+      .can-float, .can-wobble { animation: none; }
+    }
+  </style>
+
+  <script>
+    (() => {
+      const stage = document.querySelector('.can-stage');
+      const video = stage?.querySelector('.can-video');
+      if (!stage || !video) return;
+
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // -------- Tunables --------
+      const PX_PER_FULL_ROTATION = 360;   // horizontal pixels of drag = one full spin
+      const IDLE_RESUME_MS       = 2400;  // wait after release before autoplay resumes
+      const AUTOSPIN_SECONDS_PER_TURN = 8; // ambient spin speed
+      // --------------------------
+
+      let duration = 0;
+      let isDragging = false;
+      let dragStartX = 0;
+      let dragStartTime = 0;
+      let idleTimer = null;
+      let rafAuto = null;
+
+      video.addEventListener('loadedmetadata', () => {
+        duration = video.duration || 0;
+        if (!reduce) startAutoSpin();
+      });
+
+      // Fallback if metadata is already loaded/cached
+      if (video.readyState >= 1) {
+        duration = video.duration || 0;
+        if (!reduce) startAutoSpin();
+      }
+
+      function startAutoSpin() {
+        cancelAutoSpin();
+        let last = performance.now();
+        const tick = (now) => {
+          const dt = (now - last) / 1000;
+          last = now;
+          if (duration) {
+            const advance = (duration / AUTOSPIN_SECONDS_PER_TURN) * dt;
+            video.currentTime = (video.currentTime + advance) % duration;
+          }
+          rafAuto = requestAnimationFrame(tick);
+        };
+        rafAuto = requestAnimationFrame(tick);
+      }
+      function cancelAutoSpin() {
+        if (rafAuto) cancelAnimationFrame(rafAuto);
+        rafAuto = null;
+      }
+
+      stage.addEventListener('pointerdown', (e) => {
+        if (!duration) return;
+        isDragging = true;
+        stage.classList.add('dragging', 'touched');
+        cancelAutoSpin();
+        clearTimeout(idleTimer);
+        dragStartX = e.clientX;
+        dragStartTime = video.currentTime;
+        stage.setPointerCapture(e.pointerId);
+      });
+
+      stage.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - dragStartX;
+        const turns = dx / PX_PER_FULL_ROTATION;
+        let t = dragStartTime + turns * duration;
+        t = ((t % duration) + duration) % duration;
+        video.currentTime = t;
+      });
+
+      const endDrag = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        stage.classList.remove('dragging');
+        try { stage.releasePointerCapture(e.pointerId); } catch {}
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => { if (!reduce) startAutoSpin(); }, IDLE_RESUME_MS);
+      };
+      stage.addEventListener('pointerup', endDrag);
+      stage.addEventListener('pointercancel', endDrag);
+      stage.addEventListener('pointerleave', (e) => { if (isDragging) endDrag(e); });
+
+      // Pause when offscreen (perf)
+      const io = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          if (!isDragging && !reduce) startAutoSpin();
+        } else {
+          cancelAutoSpin();
+        }
+      }, { threshold: 0.1 });
+      io.observe(stage);
+    })();
+  </script>
 
 </section>
 
