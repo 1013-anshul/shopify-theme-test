@@ -1,0 +1,386 @@
+<!-- 3D Interactive Product Explorer Section -->
+<section id="Vura3DExplorer" class="vura-3d-section">
+  <div class="container">
+    <div class="vura-3d-grid">
+      
+      <!-- Left Column: The 3D WebGL Canvas -->
+      <div class="vura-3d-visual-column">
+        <div class="vura-3d-canvas-wrapper">
+          <div id="vura-3d-canvas-container" class="vura-3d-canvas-container"></div>
+          
+          <!-- Micro-interaction helper prompt -->
+          <div class="vura-3d-drag-hint">
+            <i data-lucide="orbit" class="hint-icon" aria-hidden="true"></i>
+            <span>Drag to rotate · Scroll to zoom</span>
+          </div>
+
+          <!-- Decorative Specimen ID badge -->
+          <div class="vura-3d-specimen-badge">
+            <span class="specimen-label">ARCHIVE REF:</span>
+            <span class="specimen-val">S1-PHITKARI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Lab Controls & Details -->
+      <div class="vura-3d-info-column">
+        <div class="eyebrow" style="color: var(--vura-saffron);">{{ section.settings.eyebrow | default: "Interactive Lab" }}</div>
+        
+        <h2 class="vura-3d-heading">{{ section.settings.heading | default: "Mineral Alchemy" }}</h2>
+        <p class="vura-3d-subheading">{{ section.settings.description | default: "Explore the raw active ingredients inside Series 01. Click an ingredient to distill and transform the bottle's formula." }}</p>
+
+        <!-- Lab Controller Swatches/Tabs -->
+        <div class="lab-controls">
+          <button class="lab-control-tab active" data-ingredient="alum">
+            <span class="tab-dot" style="background-color: #f6f6f2;"></span>
+            <span class="tab-text">Alum Crystal</span>
+          </button>
+          
+          <button class="lab-control-tab" data-ingredient="rose">
+            <span class="tab-dot" style="background-color: #8d3b2d;"></span>
+            <span class="tab-text">Rose Hydrosol</span>
+          </button>
+
+          <button class="lab-control-tab" data-ingredient="aloe">
+            <span class="tab-dot" style="background-color: #3e5e48;"></span>
+            <span class="tab-text">Aloe Juice</span>
+          </button>
+        </div>
+
+        <!-- Detail Panels (Swapped dynamically by Javascript) -->
+        <div class="lab-details-container">
+          <!-- Alum Panel -->
+          <div id="detail-alum" class="lab-detail-panel" style="display: block;">
+            <div class="lab-detail-header">
+              <span class="ingredient-scientific">Potassium Alum</span>
+              <span class="ingredient-formula">KAl(SO₄)₂·12H₂O</span>
+            </div>
+            <p class="ingredient-desc">
+              Raw crystal mineral blocks sourced from natural geothermal deposits. Pressed and shaped by hand. Acts as a powerful natural astringent that tightens pores, calms irritation, and seals skin post-wash.
+            </p>
+          </div>
+
+          <!-- Rose Panel -->
+          <div id="detail-rose" class="lab-detail-panel" style="display: none;">
+            <div class="lab-detail-header">
+              <span class="ingredient-scientific">Rosa Damascena</span>
+              <span class="ingredient-formula">Kannauj Distillate</span>
+            </div>
+            <p class="ingredient-desc">
+              Damask rose petals hand-harvested at dawn and steam-distilled in traditional copper vessels. This ancient copper-still hydrosol cools, tones, and infuses the formula with active, hydrating properties.
+            </p>
+          </div>
+
+          <!-- Aloe Panel -->
+          <div id="detail-aloe" class="lab-detail-panel" style="display: none;">
+            <div class="lab-detail-header">
+              <span class="ingredient-scientific">Aloe Barbadensis</span>
+              <span class="ingredient-formula">Cold-Pressed Gel</span>
+            </div>
+            <p class="ingredient-desc">
+              Succulent leaves cold-pressed within hours of harvest to retain polysaccharides. Delivers instant skin cell hydration, forms a breathable moisture barrier, and accelerates healing of micro-abrasions.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA & Links -->
+        <div class="vura-3d-actions">
+          <a href="{{ section.settings.btn_link | default: '#FeaturedProduct' }}" class="button button-primary">
+            {{ section.settings.btn_label | default: "Order Series 01" }}
+          </a>
+          <span class="vura-3d-action-note">Small-batch run of 250 bottles.</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CSS Styles for the 3D Section -->
+<style>
+.vura-3d-section {
+  padding: var(--s-20) 0;
+  background-color: var(--vura-forest-deep);
+  border-bottom: 1px dashed var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.vura-3d-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--s-16);
+  align-items: center;
+}
+
+.vura-3d-visual-column {
+  width: 100%;
+}
+
+.vura-3d-canvas-wrapper {
+  background: radial-gradient(circle at center, var(--vura-forest-lift) 0%, var(--vura-forest-deep) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--r-4);
+  position: relative;
+  height: 580px;
+  overflow: hidden;
+}
+
+.vura-3d-canvas-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+.vura-3d-canvas-container:active {
+  cursor: grabbing;
+}
+
+.vura-3d-drag-hint {
+  position: absolute;
+  bottom: var(--s-5);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  background: rgba(14, 33, 24, 0.75);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(8px);
+  padding: var(--s-2) var(--s-4);
+  border-radius: var(--r-pill);
+  font-size: var(--size-xs);
+  color: var(--fg-muted);
+  pointer-events: none;
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+}
+
+.hint-icon {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.5;
+}
+
+.vura-3d-specimen-badge {
+  position: absolute;
+  top: var(--s-5);
+  left: var(--s-5);
+  font-family: monospace;
+  font-size: var(--size-xs);
+  background: rgba(22, 45, 36, 0.85);
+  padding: var(--s-1) var(--s-3);
+  border: 1px dashed var(--border-soft);
+  border-radius: var(--r-2);
+  pointer-events: none;
+}
+
+.specimen-label {
+  color: var(--fg-faint);
+  margin-right: var(--s-1);
+}
+
+.specimen-val {
+  color: var(--vura-saffron);
+  font-weight: 600;
+}
+
+/* Info Column & Details */
+.vura-3d-info-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: var(--s-4);
+}
+
+.vura-3d-heading {
+  font-size: clamp(36px, 4vw, 54px);
+  line-height: 1.1;
+  color: var(--fg);
+  margin: var(--s-2) 0 var(--s-4);
+}
+
+.vura-3d-subheading {
+  font-size: var(--size-base);
+  line-height: 1.6;
+  color: var(--fg-muted);
+  margin-bottom: var(--s-8);
+  max-width: 480px;
+}
+
+/* Lab Controls Swatches */
+.lab-controls {
+  display: flex;
+  gap: var(--s-3);
+  width: 100%;
+  margin-bottom: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.lab-control-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  background: var(--vura-forest-lift);
+  border: 1px solid var(--border-soft);
+  color: var(--fg-muted);
+  padding: var(--s-3) var(--s-5);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--size-sm);
+  font-weight: 500;
+  transition: all var(--t-base) var(--ease-out);
+}
+
+.lab-control-tab:hover {
+  border-color: var(--vura-hairline);
+  color: var(--fg);
+}
+
+.lab-control-tab.active {
+  background: var(--vura-forest-card);
+  border-color: var(--vura-saffron);
+  color: var(--fg);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.tab-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.tab-text {
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+/* Details panels */
+.lab-details-container {
+  width: 100%;
+  min-height: 180px;
+  margin-bottom: var(--s-8);
+  background: rgba(30, 58, 45, 0.3);
+  border: 1px dashed var(--border-soft);
+  border-radius: var(--r-3);
+  padding: var(--s-6);
+  position: relative;
+}
+
+.lab-detail-panel {
+  width: 100%;
+}
+
+.lab-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px dashed var(--border-soft);
+  padding-bottom: var(--s-3);
+  margin-bottom: var(--s-4);
+}
+
+.ingredient-scientific {
+  font-family: var(--font-display);
+  font-size: var(--size-lg);
+  color: var(--vura-saffron);
+}
+
+.ingredient-formula {
+  font-family: monospace;
+  font-size: var(--size-xs);
+  color: var(--fg-faint);
+}
+
+.ingredient-desc {
+  font-size: var(--size-sm);
+  line-height: 1.6;
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+/* Actions */
+.vura-3d-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
+  flex-wrap: wrap;
+}
+
+.vura-3d-action-note {
+  font-size: var(--size-xs);
+  color: var(--fg-faint);
+  letter-spacing: var(--track-mid);
+  text-transform: uppercase;
+}
+
+/* Responsiveness */
+@media (max-width: 991px) {
+  .vura-3d-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-10);
+  }
+  .vura-3d-canvas-wrapper {
+    height: 480px;
+  }
+  .vura-3d-info-column {
+    padding-left: 0;
+  }
+}
+</style>
+
+<!-- Load Script libraries in order -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  window.Vura3DModelUrl = "{{ 'vura-bottle.glb' | asset_url }}";
+</script>
+<script src="{{ 'vura-3d.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "3D Interactive Explorer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Interactive Lab"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "The Mineral Archive"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description Text",
+      "default": "Explore the raw active ingredients inside Series 01. Click an ingredient to distill and transform the bottle's formula."
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Button Label",
+      "default": "Order Series 01"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Interactive Explorer"
+    }
+  ]
+}
+{% endschema %}

@@ -13,6 +13,16 @@
         "ghost_btn_link": "#FeaturedProduct"
       }
     },
+    "vura_3d_explorer": {
+      "type": "vura-3d-explorer",
+      "settings": {
+        "eyebrow": "Interactive Lab",
+        "heading": "The Mineral Archive",
+        "description": "Explore the raw active ingredients inside Series 01. Click an ingredient to distill and transform the bottle's formula.",
+        "btn_label": "Order Series 01",
+        "btn_link": "#FeaturedProduct"
+      }
+    },
     "pillars": {
       "type": "pillars",
       "settings": {}
@@ -36,6 +46,7 @@
   },
   "order": [
     "hero",
+    "vura_3d_explorer",
     "pillars",
     "featured_product",
     "behind_the_press",
