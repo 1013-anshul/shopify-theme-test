@@ -421,7 +421,7 @@
     .hero-h1 {
       font-family: var(--font-display);
       font-weight: 400;
-      font-size: clamp(48px, 6vw, 84px);
+      font-size: clamp(36px, 5.5vw, 64px);
       line-height: 0.98;
       letter-spacing: var(--track-tight);
       color: var(--vura-cream);
@@ -1065,16 +1065,32 @@
     @media (max-width: 991px) {
       .hero-main-grid, .vura-3d-layout, .story-grid, .foot-grid {
         grid-template-columns: 1fr;
-        gap: var(--s-12);
+        gap: var(--s-4);
+      }
+      .hero-placeholder-block {
+        height: 38vh;
+        aspect-ratio: 1.2 / 1;
+        margin: 0 auto;
       }
       .vura-spline-wrapper.floating {
         width: 85vw;
-        height: 42vh;
+        height: 38vh;
         left: 7.5vw;
-        top: 24vh;
       }
       .vura-spline-placeholder {
-        height: 400px;
+        height: 280px;
+      }
+      .specs-title {
+        font-size: clamp(26px, 3.5vw, 36px);
+      }
+      .specs-eyebrow, .ingredients-eyebrow, .intro-eyebrow {
+        margin-bottom: 0px;
+      }
+      .formulation-mini-table {
+        margin: var(--s-2) 0;
+      }
+      .form-mini-row {
+        padding: 6px 0;
       }
       .pillars-grid {
         grid-template-columns: repeat(2, 1fr);

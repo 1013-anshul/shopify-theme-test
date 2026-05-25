@@ -140,6 +140,20 @@
   .header-nav {
     display: none;
   }
+  .header-nav.mobile-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(14, 33, 24, 0.98);
+    border-bottom: 1px solid var(--vura-hairline-soft);
+    padding: 24px;
+    gap: 16px;
+    align-items: flex-start;
+    z-index: 999;
+  }
   .header-mobile-toggle {
     display: block;
   }

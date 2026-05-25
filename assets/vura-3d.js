@@ -14,7 +14,28 @@ class VuraSplineExplorer {
     this.init();
   }
 
+  alignWrapperToPlaceholder() {
+    const pinWrapper = document.querySelector('.vura-hero-explorer-pin-wrapper');
+    const floatingWrapper = document.querySelector('.vura-spline-wrapper.floating');
+    const placeholderBlock = document.querySelector('.hero-placeholder-block');
+    
+    if (pinWrapper && floatingWrapper && placeholderBlock) {
+      const pinRect = pinWrapper.getBoundingClientRect();
+      const blockRect = placeholderBlock.getBoundingClientRect();
+      
+      floatingWrapper.style.left = `${blockRect.left - pinRect.left}px`;
+      floatingWrapper.style.top = `${blockRect.top - pinRect.top}px`;
+      floatingWrapper.style.width = `${blockRect.width}px`;
+      floatingWrapper.style.height = `${blockRect.height}px`;
+    }
+  }
+
   async init() {
+    this.alignWrapperToPlaceholder();
+    window.addEventListener('resize', () => {
+      this.alignWrapperToPlaceholder();
+    });
+
     this.app = new Application(this.canvas);
     
     try {
