@@ -6,7 +6,7 @@
   <title>Vura · Phitkari Mineral Spray · Series 01</title>
   
   <!-- Fonts -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap">
   
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -34,8 +34,8 @@
       --vura-cream:         #F4EFE3;
       --vura-cream-dim:     #D9D2C2;
       --vura-cream-mute:    #9DA59A;
-      --vura-hairline:      rgba(26,42,34,0.16);
-      --vura-hairline-soft: rgba(26,42,34,0.08);
+      --vura-hairline:      rgba(244, 239, 227, 0.22);
+      --vura-hairline-soft: rgba(244, 239, 227, 0.10);
 
       --font-display:    "Roca One", Georgia, serif;
       --font-body:       "Inter", system-ui, sans-serif;
@@ -60,8 +60,8 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      background: var(--vura-paper);
-      color: var(--vura-paper-ink);
+      background: var(--vura-forest);
+      color: var(--vura-cream);
       font-family: var(--font-body);
       margin: 0;
       padding: 0;
@@ -175,7 +175,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(248, 243, 231, 0.92);
+      background: rgba(14, 33, 24, 0.92);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--vura-hairline-soft);
@@ -191,11 +191,17 @@
       font-family: var(--font-display);
       font-weight: 700;
       font-size: 22px;
-      color: var(--vura-forest-deep);
-      letter-spacing: 0.04em;
-    }
-    .header-brand .dot {
       color: var(--vura-saffron);
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .header-devanagari {
+      font-family: var(--font-devanagari);
+      font-size: 14px;
+      color: var(--vura-saffron);
+      text-shadow: 1px 1px 0 var(--vura-terracotta);
     }
     .header-nav {
       display: flex;
@@ -203,7 +209,7 @@
     }
     .header-nav-link {
       text-decoration: none;
-      color: var(--vura-paper-ink-muted);
+      color: var(--vura-cream-dim);
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: var(--track-mid);
@@ -216,7 +222,7 @@
       position: absolute;
       left: 0; right: 0; bottom: 0;
       height: 1px;
-      background: var(--vura-terracotta);
+      background: var(--vura-saffron);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform var(--t-base) var(--ease-out);
@@ -225,7 +231,7 @@
       transform: scaleX(1);
     }
     .header-nav-link:hover {
-      color: var(--vura-paper-ink);
+      color: var(--vura-saffron);
     }
     .header-right {
       display: flex;
@@ -234,8 +240,8 @@
     }
     .header-cart-btn {
       background: transparent;
-      border: 1px solid var(--vura-paper-ink);
-      color: var(--vura-paper-ink);
+      border: 1px solid var(--vura-cream);
+      color: var(--vura-cream);
       padding: 6px 12px;
       border-radius: var(--r-pill);
       font-family: var(--font-mono);
@@ -244,8 +250,8 @@
       transition: all var(--t-fast) var(--ease-out);
     }
     .header-cart-btn:hover {
-      border-color: var(--vura-terracotta);
-      color: var(--vura-terracotta);
+      border-color: var(--vura-saffron);
+      color: var(--vura-saffron);
     }
 
     /* Announcement Marquee */
@@ -295,7 +301,7 @@
     .vura-hero-explorer-pin-wrapper {
       position: relative;
       width: 100%;
-      background-color: var(--vura-paper);
+      background-color: var(--vura-forest);
     }
 
     .vura-pin-content {
@@ -418,12 +424,12 @@
       font-size: clamp(48px, 6vw, 84px);
       line-height: 0.98;
       letter-spacing: var(--track-tight);
-      color: var(--vura-forest-deep);
+      color: var(--vura-cream);
       margin: 0;
     }
     .hero-h1 em {
       font-style: normal;
-      color: var(--vura-terracotta);
+      color: var(--vura-saffron);
       position: relative;
       white-space: nowrap;
       z-index: 1;
@@ -433,7 +439,7 @@
       position: absolute;
       left: -2%; right: -2%; bottom: 6%;
       height: 0.18em;
-      background: var(--vura-saffron);
+      background: var(--vura-terracotta);
       z-index: -1;
       transform: skew(-8deg, -2deg);
     }
@@ -442,7 +448,7 @@
       font-family: var(--font-display);
       font-size: 18px;
       line-height: 1.55;
-      color: var(--vura-paper-ink-muted);
+      color: var(--vura-cream-dim);
       max-width: 44ch;
       margin: 0;
     }
@@ -467,7 +473,7 @@
       font-family: var(--font-display);
       font-size: 32px;
       line-height: 1;
-      color: var(--vura-forest-deep);
+      color: var(--vura-cream);
       display: block;
     }
     .stat .label {
@@ -475,12 +481,12 @@
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: var(--track-loose);
-      color: var(--vura-paper-ink-faint);
+      color: var(--vura-cream-mute);
       margin-top: var(--s-1);
       display: block;
     }
     .stat .num em {
-      color: var(--vura-terracotta);
+      color: var(--vura-saffron);
       font-style: normal;
       font-size: 20px;
     }
@@ -501,14 +507,14 @@
       display: flex;
       align-items: center;
       gap: var(--s-2);
-      color: var(--vura-paper-ink-faint);
+      color: var(--vura-cream-mute);
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: var(--track-mid);
       font-weight: 500;
     }
     .trust-item i {
-      color: var(--vura-terracotta);
+      color: var(--vura-saffron);
       width: 15px;
       height: 15px;
       stroke-width: 1.5;
@@ -548,7 +554,7 @@
     .specs-eyebrow, .ingredients-eyebrow, .intro-eyebrow {
       font-family: var(--font-mono);
       font-size: 10px;
-      color: var(--vura-terracotta);
+      color: var(--vura-saffron);
       text-transform: uppercase;
       letter-spacing: var(--track-loose);
       margin: 0 0 var(--s-2);
@@ -557,13 +563,13 @@
       font-family: var(--font-display);
       font-size: clamp(32px, 3.5vw, 44px);
       line-height: 1.1;
-      color: var(--vura-forest-deep);
+      color: var(--vura-cream);
       margin: 0 0 var(--s-2);
     }
     .specs-desc, .ingredients-desc, .intro-desc {
       font-size: 13px;
       line-height: 1.6;
-      color: var(--vura-paper-ink-muted);
+      color: var(--vura-cream-dim);
       margin: 0;
     }
 
@@ -582,21 +588,21 @@
       border-bottom: 1px solid var(--vura-hairline-soft);
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--vura-paper-ink-muted);
+      color: var(--vura-cream-dim);
     }
     .form-mini-row .name {
       font-family: var(--font-display);
       font-size: 14px;
-      color: var(--vura-paper-ink);
+      color: var(--vura-cream);
     }
     .form-mini-row .percent {
-      color: var(--vura-terracotta);
+      color: var(--vura-saffron);
       font-weight: 500;
     }
     .form-mini-foot {
       font-family: var(--font-mono);
       font-size: 10px;
-      color: var(--vura-paper-ink-faint);
+      color: var(--vura-cream-mute);
       display: flex;
       justify-content: space-between;
       text-transform: uppercase;
@@ -606,7 +612,7 @@
     .vura-small-note {
       font-family: var(--font-mono);
       font-size: 10px;
-      color: var(--vura-paper-ink-faint);
+      color: var(--vura-cream-mute);
       display: block;
       margin-top: var(--s-2);
       text-transform: uppercase;
@@ -1090,7 +1096,7 @@
   <div class="header-wrapper">
     <div class="container">
       <div class="header-inner">
-        <a href="#" class="header-brand">VURA<span class="dot">.</span></a>
+        <a href="#" class="header-brand">VURA<span class="header-devanagari">वूरा</span></a>
         <nav class="header-nav">
           <a href="#" class="header-nav-link">Home</a>
           <a href="#story" class="header-nav-link">Our Story</a>

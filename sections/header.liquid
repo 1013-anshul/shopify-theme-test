@@ -4,6 +4,7 @@
     <!-- Brand Wordmark (Left) -->
     <a href="/" class="header-brand" aria-label="{{ shop.name }}">
       <span class="header-wordmark">VURA</span>
+      <span class="header-devanagari">वूरा</span>
     </a>
 
     <!-- Navigation (Center) -->
@@ -39,7 +40,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(248, 243, 231, 0.92);
+  background: rgba(14, 33, 24, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--vura-hairline-soft);
@@ -57,10 +58,25 @@
   font-family: Roca One, Georgia, serif;
   font-weight: 700;
   font-size: 22px;
-  color: var(--vura-forest-deep);
+  color: var(--vura-saffron);
   letter-spacing: 0.04em;
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+.header-wordmark {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--vura-saffron);
+  text-shadow: 2px 2px 0 var(--vura-terracotta);
+  letter-spacing: 0.02em;
+  font-weight: 400;
+}
+.header-devanagari {
+  font-family: var(--font-devanagari);
+  font-size: 14px;
+  color: var(--vura-saffron);
+  text-shadow: 1.5px 1.5px 0 var(--vura-terracotta);
 }
 .header-nav {
   display: flex;
@@ -68,7 +84,7 @@
 }
 .header-nav-link {
   text-decoration: none;
-  color: var(--vura-paper-ink-muted);
+  color: var(--vura-cream-dim);
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: var(--track-mid);
@@ -82,7 +98,7 @@
   position: absolute;
   left: 0; right: 0; bottom: 0;
   height: 1px;
-  background: var(--vura-terracotta);
+  background: var(--vura-saffron);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--t-base) var(--ease-out);
@@ -91,12 +107,12 @@
   transform: scaleX(1);
 }
 .header-nav-link:hover {
-  color: var(--vura-paper-ink);
+  color: var(--vura-saffron);
 }
 .header-cart-btn {
   background: transparent;
-  border: 1px solid var(--vura-paper-ink);
-  color: var(--vura-paper-ink);
+  border: 1px solid var(--vura-cream);
+  color: var(--vura-cream);
   padding: 6px 12px;
   border-radius: var(--r-pill);
   font-family: var(--font-mono);
@@ -108,14 +124,14 @@
   transition: all var(--t-fast) var(--ease-out);
 }
 .header-cart-btn:hover {
-  border-color: var(--vura-terracotta);
-  color: var(--vura-terracotta);
+  border-color: var(--vura-saffron);
+  color: var(--vura-saffron);
 }
 .header-mobile-toggle {
   display: none;
   background: transparent;
   border: none;
-  color: var(--vura-forest-deep);
+  color: var(--vura-cream);
   cursor: pointer;
   padding: 0;
 }

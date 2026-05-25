@@ -57,23 +57,23 @@
   --vura-paper-ink-faint: #7A857F;
 
   /* Hairlines */
-  --vura-hairline:      rgba(26, 42, 34, 0.16);
-  --vura-hairline-soft: rgba(26, 42, 34, 0.08);
+  --vura-hairline:      rgba(244, 239, 227, 0.22);
+  --vura-hairline-soft: rgba(244, 239, 227, 0.10);
 
   /* Semantic tokens */
-  --bg:           var(--vura-paper);
-  --bg-elevated:  var(--vura-paper-deep);
-  --bg-card:      var(--vura-cream);
+  --bg:           var(--vura-forest);
+  --bg-elevated:  var(--vura-forest-lift);
+  --bg-card:      var(--vura-forest-card);
   --bg-paper:     var(--vura-paper);
 
-  --fg:           var(--vura-paper-ink);
-  --fg-muted:     var(--vura-paper-ink-muted);
-  --fg-faint:     var(--vura-paper-ink-faint);
+  --fg:           var(--vura-cream);
+  --fg-muted:     var(--vura-cream-dim);
+  --fg-faint:     var(--vura-cream-mute);
   --fg-ink:       #1A2A22;
   --fg-ink-muted: #4A5750;
 
-  --accent:       var(--vura-terracotta);
-  --accent-deep:  var(--vura-burgundy);
+  --accent:       var(--vura-saffron);
+  --accent-deep:  var(--vura-terracotta);
 
   --border:       var(--vura-hairline);
   --border-soft:  var(--vura-hairline-soft);
@@ -1449,10 +1449,41 @@ hr, .rule-dashed {
 
 .footer-columns {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+  grid-template-columns: 2fr 1fr 1fr 1.2fr;
   gap: var(--s-10);
   margin-bottom: var(--s-16);
 }
+
+.foot-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(56px, 6vw, 96px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--vura-saffron);
+  text-shadow: 3px 3px 0 var(--vura-terracotta);
+  margin: 0;
+}
+
+.foot-brand-sub {
+  font-family: var(--font-devanagari);
+  font-size: clamp(24px, 2.5vw, 36px);
+  color: var(--vura-saffron);
+  margin-top: var(--s-2);
+  text-shadow: 2px 2px 0 var(--vura-terracotta);
+}
+
+.foot-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--vura-cream-mute);
+  margin-top: var(--s-4);
+  max-width: 36ch;
+  line-height: 1.7;
+  text-transform: uppercase;
+  letter-spacing: var(--track-loose);
+}
+
 
 @media (max-width: 991px) {
   .footer-columns { grid-template-columns: 1fr 1fr; }
@@ -1696,7 +1727,7 @@ body.spline-interacting {
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 13px;
-  color: var(--vura-paper-ink) !important;
+  color: var(--fg) !important;
   text-decoration: underline;
   text-decoration-color: var(--vura-terracotta);
   text-underline-offset: 5px;

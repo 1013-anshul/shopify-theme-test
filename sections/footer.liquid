@@ -3,6 +3,13 @@
     
     <!-- Dynamic Footer Columns -->
     <div class="footer-columns">
+      <!-- Brand Column -->
+      <div class="footer-column brand-column">
+        <div class="foot-brand">VURA</div>
+        <div class="foot-brand-sub">वूरा</div>
+        <div class="foot-tag">Mineral skincare from Hyderabad. Single-mineral, three-botanical formulations. Logged, dated, lot-traceable.</div>
+      </div>
+
       {%- for block in section.blocks -%}
         <div class="footer-column" {{ block.shopify_attributes }}>
           {%- case block.type -%}
@@ -57,9 +64,16 @@
     </div>
 
     <!-- Footer Copyright & Payment Info -->
-    <div class="footer-bottom flex flex-between">
-      <div class="footer-copyright">
-        &copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: '/' }}. All rights reserved.
+    <div class="footer-bottom">
+      <div>
+        <span>&copy; {{ 'now' | date: '%Y' }} Vura Mineral Archive Pvt. Ltd.</span>
+        <span style="margin-left: var(--s-6);">Lot 24·17 · Filed 14 May 2026</span>
+      </div>
+      
+      <div>
+        <a href="/policies/privacy-policy" class="footer-link" style="display:inline; margin-right:5px;">Privacy</a> · 
+        <a href="/policies/terms-of-service" class="footer-link" style="display:inline; margin-right:5px; margin-left:5px;">Terms</a> · 
+        <a href="/policies/shipping-policy" class="footer-link" style="display:inline; margin-left:5px;">Shipping</a>
       </div>
       
       {%- if section.settings.show_payment_methods -%}
