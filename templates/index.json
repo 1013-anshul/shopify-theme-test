@@ -1,22 +1,34 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
-        "eyebrow": "Premium Skincare",
-        "title": "VURA SKINCARE",
+        "show_video_bg": true,
+        "video_url": "https://assets.mixkit.co/videos/preview/mixkit-pouring-hot-water-into-a-cup-with-tea-leaves-43034-large.mp4",
+        "title": "VURA",
         "devanagari": "वूरा",
-        "text": "Pure. Mineral-Powered. Apothecary-Tradition. Handcrafted small batches from India's geothermal deposits.",
+        "text": "Single-mineral skincare, pressed from earth and dissolved into rose. Each release filed in the Mineral Archive, bottled in small batches.",
         "btn_label": "Order Series 01",
-        "btn_link": "#Vura3DExplorer"
+        "btn_link": "#FeaturedProduct"
       }
     },
     "vura_3d_explorer": {
       "type": "vura-3d-explorer",
       "settings": {
-        "hero_eyebrow": "Mineral skincare, slowly made",
-        "hero_title": "A herbarium for <em>your skin</em>.",
-        "hero_text": "Vura formulations start with a single mineral and at most three botanicals — logged, dated, and tied back to the lot it came from. No marketing actives. No proprietary blends. Just the archive.",
+        "product": "",
+        "spline_url": "https://prod.spline.design/kXTSqgQH8fas0rHZ/scene.splinecode",
+        "hero_eyebrow": "Natural deodorant, slowly made",
+        "hero_title": "A mineral shield for <em>freshness</em>.",
+        "hero_text": "Vura underarm mist starts with raw geothermal alum crystals and organic botanicals to prevent body odor. No aluminum chlorohydrate. No parabens. Just the archive.",
         "specs_eyebrow": "Registry Entry No. 001",
         "lot_number": "24·17·002",
         "bottled_date": "14 May 2026",
@@ -26,24 +38,25 @@
     "behind_the_press": {
       "type": "behind-the-press",
       "settings": {
-        "eyebrow": "About VURA",
-        "title": "Where Nature Meets Alchemy",
-        "text": "Each Vura formula begins with a single mineral and ends with five ingredients on the label. Clean, simple, and bottled in small batches with local rosewater and fresh aloe juice."
+        "eyebrow": "From the archive",
+        "title": "Old things,written downcarefully.",
+        "p1": "We started Vura because the things our grandmothers kept in tins — phitkari, the crystalline mineral salt — worked, and nothing on the shelf admitted to using them.",
+        "p2": "The first formulation begins as an entry in the Mineral Archive: a single mineral, a documented intent, no more than three botanicals. The entry is dated. The lot is logged. The bottle carries the lot.",
+        "p3": "The archive is open. If you want to know what's in lot 24·17·002 — the ratio of phitkari to rose hydrosol, the pH after 48 hours, the supplier of the alum — write to us. We'll tell you. That's the whole point.",
+        "signature": "— Riya & Anshul, founders"
       }
     },
-    "testimonials": {
-      "type": "testimonials",
-      "settings": {}
-    },
-    "faq": {
-      "type": "faq",
-      "settings": {}
+    "custom_liquid": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": ""
+      }
     }
   },
   "order": [
+    "hero",
     "vura_3d_explorer",
     "behind_the_press",
-    "testimonials",
-    "faq"
+    "custom_liquid"
   ]
 }
