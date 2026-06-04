@@ -1,0 +1,384 @@
+<!-- VURA Series Archive Section -->
+{%- assign product = all_products[section.settings.product] | default: collections.all.products.first -%}
+
+<section id="SeriesArchive" class="vura-series-archive-section">
+  <div class="container">
+    
+    <div class="vura-archive-header">
+      <span class="eyebrow">{{ section.settings.eyebrow | default: "The Formulation Timeline" | escape }}</span>
+      <h2 class="archive-heading">{{ section.settings.title | default: "The Mineral Archive Series" | escape }}</h2>
+      <p class="archive-subtext">{{ section.settings.subtext | default: "Trace our active formulations. Series 01 is currently active and bottled; subsequent releases remain logged in development." | escape }}</p>
+    </div>
+
+    <div class="vura-series-grid">
+      
+      <!-- Series 01 Card (Active & Live) -->
+      <div class="vura-series-card active-series">
+        <div class="card-image-frame">
+          <span class="series-badge badge-active">Series 01 &middot; Active</span>
+          {%- if product != blank and product.featured_image != blank -%}
+            <img src="{{ product.featured_image | image_url: width: 450 }}" alt="Series 01" class="series-product-img" loading="lazy">
+          {%- else -%}
+            <img src="{{ 'vura-bottle-still.png' | asset_url }}" alt="Series 01" class="series-product-img" loading="lazy">
+          {%- endif -%}
+          <img src="{{ 'flower-marigold.png' | asset_url }}" alt="" class="series-decor-flower vura-drift" aria-hidden="true">
+        </div>
+        <div class="card-details">
+          <div class="series-meta">
+            <span class="series-num">01</span>
+            <span class="series-title">Alum &amp; Rose Hydrosol</span>
+          </div>
+          <div class="series-hindi dev" lang="hi">फिटकरी और गुलाब</div>
+          <p class="series-desc">Geothermal potassium alum crystal dissolved in copper-still Damask rose hydrosol. Clean 24h underarm protection.</p>
+          
+          <div class="series-buy-box">
+            {%- if product != blank -%}
+              <span class="series-price">{{ product.price | money }}</span>
+              <form method="post" action="/cart/add" class="series-form">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn-press">Order Now</button>
+              </form>
+            {%- else -%}
+              <span class="series-price">₹600</span>
+              <a href="#VuraProductExplorer-{{ section.id }}" class="btn-press">Order Now</a>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- Series 02 Card (In Development) -->
+      <div class="vura-series-card pending-series">
+        <div class="card-image-frame">
+          <span class="series-badge badge-pending">Series 02 &middot; In Development</span>
+          <img src="{{ 'vura-bottle-still.png' | asset_url }}" alt="Series 02" class="series-product-img" loading="lazy" style="filter: grayscale(1) opacity(0.4);">
+          <img src="{{ 'flower-burgundy-tall.png' | asset_url }}" alt="" class="series-decor-flower vura-drift" aria-hidden="true" style="filter: grayscale(0.8) opacity(0.3);">
+          <div class="lock-overlay">
+            <i data-lucide="lock" class="lock-icon"></i>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="series-meta">
+            <span class="series-num">02</span>
+            <span class="series-title">Sulfur &amp; Vetiver Distillate</span>
+          </div>
+          <div class="series-hindi dev" lang="hi" style="opacity:0.5;">गंधक और खस</div>
+          <p class="series-desc">Geothermal sulfur crystals combined with copper-distilled vetiver roots. High-absorption odor control for active skin.</p>
+          
+          <div class="notify-form-wrapper">
+            <form action="/contact" method="post" class="archive-notify-form">
+              <input type="hidden" name="form_type" value="customer">
+              <input type="hidden" name="contact[tags]" value="notify-series-02">
+              <div class="notify-input-group">
+                <input type="email" name="contact[email]" placeholder="Enter email for Batch 01" class="input notify-email" required>
+                <button type="submit" class="btn-press">Notify Me</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Series 03 Card (In Formulation Logging) -->
+      <div class="vura-series-card pending-series">
+        <div class="card-image-frame">
+          <span class="series-badge badge-pending">Series 03 &middot; In Research</span>
+          <img src="{{ 'vura-bottle-still.png' | asset_url }}" alt="Series 03" class="series-product-img" loading="lazy" style="filter: grayscale(1) opacity(0.25);">
+          <div class="lock-overlay">
+            <i data-lucide="flask-conical" class="lock-icon"></i>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="series-meta">
+            <span class="series-num">03</span>
+            <span class="series-title">Copper &amp; Neem Hydrosol</span>
+          </div>
+          <div class="series-hindi dev" lang="hi" style="opacity:0.3;">तांबा और नीम</div>
+          <p class="series-desc">Pure copper ions infused in wild neem leaf distillate. Designed for antimicrobial skin-cooling and post-workout recovery.</p>
+          
+          <div class="series-coming-soon">
+            <span class="coming-badge">Formulation Logging</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<style>
+.vura-series-archive-section {
+  padding: 100px 0;
+  background-color: var(--vura-forest-deep);
+  border-top: 1px solid var(--vura-hairline-soft);
+  border-bottom: 1px solid var(--vura-hairline-soft);
+}
+
+.vura-archive-header {
+  text-align: center;
+  margin-bottom: var(--s-12);
+  max-width: 650px;
+  margin-inline: auto;
+}
+
+.archive-heading {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 48px);
+  color: var(--vura-cream);
+  margin: var(--s-2) 0;
+}
+
+.archive-subtext {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--vura-cream-dim);
+}
+
+.vura-series-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-8);
+  align-items: stretch;
+}
+
+.vura-series-card {
+  background: var(--vura-forest);
+  border: 1px solid var(--vura-hairline-soft);
+  border-radius: var(--r-3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all var(--t-base) var(--ease-out);
+}
+
+.vura-series-card:hover {
+  border-color: var(--vura-hairline);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-image-frame {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: radial-gradient(circle at center, var(--vura-forest-lift) 0%, var(--vura-forest-deep) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--vura-hairline-soft);
+}
+
+.series-product-img {
+  max-height: 80%;
+  object-fit: contain;
+  z-index: 2;
+  transition: transform var(--t-slow) var(--ease-out);
+}
+
+.vura-series-card:hover .series-product-img {
+  transform: scale(1.05);
+}
+
+.series-decor-flower {
+  position: absolute;
+  bottom: -15px;
+  right: -15px;
+  width: 50%;
+  opacity: 0.8;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.series-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: var(--track-mid);
+  z-index: 3;
+}
+
+.badge-active {
+  background: var(--vura-saffron);
+  color: var(--vura-forest-deep);
+  font-weight: 600;
+}
+
+.badge-pending {
+  background: rgba(244, 239, 227, 0.1);
+  color: var(--vura-cream-mute);
+  border: 1px solid var(--vura-hairline-soft);
+}
+
+.lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.lock-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--vura-cream-mute);
+  opacity: 0.5;
+  stroke-width: 1.5;
+}
+
+.card-details {
+  padding: var(--s-6);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: var(--s-3);
+}
+
+.series-meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+
+.series-num {
+  font-family: var(--font-display);
+  font-size: var(--size-xl);
+  color: var(--vura-saffron);
+  line-height: 1;
+}
+
+.series-title {
+  font-family: var(--font-display);
+  font-size: var(--size-md);
+  color: var(--vura-cream);
+  font-weight: 500;
+}
+
+.series-hindi {
+  font-size: 12px;
+  color: var(--vura-saffron-soft);
+  letter-spacing: 0.1em;
+}
+
+.series-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--vura-cream-dim);
+  margin: 0;
+  flex-grow: 1;
+}
+
+.series-buy-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed var(--vura-hairline-soft);
+  padding-top: var(--s-4);
+  margin-top: var(--s-2);
+}
+
+.series-price {
+  font-family: var(--font-display);
+  font-size: var(--size-lg);
+  color: var(--vura-cream);
+}
+
+.series-form {
+  margin: 0;
+}
+
+.notify-form-wrapper {
+  border-top: 1px dashed var(--vura-hairline-soft);
+  padding-top: var(--s-4);
+  margin-top: var(--s-2);
+}
+
+.notify-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.notify-email {
+  font-size: 12px;
+  padding: 8px var(--s-3);
+  height: 38px;
+  border-radius: var(--r-2);
+}
+
+.notify-input-group .btn-press {
+  font-size: 10px;
+  padding: 8px 16px;
+  border-radius: var(--r-2);
+  white-space: nowrap;
+  box-shadow: 2px 2px 0 0 var(--vura-terracotta);
+}
+
+.notify-input-group .btn-press:active {
+  box-shadow: 0 0 0 0 var(--vura-terracotta);
+}
+
+.series-coming-soon {
+  border-top: 1px dashed var(--vura-hairline-soft);
+  padding-top: var(--s-4);
+  margin-top: var(--s-2);
+  display: flex;
+  justify-content: center;
+}
+
+.coming-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--vura-cream-mute);
+  text-transform: uppercase;
+  letter-spacing: var(--track-mid);
+}
+
+@media (max-width: 991px) {
+  .vura-series-grid {
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Series Archive Grid",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Series 01 Product"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "The Formulation Timeline"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "The Mineral Archive Series"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subheading Text",
+      "default": "Trace our active formulations. Series 01 is currently active and bottled; subsequent releases remain logged in development."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Series Archive Grid"
+    }
+  ]
+}
+{% endschema %}

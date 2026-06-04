@@ -30,6 +30,12 @@
         "registry_info": "Series 01 / Batch 02"
       }
     },
+    "series_archive": {
+      "type": "series-archive",
+      "settings": {
+        "product": ""
+      }
+    },
     "behind_the_press": {
       "type": "behind-the-press",
       "settings": {
@@ -65,6 +71,7 @@
     "hero",
     "pillars",
     "vura_3d_explorer",
+    "series_archive",
     "behind_the_press",
     "testimonials",
     "faq",
