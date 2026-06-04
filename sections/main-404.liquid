@@ -1,18 +1,23 @@
-<section class="error-404 container text-center" style="padding: 6rem 0;">
-  <div class="vura-card" style="max-width: 600px; margin: 0 auto; padding: 4rem 2rem;">
-    <h1 class="error-404-code">404</h1>
-    <h2 style="font-size: 2rem; margin-top: 1.5rem; margin-bottom: 1.5rem; font-family: var(--font-display);">{{ 'general.404.title' | t }}</h2>
-    <p style="font-size: 1.1rem; margin-bottom: 2.5rem; color: var(--fg-muted);">{{ 'general.404.subtext' | t }}</p>
-    
-    <div style="display: flex; gap: 1rem; justify-content: center;">
-      <a href="/" class="button button-primary">Home</a>
-      <a href="/collections/all" class="button button-ghost">{{ 'general.404.continue_shopping' | t }}</a>
-    </div>
-  </div>
-</section>
+<style type="text/css">
+  .template-404 .title + * {
+    margin-top: 1rem;
+  }
 
-{% schema %}
-{
-  "name": "404 Error Page"
-}
-{% endschema %}
+  @media screen and (min-width: 750px) {
+    .template-404 .title + * {
+      margin-top: 2rem;
+    }
+  }
+</style>
+
+<div class="template-404 page-width page-margin center">
+  <p>
+    {{ 'templates.404.subtext' | t }}
+  </p>
+  <h1 class="title">
+    {{ 'templates.404.title' | t }}
+  </h1>
+  <a href="{{ routes.all_products_collection_url }}" class="button">
+    {{ 'general.continue_shopping' | t }}
+  </a>
+</div>
