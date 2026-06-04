@@ -61,6 +61,18 @@
             {{ product.title }}
           </h2>
           
+          <!-- Judge.me Review Badge Placeholder -->
+          <div class="jdgm-widget jdgm-preview-badge" style="margin-top: 5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <span class="jdgm-prev-badge__stars" style="color: #FFC820; display: inline-flex; gap: 2px;">
+              <i data-lucide="star" style="width: 14px; height: 14px; fill: #FFC820; stroke-width: 1.5;"></i>
+              <i data-lucide="star" style="width: 14px; height: 14px; fill: #FFC820; stroke-width: 1.5;"></i>
+              <i data-lucide="star" style="width: 14px; height: 14px; fill: #FFC820; stroke-width: 1.5;"></i>
+              <i data-lucide="star" style="width: 14px; height: 14px; fill: #FFC820; stroke-width: 1.5;"></i>
+              <i data-lucide="star" style="width: 14px; height: 14px; fill: #FFC820; stroke-width: 1.5;"></i>
+            </span>
+            <span class="jdgm-prev-badge__text" style="color: var(--vura-paper-ink-muted); font-size: 12px; font-family: var(--font-mono);">4.9/5 (182 reviews)</span>
+          </div>
+          
           {%- if product.metafields.vura.hindi != blank -%}
             <div class="pdp-product-hindi dev" lang="hi">
               {{ product.metafields.vura.hindi }}
@@ -144,6 +156,17 @@
                 {%- else -%}
                   {{ 'products.product.sold_out' | t }}
                 {%- endif -%}
+              </button>
+            </div>
+
+            <!-- Fastrr Headless Quick Checkout Button -->
+            <div class="fastrr-checkout-container" style="margin-bottom: 25px; position: relative; width: 100%; margin-top: 25px;">
+              <div class="sr-discount-label-mock" style="position: absolute; top: -11px; left: 16px; background: var(--vura-paper-deep); color: #7DAB62; font-size: 9px; padding: 2px 10px; border-radius: 3px; font-weight: 600; letter-spacing: 0.05em; z-index: 2; border: 1px solid var(--border-on-paper-soft);">
+                EXTRA 3% OFF ON PREPAID ORDERS
+              </div>
+              <button type="submit" name="add" class="sr-headless-checkout-btn" style="width: 100%; min-height: 52px; background: #7DAB62; color: #fff; border: 1px solid #7DAB62; border-radius: var(--r-pill); font-family: var(--font-body); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s, transform 0.2s; box-shadow: 0 4px 15px rgba(125, 171, 98, 0.25);">
+                <span>Direct Checkout &middot; UPI / COD</span>
+                <i data-lucide="arrow-right" style="width: 16px; height: 16px; stroke-width: 2;"></i>
               </button>
             </div>
 

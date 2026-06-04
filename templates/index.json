@@ -6,7 +6,7 @@
         "show_video_bg": true,
         "video_url": "https://assets.mixkit.co/videos/preview/mixkit-pouring-hot-water-into-a-cup-with-tea-leaves-43034-large.mp4",
         "title": "VURA",
-        "devanagari": "वूरा",
+        "devanagari": "वूра",
         "text": "Single-mineral skincare, pressed from earth and dissolved into rose. Each release filed in the Mineral Archive, bottled in small batches.",
         "btn_label": "Order Series 01",
         "btn_link": "#FeaturedProduct"
@@ -60,6 +60,10 @@
         "title": "Frequently Asked Questions"
       }
     },
+    "instagram_feed": {
+      "type": "instagram-feed",
+      "settings": {}
+    },
     "custom_liquid": {
       "type": "custom-liquid",
       "settings": {
@@ -75,6 +79,7 @@
     "behind_the_press",
     "testimonials",
     "faq",
+    "instagram_feed",
     "custom_liquid"
   ]
 }
