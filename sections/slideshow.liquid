@@ -4,6 +4,15 @@
 
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
   {%- style -%}
+    .slideshow__video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     @media screen and (max-width: 749px) {
       #Slider-{{ section.id }}::before,
       #Slider-{{ section.id }} .media::before,
@@ -120,8 +129,16 @@
         aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
         tabindex="-1"
       >
-        <div class="slideshow__media banner__media media{% if block.settings.image == blank %} placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}">
-          {%- if block.settings.image -%}
+        <div class="slideshow__media banner__media media{% if block.settings.image == blank and block.settings.video == blank and block.settings.video_url == blank %} placeholder{% endif %}{% if section.settings.image_behavior != 'none' %} animate--{{ section.settings.image_behavior }}{% endif %}">
+          {%- if block.settings.video != blank -%}
+            {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: 'slideshow__video' }}
+          {%- elsif block.settings.video_url != blank -%}
+            {%- if block.settings.video_url.type == 'youtube' -%}
+              <iframe src="https://www.youtube.com/embed/{{ block.settings.video_url.id }}?autoplay=1&loop=1&playlist={{ block.settings.video_url.id }}&mute=1&controls=0&playsinline=1" class="slideshow__video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            {%- elsif block.settings.video_url.type == 'vimeo' -%}
+              <iframe src="https://player.vimeo.com/video/{{ block.settings.video_url.id }}?autoplay=1&loop=1&muted=1&controls=0&playsinline=1" class="slideshow__video" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+            {%- endif -%}
+          {%- elsif block.settings.image -%}
             {%- liquid
               assign height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round
               if section.settings.image_behavior == 'ambient'
@@ -394,6 +411,17 @@
           "type": "image_picker",
           "id": "image",
           "label": "t:sections.slideshow.blocks.slide.settings.image.label"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (Shopify hosted)"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "label": "Video URL (YouTube or Vimeo)"
         },
         {
           "type": "range",

@@ -3676,3 +3676,75 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* VURA Custom Button Styles and Animations */
+.button, .shopify-payment-button__button {
+  font-family: var(--font-body);
+  font-weight: 600 !important;
+  letter-spacing: var(--track-mid) !important;
+  text-transform: uppercase !important;
+  font-size: var(--size-sm) !important;
+  padding: 11px var(--s-5) !important;
+  border-radius: var(--r-2) !important;
+  border: 1px solid var(--vura-forest-deep) !important;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 0 var(--vura-terracotta) !important;
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out) !important;
+}
+
+.button:hover, .shopify-payment-button__button:hover {
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 4px 4px 0 0 var(--vura-terracotta) !important;
+}
+
+.button:active, .shopify-payment-button__button:active {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 0 0 0 0 var(--vura-terracotta) !important;
+}
+
+.button--secondary {
+  background: transparent !important;
+  color: var(--vura-paper-ink) !important;
+  border: 1px solid var(--vura-paper-ink) !important;
+  box-shadow: 3px 3px 0 0 var(--vura-hairline-soft) !important;
+}
+
+.button--secondary:hover {
+  box-shadow: 4px 4px 0 0 var(--vura-hairline-soft) !important;
+}
+
+.button--secondary:active {
+  box-shadow: 0 0 0 0 var(--vura-hairline-soft) !important;
+}
+
+/* High-Converting Mobile Sticky CTA on Product Pages */
+@media screen and (max-width: 749px) {
+  .template-product .product-form__buttons {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: var(--vura-paper) !important;
+    padding: 12px 16px !important;
+    border-top: 1px solid rgba(26, 42, 34, 0.1) !important;
+    box-shadow: 0 -8px 24px rgba(14, 33, 24, 0.1) !important;
+    z-index: 999 !important;
+    display: flex !important;
+    gap: 12px !important;
+    margin: 0 !important;
+  }
+  
+  .template-product .product-form__buttons > .product-form__submit {
+    flex: 1 !important;
+    margin: 0 !important;
+  }
+  
+  .template-product .product-form__buttons > .shopify-payment-button {
+    flex: 1 !important;
+    margin: 0 !important;
+  }
+  
+  .template-product {
+    padding-bottom: 90px !important;
+  }
+}
