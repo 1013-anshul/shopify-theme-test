@@ -49,6 +49,38 @@
           "settings": {
           }
         },
+        "collapsible_tab_benefits": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Benefits",
+            "icon": "heart",
+            "content": "<p>Our Mineral Underarm Spray is a natural, non-sticky formula that provides all-day freshness. It works by neutralizing odor-causing bacteria without blocking your body's natural perspiration process. Non-staining, fast-drying, and gentle on sensitive skin.</p>"
+          }
+        },
+        "collapsible_tab_ingredients": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Key Ingredients",
+            "icon": "leaf",
+            "content": "<p><strong>Phitkari (Potassium Alum):</strong> A natural mineral salt that acts as a potent antibacterial agent to stop body odor at its source.</p><p><strong>Aloe Vera:</strong> Soothes, hydrates, and protects the delicate underarm skin from irritation.</p><p><strong>Pure Water & Essential Oils:</strong> For clean hydration and a subtle, refreshing natural scent.</p>"
+          }
+        },
+        "collapsible_tab_how_to_use": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "How to Use",
+            "icon": "box",
+            "content": "<p>1. Shake the bottle well before use.</p><p>2. Spray 2-3 times on clean, dry underarms.</p><p>3. Let it air dry for a few seconds before dressing.</p><p>Use daily after your shower for best results.</p>"
+          }
+        },
+        "collapsible_tab_shipping": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "icon": "truck",
+            "content": "<p><strong>Shipping:</strong> Free shipping across India. Orders are processed within 24 hours and typically delivered in 3-5 business days.</p><p><strong>COD:</strong> Cash on Delivery is available. We will confirm COD orders via WhatsApp before dispatch.</p><p><strong>Returns:</strong> Due to personal hygiene reasons, we only accept returns on damaged or defective items within 7 days of delivery.</p>"
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -65,6 +97,10 @@
         "quantity_selector",
         "buy_buttons",
         "description",
+        "collapsible_tab_benefits",
+        "collapsible_tab_ingredients",
+        "collapsible_tab_how_to_use",
+        "collapsible_tab_shipping",
         "share"
       ],
       "settings": {

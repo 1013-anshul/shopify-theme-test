@@ -1,0 +1,122 @@
+{%- style -%}
+  .about-story {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: var(--surface-canvas);
+    color: var(--text-on-paper);
+  }
+  .about-story-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .about-story-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .about-story-eyebrow {
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--track-loose);
+    color: var(--text-on-paper-muted);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .about-story-title {
+    font-family: var(--font-display);
+    font-size: var(--size-2xl);
+    color: var(--text-on-paper);
+    margin: 0;
+  }
+  .about-story-content {
+    font-family: var(--font-body);
+    font-size: var(--size-md);
+    line-height: var(--lh-base);
+    color: var(--text-on-paper-muted);
+  }
+  .about-story-content p {
+    margin-bottom: 2rem;
+  }
+  .about-story-signature {
+    margin-top: 4rem;
+    font-style: italic;
+    color: var(--text-on-paper);
+    font-family: var(--font-display);
+    font-size: var(--size-lg);
+  }
+{%- endstyle -%}
+
+<div class="about-story">
+  <div class="about-story-container">
+    <div class="about-story-header">
+      <span class="about-story-eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2 class="about-story-title">{{ section.settings.title }}</h2>
+    </div>
+    <div class="about-story-content">
+      {{ section.settings.story_text }}
+      <div class="about-story-signature">
+        &mdash; {{ section.settings.signature_text }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About Founder Story",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Our Origin"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Made slowly. In Hyderabad."
+    },
+    {
+      "type": "richtext",
+      "id": "story_text",
+      "label": "Story Text",
+      "default": "<p>Vura was founded on a simple premise: personal care shouldn't rely on chemical shortcuts. Looking back at traditional remedies, we discovered the power of Phitkari (potassium alum)—a natural mineral block that has kept skin clean and fresh for generations.</p><p>We wanted to translate this time-tested wisdom into modern daily essentials, starting with a mineral-rich underarm spray that stops odour at its root without blocking pores or using harsh synthetics.</p><p>Our batches are blended slowly, with absolute transparency. If you want to know what's in your bottle, write to us. We'll tell you.</p>"
+    },
+    {
+      "type": "text",
+      "id": "signature_text",
+      "label": "Signature Text",
+      "default": "Riya & Anshul, founders"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Founder Story"
+    }
+  ]
+}
+{% endschema %}

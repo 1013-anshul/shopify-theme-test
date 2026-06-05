@@ -112,6 +112,9 @@
         {% render 'unit-price', price: product.selected_or_first_available_variant.unit_price, measurement: product.selected_or_first_available_variant.unit_price_measurement %}
       {%- endif -%}
     </div>
+    <small class="price__tax-note caption" style="margin-top: 0.4rem; display: block; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(26,42,34,0.65);">
+      MRP (Incl. of all taxes)
+    </small>
     {%- if show_badges -%}
       <span class="badge price__badge-sale color-{{ settings.sale_badge_color_scheme }}">
         {{ 'products.product.on_sale' | t }}

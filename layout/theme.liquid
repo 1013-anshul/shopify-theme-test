@@ -377,5 +377,21 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+    <!-- Floating WhatsApp Widget -->
+    <a href="https://wa.me/919999999999?text=Hi%20Vura%2C%20I%20have%20a%20question%20about%20the%20Mineral%20Underarm%20Spray." class="vura-whatsapp-floating" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp" style="position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background-color: #25D366; color: #FFF; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 9999; transition: transform 0.3s ease;">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.731-1.456L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.97C16.528 2.017 14.077 1 11.43 1 6.002 1 1.572 5.372 1.568 10.803c-.001 1.73.458 3.42 1.33 4.927l-.982 3.583 3.73-.978zM17.472 14.382c-.32-.16-1.89-.933-2.185-1.041-.295-.108-.51-.16-.723.16-.214.32-.83.104-1.017.32-.188.216-.377.243-.697.083-.32-.16-1.352-.499-2.576-1.59-.95-.848-1.592-1.895-1.778-2.216-.187-.32-.02-.493.14-.652.145-.143.32-.372.48-.559.16-.188.214-.32.32-.533.107-.213.054-.4-.027-.56-.08-.16-.723-1.74-.99-2.38-.26-.628-.528-.544-.723-.554-.188-.01-.403-.012-.617-.012-.215 0-.564.08-.86.4-.295.32-1.128 1.102-1.128 2.688 0 1.587 1.154 3.12 1.314 3.333.16.214 2.274 3.472 5.51 4.868.77.332 1.37.53 1.838.679.773.246 1.477.21 2.032.128.619-.092 1.89-.773 2.158-1.48.268-.707.268-1.313.188-1.44-.08-.127-.295-.207-.616-.367z"/>
+      </svg>
+    </a>
+    <style>
+      .vura-whatsapp-floating:hover {
+        transform: scale(1.1);
+      }
+      @media screen and (max-width: 749px) {
+        .vura-whatsapp-floating {
+          bottom: 80px; /* Offset to not block the sticky add-to-cart on mobile */
+        }
+      }
+    </style>
   </body>
 </html>

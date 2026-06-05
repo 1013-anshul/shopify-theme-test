@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 12
+      }
+    },
+    "story": {
+      "type": "about-story",
+      "settings": {
+        "eyebrow": "Our Origin",
+        "title": "Made slowly. In Hyderabad.",
+        "signature_text": "Riya & Anshul, founders"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "story"
+  ]
+}

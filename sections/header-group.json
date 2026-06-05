@@ -17,21 +17,21 @@
         "a1": {
           "type": "announcement",
           "settings": {
-            "text": "Free shipping on orders $40+",
+            "text": "Free shipping across India",
             "link": ""
           }
         },
         "a2": {
           "type": "announcement",
           "settings": {
-            "text": "Clean ingredients, big personality",
+            "text": "100% Secure UPI & Cash on Delivery",
             "link": ""
           }
         },
         "a3": {
           "type": "announcement",
           "settings": {
-            "text": "30-day glow guarantee",
+            "text": "Freshness Guaranteed, Rooted in Science",
             "link": ""
           }
         }

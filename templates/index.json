@@ -17,10 +17,10 @@
           "settings": {
             "image": "shopify://shop_images/ChatGPT_Image_Jun_4_2026_06_08_54_PM.png",
             "image_overlay_opacity": 10,
-            "heading": "Browse our latest products",
+            "heading": "Pure Natural Skincare",
             "heading_size": "h1",
             "subheading": "",
-            "button_label": "Shop all",
+            "button_label": "Shop Now",
             "link": "shopify://collections/all",
             "button_style_secondary": false,
             "show_text_box": true,
