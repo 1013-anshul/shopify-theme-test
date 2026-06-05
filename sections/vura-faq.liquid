@@ -1,0 +1,290 @@
+
+
+<style>
+  .vura-faq {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--vura-paper, #F8F3E7);
+    color: var(--vura-paper-ink, #1A2A22);
+  }
+
+  .vura-faq__container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .vura-faq__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .vura-faq__eyebrow {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--vura-paper-ink-muted, #4A5750);
+    margin-bottom: 12px;
+  }
+
+  .vura-faq__heading {
+    font-family: var(--font-display, 'Roca One', Georgia, serif);
+    font-size: clamp(26px, 4vw, 44px);
+    line-height: 1.15;
+    color: var(--vura-paper-ink, #1A2A22);
+    margin: 0;
+  }
+
+  .vura-faq__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .vura-faq__item {
+    border-bottom: 1px solid var(--border-on-paper, rgba(26,42,34,0.16));
+  }
+
+  .vura-faq__item:first-child {
+    border-top: 1px solid var(--border-on-paper, rgba(26,42,34,0.16));
+  }
+
+  .vura-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--vura-paper-ink, #1A2A22);
+    transition: color 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .vura-faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .vura-faq__item summary::marker {
+    content: '';
+  }
+
+  .vura-faq__item summary:hover {
+    color: var(--vura-terracotta, #8D3B2D);
+  }
+
+  .vura-faq__item summary:focus-visible {
+    outline: 2px solid var(--vura-terracotta, #8D3B2D);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .vura-faq__chevron {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    color: var(--vura-paper-ink-muted, #4A5750);
+    transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .vura-faq__item[open] .vura-faq__chevron {
+    transform: rotate(180deg);
+  }
+
+  .vura-faq__answer {
+    overflow: hidden;
+    padding: 0 0 20px 0;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--vura-paper-ink-muted, #4A5750);
+  }
+
+  .vura-faq__answer p {
+    margin: 0;
+  }
+
+  .vura-faq__answer p + p {
+    margin-top: 12px;
+  }
+
+  @media (min-width: 750px) {
+    .vura-faq__item summary {
+      font-size: 17px;
+      padding: 24px 0;
+    }
+
+    .vura-faq__answer {
+      padding: 0 40px 24px 0;
+    }
+  }
+</style>
+
+<section class="vura-faq" aria-labelledby="faq-heading-{{ section.id }}">
+  <div class="vura-faq__container">
+    <header class="vura-faq__header">
+      <p class="vura-faq__eyebrow">GOT QUESTIONS?</p>
+      <h2 class="vura-faq__heading" id="faq-heading-{{ section.id }}">
+        {{ section.settings.heading }}
+      </h2>
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="vura-faq__list" role="list">
+        {%- for block in section.blocks -%}
+          <details class="vura-faq__item" {{ block.shopify_attributes }} role="listitem">
+            <summary>
+              <span>{{ block.settings.question }}</span>
+              <svg class="vura-faq__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="vura-faq__answer">
+              {{ block.settings.answer }}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {%- for block in section.blocks -%}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | strip_html | json }}
+              }
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "VURA FAQ",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Your question here"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Your answer here.</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "VURA FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is this safe for sensitive skin?",
+            "answer": "<p>Yes. Our formula uses natural Phitkari (potassium alum) and Aloe Vera — both known for being gentle. It contains no harsh chemicals, alcohol, or synthetic fragrances.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does one bottle last?",
+            "answer": "<p>With daily use (2-3 sprays per application), one 100ml bottle typically lasts 6-8 weeks.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What does it smell like?",
+            "answer": "<p>It has a very subtle, clean, natural scent — not overpowering. Most users describe it as 'fresh' or 'barely there'.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does it contain aluminum chlorohydrate?",
+            "answer": "<p>No. We use potassium alum (Phitkari), a natural mineral salt. This is different from the aluminum compounds found in conventional antiperspirants.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does the Buy 2 Get 1 offer work?",
+            "answer": "<p>Simply add 3 units to your cart. The discount is automatically applied at checkout — you pay for 2 and get the third free.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the shipping timelines?",
+            "answer": "<p>Orders are dispatched within 24 hours. Standard delivery across India takes 3-5 business days. Cash on Delivery is available.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if I don't like it?",
+            "answer": "<p>We accept returns on unopened/unused items within 7 days of delivery. Contact us at support@vuraskincare.in for assistance.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

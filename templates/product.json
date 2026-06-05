@@ -119,6 +119,154 @@
         "padding_bottom": 60
       }
     },
+    "vura-confidence": {
+      "type": "vura-confidence",
+      "settings": {
+        "heading": "100% Confidence",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "vura-ugc-video": {
+      "type": "vura-ugc-video",
+      "blocks": {
+        "ugc_1": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"Game-changer for my gym bag\" — Priya, Mumbai"
+          }
+        },
+        "ugc_2": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"No white marks, no irritation\" — Arjun, Bangalore"
+          }
+        },
+        "ugc_3": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"My whole family uses it now\" — Meera, Delhi"
+          }
+        }
+      },
+      "block_order": ["ugc_1", "ugc_2", "ugc_3"],
+      "settings": {
+        "heading": "Hear From Real Users",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "vura-comparison-table": {
+      "type": "vura-comparison-table",
+      "settings": {
+        "heading": "Why Vura",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "vura-ingredients": {
+      "type": "vura-ingredients",
+      "blocks": {
+        "ingredient_1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Phitkari (Alum)",
+            "description": "Traditional mineral salt for natural odour control",
+            "icon": "crystal"
+          }
+        },
+        "ingredient_2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Aloe Vera",
+            "description": "Soothing hydration for delicate skin",
+            "icon": "leaf"
+          }
+        },
+        "ingredient_3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Rose Water",
+            "description": "Gentle toning with a subtle natural fragrance",
+            "icon": "flower"
+          }
+        },
+        "ingredient_4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Purified Water",
+            "description": "Clean base, nothing synthetic",
+            "icon": "drop"
+          }
+        }
+      },
+      "block_order": ["ingredient_1", "ingredient_2", "ingredient_3", "ingredient_4"],
+      "settings": {
+        "heading": "What's Inside",
+        "padding_top": 36,
+        "padding_bottom": 52
+      }
+    },
+    "vura-faq": {
+      "type": "vura-faq",
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is this safe for sensitive skin?",
+            "answer": "<p>Yes. Our formula uses natural Phitkari (potassium alum) and Aloe Vera — both known for being gentle. It contains no harsh chemicals, alcohol, or synthetic fragrances.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does one bottle last?",
+            "answer": "<p>With daily use (2-3 sprays per application), one 100ml bottle typically lasts 6-8 weeks.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What does it smell like?",
+            "answer": "<p>It has a very subtle, clean, natural scent — not overpowering. Most users describe it as 'fresh' or 'barely there'.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does it contain aluminum chlorohydrate?",
+            "answer": "<p>No. We use potassium alum (Phitkari), a natural mineral salt. This is different from the aluminum compounds found in conventional antiperspirants.</p>"
+          }
+        },
+        "faq_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does the Buy 2 Get 1 offer work?",
+            "answer": "<p>Simply add 3 units to your cart. The discount is automatically applied at checkout — you pay for 2 and get the third free.</p>"
+          }
+        },
+        "faq_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the shipping timelines?",
+            "answer": "<p>Orders are dispatched within 24 hours. Standard delivery across India takes 3-5 business days. Cash on Delivery is available.</p>"
+          }
+        },
+        "faq_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if I don't like it?",
+            "answer": "<p>We accept returns on unopened/unused items within 7 days of delivery. Contact us at support@vuraskincare.in for assistance.</p>"
+          }
+        }
+      },
+      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5", "faq_6", "faq_7"],
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "padding_top": 36,
+        "padding_bottom": 52
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -140,6 +288,11 @@
   },
   "order": [
     "main",
+    "vura-confidence",
+    "vura-ugc-video",
+    "vura-comparison-table",
+    "vura-ingredients",
+    "vura-faq",
     "related-products"
   ]
 }

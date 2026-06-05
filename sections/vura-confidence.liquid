@@ -1,0 +1,194 @@
+<style>
+  .vura-confidence {
+    background: var(--vura-paper-deep, #EDE5D2);
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .vura-confidence .page-width {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .vura-confidence__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .vura-confidence__eyebrow {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--vura-paper-ink-muted, #4A5750);
+    margin-bottom: 12px;
+  }
+
+  .vura-confidence__heading {
+    font-family: var(--font-display, 'Roca One', Georgia, serif);
+    font-size: 44px;
+    line-height: 50px;
+    color: var(--vura-paper-ink, #1A2A22);
+    margin: 0;
+  }
+
+  /* ── Grid ── */
+  .vura-confidence__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  /* ── Item ── */
+  .vura-confidence__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .vura-confidence__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--vura-sage, #637746);
+    margin-bottom: 4px;
+  }
+
+  .vura-confidence__title {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 26px;
+    color: var(--vura-paper-ink, #1A2A22);
+    margin: 0;
+  }
+
+  .vura-confidence__subtitle {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--vura-paper-ink-muted, #4A5750);
+    margin: 0;
+  }
+
+  /* ── Mobile responsive ── */
+  @media screen and (max-width: 749px) {
+    .vura-confidence__heading {
+      font-size: 30px;
+      line-height: 36px;
+    }
+
+    .vura-confidence__header {
+      margin-bottom: 28px;
+    }
+
+    .vura-confidence__grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .vura-confidence__item {
+      gap: 8px;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 989px) {
+    .vura-confidence__grid {
+      gap: 24px;
+    }
+  }
+</style>
+
+<section class="vura-confidence">
+  <div class="page-width">
+    <header class="vura-confidence__header">
+      <p class="vura-confidence__eyebrow">SHOP WITH PEACE OF MIND</p>
+      <h2 class="vura-confidence__heading">{{ section.settings.heading | default: '100% Confidence' }}</h2>
+    </header>
+
+    <div class="vura-confidence__grid">
+      {%- comment -%} Fast Shipping {%- endcomment -%}
+      <article class="vura-confidence__item">
+        <div class="vura-confidence__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+        </div>
+        <h3 class="vura-confidence__title">Fast Shipping</h3>
+        <p class="vura-confidence__subtitle">Quick dispatch across India</p>
+      </article>
+
+      {%- comment -%} Easy Returns {%- endcomment -%}
+      <article class="vura-confidence__item">
+        <div class="vura-confidence__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </div>
+        <h3 class="vura-confidence__title">Easy Returns</h3>
+        <p class="vura-confidence__subtitle">Unopened items within 7 days</p>
+      </article>
+
+      {%- comment -%} Secure Checkout {%- endcomment -%}
+      <article class="vura-confidence__item">
+        <div class="vura-confidence__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h3 class="vura-confidence__title">Secure Checkout</h3>
+        <p class="vura-confidence__subtitle">UPI, Cards &amp; COD — all protected</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vura Confidence",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "100% Confidence"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vura Confidence"
+    }
+  ]
+}
+{% endschema %}

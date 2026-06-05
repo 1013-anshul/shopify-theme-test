@@ -3747,4 +3747,36 @@ details-disclosure > details {
   .template-product {
     padding-bottom: 90px !important;
   }
+
+  /* Ensure product gallery doesn't push CTA below fold */
+  .template-product .product__media-wrapper {
+    max-height: 50vh;
+    overflow: hidden;
+  }
+
+  .template-product .product__media-wrapper img,
+  .template-product .product__media-wrapper video {
+    max-height: 50vh;
+    object-fit: contain;
+  }
+
+  /* Better product info spacing on mobile */
+  .template-product .product__info-wrapper {
+    padding: 0 16px !important;
+  }
+
+  /* Ensure WhatsApp button doesn't overlap sticky CTA */
+  .vura-whatsapp-float {
+    bottom: 80px !important;
+  }
+
+  /* Mobile-optimized section spacing */
+  .vura-faq,
+  .vura-comparison,
+  .vura-ingredients,
+  .vura-confidence,
+  .vura-ugc {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
 }

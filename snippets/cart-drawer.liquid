@@ -87,6 +87,37 @@
         >
           <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
             {%- if cart != empty -%}
+              <!-- VURA Cart Upsell Progress Banner -->
+              <div class="vura-cart-progress" style="
+                padding: 10px 16px;
+                margin: 0 0 8px;
+                border-radius: 6px;
+                font-family: var(--font-body, Inter, sans-serif);
+                font-size: 13px;
+                line-height: 1.4;
+                text-align: center;
+                {% if cart.item_count >= 3 %}
+                  background: rgba(99,119,70,0.1);
+                  border: 1px solid rgba(99,119,70,0.2);
+                  color: #3D4B22;
+                {% elsif cart.item_count == 2 %}
+                  background: rgba(255,192,63,0.12);
+                  border: 1px solid rgba(255,192,63,0.3);
+                  color: #6B5200;
+                {% else %}
+                  background: rgba(26,42,34,0.05);
+                  border: 1px solid rgba(26,42,34,0.1);
+                  color: #4A5750;
+                {% endif %}
+              ">
+                {%- if cart.item_count >= 3 -%}
+                  🎉 You've unlocked a free product! Auto-applied at checkout.
+                {%- elsif cart.item_count == 2 -%}
+                  ⚡ Almost there! Add 1 more to get your free product.
+                {%- else -%}
+                  💡 Add {{ 3 | minus: cart.item_count }} more to unlock Buy 2 Get 1 Free.
+                {%- endif -%}
+              </div>
               <div class="drawer__cart-items-wrapper">
                 <table class="cart-items" role="table">
                   <thead role="rowgroup">
