@@ -1,0 +1,98 @@
+{%- comment -%}
+  VURA Sticky Add-to-Cart Bar
+  Renders a fixed bottom bar on product pages that appears when the user scrolls
+  past the buy buttons. Shows product name, price, and a pill-shaped Add to Cart CTA.
+{%- endcomment -%}
+
+{%- if request.page_type == 'product' -%}
+  <div class="vura-sticky-atc" id="VuraStickyAtc" aria-hidden="true">
+    <div class="vura-sticky-atc__inner">
+      <div class="vura-sticky-atc__info">
+        <div class="vura-sticky-atc__title">{{ product.title }}</div>
+        <div class="vura-sticky-atc__price">
+          {{ product.selected_or_first_available_variant.price | money }}
+          {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+            <s style="opacity:0.5; margin-left:4px;">{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+          {%- endif -%}
+        </div>
+      </div>
+      <button
+        type="button"
+        class="vura-sticky-atc__btn"
+        id="VuraStickyAtcBtn"
+        {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span>
+          {%- if product.selected_or_first_available_variant.available -%}
+            Add to Cart
+          {%- else -%}
+            Sold Out
+          {%- endif -%}
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var bar = document.getElementById('VuraStickyAtc');
+      var btn = document.getElementById('VuraStickyAtcBtn');
+      if (!bar || !btn) return;
+
+      // Find the original buy buttons section to determine show/hide threshold
+      var buyButtons = document.querySelector('.product-form__buttons');
+      if (!buyButtons) return;
+
+      var isVisible = false;
+
+      function checkScroll() {
+        var rect = buyButtons.getBoundingClientRect();
+        // Show sticky bar when the original buy buttons are scrolled out of view
+        var shouldShow = rect.bottom < 0;
+
+        if (shouldShow !== isVisible) {
+          isVisible = shouldShow;
+          bar.classList.toggle('is-visible', isVisible);
+          bar.setAttribute('aria-hidden', String(!isVisible));
+        }
+      }
+
+      // Passive scroll listener for performance
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            checkScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Initial check
+      checkScroll();
+
+      // Click handler: find and click the real Add to Cart button
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var realBtn = document.querySelector('.product-form__submit');
+        if (realBtn && !realBtn.disabled) {
+          realBtn.click();
+
+          // Brief visual feedback
+          btn.style.opacity = '0.7';
+          btn.querySelector('span').textContent = 'Adding...';
+          setTimeout(function() {
+            btn.style.opacity = '1';
+            btn.querySelector('span').textContent = 'Add to Cart';
+          }, 1200);
+        }
+      });
+    })();
+  </script>
+{%- endif -%}

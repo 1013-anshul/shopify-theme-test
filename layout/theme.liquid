@@ -377,6 +377,8 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+    {%- render 'vura-sticky-atc' -%}
+
     <!-- Floating WhatsApp Widget -->
     <a href="https://wa.me/919999999999?text=Hi%20Vura%2C%20I%20have%20a%20question%20about%20the%20Mineral%20Underarm%20Spray." class="vura-whatsapp-floating" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp" style="position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background-color: #25D366; color: #FFF; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 9999; transition: transform 0.3s ease;">
       <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">

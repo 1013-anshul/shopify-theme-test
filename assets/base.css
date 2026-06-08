@@ -1279,6 +1279,7 @@ button.shopify-payment-button__button--unbranded {
   --border-opacity: calc(1 - var(--buttons-border-opacity));
   border-radius: var(--buttons-radius-outset);
   position: relative;
+  overflow: hidden;
 }
 
 .button,
@@ -1335,7 +1336,7 @@ button.shopify-payment-button__button--unbranded {
   bottom: var(--buttons-border-width);
   left: var(--buttons-border-width);
   z-index: 1;
-  border-radius: var(--buttons-radius);
+  border-radius: 999px;
   box-shadow: 0 0 0 calc(var(--buttons-border-width) + var(--border-offset))
       rgba(var(--color-button-text), var(--border-opacity)),
     0 0 0 var(--buttons-border-width) rgba(var(--color-button), var(--alpha-button-background));
@@ -1400,12 +1401,12 @@ button.shopify-payment-button__button--unbranded {
 /* Shopify Accelerated Checkout */
 
 shopify-accelerated-checkout {
-  --shopify-accelerated-checkout-button-border-radius: var(--buttons-radius-outset);
+  --shopify-accelerated-checkout-button-border-radius: 999px;
   --shopify-accelerated-checkout-button-box-shadow: var(--shadow-horizontal-offset) var(--shadow-vertical-offset) var(--shadow-blur-radius)
   rgba(var(--color-shadow), var(--shadow-opacity));
 }
 shopify-accelerated-checkout-cart {
-  --shopify-accelerated-checkout-button-border-radius: var(--buttons-radius-outset);
+  --shopify-accelerated-checkout-button-border-radius: 999px;
   --shopify-accelerated-checkout-button-box-shadow: var(--shadow-horizontal-offset) var(--shadow-vertical-offset) var(--shadow-blur-radius)
   rgba(var(--color-shadow), var(--shadow-opacity));
 }
@@ -3677,19 +3678,42 @@ details-disclosure > details {
   }
 }
 
-/* VURA Custom Button Styles and Animations */
-.button, .shopify-payment-button__button {
-  font-family: var(--font-body);
+/* ===== VURA Custom Button Styles — Pill/Oval Only ===== */
+
+/* Global pill shape for ALL buttons */
+.button,
+.shopify-payment-button__button,
+.shopify-challenge__button,
+.customer button {
+  font-family: var(--font-body) !important;
   font-weight: 600 !important;
-  letter-spacing: var(--track-mid) !important;
+  letter-spacing: 0.10em !important;
   text-transform: uppercase !important;
-  font-size: var(--size-sm) !important;
-  padding: 11px var(--s-5) !important;
-  border-radius: var(--r-2) !important;
+  font-size: 13px !important;
+  padding: 12px 28px !important;
+  border-radius: 999px !important;
   border: 1px solid var(--vura-forest-deep) !important;
   cursor: pointer;
   box-shadow: 3px 3px 0 0 var(--vura-terracotta) !important;
-  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out) !important;
+  transition: transform 140ms cubic-bezier(0.2,0.7,0.2,1),
+              box-shadow 140ms cubic-bezier(0.2,0.7,0.2,1),
+              background 140ms cubic-bezier(0.2,0.7,0.2,1) !important;
+}
+
+/* Kill Dawn's ::after rectangular border box — the "box outside the oval" */
+.button::after,
+.shopify-challenge__button::after,
+.customer button::after,
+.shopify-payment-button__button--unbranded::after {
+  border-radius: 999px !important;
+}
+
+/* Kill Dawn's ::before shadow box — also needs pill */
+.button::before,
+.shopify-challenge__button::before,
+.customer button::before,
+.shopify-payment-button__button--unbranded::before {
+  border-radius: 999px !important;
 }
 
 .button:hover, .shopify-payment-button__button:hover {
@@ -3717,46 +3741,152 @@ details-disclosure > details {
   box-shadow: 0 0 0 0 var(--vura-hairline-soft) !important;
 }
 
-/* High-Converting Mobile Sticky CTA on Product Pages */
+/* ===== VURA Sticky Add-to-Cart Bar ===== */
+
+.vura-sticky-atc {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 998;
+  background: var(--vura-paper, #F8F3E7);
+  border-top: 1px solid rgba(26,42,34,0.1);
+  box-shadow: 0 -4px 20px rgba(14,33,24,0.08);
+  transform: translateY(100%);
+  transition: transform 360ms cubic-bezier(0.2,0.7,0.2,1);
+  pointer-events: none;
+}
+
+.vura-sticky-atc.is-visible {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.vura-sticky-atc__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vura-sticky-atc__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.vura-sticky-atc__title {
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vura-paper-ink, #1A2A22);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.vura-sticky-atc__price {
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 12px;
+  color: var(--vura-paper-ink-muted, #4A5750);
+  line-height: 1.3;
+}
+
+.vura-sticky-atc__btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 28px;
+  background: rgba(var(--color-button), var(--alpha-button-background));
+  color: rgb(var(--color-button-text));
+  border: 1px solid var(--vura-forest-deep, #0E2118);
+  border-radius: 999px;
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 0 var(--vura-terracotta, #8D3B2D);
+  transition: transform 140ms cubic-bezier(0.2,0.7,0.2,1),
+              box-shadow 140ms cubic-bezier(0.2,0.7,0.2,1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vura-sticky-atc__btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 var(--vura-terracotta, #8D3B2D);
+}
+
+.vura-sticky-atc__btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 0 var(--vura-terracotta, #8D3B2D);
+}
+
+.vura-sticky-atc__btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Mobile: full-width button, compact info */
 @media screen and (max-width: 749px) {
+  .vura-sticky-atc__inner {
+    flex-wrap: wrap;
+    padding: 8px 16px 12px;
+    gap: 6px;
+  }
+
+  .vura-sticky-atc__info {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .vura-sticky-atc__title {
+    font-size: 12px;
+  }
+
+  .vura-sticky-atc__price {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .vura-sticky-atc__btn {
+    width: 100%;
+    padding: 13px 24px;
+    font-size: 14px;
+    justify-content: center;
+  }
+
+  /* Remove old inline sticky — replaced by vura-sticky-atc */
   .template-product .product-form__buttons {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    background: var(--vura-paper) !important;
-    padding: 12px 16px !important;
-    border-top: 1px solid rgba(26, 42, 34, 0.1) !important;
-    box-shadow: 0 -8px 24px rgba(14, 33, 24, 0.1) !important;
-    z-index: 999 !important;
-    display: flex !important;
-    gap: 12px !important;
-    margin: 0 !important;
+    position: static !important;
+    box-shadow: none !important;
+    border-top: none !important;
+    padding: 0 !important;
+    background: transparent !important;
   }
-  
-  .template-product .product-form__buttons > .product-form__submit {
-    flex: 1 !important;
-    margin: 0 !important;
-  }
-  
-  .template-product .product-form__buttons > .shopify-payment-button {
-    flex: 1 !important;
-    margin: 0 !important;
-  }
-  
+
   .template-product {
-    padding-bottom: 90px !important;
+    padding-bottom: 100px !important;
   }
 
   /* Ensure product gallery doesn't push CTA below fold */
   .template-product .product__media-wrapper {
-    max-height: 50vh;
+    max-height: 55vh;
     overflow: hidden;
   }
 
   .template-product .product__media-wrapper img,
   .template-product .product__media-wrapper video {
-    max-height: 50vh;
+    max-height: 55vh;
     object-fit: contain;
   }
 
@@ -3765,9 +3895,9 @@ details-disclosure > details {
     padding: 0 16px !important;
   }
 
-  /* Ensure WhatsApp button doesn't overlap sticky CTA */
-  .vura-whatsapp-float {
-    bottom: 80px !important;
+  /* WhatsApp floats above sticky bar */
+  .vura-whatsapp-floating {
+    bottom: 110px !important;
   }
 
   /* Mobile-optimized section spacing */
@@ -3778,5 +3908,20 @@ details-disclosure > details {
   .vura-ugc {
     padding-left: 4px;
     padding-right: 4px;
+  }
+}
+
+/* Desktop: compact bar */
+@media screen and (min-width: 750px) {
+  .vura-sticky-atc__inner {
+    padding: 12px 32px;
+  }
+
+  .vura-sticky-atc__title {
+    font-size: 14px;
+  }
+
+  .vura-sticky-atc__price {
+    font-size: 13px;
   }
 }
