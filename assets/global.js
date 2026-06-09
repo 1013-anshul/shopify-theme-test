@@ -1508,6 +1508,7 @@ function checkCartCelebration(cart) {
 
   window.vuraPrevCartQty = totalQty;
 }
+window.checkCartCelebration = checkCartCelebration;
 
 // Animate the progress bar and plus highlight
 window.vuraAnimateCartDrawerUI = function() {
@@ -1556,7 +1557,7 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.PUB_SUB_EVENTS && typeof subscribe === 'function') {
+  if (typeof PUB_SUB_EVENTS !== 'undefined' && typeof subscribe === 'function') {
     subscribe(PUB_SUB_EVENTS.cartUpdate, function() {
       fetch(window.Shopify.routes.root + 'cart.js')
         .then(response => response.json())

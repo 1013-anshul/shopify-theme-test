@@ -5,7 +5,9 @@ class CartRemoveButton extends HTMLElement {
     this.addEventListener('click', (event) => {
       event.preventDefault();
       const cartItems = this.closest('cart-items') || this.closest('cart-drawer-items');
-      cartItems.updateQuantity(this.dataset.index, 0, event);
+      const index = this.dataset.index;
+      const variantId = this.dataset.variantId;
+      cartItems.updateQuantity(index, 0, event, null, variantId);
     });
   }
 }
@@ -150,14 +152,23 @@ class CartItems extends HTMLElement {
 
     this.enableLoading(line);
 
-    const body = JSON.stringify({
-      line,
-      quantity,
+    let url = routes.cart_change_url;
+    let bodyObj = {
       sections: this.getSectionsToRender().map((section) => section.section),
       sections_url: window.location.pathname,
-    });
+    };
 
-    fetch(`${routes.cart_change_url}`, { ...fetchConfig(), ...{ body } })
+    if (variantId) {
+      url = window.Shopify.routes.root + 'cart/update.js';
+      bodyObj.updates = { [variantId]: quantity };
+    } else {
+      bodyObj.line = line;
+      bodyObj.quantity = quantity;
+    }
+
+    const body = JSON.stringify(bodyObj);
+
+    fetch(url, { ...fetchConfig(), ...{ body } })
       .then((response) => {
         return response.text();
       })
@@ -191,6 +202,15 @@ class CartItems extends HTMLElement {
               section.selector
             );
           });
+
+          // Trigger VURA cart updates instantly
+          if (typeof window.checkCartCelebration === 'function') {
+            window.checkCartCelebration(parsedState);
+          }
+          if (typeof window.vuraAnimateCartDrawerUI === 'function') {
+            window.vuraAnimateCartDrawerUI();
+          }
+
           const updatedValue = parsedState.items[line - 1] ? parsedState.items[line - 1].quantity : undefined;
           let message = '';
           if (items.length === parsedState.items.length && updatedValue !== parseInt(quantityElement.value)) {
