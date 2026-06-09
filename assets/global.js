@@ -1330,3 +1330,133 @@ class CartPerformance {
     );
   }
 }
+
+// ===== VURA CUSTOM SCRIPTS =====
+
+// 1. Auto-trigger Add to Cart from homepage link (?add-to-cart=true)
+document.addEventListener('DOMContentLoaded', function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('add-to-cart') === 'true') {
+    setTimeout(function() {
+      const atcButton = document.querySelector('.product-form__submit') || document.getElementById('AddToCartBtn');
+      if (atcButton) {
+        atcButton.click();
+        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+      }
+    }, 800);
+  }
+});
+
+// 2. Safe Targeted Rupee Symbol (Rs./Rs/INR -> ₹) Reformatter
+function replaceCurrencyInElement(el) {
+  if (!el) return;
+  // Use TreeWalker to find all text nodes within this specific element
+  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+  let textNode;
+  while (textNode = walk.nextNode()) {
+    if (/\b(Rs|INR)\b/i.test(textNode.nodeValue)) {
+      textNode.nodeValue = textNode.nodeValue.replace(/\b(Rs|INR)\b\.?\s*/gi, '₹');
+    }
+  }
+}
+
+function runPriceReformatter() {
+  const priceSelectors = [
+    '.price', '.totals__total-value', '.cart-item__price', 
+    '.totals__total', '.price-item', '.product-option',
+    '.cart-drawer__footer', '.drawer__footer', '.totals',
+    '.vura-coins-box', '.vura-coins-details', '.vura-coins-container',
+    '.cart-item__discounted-prices', '.cart-item__old-price'
+  ];
+  priceSelectors.forEach(selector => {
+    document.querySelectorAll(selector).forEach(replaceCurrencyInElement);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  runPriceReformatter();
+  const observer = new MutationObserver((mutations) => {
+    runPriceReformatter();
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+
+// 3. Shipping Confetti Celebration
+function triggerConfetti() {
+  const container = document.createElement('div');
+  container.style.position = 'fixed';
+  container.style.top = '0';
+  container.style.left = '0';
+  container.style.width = '100vw';
+  container.style.height = '100vh';
+  container.style.pointerEvents = 'none';
+  container.style.zIndex = '99999';
+  document.body.appendChild(container);
+
+  const colors = ['#ffc03f', '#8d3b2d', '#637746', '#f8f3e7', '#ffa800'];
+  const particleCount = 120;
+
+  for (let i = 0; i < particleCount; i++) {
+    const p = document.createElement('div');
+    p.style.position = 'absolute';
+    p.style.width = Math.random() * 10 + 6 + 'px';
+    p.style.height = Math.random() * 10 + 6 + 'px';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = '-20px';
+    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    p.style.opacity = Math.random() * 0.8 + 0.2;
+    p.style.transform = `rotate(${Math.random() * 360}deg)`;
+    container.appendChild(p);
+
+    const speed = Math.random() * 4 + 3;
+    const angle = Math.random() * 3 - 1.5;
+    const rotationSpeed = Math.random() * 10 - 5;
+    let posY = -20;
+    let posX = parseFloat(p.style.left);
+    let rotation = 0;
+
+    function update() {
+      posY += speed;
+      posX += angle;
+      rotation += rotationSpeed;
+      p.style.top = posY + 'px';
+      p.style.left = `calc(${posX}vw)`;
+      p.style.transform = `rotate(${rotation}deg)`;
+
+      if (posY < window.innerHeight) {
+        requestAnimationFrame(update);
+      } else {
+        p.remove();
+      }
+    }
+    requestAnimationFrame(update);
+  }
+  setTimeout(() => container.remove(), 4000);
+}
+
+function checkFreeShippingConfetti(subtotal) {
+  const threshold = 99900; // ₹999.00 in paisa
+  if (subtotal >= threshold) {
+    if (!window.freeShippingUnlocked) {
+      window.freeShippingUnlocked = true;
+      triggerConfetti();
+    }
+  } else {
+    window.freeShippingUnlocked = false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.freeShippingUnlocked = (window.vuraCurrentSubtotal || 0) >= 99900;
+  if (window.PUB_SUB_EVENTS && typeof subscribe === 'function') {
+    subscribe(PUB_SUB_EVENTS.cartUpdate, function() {
+      fetch(window.Shopify.routes.root + 'cart.js')
+        .then(response => response.json())
+        .then(cart => {
+          checkFreeShippingConfetti(cart.total_price);
+        });
+    });
+  }
+});

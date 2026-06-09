@@ -4042,9 +4042,9 @@ details-disclosure > details {
 
 @keyframes vuraCartSlide {
   0% { opacity: 0; transform: translateY(100%); }
-  3% { opacity: 1; transform: translateY(0); }
+  4% { opacity: 1; transform: translateY(0); }
   30% { opacity: 1; transform: translateY(0); }
-  33% { opacity: 0; transform: translateY(-100%); }
+  34% { opacity: 0; transform: translateY(-100%); }
   100% { opacity: 0; transform: translateY(-100%); }
 }
 
@@ -4891,6 +4891,107 @@ details-disclosure > details {
 /* Breathing room under the drawer header */
 .vura-cart-announcements {
   margin: 8px 16px 10px !important;
+}
+
+/* ===== VURA Cart Drawer Redesigned Styles ===== */
+
+/* Quantity Selector: 3-cell box layout */
+.cart-drawer .quantity {
+  width: 96px !important;
+  min-height: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border: 1px solid rgba(26, 42, 34, 0.15) !important;
+  border-radius: 4px !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: relative !important;
+  box-shadow: none !important;
+}
+
+.cart-drawer .quantity::after,
+.cart-drawer .quantity::before {
+  display: none !important;
+}
+
+.cart-drawer .quantity__button {
+  width: 32px !important;
+  height: 100% !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.1s ease, color 0.1s ease !important;
+  color: #1a2a22 !important;
+}
+
+.cart-drawer .quantity__button[name="minus"] {
+  border-right: 1px solid rgba(26, 42, 34, 0.15) !important;
+}
+
+.cart-drawer .quantity__button[name="plus"] {
+  border-left: 1px solid rgba(26, 42, 34, 0.15) !important;
+}
+
+.cart-drawer .quantity__button:hover {
+  background: rgba(26, 42, 34, 0.05) !important;
+}
+
+.cart-drawer .quantity__input {
+  width: 32px !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  color: #1a2a22 !important;
+  -moz-appearance: textfield !important;
+  flex-grow: 1 !important;
+}
+
+.cart-drawer .quantity__input::-webkit-outer-spin-button,
+.cart-drawer .quantity__input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+/* Shipping Progress Bar: shimmering active gradient fill */
+.vura-cart-progress__bar-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #637746, #ffc03f, #637746) !important;
+  background-size: 200% 100% !important;
+  animation: progress-shimmer 2s infinite linear !important;
+  border-radius: 99px !important;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  box-shadow: 0 0 8px rgba(99, 119, 70, 0.3) !important;
+}
+
+@keyframes progress-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Highlight '+' button when quantity is exactly 1 */
+.qty-is-one .quantity__button[name="plus"] {
+  background: #ffc03f !important; /* Vura Saffron */
+  color: #0e2118 !important;
+  animation: pulse-plus-button 2s infinite ease-in-out !important;
+}
+
+@keyframes pulse-plus-button {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); background: #ffa800 !important; }
 }
 
 

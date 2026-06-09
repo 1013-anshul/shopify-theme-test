@@ -211,9 +211,11 @@
 
     // Find the quantity input in the product form
     function getQuantityInput() {
-      const form = document.querySelector('form[data-type="add-to-cart-form"]');
-      if (!form) return null;
-      return form.querySelector('input[name="quantity"]');
+      const parent = picker.closest('.product-form__quantity') || document.querySelector('.product-form__quantity');
+      if (parent) {
+        return parent.querySelector('input[name="quantity"]');
+      }
+      return document.querySelector('input[name="quantity"]');
     }
 
     // Update the submit button text

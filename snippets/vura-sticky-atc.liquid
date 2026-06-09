@@ -83,9 +83,7 @@
       var plusBtn = bar.querySelector('.vura-sticky-qty-btn.plus');
 
       function getMainQtyInput() {
-        var form = document.querySelector('form[data-type="add-to-cart-form"]');
-        if (!form) return null;
-        return form.querySelector('input[name="quantity"]');
+        return document.querySelector('.product-form__quantity input[name="quantity"]') || document.querySelector('input[name="quantity"]');
       }
 
       function syncQuantity(newVal) {
