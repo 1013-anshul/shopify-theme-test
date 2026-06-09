@@ -74,6 +74,14 @@
           </span>
         </button>
       </div>
+      <!-- VURA Cart Drawer Announcement Slider -->
+      <div class="vura-cart-announcements">
+        <div class="vura-announcement-slider">
+          <div class="vura-announcement-slide">Get 2% Vura Coins on every Prepaid order!!</div>
+          <div class="vura-announcement-slide">Get Additional 3% Prepaid Bonus</div>
+          <div class="vura-announcement-slide">Get FREE Gift at Checkout !!</div>
+        </div>
+      </div>
       <cart-drawer-items
         {% if cart == empty %}
           class=" is-empty"
@@ -87,29 +95,31 @@
         >
           <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
             {%- if cart != empty -%}
+              <!-- VURA Cart Drawer Free Shipping Progress Bar & Offer Progress Banner -->
+              {%- assign threshold = 99900 -%}
+              {%- assign subtotal = cart.total_price -%}
+              {%- if subtotal < threshold -%}
+                {%- assign remaining = threshold | minus: subtotal -%}
+                {%- assign percent = subtotal | times: 100 | divided_by: threshold -%}
+              {%- else -%}
+                {%- assign percent = 100 -%}
+              {%- endif -%}
+
+              <div class="vura-cart-shipping-progress">
+                <div class="vura-cart-progress__text">
+                  {%- if subtotal < threshold -%}
+                    You are only <strong>{{ remaining | money }}</strong> away from <strong>FREE SHIPPING!</strong>
+                  {%- else -%}
+                    🎉 <strong>Congrats! You've unlocked FREE SHIPPING!</strong>
+                  {%- endif -%}
+                </div>
+                <div class="vura-cart-progress__bar-bg">
+                  <div class="vura-cart-progress__bar-fill" style="width: {{ percent }}%;"></div>
+                </div>
+              </div>
+
               <!-- VURA Cart Upsell Progress Banner -->
-              <div class="vura-cart-progress" style="
-                padding: 10px 16px;
-                margin: 0 0 8px;
-                border-radius: 6px;
-                font-family: var(--font-body, Inter, sans-serif);
-                font-size: 13px;
-                line-height: 1.4;
-                text-align: center;
-                {% if cart.item_count >= 3 %}
-                  background: rgba(99,119,70,0.1);
-                  border: 1px solid rgba(99,119,70,0.2);
-                  color: #3D4B22;
-                {% elsif cart.item_count == 2 %}
-                  background: rgba(255,192,63,0.12);
-                  border: 1px solid rgba(255,192,63,0.3);
-                  color: #6B5200;
-                {% else %}
-                  background: rgba(26,42,34,0.05);
-                  border: 1px solid rgba(26,42,34,0.1);
-                  color: #4A5750;
-                {% endif %}
-              ">
+              <div class="vura-cart-progress">
                 {%- if cart.item_count >= 3 -%}
                   🎉 You've unlocked a free product! Auto-applied at checkout.
                 {%- elsif cart.item_count == 2 -%}
@@ -589,6 +599,38 @@
             {%- endif -%}
           </small>
         </div>
+
+        <!-- VURA Coins Points System -->
+        {%- if cart != empty -%}
+          {%- assign coins = cart.total_price | divided_by: 5000 | floor -%}
+          {%- if coins > 0 -%}
+            <div class="vura-coins-container">
+              <div class="vura-coins-box" id="vura-coins-msg">
+                <div class="vura-coins-title">
+                  <span class="vura-coin-emoji">🪙</span> You'll earn <strong>{{ coins }} Vura Coins</strong> on this order!
+                </div>
+                <div class="vura-coins-subtext">
+                  1 coin = ₹0.50 · Redeemable on your next purchase
+                </div>
+              </div>
+              
+              <details class="vura-coins-education">
+                <summary class="vura-coins-summary">
+                  <span>How do Vura Coins work?</span>
+                  <span class="vura-coins-arrow">▼</span>
+                </summary>
+                <div class="vura-coins-details">
+                  <ul>
+                    <li><strong>Earn:</strong> Get 2% back in coins on every order (value calculated on subtotal).</li>
+                    <li><strong>Value:</strong> 1 Vura Coin = ₹0.50. E.g., {{ coins }} coins = {{ coins | times: 50 | money }} savings.</li>
+                    <li><strong>Auto-Credit:</strong> Coins are auto-credited to your account after delivery.</li>
+                    <li><strong>Redeem:</strong> Redeem coins at checkout on your next purchase automatically!</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
 
         <!-- CTAs -->
 
