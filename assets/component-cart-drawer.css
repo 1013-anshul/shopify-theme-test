@@ -161,7 +161,7 @@ cart-drawer {
 .cart-drawer__form {
   flex-grow: 1;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .cart-drawer__collection {
