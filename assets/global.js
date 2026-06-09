@@ -1404,11 +1404,12 @@ function triggerConfetti() {
 
   for (let i = 0; i < particleCount; i++) {
     const p = document.createElement('div');
+    const startX = Math.random() * 100;
     p.style.position = 'absolute';
     p.style.width = Math.random() * 10 + 6 + 'px';
     p.style.height = Math.random() * 10 + 6 + 'px';
     p.style.background = colors[Math.floor(Math.random() * colors.length)];
-    p.style.left = Math.random() * 100 + 'vw';
+    p.style.left = startX + 'vw';
     p.style.top = '-20px';
     p.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
     p.style.opacity = Math.random() * 0.8 + 0.2;
@@ -1419,7 +1420,7 @@ function triggerConfetti() {
     const angle = Math.random() * 3 - 1.5;
     const rotationSpeed = Math.random() * 10 - 5;
     let posY = -20;
-    let posX = parseFloat(p.style.left);
+    let posX = startX;
     let rotation = 0;
 
     function update() {
@@ -1427,7 +1428,7 @@ function triggerConfetti() {
       posX += angle;
       rotation += rotationSpeed;
       p.style.top = posY + 'px';
-      p.style.left = `calc(${posX}vw)`;
+      p.style.left = posX + 'vw';
       p.style.transform = `rotate(${rotation}deg)`;
 
       if (posY < window.innerHeight) {
@@ -1450,41 +1451,47 @@ function showUnlockedPopup() {
   popup.id = 'vura-unlock-popup';
   popup.style.cssText = `
     position: fixed;
-    top: 24px;
+    top: 100px;
     left: 50%;
-    transform: translate(-50%, -100px);
-    background: #162D24;
-    color: #F8F3E7;
-    border: 1px solid #FFC03F;
-    box-shadow: 0 8px 30px rgba(14,33,24,0.35);
-    padding: 14px 24px;
-    border-radius: 30px;
+    transform: translate(-50%, -120px) scale(0.7);
+    background: #162D24; /* Forest Green */
+    color: #F8F3E7; /* Cream */
+    border: 2px solid #FFC03F; /* Gold/Saffron border */
+    box-shadow: 0 12px 40px rgba(14,33,24,0.45);
+    padding: 16px 28px;
+    border-radius: 40px;
     z-index: 100000;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     font-family: var(--font-body, Inter, sans-serif);
-    font-size: 13px;
-    font-weight: 600;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 14px;
+    font-weight: 700;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease;
     pointer-events: none;
     text-align: center;
     white-space: nowrap;
+    opacity: 0;
   `;
   popup.innerHTML = `
-    <span style="font-size: 16px;">🎉</span>
-    <span>You have unlocked <strong style="color: #FFC03F;">1 FREE product!</strong></span>
+    <span style="font-size: 20px; animation: rocketPulse 1s infinite alternate; display: inline-block;">🚀</span>
+    <span>You have unlocked <strong style="color: #FFC03F; text-shadow: 0 0 6px rgba(255,192,63,0.35);">1 FREE product!</strong> <span style="font-weight: normal; opacity: 0.95;">Added to cart.</span></span>
   `;
   document.body.appendChild(popup);
 
+  // Trigger fly in (elastic slide down)
   setTimeout(() => {
-    popup.style.transform = 'translate(-50%, 0)';
-  }, 100);
+    popup.style.opacity = '1';
+    popup.style.transform = 'translate(-50%, 0) scale(1)';
+  }, 50);
 
+  // Trigger fly out (into the cart drawer area on the right)
   setTimeout(() => {
-    popup.style.transform = 'translate(-50%, -100px)';
-    setTimeout(() => popup.remove(), 500);
-  }, 4000);
+    popup.style.transition = 'transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.8s ease';
+    popup.style.transform = 'translate(calc(-50% + 42vw), 180px) scale(0.1)';
+    popup.style.opacity = '0';
+    setTimeout(() => popup.remove(), 850);
+  }, 2800);
 }
 
 // Check Buy 2 Get 1 quantity celebration
@@ -1525,6 +1532,7 @@ window.vuraAnimateCartDrawerUI = function() {
     plusBtn.classList.remove('plus-button-highlight');
   }
 
+  // Delay the animation start to 650ms after the drawer is opened/rendered
   setTimeout(() => {
     const targetPercent = container.getAttribute('data-target-percent') || '0';
     fill.style.transition = 'width 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
@@ -1538,7 +1546,7 @@ window.vuraAnimateCartDrawerUI = function() {
         }
       }, 1200);
     }
-  }, 100);
+  }, 650);
 };
 
 // Scroll listener to minimize Sticky ATC
