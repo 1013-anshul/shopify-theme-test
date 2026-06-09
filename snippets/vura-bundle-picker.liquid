@@ -17,6 +17,7 @@
 {%- assign six_pack_price = unit_price | times: 5 -%}
 {%- assign six_pack_money = six_pack_price | money -%}
 {%- assign six_pack_savings = unit_price -%}
+{%- assign six_pack_savings_money = six_pack_savings | money -%}
 {%- assign six_pack_total = unit_price | times: 6 -%}
 
 <div class="vura-bundle-picker" data-unit-price="{{ unit_price }}">

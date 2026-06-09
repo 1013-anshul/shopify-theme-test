@@ -64,7 +64,7 @@ class CartItems extends HTMLElement {
       message = window.quickOrderListStrings.min_error.replace('[min]', event.target.dataset.min);
     } else if (inputValue > parseInt(event.target.max)) {
       message = window.quickOrderListStrings.max_error.replace('[max]', event.target.max);
-    } else if (inputValue % parseInt(event.target.step) !== 0) {
+    } else if (event.target.step && !isNaN(parseInt(event.target.step)) && inputValue % parseInt(event.target.step) !== 0) {
       message = window.quickOrderListStrings.step_error.replace('[step]', event.target.step);
     }
 

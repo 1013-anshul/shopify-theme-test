@@ -3861,24 +3861,35 @@ details-disclosure > details {
 }
 
 .vura-sticky-atc__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 24px;
-  font-size: 13px;
-  height: 38px;
-  border-radius: var(--r-2, 4px);
-  box-shadow: 2px 2px 0 0 var(--vura-terracotta, #8D3B2D);
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 24px !important;
+  font-size: 13px !important;
+  height: 38px !important;
+  border-radius: 999px !important; /* Unified Oval */
+  box-shadow: 2px 2px 0 0 var(--vura-terracotta, #8D3B2D) !important;
+  background-color: var(--vura-saffron, #FFC03F) !important;
+  color: var(--vura-forest-deep, #0E2118) !important;
+  border: 1px solid var(--vura-forest-deep, #0E2118) !important;
+  font-family: var(--font-body, Inter, sans-serif) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: var(--track-mid, 0.10em) !important;
+  cursor: pointer !important;
+  transition: all var(--t-fast, 140ms) var(--ease-out, cubic-bezier(0.2, 0.7, 0.2, 1)) !important;
 }
 
 .vura-sticky-atc__btn:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 0 var(--vura-terracotta, #8D3B2D);
+  background-color: var(--vura-saffron-soft, #F2BD53) !important;
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 3px 3px 0 0 var(--vura-terracotta, #8D3B2D) !important;
 }
 
 .vura-sticky-atc__btn:active {
-  transform: translate(1px, 1px);
-  box-shadow: 0 0 0 0 var(--vura-terracotta, #8D3B2D);
+  transform: translate(2px, 2px) !important;
+  box-shadow: 0 0 0 0 var(--vura-terracotta, #8D3B2D) !important;
+  background-color: var(--vura-saffron-deep, #E8A82A) !important;
 }
 
 /* Mobile: double row, full width button */
@@ -3910,10 +3921,11 @@ details-disclosure > details {
   }
   
   .vura-sticky-atc__btn {
-    flex: 1;
-    height: 44px;
-    font-size: 14px;
-    justify-content: center;
+    flex: 1 !important;
+    height: 44px !important;
+    font-size: 14px !important;
+    justify-content: center !important;
+    border-radius: 999px !important; /* Unified Oval */
   }
 
   /* Remove old inline sticky — replaced by vura-sticky-atc */
@@ -3958,8 +3970,8 @@ details-disclosure > details {
   .vura-ingredients,
   .vura-confidence,
   .vura-ugc {
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
@@ -4225,12 +4237,12 @@ details-disclosure > details {
   color: var(--vura-paper-ink, #1A2A22) !important;
 }
 
-/* ===== HIGH-CONTRAST CART DRAWER OVERRIDES (SuperYou Replication) ===== */
+/* ===== HIGH-CONTRAST CART DRAWER OVERRIDES (VURA Brand Theme Alignment) ===== */
 
 /* 1. Global Drawer Background and Fonts */
 .drawer__inner {
-  background-color: #ffffff !important;
-  color: #212529 !important;
+  background-color: #F8F3E7 !important; /* Vura Paper cream */
+  color: #1A2A22 !important; /* Vura Paper Ink */
   font-family: "Helvetica Now Variable", -apple-system, sans-serif !important;
 }
 
@@ -4239,49 +4251,53 @@ details-disclosure > details {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  padding: 0 16px !important;
-  height: 24px !important;
-  background-color: #ffffff !important;
+  padding: 12px 16px !important;
+  height: auto !important; /* Allow natural size to avoid overlap */
+  background-color: #F8F3E7 !important;
 }
 
 .drawer__heading {
   font-family: "Helvetica Now Variable", -apple-system, sans-serif !important;
   font-size: 14px !important;
   font-weight: 800 !important;
-  color: #212529 !important;
+  color: #1A2A22 !important;
   text-transform: uppercase !important;
   margin: 0 !important;
-  line-height: 12.6px !important;
+  line-height: 1.2 !important;
 }
 
 .drawer__close {
-  width: 24px !important;
-  height: 24px !important;
+  width: 44px !important;
+  height: 44px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   background: transparent !important;
   border: 0 none !important;
-  color: #EF1400 !important;
-  font-size: 18px !important;
-  font-weight: 800 !important;
+  color: #8D3B2D !important; /* Vura Terracotta */
+  font-size: 24px !important;
+  font-weight: 400 !important;
   cursor: pointer !important;
+  position: relative !important; /* Non-overlapping flex alignment */
+  top: auto !important;
+  right: auto !important;
+  margin-right: -10px !important;
 }
 
 .drawer__close .close-text {
-  line-height: 24px !important;
+  line-height: 44px !important;
 }
 
 /* 3. Announcement Slider */
 .vura-cart-announcements {
-  background: #EF1400 !important;
+  background: #0E2118 !important; /* Vura Forest Green */
   color: #ffffff !important;
   padding: 4px 16px !important;
   height: 28px !important;
   border-radius: 4px !important;
   margin: 0 16px 10px !important;
-  font-size: 13px !important;
-  font-weight: 400 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
   text-transform: none !important;
   letter-spacing: normal !important;
   border: 0 none !important;
@@ -4305,21 +4321,22 @@ details-disclosure > details {
 
 .vura-cart-progress__bar-bg {
   height: 10px !important;
-  background-color: #eeeeee !important;
+  background-color: rgba(26,42,34,0.1) !important; /* Light green tint */
   border-radius: 10px !important;
   margin: 8px 0 0 !important;
   width: 100% !important;
 }
 
 .vura-cart-progress__bar-fill {
-  background-color: #EF1400 !important;
+  background-color: #637746 !important; /* Vura Sage progress fill */
   border-radius: 10px !important;
   height: 100% !important;
+  display: block !important; /* Prevent empty div from being hidden */
 }
 
 .vura-cart-progress__text {
   font-size: 14px !important;
-  color: rgba(239, 20, 0, 0.75) !important;
+  color: #1A2A22 !important; /* Vura Paper Ink */
   text-align: left !important;
   margin-top: 10px !important;
   font-weight: 400 !important;
@@ -4327,7 +4344,7 @@ details-disclosure > details {
 
 .vura-cart-progress__text strong {
   font-weight: 700 !important;
-  color: rgba(239, 20, 0, 0.75) !important;
+  color: #8D3B2D !important; /* Vura Terracotta for milestones */
 }
 
 /* Hide extra upsell banner */
@@ -4335,143 +4352,229 @@ details-disclosure > details {
   display: none !important;
 }
 
-/* 5. Compact Flex Cart Items */
-.cart-items {
-  display: block !important;
-  width: 100% !important;
-  padding: 0 16px !important;
+/* 5. Desktop Only Compact Flex Cart Items Layout */
+@media screen and (min-width: 750px) {
+  .cart-items {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 16px !important;
+  }
+
+  .cart-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    height: 90px !important;
+    margin: 0 0 16px !important;
+    padding: 0 !important;
+    border-bottom: 0 none !important;
+    position: relative !important; /* Correct container for absolute elements */
+  }
+
+  .cart-item__media {
+    width: 100px !important;
+    height: 100px !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .cart-item__image {
+    width: 100px !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    border: 0 none !important;
+  }
+
+  .cart-item__details {
+    flex: 1 !important;
+    padding: 0 0 0 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+
+  .cart-item__name {
+    font-family: "Helvetica Now Variable", -apple-system, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #1A2A22 !important; /* Vura Paper Ink */
+    text-decoration: none !important;
+    line-height: 20px !important;
+    margin: 0 !important;
+    padding-right: 30px !important;
+  }
+
+  /* Side-by-Side Compact Pricing */
+  .cart-item__price-wrapper {
+    margin: 0 !important;
+  }
+
+  .cart-item__price-wrapper .price {
+    font-size: 16.8px !important;
+    font-weight: 700 !important;
+    color: #1A2A22 !important;
+  }
+
+  .cart-item__price-wrapper .cart-item__old-price {
+    font-size: 16.8px !important;
+    font-weight: 700 !important;
+    color: #9a9a9a !important;
+    text-decoration: line-through !important;
+    margin-right: 5px !important;
+  }
+
+  /* Quantity Selector & Remove Button */
+  .cart-item__quantity-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 5px !important;
+  }
+
+  .quantity.cart-quantity {
+    width: 110px !important;
+    height: 26px !important;
+    border: 1px solid #e3e3e3 !important;
+    background-color: #ffffff !important;
+    display: flex !important;
+  }
+
+  .quantity__button {
+    width: 36px !important;
+    height: 24px !important;
+    background-color: #ffffff !important;
+    color: #1A2A22 !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    border: 0 none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .quantity__input {
+    width: 36px !important;
+    height: 24px !important;
+    border: 0 none !important;
+    background-color: transparent !important;
+    color: #1A2A22 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    padding: 0 !important;
+  }
+
+  .cart-remove-button {
+    position: absolute !important;
+    top: 10px !important;
+    right: 16px !important;
+    background: transparent !important;
+    color: #999999 !important;
+    border: 0 none !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    width: 20px !important;
+    height: 20px !important;
+    box-shadow: none !important;
+  }
+
+  .cart-remove-button:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
 }
 
+/* Mobile & Global Cart Item Layout Fixes */
 .cart-item {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
-  height: 90px !important;
-  margin: 0 0 16px !important;
-  padding: 0 !important;
-  border-bottom: 0 none !important;
+  position: relative !important; /* Correct alignment of cart-remove-button on mobile */
+  min-height: 90px !important; /* Allow expansion for long titles */
+  height: auto !important; 
 }
 
-.cart-item__media {
-  width: 100px !important;
-  height: 100px !important;
-  padding: 0 !important;
-  display: block !important;
-}
+@media screen and (max-width: 749px) {
+  /* Enforce grid for mobile cart drawer items */
+  .cart-drawer .cart-item {
+    display: grid !important;
+    grid-template: repeat(2, auto) / 100px repeat(3, 1fr) !important;
+    gap: 8px !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    box-sizing: border-box !important;
+  }
+  
+  .cart-drawer .cart-item__media {
+    grid-row: 1 / 3 !important;
+    grid-column: 1 !important;
+    width: 100px !important;
+    height: 100px !important;
+    padding: 0 !important;
+  }
+  
+  .cart-drawer .cart-item__image {
+    width: 100px !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    border-radius: 4px !important;
+  }
 
-.cart-item__image {
-  width: 100px !important;
-  height: 100px !important;
-  object-fit: cover !important;
-  border: 0 none !important;
-}
+  .cart-drawer .cart-item__details {
+    grid-column: 2 / 5 !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    padding: 0 0 0 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .cart-drawer .cart-item__name {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    word-break: break-word !important;
+    padding-right: 24px !important;
+    margin: 0 !important;
+    font-weight: 700 !important;
+    color: #1A2A22 !important;
+  }
 
-.cart-item__details {
-  flex: 1 !important;
-  padding: 0 0 0 16px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-}
+  .cart-drawer .cart-item__totals {
+    grid-column: 4 !important;
+    grid-row: 2 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    padding: 0 !important;
+  }
 
-.cart-item__name {
-  font-family: "Helvetica Now Variable", -apple-system, sans-serif !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  color: #EF1400 !important;
-  text-decoration: none !important;
-  line-height: 20px !important;
-  margin: 0 !important;
-  padding-right: 30px !important;
-}
-
-/* Side-by-Side Compact Pricing */
-.cart-item__price-wrapper {
-  margin: 0 !important;
-}
-
-.cart-item__price-wrapper .price {
-  font-size: 16.8px !important;
-  font-weight: 700 !important;
-  color: #000000 !important;
-}
-
-.cart-item__price-wrapper .cart-item__old-price {
-  font-size: 16.8px !important;
-  font-weight: 700 !important;
-  color: #9a9a9a !important;
-  text-decoration: line-through !important;
-  margin-right: 5px !important;
-}
-
-/* 6. Quantity Selector & Remove Button */
-.cart-item__quantity-wrapper {
-  display: flex !important;
-  align-items: center !important;
-  margin-top: 5px !important;
-}
-
-.quantity.cart-quantity {
-  width: 110px !important;
-  height: 26px !important;
-  border: 1px solid #e3e3e3 !important;
-  background-color: #ffffff !important;
-  display: flex !important;
-}
-
-.quantity__button {
-  width: 36px !important;
-  height: 24px !important;
-  background-color: #ffffff !important;
-  color: #EF1400 !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  border: 0 none !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.quantity__input {
-  width: 36px !important;
-  height: 24px !important;
-  border: 0 none !important;
-  background-color: transparent !important;
-  color: #EF1400 !important;
-  font-size: 12px !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  padding: 0 !important;
-}
-
-.cart-remove-button {
-  position: absolute !important;
-  top: 10px !important;
-  right: 16px !important;
-  background: transparent !important;
-  color: #999999 !important;
-  border: 0 none !important;
-  font-size: 16px !important;
-  font-weight: 800 !important;
-  cursor: pointer !important;
-  padding: 0 !important;
-  width: 20px !important;
-  height: 20px !important;
-  box-shadow: none !important;
-}
-
-.cart-remove-button:hover {
-  transform: none !important;
-  box-shadow: none !important;
+  .cart-drawer .cart-item__quantity {
+    grid-column: 2 / 4 !important;
+    grid-row: 2 !important;
+    padding: 0 0 0 12px !important;
+  }
+  
+  .cart-drawer .cart-item__quantity-wrapper {
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  .cart-drawer .cart-remove-button {
+    position: absolute !important;
+    top: 12px !important;
+    right: 16px !important;
+    z-index: 2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 
 /* 7. Footer Overrides */
 .drawer__footer {
-  border-top: 1px solid #eeeeee !important;
-  padding: 15.75px 16px !important;
-  background-color: #ffffff !important;
+  border-top: 1px solid rgba(26,42,34,0.1) !important;
+  padding: 16px !important;
+  background-color: #F8F3E7 !important;
 }
 
 /* Subtotal Row */
@@ -4479,7 +4582,7 @@ details-disclosure > details {
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  color: #EF1400 !important;
+  color: #1A2A22 !important;
   font-weight: 700 !important;
   margin: 0 0 10px 0 !important;
 }
@@ -4488,7 +4591,7 @@ details-disclosure > details {
   font-family: "Helvetica Now Variable", -apple-system, sans-serif !important;
   font-size: 15.75px !important;
   font-weight: 700 !important;
-  color: #EF1400 !important;
+  color: #1A2A22 !important;
   margin: 0 !important;
 }
 
@@ -4496,7 +4599,7 @@ details-disclosure > details {
   font-family: "Helvetica Now Variable", -apple-system, sans-serif !important;
   font-size: 15.75px !important;
   font-weight: 700 !important;
-  color: #EF1400 !important;
+  color: #8D3B2D !important; /* Vura Terracotta for total price */
   margin: 0 !important;
 }
 
@@ -4505,16 +4608,16 @@ details-disclosure > details {
   display: none !important;
 }
 
-/* 8. Nectar Coins Message Box */
+/* 8. Vura Coins Message Box */
 .vura-coins-container {
   margin: 4px 0 !important;
 }
 
 .vura-coins-box {
-  background-color: #fff3f3 !important;
-  border: 0 none !important;
+  background-color: #FFF9E6 !important; /* Vura Soft Saffron */
+  border: 1px solid rgba(26,42,34,0.08) !important;
   border-radius: 6px !important;
-  padding: 6px 10px !important;
+  padding: 8px 12px !important;
   text-align: left !important;
 }
 
@@ -4525,61 +4628,54 @@ details-disclosure > details {
 .vura-coins-title {
   font-size: 12px !important;
   font-weight: 600 !important;
-  color: #e00000 !important;
+  color: #8D3B2D !important; /* Vura Terracotta */
   justify-content: flex-start !important;
   line-height: 1.3 !important;
 }
 
-.vura-coin-emoji {
-  animation: none !important;
-}
-
 .vura-coins-subtext {
   font-size: 10px !important;
-  color: #888888 !important;
+  color: #4A5750 !important;
   margin-top: 2px !important;
   font-weight: 400 !important;
 }
 
-/* Hide accordion details */
+/* Show accordion details so users are educated */
 .vura-coins-education {
-  display: none !important;
+  display: block !important;
 }
 
-/* 9. High-Contrast Checkout Button */
-.cart__ctas {
-  padding: 0 !important;
-  margin: 10px 0 0 0 !important;
-}
-
+/* 9. Commerce CTA Button (VURA Brand Theme pressed style) */
 .cart__checkout-button.button {
   width: 100% !important;
   height: 48px !important;
-  background-color: #EF1400 !important;
-  color: #ffffff !important;
+  background-color: #ffc03f !important; /* Vura Saffron */
+  color: #0e2118 !important; /* Vura Forest Deep */
   font-family: "Helvetica Now Variable", -apple-system, sans-serif !important;
   font-size: 15.75px !important;
   font-weight: 800 !important;
-  border-radius: 0px !important; /* Square corners */
-  border: 0 none !important;
-  box-shadow: none !important;
+  border-radius: 999px !important; /* Unified Oval */
+  border: 1px solid #0e2118 !important;
+  box-shadow: 3px 3px 0 0 #8d3b2d !important; /* Terracotta Drop Shadow */
   letter-spacing: -0.2px !important;
   text-transform: uppercase !important;
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  transition: all 0.15s ease !important;
 }
 
 .cart__checkout-button.button:hover {
-  transform: none !important;
-  box-shadow: none !important;
-  background-color: #d61200 !important;
+  background-color: #F2BD53 !important; /* Saffron Soft */
+  transform: translate(-1px, -1px) !important;
+  box-shadow: 4px 4px 0 0 #8d3b2d !important;
 }
 
 .cart__checkout-button.button:active {
-  transform: none !important;
-  box-shadow: none !important;
+  transform: translate(2px, 2px) !important;
+  box-shadow: 0 0 0 0 #8d3b2d !important;
+  background-color: #e8a82a !important; /* Saffron Deep */
 }
 
 

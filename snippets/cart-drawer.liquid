@@ -103,7 +103,7 @@
 
               <div class="vura-cart-shipping-progress">
                 <div class="vura-cart-progress__bar-bg">
-                  <div class="vura-cart-progress__bar-fill" style="width: {{ percent }}%;"></div>
+                  <div class="vura-cart-progress__bar-fill" style="width: {{ percent }}%;">&nbsp;</div>
                 </div>
                 <div class="vura-cart-progress__text">
                   {%- if subtotal < threshold -%}
@@ -330,6 +330,12 @@
                                     value="{{ item.quantity }}"
                                     id="Drawer-quantity-{{ item.index | plus: 1 }}"
                                     data-index="{{ item.index | plus: 1 }}"
+                                    min="{{ item.variant.quantity_rule.min }}"
+                                    {% if item.variant.quantity_rule.max != null %}
+                                      max="{{ item.variant.quantity_rule.max }}"
+                                    {% endif %}
+                                    step="{{ item.variant.quantity_rule.increment }}"
+                                    data-min="{{ item.variant.quantity_rule.min }}"
                                   >
                                   <button class="quantity__button" name="plus" type="button">+</button>
                                 </quantity-input>
