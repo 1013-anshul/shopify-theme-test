@@ -1337,6 +1337,10 @@ class CartPerformance {
 document.addEventListener('DOMContentLoaded', function() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('add-to-cart') === 'true') {
+    const onePackCard = document.querySelector('.vura-bundle-card[data-qty="1"]');
+    if (onePackCard) {
+      onePackCard.click();
+    }
     setTimeout(function() {
       const atcButton = document.querySelector('.product-form__submit') || document.getElementById('AddToCartBtn');
       if (atcButton) {
@@ -1382,7 +1386,7 @@ document.addEventListener('DOMContentLoaded', () => {
   observer.observe(document.body, { childList: true, subtree: true });
 });
 
-// 3. Shipping Confetti Celebration
+// 3. VURA Celebration Confetti (using theme colors)
 function triggerConfetti() {
   const container = document.createElement('div');
   container.style.position = 'fixed';
@@ -1394,8 +1398,9 @@ function triggerConfetti() {
   container.style.zIndex = '99999';
   document.body.appendChild(container);
 
-  const colors = ['#ffc03f', '#8d3b2d', '#637746', '#f8f3e7', '#ffa800'];
-  const particleCount = 120;
+  // VURA Theme Colors: Forest Green, Terracotta, Saffron, Sage, Cream
+  const colors = ['#162D24', '#8D3B2D', '#FFC03F', '#637746', '#F8F3E7'];
+  const particleCount = 150;
 
   for (let i = 0; i < particleCount; i++) {
     const p = document.createElement('div');
@@ -1436,26 +1441,132 @@ function triggerConfetti() {
   setTimeout(() => container.remove(), 4000);
 }
 
-function checkFreeShippingConfetti(subtotal) {
-  const threshold = 99900; // ₹999.00 in paisa
-  if (subtotal >= threshold) {
-    if (!window.freeShippingUnlocked) {
-      window.freeShippingUnlocked = true;
-      triggerConfetti();
-    }
-  } else {
-    window.freeShippingUnlocked = false;
-  }
+// Show unlocked item popup message
+function showUnlockedPopup() {
+  const existing = document.getElementById('vura-unlock-popup');
+  if (existing) existing.remove();
+
+  const popup = document.createElement('div');
+  popup.id = 'vura-unlock-popup';
+  popup.style.cssText = `
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translate(-50%, -100px);
+    background: #162D24;
+    color: #F8F3E7;
+    border: 1px solid #FFC03F;
+    box-shadow: 0 8px 30px rgba(14,33,24,0.35);
+    padding: 14px 24px;
+    border-radius: 30px;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body, Inter, sans-serif);
+    font-size: 13px;
+    font-weight: 600;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+  `;
+  popup.innerHTML = `
+    <span style="font-size: 16px;">🎉</span>
+    <span>You have unlocked <strong style="color: #FFC03F;">1 FREE product!</strong></span>
+  `;
+  document.body.appendChild(popup);
+
+  setTimeout(() => {
+    popup.style.transform = 'translate(-50%, 0)';
+  }, 100);
+
+  setTimeout(() => {
+    popup.style.transform = 'translate(-50%, -100px)';
+    setTimeout(() => popup.remove(), 500);
+  }, 4000);
 }
 
+// Check Buy 2 Get 1 quantity celebration
+function checkCartCelebration(cart) {
+  let totalQty = 0;
+  if (cart && cart.items) {
+    cart.items.forEach(item => {
+      totalQty += item.quantity;
+    });
+  }
+
+  if (typeof window.vuraPrevCartQty === 'undefined') {
+    window.vuraPrevCartQty = totalQty;
+    return;
+  }
+
+  if (totalQty >= 2 && window.vuraPrevCartQty < 2) {
+    triggerConfetti();
+    showUnlockedPopup();
+  }
+
+  window.vuraPrevCartQty = totalQty;
+}
+
+// Animate the progress bar and plus highlight
+window.vuraAnimateCartDrawerUI = function() {
+  const container = document.querySelector('.vura-cart-shipping-progress');
+  const fill = document.querySelector('.vura-cart-progress__bar-fill');
+  const plusBtn = document.querySelector('.cart-drawer .quantity__button[name="plus"]');
+
+  if (!container || !fill) return;
+
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+
+  if (plusBtn) {
+    plusBtn.classList.remove('plus-button-highlight');
+  }
+
+  setTimeout(() => {
+    const targetPercent = container.getAttribute('data-target-percent') || '0';
+    fill.style.transition = 'width 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+    fill.style.width = targetPercent + '%';
+
+    if (targetPercent === '50') {
+      setTimeout(() => {
+        const currentPlusBtn = document.querySelector('.cart-drawer .quantity__button[name="plus"]');
+        if (currentPlusBtn) {
+          currentPlusBtn.classList.add('plus-button-highlight');
+        }
+      }, 1200);
+    }
+  }, 100);
+};
+
+// Scroll listener to minimize Sticky ATC
+let lastScrollY = window.scrollY;
+window.addEventListener('scroll', () => {
+  const stickyAtc = document.querySelector('.vura-sticky-atc');
+  if (!stickyAtc) return;
+
+  const currentScrollY = window.scrollY;
+  if (currentScrollY > lastScrollY && currentScrollY > 100) {
+    stickyAtc.classList.add('vura-sticky-atc--minimized');
+  } else if (currentScrollY < lastScrollY) {
+    stickyAtc.classList.remove('vura-sticky-atc--minimized');
+  }
+  lastScrollY = currentScrollY;
+}, { passive: true });
+
 document.addEventListener('DOMContentLoaded', () => {
-  window.freeShippingUnlocked = (window.vuraCurrentSubtotal || 0) >= 99900;
   if (window.PUB_SUB_EVENTS && typeof subscribe === 'function') {
     subscribe(PUB_SUB_EVENTS.cartUpdate, function() {
       fetch(window.Shopify.routes.root + 'cart.js')
         .then(response => response.json())
         .then(cart => {
-          checkFreeShippingConfetti(cart.total_price);
+          checkCartCelebration(cart);
+          setTimeout(() => {
+            if (typeof window.vuraAnimateCartDrawerUI === 'function') {
+              window.vuraAnimateCartDrawerUI();
+            }
+          }, 100);
         });
     });
   }

@@ -98,10 +98,18 @@
   .vura-bundle-card:hover {
     border-color: rgba(99,119,70,0.4);
   }
+  @keyframes vuraCardGlow {
+    0%, 100% {
+      box-shadow: 0 0 0 1px #637746, 0 0 0 0 rgba(99, 119, 70, 0);
+    }
+    50% {
+      box-shadow: 0 0 0 1.5px #637746, 0 0 8px 3px rgba(99, 119, 70, 0.3);
+    }
+  }
   .vura-bundle-card--selected {
     border-color: #637746;
-    box-shadow: 0 0 0 1px #637746;
     background: rgba(99,119,70,0.03);
+    animation: vuraCardGlow 2.5s infinite ease-in-out;
   }
   .vura-bundle-card__badge {
     position: absolute;

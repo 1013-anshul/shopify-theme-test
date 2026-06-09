@@ -93,9 +93,7 @@
             </span>
             {%- render 'loading-spinner' -%}
           </button>
-          {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
-          {%- endif -%}
+
         </div>
       {%- endform -%}
     </product-form>

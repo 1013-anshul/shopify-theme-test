@@ -129,6 +129,14 @@
           }
         }
       });
+
+      // Initial sync from main quantity input on load
+      setTimeout(function() {
+        var mainQty = getMainQtyInput();
+        if (mainQty && qtyInput) {
+          qtyInput.value = mainQty.value;
+        }
+      }, 500);
     })();
   </script>
 {%- endif -%}

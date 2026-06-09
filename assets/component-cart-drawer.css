@@ -112,6 +112,7 @@ cart-drawer:not(.is-empty) .cart-drawer__collection {
 .drawer__footer {
   border-top: 0.1rem solid rgba(var(--color-foreground), 0.2);
   padding: 1.5rem 0;
+  flex-shrink: 0 !important;
 }
 
 cart-drawer-items.is-empty + .drawer__footer {
@@ -162,6 +163,8 @@ cart-drawer {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .cart-drawer__collection {
@@ -184,8 +187,9 @@ cart-drawer {
 }
 
 cart-drawer-items {
-  overflow: auto;
-  flex: 1;
+  overflow-y: auto !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
 }
 
 @media screen and (max-height: 650px) {

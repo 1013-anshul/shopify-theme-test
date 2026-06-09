@@ -4768,11 +4768,14 @@ details-disclosure > details {
 
 .vura-announcement-slider {
   display: flex !important;
-  flex-direction: column !important;
+  flex-direction: row !important;
+  width: 300% !important;
   animation: vuraAnnounceSlide 9s infinite ease-in-out !important;
 }
 
 .vura-announcement-slide {
+  width: 33.333% !important;
+  flex: 0 0 33.333% !important;
   height: 20px !important;
   line-height: 20px !important;
   display: flex !important;
@@ -4784,16 +4787,16 @@ details-disclosure > details {
 
 @keyframes vuraAnnounceSlide {
   0%, 28% {
-    transform: translateY(0);
+    transform: translateX(0);
   }
   33%, 61% {
-    transform: translateY(-20px);
+    transform: translateX(-33.333%);
   }
   66%, 94% {
-    transform: translateY(-40px);
+    transform: translateX(-66.666%);
   }
   100% {
-    transform: translateY(0);
+    transform: translateX(0);
   }
 }
 
@@ -4984,16 +4987,73 @@ details-disclosure > details {
   100% { background-position: 200% 50%; }
 }
 
-/* Highlight '+' button when quantity is exactly 1 */
-.qty-is-one .quantity__button[name="plus"] {
+/* Glow animation for plus button inside cart (activated after bar fills) */
+@keyframes vuraPlusGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(141, 59, 45, 0);
+    background-color: #ffffff;
+  }
+  50% {
+    box-shadow: 0 0 10px 4px rgba(141, 59, 45, 0.4);
+    background-color: rgba(141, 59, 45, 0.1);
+  }
+}
+.plus-button-highlight {
   background: #ffc03f !important; /* Vura Saffron */
   color: #0e2118 !important;
-  animation: pulse-plus-button 2s infinite ease-in-out !important;
+  animation: vuraPlusGlow 1.8s infinite ease-in-out !important;
+  border-radius: 50% !important;
 }
 
-@keyframes pulse-plus-button {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); background: #ffa800 !important; }
+/* Add to Cart button shine effect */
+.product-form__submit,
+.vura-sticky-atc__btn,
+.cart__checkout-button {
+  position: relative !important;
+  overflow: hidden !important;
+}
+.product-form__submit::after,
+.vura-sticky-atc__btn::after,
+.cart__checkout-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  animation: vuraBtnShine 4s infinite ease-in-out !important;
+}
+@keyframes vuraBtnShine {
+  0% { left: -150%; }
+  15% { left: 150%; }
+  100% { left: 150%; }
+}
+
+/* Minimized Sticky ATC layout on scroll down (swipe up) */
+.vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__image,
+.vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__info {
+  display: none !important;
+}
+.vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__inner {
+  padding: 8px 16px !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+.vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__qty {
+  height: 34px !important;
+}
+.vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__btn {
+  height: 34px !important;
+  padding: 0 20px !important;
+  font-size: 11px !important;
+  flex: 1 !important;
 }
 
 
