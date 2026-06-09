@@ -33,7 +33,7 @@ class CartDrawer extends HTMLElement {
     setTimeout(() => {
       this.classList.add('animate', 'active');
       if (typeof window.vuraAnimateCartDrawerUI === 'function') {
-        window.vuraAnimateCartDrawerUI();
+        window.vuraAnimateCartDrawerUI(true);
       }
     });
 

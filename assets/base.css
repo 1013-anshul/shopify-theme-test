@@ -3993,61 +3993,6 @@ details-disclosure > details {
   }
 }
 
-/* ===== Cart Drawer Announcements Carousel ===== */
-.vura-cart-announcements {
-  overflow: hidden;
-  background: var(--vura-forest-deep, #0E2118);
-  color: var(--vura-cream, #F4EFE3);
-  padding: 8px 12px;
-  font-family: var(--font-body, Inter, sans-serif);
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-align: center;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(244,239,227,0.1);
-}
-
-.vura-announcement-slider {
-  position: relative;
-  height: 16px;
-  width: 100%;
-  overflow: hidden;
-}
-
-.vura-announcement-slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  animation: vuraCartSlide 12s infinite;
-  line-height: 16px;
-}
-
-.vura-announcement-slide:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.vura-announcement-slide:nth-child(2) {
-  animation-delay: 4s;
-}
-
-.vura-announcement-slide:nth-child(3) {
-  animation-delay: 8s;
-}
-
-@keyframes vuraCartSlide {
-  0% { opacity: 0; transform: translateY(100%); }
-  4% { opacity: 1; transform: translateY(0); }
-  30% { opacity: 1; transform: translateY(0); }
-  34% { opacity: 0; transform: translateY(-100%); }
-  100% { opacity: 0; transform: translateY(-100%); }
-}
-
 /* ===== Free Shipping Progress Bar ===== */
 .vura-cart-shipping-progress {
   padding: 12px 16px;
@@ -4061,18 +4006,11 @@ details-disclosure > details {
   gap: 8px;
 }
 
-.vura-cart-progress__text {
-  font-size: 12px;
-  color: var(--vura-forest-deep, #0E2118);
-  line-height: 1.4;
-  text-align: center;
-}
-
 .vura-cart-progress__bar-bg {
   height: 6px;
   background: rgba(26,42,34,0.1);
   border-radius: 99px;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 }
 
@@ -4326,6 +4264,8 @@ details-disclosure > details {
   border-radius: 10px !important;
   margin: 8px 0 0 !important;
   width: 100% !important;
+  overflow: visible !important;
+  position: relative !important;
 }
 
 .vura-cart-progress__bar-fill {
@@ -4333,6 +4273,7 @@ details-disclosure > details {
   border-radius: 10px !important;
   height: 100% !important;
   display: block !important; /* Prevent empty div from being hidden */
+  position: relative !important;
 }
 
 .vura-cart-progress__text {
@@ -4978,7 +4919,7 @@ details-disclosure > details {
   background-size: 200% 100% !important;
   animation: progress-shimmer 2s infinite linear !important;
   border-radius: 99px !important;
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   box-shadow: 0 0 8px rgba(99, 119, 70, 0.3) !important;
 }
 
@@ -5126,6 +5067,45 @@ details-disclosure > details {
   padding: 0 20px !important;
   font-size: 11px !important;
   flex: 1 !important;
+}
+
+/* Saffron flash highlight when free item is unlocked/added */
+@keyframes vuraCartHighlight {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(255, 192, 63, 0);
+    background-color: transparent;
+  }
+  30%, 70% {
+    box-shadow: inset 0 0 35px rgba(255, 192, 63, 0.45);
+    background-color: rgba(255, 192, 63, 0.05);
+  }
+}
+.vura-cart-drawer--highlight {
+  animation: vuraCartHighlight 1.2s ease-in-out !important;
+}
+
+/* Prevent quantity selector overflow hidden from clipping the pulsing plus button */
+.cart-drawer .quantity:has(.plus-button-highlight) {
+  overflow: visible !important;
+}
+
+/* Bouncy bounce-in animation for free product unlock popup */
+@keyframes vuraPopupBounceIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -120px) scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, 20px) scale(1.1);
+  }
+  80% {
+    transform: translate(-50%, -5px) scale(0.95);
+  }
+  100% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
 }
 
 

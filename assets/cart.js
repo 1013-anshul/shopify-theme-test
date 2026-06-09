@@ -204,9 +204,6 @@ class CartItems extends HTMLElement {
           });
 
           // Trigger VURA cart updates instantly
-          if (typeof window.checkCartCelebration === 'function') {
-            window.checkCartCelebration(parsedState);
-          }
           if (typeof window.vuraAnimateCartDrawerUI === 'function') {
             window.vuraAnimateCartDrawerUI();
           }

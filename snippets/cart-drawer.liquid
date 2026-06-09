@@ -104,7 +104,7 @@
                 {%- assign percent = 0 -%}
               {%- endif -%}
 
-              <div class="vura-cart-shipping-progress{% if total_qty == 1 %} vura-progress--stuck{% endif %}" data-target-percent="{{ percent }}">
+              <div class="vura-cart-shipping-progress{% if total_qty == 1 %} vura-progress--stuck{% endif %}" data-target-percent="{{ percent }}" data-total-qty="{{ total_qty }}">
                 <div class="vura-cart-progress__bar-bg">
                   <div class="vura-cart-progress__bar-fill" style="width: 0%;">
                     <span class="vura-progress-rocket">🚀</span>
