@@ -44,16 +44,29 @@
       var btn = document.getElementById('VuraStickyAtcBtn');
       if (!bar || !btn) return;
 
-      // Find the original buy buttons section to determine show/hide threshold
-      var buyButtons = document.querySelector('.product-form__buttons');
-      if (!buyButtons) return;
-
       var isVisible = false;
+      var lastScrollY = window.scrollY;
 
       function checkScroll() {
-        var rect = buyButtons.getBoundingClientRect();
-        // Show sticky bar when the original buy buttons are scrolled out of view
-        var shouldShow = rect.bottom < 0;
+        var currentScrollY = window.scrollY;
+
+        // Prevent action on negative scrolling/momentum bouncing on iOS
+        if (currentScrollY < 0) return;
+
+        var shouldShow = isVisible;
+
+        if (currentScrollY <= 50) {
+          // Force hide at the very top of the page
+          shouldShow = false;
+        } else if (currentScrollY > lastScrollY) {
+          // Scrolling down -> show
+          shouldShow = true;
+        } else if (currentScrollY < lastScrollY) {
+          // Scrolling up -> hide
+          shouldShow = false;
+        }
+
+        lastScrollY = currentScrollY;
 
         if (shouldShow !== isVisible) {
           isVisible = shouldShow;
