@@ -590,6 +590,18 @@
             {{ 'sections.cart.checkout' | t }}
           </button>
         </div>
+        
+        <!-- VURA Cart Trust Badges -->
+        <div class="vura-cart-trust-badges">
+          <div class="vura-cart-trust-text">
+            <span class="vura-lock-icon">🔒</span> Secure 256-Bit SSL Checkout
+          </div>
+          <div class="vura-cart-payment-icons">
+            {%- for type in shop.enabled_payment_types -%}
+              {{ type | payment_type_svg_tag: class: 'vura-payment-svg' }}
+            {%- endfor -%}
+          </div>
+        </div>
       </div>
     </div>
   </div>

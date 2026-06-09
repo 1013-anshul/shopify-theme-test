@@ -4678,4 +4678,220 @@ details-disclosure > details {
   background-color: #e8a82a !important; /* Saffron Deep */
 }
 
+/* ===== 10. Visual Audit & Brand Identity Overhauls ===== */
+
+/* Roca One Brand Heading for Cart Drawer */
+.drawer__heading {
+  font-family: var(--font-display, "Roca One", Recoleta, Georgia, serif) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #1a2a22 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin: 0 !important;
+  line-height: 1.2 !important;
+}
+
+/* Roca One Brand Totals */
+.totals__total {
+  font-family: var(--font-display, "Roca One", Recoleta, Georgia, serif) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #1a2a22 !important;
+  margin: 0 !important;
+}
+
+.totals__total-value {
+  font-family: var(--font-display, "Roca One", Recoleta, Georgia, serif) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #8d3b2d !important; /* Vura Terracotta */
+  margin: 0 !important;
+}
+
+/* Standardized Premium Image Corner Rounding */
+.cart-drawer .cart-item__image {
+  border-radius: 6px !important;
+}
+
+/* Vura Coins Collapsible Accordion Whitespace Improvements */
+.vura-coins-education {
+  margin-top: 8px !important;
+  background-color: rgba(26,42,34,0.02) !important;
+  border: 1px solid rgba(26,42,34,0.08) !important;
+  border-radius: 6px !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+.vura-coins-summary {
+  padding: 8px 12px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #4a5750 !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.vura-coins-details {
+  padding: 12px 16px !important;
+  border-top: 1px solid rgba(26,42,34,0.06) !important;
+  background-color: #fffdf7 !important; /* Extremely soft light cream inside details */
+}
+
+.vura-coins-details ul {
+  margin: 0 !important;
+  padding-left: 16px !important;
+}
+
+.vura-coins-details li {
+  font-size: 11.5px !important;
+  color: #4a5750 !important;
+  line-height: 1.5 !important;
+  margin-bottom: 6px !important;
+}
+
+.vura-coins-details li:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Announcement Slider Auto-Slide Keyframe Animation */
+.vura-cart-announcements {
+  height: 28px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  border-radius: 4px !important;
+}
+
+.vura-announcement-slider {
+  display: flex !important;
+  flex-direction: column !important;
+  animation: vuraAnnounceSlide 9s infinite ease-in-out !important;
+}
+
+.vura-announcement-slide {
+  height: 20px !important;
+  line-height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+@keyframes vuraAnnounceSlide {
+  0%, 28% {
+    transform: translateY(0);
+  }
+  33%, 61% {
+    transform: translateY(-20px);
+  }
+  66%, 94% {
+    transform: translateY(-40px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Trust Badges & SSL Checkout Styling */
+.vura-cart-trust-badges {
+  margin-top: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 8px !important;
+  opacity: 0.9 !important;
+}
+
+.vura-cart-trust-text {
+  font-size: 10px !important;
+  color: #4a5750 !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+.vura-lock-icon {
+  font-size: 11px !important;
+}
+
+.vura-cart-payment-icons {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  max-width: 240px !important;
+}
+
+.vura-payment-svg {
+  width: 32px !important;
+  height: 20px !important;
+  object-fit: contain !important;
+}
+
+/* ===== 11. Cart Drawer UX/UI & Layout Polish Overrides ===== */
+
+/* Bypass relative positioning of quantity popover to position remove button relative to .cart-item */
+.cart-drawer quantity-popover {
+  position: static !important;
+}
+
+/* Strip global button styles (shadows, borders, padding) from the cart item remove button */
+.cart-drawer .cart-item cart-remove-button .cart-remove-button,
+.cart-drawer .cart-item .cart-remove-button {
+  background: transparent !important;
+  border: 0 none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  color: #999999 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  transform: none !important;
+  top: 12px !important;
+  right: 16px !important;
+}
+
+.cart-drawer .cart-item cart-remove-button .cart-remove-button:hover,
+.cart-drawer .cart-item .cart-remove-button:hover {
+  color: #8d3b2d !important;
+  background: transparent !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Force item prices and discount strikethroughs to be highly visible (dark ink color) on cream background */
+.cart-drawer .cart-item__totals .price,
+.cart-drawer .cart-item__price-wrapper .price,
+.cart-drawer .cart-item__price-wrapper .cart-item__old-price,
+.cart-drawer .cart-item__discounted-prices s,
+.cart-drawer .cart-item__discounted-prices strong {
+  color: #1A2A22 !important;
+}
+
+/* Fix invisible cream-on-cream text contrast in empty cart state warnings */
+.cart-drawer .cart__empty-text,
+.cart-drawer .cart__login-title,
+.cart-drawer .cart__login-paragraph,
+.cart-drawer .cart__login-paragraph a {
+  color: #1A2A22 !important;
+}
+
+/* Breathing room under the drawer header */
+.vura-cart-announcements {
+  margin: 8px 16px 10px !important;
+}
+
+
 
