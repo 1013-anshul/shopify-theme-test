@@ -1491,6 +1491,7 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
   const totalQty = parseInt(container.getAttribute('data-total-qty') || '0');
   const prevQty = typeof window.vuraPrevCartQty === 'number' ? window.vuraPrevCartQty : 0;
   const targetPercent = container.getAttribute('data-target-percent') || '0';
+  const prevPercent = typeof window.vuraPrevCartPercent === 'number' ? window.vuraPrevCartPercent : 0;
 
   console.log('VURA: totalQty =', totalQty, 'prevQty =', prevQty, 'isOpening =', isOpening);
 
@@ -1570,10 +1571,21 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
     // Standard update (AJAX response, e.g. clicking + or - buttons)
     window.vuraPrevCartQty = totalQty;
 
-    // Set width smoothly
-    fill.style.removeProperty('transition');
-    fill.offsetHeight;
-    fill.style.width = targetPercent + '%';
+    if (prevPercent === parseInt(targetPercent)) {
+      // If the percentage hasn't changed, set it instantly without transition
+      fill.style.setProperty('transition', 'none', 'important');
+      fill.style.width = targetPercent + '%';
+      fill.offsetHeight; // force reflow
+    } else {
+      // Transition smoothly from the previous percentage to the target percentage
+      fill.style.setProperty('transition', 'none', 'important');
+      fill.style.width = prevPercent + '%';
+      fill.offsetHeight; // force reflow
+
+      fill.style.removeProperty('transition');
+      fill.offsetHeight; // force reflow
+      fill.style.width = targetPercent + '%';
+    }
 
     // Highlight plus button if at 50%
     if (targetPercent === '50') {
@@ -1614,6 +1626,9 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
       }, 600);
     }
   }
+
+  // Save current percent as prevPercent for the next animation
+  window.vuraPrevCartPercent = parseInt(targetPercent);
 };
 
 // Scroll listener to minimize Sticky ATC
@@ -1635,8 +1650,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.vura-cart-shipping-progress');
   if (container) {
     window.vuraPrevCartQty = parseInt(container.getAttribute('data-total-qty') || '0');
+    window.vuraPrevCartPercent = parseInt(container.getAttribute('data-target-percent') || '0');
   } else {
     window.vuraPrevCartQty = 0;
+    window.vuraPrevCartPercent = 0;
   }
 
   if (typeof PUB_SUB_EVENTS !== 'undefined' && typeof subscribe === 'function') {
