@@ -5049,6 +5049,68 @@ details-disclosure > details {
   100% { left: 150%; }
 }
 
+/* Inline B2G1 Unlock Message Banner styling */
+.vura-unlock-banner {
+  background: #162D24 !important; /* Forest Green */
+  color: #F8F3E7 !important; /* Cream */
+  border: 0px solid #FFC03F !important; /* Gold border initially 0px */
+  border-radius: 12px !important;
+  margin: 0 16px !important;
+  padding: 0 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  font-family: var(--font-body, Inter, sans-serif) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  overflow: hidden !important;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.4s ease, 
+              padding 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              margin 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-width 0.3s ease !important;
+  box-sizing: border-box !important;
+}
+
+.vura-unlock-banner.show {
+  max-height: 90px !important;
+  opacity: 1 !important;
+  padding: 12px 16px !important;
+  margin: 12px 16px !important;
+  border: 2px solid #FFC03F !important;
+  box-shadow: 0 8px 20px rgba(22, 45, 36, 0.2), 0 0 12px rgba(255, 192, 63, 0.25) !important;
+}
+
+.vura-unlock-banner-rocket {
+  font-size: 20px !important;
+  display: inline-block !important;
+  animation: rocketPulse 1s infinite alternate !important;
+}
+
+/* Slower and highly prominent Active Checkout Button Shine */
+.cart__checkout-button.checkout-shine-active::after {
+  width: 120% !important; /* Wider shine */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 25%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 255, 255, 0.3) 75%,
+    rgba(255, 255, 255, 0) 100%
+  ) !important;
+  animation: vuraActiveShine 2.8s infinite linear !important; /* Slower and more continuous sweep */
+}
+
+@keyframes vuraActiveShine {
+  0% { left: -150%; }
+  40% { left: 150%; }
+  100% { left: 150%; }
+}
+
 /* Minimized Sticky ATC layout on scroll down (swipe up) */
 .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__image,
 .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__info {

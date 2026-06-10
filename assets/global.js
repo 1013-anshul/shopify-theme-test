@@ -250,6 +250,14 @@ class QuantityInput extends HTMLElement {
 
     const isCart = this.classList.contains('cart-quantity');
 
+    if (isCart && btn.name === 'plus' && previousValue === 1) {
+      btn.classList.remove('plus-button-highlight');
+      const checkoutBtn = document.getElementById('CartDrawer-Checkout');
+      if (checkoutBtn) {
+        checkoutBtn.classList.add('checkout-shine-active');
+      }
+    }
+
     if (btn.name === 'plus') {
       if (parseInt(this.input.dataset.min || '1') > parseInt(this.input.step || '1') && previousValue == 0) {
         this.input.value = this.input.dataset.min;
@@ -1454,141 +1462,142 @@ function triggerConfetti() {
   setTimeout(() => container.remove(), 4000);
 }
 
-// Show unlocked item popup message
-function showUnlockedPopup() {
-  const existing = document.getElementById('vura-unlock-popup');
-  if (existing) existing.remove();
-
-  const popup = document.createElement('div');
-  popup.id = 'vura-unlock-popup';
-  popup.style.cssText = `
-    position: fixed;
-    top: 90px;
-    left: 50%;
-    transform: translate(-50%, -120px) scale(0.7);
-    width: 90%;
-    max-width: 420px;
-    box-sizing: border-box;
-    background: #162D24; /* Forest Green */
-    color: #F8F3E7; /* Cream */
-    border: 3px solid #FFC03F; /* Gold border */
-    box-shadow: 0 16px 45px rgba(22,45,36,0.5), 0 0 25px rgba(255,192,63,0.3);
-    padding: 12px 24px;
-    border-radius: 30px;
-    z-index: 100000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-family: var(--font-body, Inter, sans-serif);
-    font-size: 13px;
-    font-weight: 700;
-    pointer-events: none;
-    text-align: center;
-    opacity: 0;
-  `;
-  popup.innerHTML = `
-    <span style="font-size: 24px; animation: rocketPulse 1s infinite alternate; display: inline-block;">🚀</span>
-    <span>You have unlocked <strong style="color: #FFC03F; text-shadow: 0 0 8px rgba(255,192,63,0.45);">1 FREE product!</strong> <span style="font-weight: normal; opacity: 0.95;">Added to cart.</span></span>
-  `;
-  document.body.appendChild(popup);
-
-  // Trigger bouncy entry animation
-  popup.style.animation = 'vuraPopupBounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
-
-  // Trigger fly out (into the cart drawer area on the right)
-  setTimeout(() => {
-    popup.style.animation = 'none'; // reset
-    popup.offsetHeight; // trigger reflow
-    popup.style.transition = 'transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.8s ease';
-    popup.style.transform = 'translate(calc(-50% + 42vw), 180px) scale(0.1)';
-    popup.style.opacity = '0';
-    
-    // Highlight flash on the drawer as the item lands
-    const drawerInner = document.querySelector('.drawer__inner');
-    if (drawerInner) {
-      drawerInner.classList.add('vura-cart-drawer--highlight');
-      setTimeout(() => {
-        drawerInner.classList.remove('vura-cart-drawer--highlight');
-      }, 1200);
-    }
-
-    setTimeout(() => popup.remove(), 850);
-  }, 2800);
+// Show unlocked item message in inline banner
+function showUnlockedBanner() {
+  const banner = document.getElementById('vura-unlock-banner');
+  if (banner) {
+    banner.classList.add('show');
+    setTimeout(() => {
+      banner.classList.remove('show');
+    }, 2800);
+  }
 }
 
 // Animate the progress bar and plus highlight
 window.vuraAnimateCartDrawerUI = function(isOpening) {
+  if (window.vuraCartOpeningAnimationInProgress && !isOpening) {
+    console.log('VURA: Ignoring animate request during opening animation.');
+    return;
+  }
+
   const container = document.querySelector('.vura-cart-shipping-progress');
   const fill = document.querySelector('.vura-cart-progress__bar-fill');
   const plusBtn = document.querySelector('.cart-drawer .quantity__button[name="plus"]');
+  const checkoutBtn = document.getElementById('CartDrawer-Checkout');
 
   if (!container || !fill) return;
 
   // Read current server-rendered total quantity
   const totalQty = parseInt(container.getAttribute('data-total-qty') || '0');
   const prevQty = typeof window.vuraPrevCartQty === 'number' ? window.vuraPrevCartQty : 0;
+  const targetPercent = container.getAttribute('data-target-percent') || '0';
 
-  // Trigger celebration on transitions
-  console.log('VURA: totalQty =', totalQty, 'prevQty =', prevQty);
-  if (typeof window.vuraPrevCartQty !== 'undefined') {
-    if (totalQty >= 2 && prevQty < 2) {
-      console.log('VURA: Confetti celebration triggered!');
-      triggerConfetti();
-      showUnlockedPopup();
+  console.log('VURA: totalQty =', totalQty, 'prevQty =', prevQty, 'isOpening =', isOpening);
+
+  // Manage active checkout shine
+  if (checkoutBtn) {
+    if (totalQty >= 2) {
+      checkoutBtn.classList.add('checkout-shine-active');
+    } else {
+      checkoutBtn.classList.remove('checkout-shine-active');
     }
   }
-  window.vuraPrevCartQty = totalQty;
 
-  if (plusBtn) {
+  // Ensure plus highlight is removed when totalQty >= 2
+  if (totalQty >= 2 && plusBtn) {
     plusBtn.classList.remove('plus-button-highlight');
   }
 
-  const targetPercent = container.getAttribute('data-target-percent') || '0';
-
   if (isOpening) {
-    // Reset to 0% instantly before drawer opens
+    window.vuraCartOpeningAnimationInProgress = true;
+    if (window.vuraOpeningTimeout) clearTimeout(window.vuraOpeningTimeout);
+    window.vuraOpeningTimeout = setTimeout(() => {
+      window.vuraCartOpeningAnimationInProgress = false;
+    }, 2500);
+
+    // Save current prevQty, then update window.vuraPrevCartQty
+    window.vuraPrevCartQty = totalQty;
+
+    // Reset progress fill to 0% instantly
     fill.style.setProperty('transition', 'none', 'important');
     fill.style.width = '0%';
 
-    // Start fill transition after drawer slide animation completes (650ms)
+    // Remove plus button pulse highlight
+    if (plusBtn) plusBtn.classList.remove('plus-button-highlight');
+
+    // Smoothly animate progress bar to targetPercent after a delay (e.g. 800ms)
     setTimeout(() => {
       fill.style.removeProperty('transition');
-      fill.offsetHeight; // Force reflow to ensure transition is restored in the DOM
+      fill.offsetHeight; // force reflow
       fill.style.width = targetPercent + '%';
 
+      // If targetPercent is 50%, highlight plus button after fill is completed (1200ms duration)
       if (targetPercent === '50') {
         setTimeout(() => {
+          // Check if total quantity is still 1 before highlighting
+          const currentContainer = document.querySelector('.vura-cart-shipping-progress');
+          const currentQty = currentContainer ? parseInt(currentContainer.getAttribute('data-total-qty') || '0') : 0;
           const currentPlusBtn = document.querySelector('.cart-drawer .quantity__button[name="plus"]');
-          if (currentPlusBtn) {
+          if (currentQty === 1 && currentPlusBtn) {
             currentPlusBtn.classList.add('plus-button-highlight');
           }
         }, 1200);
       }
-    }, 650);
+    }, 800);
+
+    // If totalQty is 2 and we transitioned from 1 (added second item from product page):
+    if (totalQty === 2 && prevQty === 1) {
+      // Confetti and banner are triggered AFTER progress bar completes (800ms + 1200ms = 2000ms)
+      setTimeout(() => {
+        console.log('VURA: Confetti celebration triggered on open!');
+        triggerConfetti();
+        showUnlockedBanner();
+      }, 2000);
+
+      // Auto-update quantity from 2 to 3 after banner is shown (2000ms + 2800ms = 4800ms)
+      setTimeout(() => {
+        const qtyInput = document.querySelector('.cart-drawer .quantity__input');
+        if (qtyInput && parseInt(qtyInput.value) === 2) {
+          qtyInput.value = 3;
+          qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }, 4800);
+    }
+
   } else {
-    // Smooth transition from previous width
+    // Standard update (AJAX response, e.g. clicking + or - buttons)
+    window.vuraPrevCartQty = totalQty;
+
+    // Set width smoothly
     fill.style.removeProperty('transition');
-    fill.offsetHeight; // Force reflow to ensure transition is restored in the DOM
+    fill.offsetHeight;
     fill.style.width = targetPercent + '%';
 
+    // Highlight plus button if at 50%
     if (targetPercent === '50') {
-      const currentPlusBtn = document.querySelector('.cart-drawer .quantity__button[name="plus"]');
-      if (currentPlusBtn && !currentPlusBtn.classList.contains('plus-button-highlight')) {
-        currentPlusBtn.classList.add('plus-button-highlight');
+      if (plusBtn && !plusBtn.classList.contains('plus-button-highlight')) {
+        plusBtn.classList.add('plus-button-highlight');
       }
     }
-  }
 
-  // Auto-update quantity from 2 to 3
-  if (totalQty === 2 && prevQty === 1) {
-    setTimeout(() => {
-      const qtyInput = document.querySelector('.cart-drawer .quantity__input');
-      if (qtyInput && parseInt(qtyInput.value) === 2) {
-        qtyInput.value = 3;
-        qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }, 1500);
+    // Trigger celebration when transitioned from 1 -> 2
+    if (totalQty === 2 && prevQty === 1) {
+      // Confetti and banner are triggered AFTER progress bar completes (1200ms)
+      setTimeout(() => {
+        console.log('VURA: Confetti celebration triggered!');
+        triggerConfetti();
+        showUnlockedBanner();
+      }, 1200);
+
+      // Auto-update quantity from 2 to 3 after banner is shown (1200ms + 2800ms = 4000ms)
+      setTimeout(() => {
+        const qtyInput = document.querySelector('.cart-drawer .quantity__input');
+        if (qtyInput && parseInt(qtyInput.value) === 2) {
+          qtyInput.value = 3;
+          qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }, 4000);
+    }
   }
 
   // Slide-up animation on quantity input when quantity is updated to 3
