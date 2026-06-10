@@ -546,7 +546,11 @@
               disabled
             {% endif %}
           >
-            {{ 'sections.cart.checkout' | t }}
+            <span class="vura-checkout-text">{{ 'sections.cart.checkout' | t }}</span>
+            <span class="vura-checkout-badge-spacer"></span>
+            <span class="vura-checkout-payment-icons">
+              <img src="https://cdn.gokwik.co/v4/images/upi-icons.svg" alt="Payment Icons" width="51" height="20" loading="lazy">
+            </span>
           </button>
         </div>
         
