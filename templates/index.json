@@ -72,10 +72,44 @@
         "padding_top": 60,
         "padding_bottom": 60
       }
+    },
+    "vura-ugc-video": {
+      "type": "vura-ugc-video",
+      "blocks": {
+        "video-0": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"Game-changer for my gym bag\" — Priya, Mumbai"
+          }
+        },
+        "video-1": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"No white marks, no irritation\" — Arjun, Bangalore"
+          }
+        },
+        "video-2": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"My whole family uses it now\" — Meera, Delhi"
+          }
+        }
+      },
+      "block_order": [
+        "video-0",
+        "video-1",
+        "video-2"
+      ],
+      "settings": {
+        "heading": "Hear From Real Users",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "slideshow",
+    "vura-ugc-video",
     "featured-collection-0"
   ]
 }
