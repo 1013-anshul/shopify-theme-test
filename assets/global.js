@@ -1560,8 +1560,15 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
         setTimeout(() => {
           const qtyInput = document.querySelector('.cart-drawer .quantity__input');
           if (qtyInput && parseInt(qtyInput.value) === 2) {
-            qtyInput.value = 3;
-            qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+            const index = qtyInput.dataset.index;
+            const variantId = qtyInput.dataset.quantityVariantId;
+            const cartDrawerItems = document.querySelector('cart-drawer-items') || document.querySelector('cart-items');
+            if (cartDrawerItems) {
+              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'updates[]', variantId);
+            } else {
+              qtyInput.value = 3;
+              qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
           }
         }, 4800);
       }
@@ -1608,8 +1615,15 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
         setTimeout(() => {
           const qtyInput = document.querySelector('.cart-drawer .quantity__input');
           if (qtyInput && parseInt(qtyInput.value) === 2) {
-            qtyInput.value = 3;
-            qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+            const index = qtyInput.dataset.index;
+            const variantId = qtyInput.dataset.quantityVariantId;
+            const cartDrawerItems = document.querySelector('cart-drawer-items') || document.querySelector('cart-items');
+            if (cartDrawerItems) {
+              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'updates[]', variantId);
+            } else {
+              qtyInput.value = 3;
+              qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
           }
         }, 4000);
       }

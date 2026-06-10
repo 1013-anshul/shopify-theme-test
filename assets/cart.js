@@ -163,7 +163,8 @@ class CartItems extends HTMLElement {
     };
 
     if (variantId) {
-      url = window.Shopify.routes.root + 'cart/update.js';
+      const rootPath = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+      url = `${rootPath}cart/update.js`.replace(/\/+/g, '/');
       bodyObj.updates = { [variantId]: quantity };
     } else {
       bodyObj.line = line;
