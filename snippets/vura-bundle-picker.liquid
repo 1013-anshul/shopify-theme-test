@@ -36,7 +36,7 @@
   </label>
 
   <!-- 3 Pack (Best Value — Buy 2 Get 1) -->
-  <label class="vura-bundle-card vura-bundle-card--selected" data-qty="3">
+  <label class="vura-bundle-card vura-bundle-card--selected vura-bundle-card--shine" data-qty="3">
     <input type="radio" name="vura-bundle" value="3" checked class="vura-bundle-radio visually-hidden">
     <span class="vura-bundle-card__badge">BEST VALUE</span>
     <div class="vura-bundle-card__inner">
@@ -205,6 +205,44 @@
       left: auto;
       right: 10px;
       transform: none;
+    }
+  }
+
+  /* Premium shine effect for featured Buy 2 Get 1 card */
+  .vura-bundle-card__inner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 7px; /* matches parent border-radius */
+  }
+  .vura-bundle-card--shine .vura-bundle-card__inner::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.35) 30%,
+      rgba(255, 255, 255, 0.7) 50%,
+      rgba(255, 255, 255, 0.35) 70%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(25deg);
+    pointer-events: none;
+    z-index: 2;
+    animation: vuraShineSweep 3.5s infinite ease-in-out;
+  }
+  @keyframes vuraShineSweep {
+    0% {
+      left: -150%;
+    }
+    15% {
+      left: 150%;
+    }
+    100% {
+      left: 150%;
     }
   }
 </style>
