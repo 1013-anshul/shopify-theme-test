@@ -1524,7 +1524,7 @@ function showUnlockedBanner() {
     banner.classList.add('show');
     setTimeout(() => {
       banner.classList.remove('show');
-    }, 2800);
+    }, 1400);
   }
 }
 
@@ -1603,14 +1603,15 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
 
     // Trigger celebration when transitioned to 2 or more from less than 2
     if (totalQty >= 2 && prevQty < 2) {
-      // Confetti and banner are triggered AFTER progress bar completes (800ms + 1200ms = 2000ms)
+      // Confetti and banner are triggered AFTER progress bar completes (800ms + 1200ms = 2000ms) -> halved to 1000ms
       setTimeout(() => {
         console.log('VURA: Confetti celebration triggered on open!');
         triggerConfetti();
         showUnlockedBanner();
-      }, 2000);
+      }, 1000);
 
-      // Auto-update quantity from 2 to 3 after banner is shown (2000ms + 2800ms = 4800ms) if exactly 2
+      // Auto-update quantity from 2 to 3 after banner is shown (2000ms + 2800ms = 4800ms) -> halved to 2400ms.
+      // Pass 'none' instead of 'updates[]' to prevent cursor/focus active state on the quantity selector.
       if (totalQty === 2) {
         setTimeout(() => {
           const qtyInput = document.querySelector('.cart-drawer .quantity__input');
@@ -1619,13 +1620,13 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
             const variantId = qtyInput.dataset.quantityVariantId;
             const cartDrawerItems = document.querySelector('cart-drawer-items') || document.querySelector('cart-items');
             if (cartDrawerItems) {
-              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'updates[]', variantId);
+              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'none', variantId);
             } else {
               qtyInput.value = 3;
               qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
             }
           }
-        }, 4800);
+        }, 2400);
       }
     }
 
@@ -1658,14 +1659,15 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
 
     // Trigger celebration when transitioned to 2 or more from less than 2
     if (totalQty >= 2 && prevQty < 2) {
-      // Confetti and banner are triggered AFTER progress bar completes (1200ms)
+      // Confetti and banner are triggered AFTER progress bar completes (1200ms) -> halved to 600ms
       setTimeout(() => {
         console.log('VURA: Confetti celebration triggered!');
         triggerConfetti();
         showUnlockedBanner();
-      }, 1200);
+      }, 600);
 
-      // Auto-update quantity from 2 to 3 after banner is shown (1200ms + 2800ms = 4000ms) if exactly 2
+      // Auto-update quantity from 2 to 3 after banner is shown (1200ms + 2800ms = 4000ms) -> halved to 2000ms.
+      // Pass 'none' instead of 'updates[]' to prevent cursor/focus active state on the quantity selector.
       if (totalQty === 2) {
         setTimeout(() => {
           const qtyInput = document.querySelector('.cart-drawer .quantity__input');
@@ -1674,13 +1676,13 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
             const variantId = qtyInput.dataset.quantityVariantId;
             const cartDrawerItems = document.querySelector('cart-drawer-items') || document.querySelector('cart-items');
             if (cartDrawerItems) {
-              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'updates[]', variantId);
+              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'none', variantId);
             } else {
               qtyInput.value = 3;
               qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
             }
           }
-        }, 4000);
+        }, 2000);
       }
     }
   }
