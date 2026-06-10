@@ -1545,8 +1545,8 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
       }
     }, 800);
 
-    // If totalQty is 2 and we transitioned from 1 (added second item from product page):
-    if (totalQty === 2 && prevQty === 1) {
+    // Trigger celebration when transitioned to 2 or more from less than 2
+    if (totalQty >= 2 && prevQty < 2) {
       // Confetti and banner are triggered AFTER progress bar completes (800ms + 1200ms = 2000ms)
       setTimeout(() => {
         console.log('VURA: Confetti celebration triggered on open!');
@@ -1554,14 +1554,16 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
         showUnlockedBanner();
       }, 2000);
 
-      // Auto-update quantity from 2 to 3 after banner is shown (2000ms + 2800ms = 4800ms)
-      setTimeout(() => {
-        const qtyInput = document.querySelector('.cart-drawer .quantity__input');
-        if (qtyInput && parseInt(qtyInput.value) === 2) {
-          qtyInput.value = 3;
-          qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      }, 4800);
+      // Auto-update quantity from 2 to 3 after banner is shown (2000ms + 2800ms = 4800ms) if exactly 2
+      if (totalQty === 2) {
+        setTimeout(() => {
+          const qtyInput = document.querySelector('.cart-drawer .quantity__input');
+          if (qtyInput && parseInt(qtyInput.value) === 2) {
+            qtyInput.value = 3;
+            qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }, 4800);
+      }
     }
 
   } else {
@@ -1580,8 +1582,8 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
       }
     }
 
-    // Trigger celebration when transitioned from 1 -> 2
-    if (totalQty === 2 && prevQty === 1) {
+    // Trigger celebration when transitioned to 2 or more from less than 2
+    if (totalQty >= 2 && prevQty < 2) {
       // Confetti and banner are triggered AFTER progress bar completes (1200ms)
       setTimeout(() => {
         console.log('VURA: Confetti celebration triggered!');
@@ -1589,14 +1591,16 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
         showUnlockedBanner();
       }, 1200);
 
-      // Auto-update quantity from 2 to 3 after banner is shown (1200ms + 2800ms = 4000ms)
-      setTimeout(() => {
-        const qtyInput = document.querySelector('.cart-drawer .quantity__input');
-        if (qtyInput && parseInt(qtyInput.value) === 2) {
-          qtyInput.value = 3;
-          qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      }, 4000);
+      // Auto-update quantity from 2 to 3 after banner is shown (1200ms + 2800ms = 4000ms) if exactly 2
+      if (totalQty === 2) {
+        setTimeout(() => {
+          const qtyInput = document.querySelector('.cart-drawer .quantity__input');
+          if (qtyInput && parseInt(qtyInput.value) === 2) {
+            qtyInput.value = 3;
+            qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        }, 4000);
+      }
     }
   }
 

@@ -39,6 +39,12 @@ if (!customElements.get('product-form')) {
         delete config.headers['Content-Type'];
 
         const formData = new FormData(this.form);
+        if (this.form.id) {
+          const externalQuantityInput = document.querySelector(`input[name="quantity"][form="${this.form.id}"]`);
+          if (externalQuantityInput && !formData.has('quantity')) {
+            formData.append('quantity', externalQuantityInput.value);
+          }
+        }
         if (this.cart) {
           formData.append(
             'sections',
