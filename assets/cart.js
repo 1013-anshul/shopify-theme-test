@@ -34,6 +34,10 @@ class CartItems extends HTMLElement {
       if (event.source === 'cart-items') {
         return;
       }
+      // If the drawer is updated directly by product-form, skip redundant fetch to avoid race conditions
+      if (event.source === 'product-form' && this.tagName === 'CART-DRAWER-ITEMS') {
+        return;
+      }
       return this.onCartUpdate();
     });
   }
