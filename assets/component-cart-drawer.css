@@ -437,6 +437,11 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   }
 }
 
+/* Reduce gap before total/footer inside the cart drawer */
+.cart-drawer .cart__contents > * + * {
+  margin-top: 1rem !important;
+}
+
 /* Mobile Slide-up Drawer Animation (SuperYou style) */
 @media screen and (max-width: 749px) {
   .drawer {
@@ -448,8 +453,8 @@ cart-drawer-items::-webkit-scrollbar-track-piece {
   .drawer__inner {
     width: 100vw !important;
     max-width: 100vw !important;
-    height: 100% !important;
-    max-height: 100vh !important;
+    height: auto !important;
+    max-height: 85vh !important; /* Dynamic sheet height up to 85% of viewport */
     border: none !important;
     border-radius: 20px 20px 0 0 !important; /* Rounded top corners */
     transform: translateY(100%) !important;
