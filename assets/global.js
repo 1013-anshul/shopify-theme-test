@@ -239,13 +239,6 @@ class QuantityInput extends HTMLElement {
   }
 
   onInputChange(event) {
-    const isCart = this.classList.contains('cart-quantity');
-    if (isCart) {
-      const val = parseInt(this.input.value || '0');
-      if (val === 2) {
-        this.input.value = 3;
-      }
-    }
     this.validateQtyRules();
   }
 
@@ -258,9 +251,7 @@ class QuantityInput extends HTMLElement {
     const isCart = this.classList.contains('cart-quantity');
 
     if (btn.name === 'plus') {
-      if (isCart && previousValue === 1) {
-        this.input.value = 3;
-      } else if (parseInt(this.input.dataset.min || '1') > parseInt(this.input.step || '1') && previousValue == 0) {
+      if (parseInt(this.input.dataset.min || '1') > parseInt(this.input.step || '1') && previousValue == 0) {
         this.input.value = this.input.dataset.min;
       } else {
         this.input.stepUp();
@@ -1472,25 +1463,28 @@ function showUnlockedPopup() {
   popup.id = 'vura-unlock-popup';
   popup.style.cssText = `
     position: fixed;
-    top: 100px;
+    top: 90px;
     left: 50%;
     transform: translate(-50%, -120px) scale(0.7);
+    width: 90%;
+    max-width: 420px;
+    box-sizing: border-box;
     background: #162D24; /* Forest Green */
     color: #F8F3E7; /* Cream */
     border: 3px solid #FFC03F; /* Gold border */
     box-shadow: 0 16px 45px rgba(22,45,36,0.5), 0 0 25px rgba(255,192,63,0.3);
-    padding: 18px 36px;
-    border-radius: 50px;
+    padding: 12px 24px;
+    border-radius: 30px;
     z-index: 100000;
     display: flex;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
+    gap: 10px;
     font-family: var(--font-body, Inter, sans-serif);
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
     pointer-events: none;
     text-align: center;
-    white-space: nowrap;
     opacity: 0;
   `;
   popup.innerHTML = `
@@ -1533,11 +1527,12 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
 
   // Read current server-rendered total quantity
   const totalQty = parseInt(container.getAttribute('data-total-qty') || '0');
+  const prevQty = typeof window.vuraPrevCartQty === 'number' ? window.vuraPrevCartQty : 0;
 
   // Trigger celebration on transitions
-  console.log('VURA: totalQty =', totalQty, 'prevQty =', window.vuraPrevCartQty);
+  console.log('VURA: totalQty =', totalQty, 'prevQty =', prevQty);
   if (typeof window.vuraPrevCartQty !== 'undefined') {
-    if (totalQty >= 2 && window.vuraPrevCartQty < 2) {
+    if (totalQty >= 2 && prevQty < 2) {
       console.log('VURA: Confetti celebration triggered!');
       triggerConfetti();
       showUnlockedPopup();
@@ -1559,6 +1554,7 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
     // Start fill transition after drawer slide animation completes (650ms)
     setTimeout(() => {
       fill.style.removeProperty('transition');
+      fill.offsetHeight; // Force reflow to ensure transition is restored in the DOM
       fill.style.width = targetPercent + '%';
 
       if (targetPercent === '50') {
@@ -1573,6 +1569,7 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
   } else {
     // Smooth transition from previous width
     fill.style.removeProperty('transition');
+    fill.offsetHeight; // Force reflow to ensure transition is restored in the DOM
     fill.style.width = targetPercent + '%';
 
     if (targetPercent === '50') {
@@ -1580,6 +1577,28 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
       if (currentPlusBtn && !currentPlusBtn.classList.contains('plus-button-highlight')) {
         currentPlusBtn.classList.add('plus-button-highlight');
       }
+    }
+  }
+
+  // Auto-update quantity from 2 to 3
+  if (totalQty === 2 && prevQty === 1) {
+    setTimeout(() => {
+      const qtyInput = document.querySelector('.cart-drawer .quantity__input');
+      if (qtyInput && parseInt(qtyInput.value) === 2) {
+        qtyInput.value = 3;
+        qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }, 1500);
+  }
+
+  // Slide-up animation on quantity input when quantity is updated to 3
+  if (totalQty === 3 && prevQty === 2) {
+    const qtyInput = document.querySelector('.cart-drawer .quantity__input');
+    if (qtyInput) {
+      qtyInput.classList.add('quantity-update-slide');
+      setTimeout(() => {
+        qtyInput.classList.remove('quantity-update-slide');
+      }, 600);
     }
   }
 };
