@@ -4746,23 +4746,28 @@ details-disclosure > details {
 
 /* Trust Badges & SSL Checkout Styling */
 .vura-cart-trust-badges {
-  margin-top: 16px !important;
+  margin-top: 12px !important;
   display: flex !important;
-  flex-direction: column !important;
+  flex-direction: row !important;
   align-items: center !important;
-  gap: 8px !important;
-  opacity: 0.9 !important;
+  justify-content: space-between !important;
+  padding: 8px 12px !important;
+  background-color: rgba(26, 42, 34, 0.03) !important; /* Subtle Vura Paper Ink tint */
+  border: 1px solid rgba(26, 42, 34, 0.08) !important;
+  border-radius: 8px !important;
+  opacity: 1 !important;
 }
 
 .vura-cart-trust-text {
-  font-size: 10px !important;
+  font-size: 9.5px !important;
   color: #4a5750 !important;
   font-weight: 700 !important;
   display: flex !important;
   align-items: center !important;
   gap: 4px !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.05em !important;
+  white-space: nowrap !important;
 }
 
 .vura-lock-icon {
@@ -4771,16 +4776,24 @@ details-disclosure > details {
 
 .vura-cart-payment-icons {
   display: flex !important;
-  justify-content: center !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
   flex-wrap: wrap !important;
-  gap: 6px !important;
-  max-width: 240px !important;
+  gap: 4px !important;
+  max-width: 60% !important;
 }
 
 .vura-payment-svg {
-  width: 32px !important;
-  height: 20px !important;
+  width: 28px !important;
+  height: 18px !important;
   object-fit: contain !important;
+  filter: grayscale(1) opacity(0.6) !important;
+  transition: all 0.2s ease !important;
+}
+
+.vura-payment-svg:hover {
+  filter: none !important;
+  opacity: 0.9 !important;
 }
 
 /* ===== 11. Cart Drawer UX/UI & Layout Polish Overrides ===== */
