@@ -4233,7 +4233,7 @@ details-disclosure > details {
   padding: 4px 16px !important;
   height: 28px !important;
   border-radius: 4px !important;
-  margin: 0 16px 10px !important;
+  margin: 0 0 10px !important; /* Snap to consistent left/right grid */
   font-size: 12px !important;
   font-weight: 500 !important;
   text-transform: none !important;
@@ -4252,41 +4252,41 @@ details-disclosure > details {
   background: transparent !important;
   border: 0 none !important;
   border-radius: 0 !important;
-  padding: 0 16px !important;
+  padding: 0 !important; /* Zero margin offset to snap to vertical layout grid */
   margin: 0 0 10px !important;
   gap: 0 !important;
   display: block !important;
 }
 
 .vura-cart-progress__bar-bg {
-  height: 10px !important;
-  background-color: rgba(26,42,34,0.1) !important; /* Light green tint */
+  height: 6px !important; /* Thinner progress bar to save vertical height */
+  background-color: rgba(26,42,34,0.1) !important;
   border-radius: 10px !important;
-  margin: 8px 0 0 !important;
+  margin: 6px 0 0 !important;
   width: 100% !important;
   overflow: visible !important;
   position: relative !important;
 }
 
 .vura-cart-progress__bar-fill {
-  background-color: #637746 !important; /* Vura Sage progress fill */
+  background-color: #637746 !important;
   border-radius: 10px !important;
   height: 100% !important;
-  display: block !important; /* Prevent empty div from being hidden */
+  display: block !important;
   position: relative !important;
 }
 
 .vura-cart-progress__text {
-  font-size: 14px !important;
-  color: #1A2A22 !important; /* Vura Paper Ink */
+  font-size: 12px !important; /* Reduced size to drop congrats banner hierarchy priority */
+  color: #4A5750 !important; /* Muted color to stop competing with total/checkout */
   text-align: left !important;
-  margin-top: 10px !important;
-  font-weight: 400 !important;
+  margin-top: 6px !important;
+  font-weight: 500 !important;
 }
 
 .vura-cart-progress__text strong {
   font-weight: 700 !important;
-  color: #8D3B2D !important; /* Vura Terracotta for milestones */
+  color: #8D3B2D !important;
 }
 
 /* Hide extra upsell banner */
@@ -4440,25 +4440,25 @@ details-disclosure > details {
   /* Enforce symmetric grid for mobile cart drawer items */
   .cart-drawer .cart-item {
     display: grid !important;
-    grid-template-columns: 80px 1fr auto !important;
+    grid-template-columns: 100px 1fr auto !important;
     grid-template-rows: auto auto !important;
-    gap: 8px 12px !important;
+    gap: 8px 16px !important;
     align-items: center !important;
-    padding: 12px 16px !important;
+    padding: 12px 0 !important; /* Snap to margins */
     box-sizing: border-box !important;
   }
   
   .cart-drawer .cart-item__media {
     grid-row: 1 / 3 !important;
     grid-column: 1 !important;
-    width: 80px !important;
-    height: 80px !important;
+    width: 100px !important;
+    height: 100px !important;
     padding: 0 !important;
   }
   
   .cart-drawer .cart-item__image {
-    width: 80px !important;
-    height: 80px !important;
+    width: 100px !important;
+    height: 100px !important;
     object-fit: cover !important;
     border-radius: 8px !important;
   }
@@ -4467,17 +4467,17 @@ details-disclosure > details {
     grid-column: 2 / 4 !important;
     grid-row: 1 !important;
     width: auto !important;
-    padding: 0 0 0 12px !important;
+    padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
   }
   
   .cart-drawer .cart-item__name {
-    font-size: 13px !important;
-    line-height: 1.4 !important;
+    font-size: 13.5px !important;
+    line-height: 1.25 !important;
     word-break: break-word !important;
-    padding-right: 24px !important;
+    padding-right: 0 !important;
     margin: 0 !important;
     font-weight: 700 !important;
     color: #1A2A22 !important;
@@ -4489,13 +4489,15 @@ details-disclosure > details {
     display: flex !important;
     justify-content: flex-end !important;
     align-items: center !important;
+    align-self: center !important;
     padding: 0 !important;
   }
 
   .cart-drawer .cart-item__quantity {
     grid-column: 2 !important;
     grid-row: 2 !important;
-    padding: 0 0 0 12px !important;
+    padding: 0 !important;
+    align-self: center !important;
   }
   
   .cart-drawer .cart-item__quantity-wrapper {
@@ -4504,9 +4506,7 @@ details-disclosure > details {
   }
   
   .cart-drawer .cart-remove-button {
-    position: absolute !important;
-    top: 12px !important;
-    right: 16px !important;
+    position: static !important; /* Inline flow next to the product name */
     z-index: 2 !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -4516,7 +4516,7 @@ details-disclosure > details {
 /* 7. Footer Overrides */
 .drawer__footer {
   border-top: 1px solid rgba(26,42,34,0.1) !important;
-  padding: 16px !important;
+  padding: 16px 0 !important; /* Zero horizontal padding to snap to visual grid */
   background-color: #F8F3E7 !important;
 }
 
@@ -4527,7 +4527,8 @@ details-disclosure > details {
   align-items: center !important;
   color: #1A2A22 !important;
   font-weight: 700 !important;
-  margin: 0 0 10px 0 !important;
+  margin: 0 !important;
+  padding: 12px 0 !important; /* Dynamic padding alignment */
 }
 
 .totals__total {
@@ -4542,7 +4543,7 @@ details-disclosure > details {
   font-family: var(--font-body), -apple-system, sans-serif !important;
   font-size: 15.75px !important;
   font-weight: 700 !important;
-  color: #8D3B2D !important; /* Vura Terracotta for total price */
+  color: #8D3B2D !important;
   margin: 0 !important;
 }
 
@@ -4560,7 +4561,7 @@ details-disclosure > details {
   background-color: #FFF9E6 !important; /* Vura Soft Saffron */
   border: 1px solid rgba(26,42,34,0.08) !important;
   border-radius: 6px !important;
-  padding: 8px 12px !important;
+  padding: 12px 16px !important; /* Visual padding cushion */
   text-align: left !important;
 }
 
@@ -4607,6 +4608,7 @@ details-disclosure > details {
   align-items: center !important;
   justify-content: center !important;
   transition: all 0.15s ease !important;
+  margin-top: 24px !important; /* 24px gap below accordion details */
 }
 
 .cart__checkout-button.button:hover {
