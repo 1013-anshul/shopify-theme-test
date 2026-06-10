@@ -36,7 +36,7 @@
   </label>
 
   <!-- 3 Pack (Best Value — Buy 2 Get 1) -->
-  <label class="vura-bundle-card vura-bundle-card--selected vura-bundle-card--shine" data-qty="3">
+  <label class="vura-bundle-card vura-bundle-card--selected vura-bundle-card--featured-gradient" data-qty="3">
     <input type="radio" name="vura-bundle" value="3" checked class="vura-bundle-radio visually-hidden">
     <span class="vura-bundle-card__badge">BEST VALUE</span>
     <div class="vura-bundle-card__inner">
@@ -208,41 +208,21 @@
     }
   }
 
-  /* Premium shine effect for featured Buy 2 Get 1 card */
-  .vura-bundle-card__inner {
-    position: relative;
-    overflow: hidden;
-    border-radius: 7px; /* matches parent border-radius */
+  /* Breathing green gradient for featured Buy 2 Get 1 card */
+  .vura-bundle-card--featured-gradient {
+    background: linear-gradient(135deg, rgba(99, 119, 70, 0.04) 0%, rgba(99, 119, 70, 0.12) 50%, rgba(99, 119, 70, 0.04) 100%) !important;
+    background-size: 200% 200% !important;
+    border-color: #637746 !important;
+    animation: vuraBreathingGradient 3.5s infinite ease-in-out !important;
   }
-  .vura-bundle-card--shine .vura-bundle-card__inner::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -150%;
-    width: 65%;
-    height: 200%;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 222, 120, 0.45) 30%,
-      rgba(255, 192, 63, 0.75) 50%,
-      rgba(255, 222, 120, 0.45) 70%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    transform: rotate(30deg);
-    pointer-events: none;
-    z-index: 2;
-    animation: vuraShineSweep 4s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  @keyframes vuraShineSweep {
-    0% {
-      left: -150%;
+  @keyframes vuraBreathingGradient {
+    0%, 100% {
+      background-position: 0% 50%;
+      box-shadow: 0 0 0 1px #637746, 0 0 4px rgba(99, 119, 70, 0.15);
     }
-    18% {
-      left: 150%;
-    }
-    100% {
-      left: 150%;
+    50% {
+      background-position: 100% 50%;
+      box-shadow: 0 0 0 1.5px #637746, 0 0 12px 3px rgba(99, 119, 70, 0.35);
     }
   }
 </style>

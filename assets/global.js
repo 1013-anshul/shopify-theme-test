@@ -755,6 +755,7 @@ class SliderComponent extends HTMLElement {
     this.pageTotalElement = this.querySelector('.slider-counter--total');
     this.prevButton = this.querySelector('button[name="previous"]');
     this.nextButton = this.querySelector('button[name="next"]');
+    this.autoplayInterval = null;
 
     if (!this.slider || !this.nextButton) return;
 
@@ -765,6 +766,53 @@ class SliderComponent extends HTMLElement {
     this.slider.addEventListener('scroll', this.update.bind(this));
     this.prevButton.addEventListener('click', this.onButtonClick.bind(this));
     this.nextButton.addEventListener('click', this.onButtonClick.bind(this));
+  }
+
+  connectedCallback() {
+    if (this.id && this.id.startsWith('GalleryViewer-')) {
+      this.startAutoplay();
+    }
+  }
+
+  disconnectedCallback() {
+    this.stopAutoplay();
+  }
+
+  startAutoplay() {
+    this.stopAutoplay();
+    this.autoplayInterval = setInterval(() => {
+      this.nextSlide();
+    }, 3500);
+
+    this.boundStopAutoplay = this.stopAutoplay.bind(this);
+    this.boundStartAutoplay = this.startAutoplay.bind(this);
+
+    this.addEventListener('mouseenter', this.boundStopAutoplay);
+    this.addEventListener('mouseleave', this.boundStartAutoplay);
+    this.addEventListener('touchstart', this.boundStopAutoplay, { passive: true });
+    this.addEventListener('touchend', this.boundStartAutoplay, { passive: true });
+  }
+
+  stopAutoplay() {
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
+  }
+
+  nextSlide() {
+    if (!this.slider || !this.sliderItemsToShow || this.sliderItemsToShow.length < 2) return;
+
+    const isAtEnd = this.isSlideVisible(this.sliderItemsToShow[this.sliderItemsToShow.length - 1]);
+    let nextPosition;
+
+    if (isAtEnd) {
+      nextPosition = 0;
+    } else {
+      nextPosition = this.slider.scrollLeft + this.sliderItemOffset;
+    }
+
+    this.setSlidePosition(nextPosition);
   }
 
   initPages() {
@@ -829,6 +877,13 @@ class SliderComponent extends HTMLElement {
 
   onButtonClick(event) {
     event.preventDefault();
+    this.stopAutoplay();
+    if (this.boundStopAutoplay && this.boundStartAutoplay) {
+      this.removeEventListener('mouseenter', this.boundStopAutoplay);
+      this.removeEventListener('mouseleave', this.boundStartAutoplay);
+      this.removeEventListener('touchstart', this.boundStopAutoplay);
+      this.removeEventListener('touchend', this.boundStartAutoplay);
+    }
     const step = event.currentTarget.dataset.step || 1;
     this.slideScrollPosition =
       event.currentTarget.name === 'next'

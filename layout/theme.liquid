@@ -296,10 +296,26 @@
       >
     {%- endif -%}
 
+    {% if request.path contains '/collections' or request.path == '/products' or request.path == '/products/' %}
+      <script>window.location.replace('/products/vura-mineral-underarm-spray');</script>
+    {% endif %}
+
     <script>
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');
       }
+
+      // Rewrite collection/catalog links to point to the single product page
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('a').forEach(link => {
+          const href = link.getAttribute('href');
+          if (href) {
+            if (href === '/collections/all' || href === '/collections' || href.startsWith('/collections/')) {
+              link.setAttribute('href', '/products/vura-mineral-underarm-spray');
+            }
+          }
+        });
+      });
     </script>
   </head>
 

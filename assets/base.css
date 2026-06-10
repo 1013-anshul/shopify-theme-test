@@ -5019,13 +5019,11 @@ details-disclosure > details {
 }
 
 /* Add to Cart button shine effect */
-.product-form__submit,
 .vura-sticky-atc__btn,
 .cart__checkout-button {
   position: relative !important;
   overflow: hidden !important;
 }
-.product-form__submit::after,
 .vura-sticky-atc__btn::after,
 .cart__checkout-button::after {
   content: '';
