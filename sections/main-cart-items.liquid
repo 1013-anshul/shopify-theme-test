@@ -27,11 +27,27 @@
 
 <cart-items class="gradient color-{{ section.settings.color_scheme }} isolate{% if cart == empty %} is-empty{% else %} section-{{ section.id }}-padding{% endif %}">
   <div class="page-width">
-    <div class="title-wrapper-with-link">
+    <div class="title-wrapper-with-link" style="position: relative;">
       <h1 class="title title--primary">{{ 'sections.cart.title' | t }}</h1>
       <a href="{{ routes.all_products_collection_url }}" class="underlined-link">
         {{- 'general.continue_shopping' | t -}}
       </a>
+      <a href="javascript:window.history.length > 1 ? window.history.back() : (window.location.href = '/')" class="cart-page-close" aria-label="Close cart" style="
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        font-size: 32px;
+        color: #8D3B2D;
+        text-decoration: none;
+        font-weight: 300;
+        cursor: pointer;
+        line-height: 44px;
+      ">&times;</a>
     </div>
 
     <div class="cart__warnings">
