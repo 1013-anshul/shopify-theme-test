@@ -5079,12 +5079,14 @@ details-disclosure > details {
 
 /* Add to Cart button shine effect */
 .vura-sticky-atc__btn,
-.cart__checkout-button {
+.cart__checkout-button,
+.product-form__submit {
   position: relative !important;
   overflow: hidden !important;
 }
 .vura-sticky-atc__btn::after,
-.cart__checkout-button::after {
+.cart__checkout-button::after,
+.product-form__submit::after {
   content: '';
   position: absolute;
   top: 0;
@@ -5098,11 +5100,10 @@ details-disclosure > details {
     rgba(255, 255, 255, 0) 100%
   );
   transform: skewX(-25deg);
-  animation: vuraBtnShine 4.2s infinite ease-in-out !important;
+  animation: vuraBtnShine 3s infinite linear !important;
 }
 @keyframes vuraBtnShine {
   0% { left: -150%; }
-  15% { left: 150%; }
   100% { left: 150%; }
 }
 
