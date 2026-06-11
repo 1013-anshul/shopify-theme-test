@@ -397,8 +397,75 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    <!-- VURA Auto-scrolling media sliders -->
+    <script>
+      (function() {
+        // 1. Initialize card media sliders and sticky bar media sliders
+        function initVuraSliders() {
+          // Card sliders
+          const cardSliders = document.querySelectorAll('.vura-card-media-slider:not([data-slider-initialized])');
+          cardSliders.forEach(slider => {
+            slider.setAttribute('data-slider-initialized', 'true');
+            const images = slider.querySelectorAll('.vura-card-image');
+            if (images.length <= 1) return;
+            let currentIndex = 0;
+            setInterval(() => {
+              images[currentIndex].style.opacity = '0';
+              images[currentIndex].style.zIndex = '1';
+              currentIndex = (currentIndex + 1) % images.length;
+              images[currentIndex].style.opacity = '1';
+              images[currentIndex].style.zIndex = '2';
+            }, 2000);
+          });
+
+          // Sticky ATC sliders
+          const stickySliders = document.querySelectorAll('.vura-sticky-media-slider:not([data-slider-initialized])');
+          stickySliders.forEach(slider => {
+            slider.setAttribute('data-slider-initialized', 'true');
+            const images = slider.querySelectorAll('.vura-sticky-image');
+            if (images.length <= 1) return;
+            let currentIndex = 0;
+            setInterval(() => {
+              images[currentIndex].style.opacity = '0';
+              images[currentIndex].style.zIndex = '1';
+              currentIndex = (currentIndex + 1) % images.length;
+              images[currentIndex].style.opacity = '1';
+              images[currentIndex].style.zIndex = '2';
+            }, 2000);
+          });
+        }
+
+        // 2. Auto-scroll product page main media gallery
+        function autoScrollProductGallery() {
+          const galleries = document.querySelectorAll('media-gallery');
+          galleries.forEach(gallery => {
+            const sliderComponent = gallery.querySelector('slider-component');
+            if (!sliderComponent) return;
+            
+            const nextBtn = sliderComponent.querySelector('.slider-button--next');
+            if (!nextBtn) return;
+            
+            if (nextBtn.hasAttribute('disabled') || nextBtn.disabled) {
+              const scrollContainer = sliderComponent.querySelector('.slider');
+              if (scrollContainer) {
+                scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
+              }
+            } else {
+              nextBtn.click();
+            }
+          });
+        }
+
+        // Initialize and poll for dynamic content
+        initVuraSliders();
+        setInterval(initVuraSliders, 1000);
+
+        // Run main product gallery auto-scroll every 2 seconds
+        setInterval(autoScrollProductGallery, 2000);
+      })();
+    </script>
+
     {%- render 'vura-sticky-atc' -%}
-
-
   </body>
 </html>

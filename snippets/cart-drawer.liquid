@@ -15,6 +15,27 @@
   .drawer {
     visibility: hidden;
   }
+  .drawer__close {
+    width: 44px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: 0 none !important;
+    color: #8D3B2D !important; /* Vura Terracotta */
+    font-size: 32px !important; /* Large, clear cross */
+    font-weight: 300 !important;
+    cursor: pointer !important;
+    position: absolute !important;
+    top: 12px !important;
+    right: 16px !important;
+    z-index: 9999 !important;
+    margin: 0 !important;
+  }
+  .drawer__close .close-text {
+    line-height: 44px !important;
+  }
 </style>
 
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
