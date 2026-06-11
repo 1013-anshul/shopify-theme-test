@@ -228,7 +228,6 @@
                               {%- for disc_title in discount_array -%}
                                 {%- if disc_title != "" -%}
                                   <li class="discounts__discount">
-                                    {{- 'icon-discount.svg' | inline_asset_content -}}
                                     {{ disc_title }}
                                   </li>
                                 {%- endif -%}
@@ -552,18 +551,6 @@
               <img src="https://cdn.gokwik.co/v4/images/upi-icons.svg" alt="Payment Icons" width="51" height="20" loading="lazy">
             </span>
           </button>
-        </div>
-        
-        <!-- VURA Cart Trust Badges -->
-        <div class="vura-cart-trust-badges">
-          <div class="vura-cart-trust-text">
-            <span class="vura-lock-icon">🔒</span> Secure 256-Bit SSL Checkout
-          </div>
-          <div class="vura-cart-payment-icons">
-            {%- for type in shop.enabled_payment_types -%}
-              {{ type | payment_type_svg_tag: class: 'vura-payment-svg' }}
-            {%- endfor -%}
-          </div>
         </div>
       </div>
     </form>

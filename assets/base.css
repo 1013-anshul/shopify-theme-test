@@ -5089,14 +5089,13 @@ details-disclosure > details {
   100% { left: 150%; }
 }
 
-/* Inline B2G1 Unlock Message Banner styling */
+/* Inline B2G1 Unlock Message Banner styling as a floating toast */
 .vura-unlock-banner {
   background: #162D24 !important; /* Forest Green */
   color: #F8F3E7 !important; /* Cream */
-  border: 0px solid #FFC03F !important; /* Gold border initially 0px */
+  border: 2px solid #FFC03F !important; /* Gold border */
   border-radius: 12px !important;
-  margin: 0 16px !important;
-  padding: 0 16px !important;
+  padding: 12px 16px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -5105,24 +5104,27 @@ details-disclosure > details {
   font-size: 13px !important;
   font-weight: 700 !important;
   text-align: center !important;
-  overflow: hidden !important;
-  max-height: 0 !important;
-  opacity: 0 !important;
-  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              opacity 0.4s ease, 
-              padding 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              margin 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-              border-width 0.3s ease !important;
   box-sizing: border-box !important;
+  
+  /* Absolute Positioning to make it float */
+  position: absolute !important;
+  top: 100px !important; /* Position below drawer header */
+  left: 20px !important;
+  right: 20px !important;
+  z-index: 100 !important;
+  
+  /* Hide by default using opacity and pointer-events */
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-10px) scale(0.95) !important;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.3s !important;
+  box-shadow: 0 10px 25px rgba(22, 45, 36, 0.25), 0 0 15px rgba(255, 192, 63, 0.3) !important;
 }
 
 .vura-unlock-banner.show {
-  max-height: 90px !important;
   opacity: 1 !important;
-  padding: 12px 16px !important;
-  margin: 12px 16px !important;
-  border: 2px solid #FFC03F !important;
-  box-shadow: 0 8px 20px rgba(22, 45, 36, 0.2), 0 0 12px rgba(255, 192, 63, 0.25) !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
 }
 
 .vura-unlock-banner-rocket {
@@ -5230,6 +5232,26 @@ details-disclosure > details {
   slideshow-component.slider-mobile-gutter {
     display: none !important;
   }
+}
+
+/* Ensure relative positioning for drawer__inner so floating toast positions correctly */
+.drawer__inner {
+  position: relative !important;
+}
+
+/* Align discount text in cart drawer with product name and quantity selector start */
+.cart-drawer .discounts {
+  margin: 4px 0 !important;
+  padding: 0 !important;
+}
+
+.cart-drawer .discounts__discount {
+  font-size: 11px !important;
+  color: #8D3B2D !important; /* Vura Terracotta */
+  font-weight: 700 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  justify-content: flex-start !important;
 }
 
 
