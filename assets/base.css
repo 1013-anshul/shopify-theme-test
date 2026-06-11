@@ -5079,14 +5079,12 @@ details-disclosure > details {
 
 /* Add to Cart button shine effect */
 .vura-sticky-atc__btn,
-.cart__checkout-button,
-.product-form__submit {
+.cart__checkout-button {
   position: relative !important;
   overflow: hidden !important;
 }
 .vura-sticky-atc__btn::after,
-.cart__checkout-button::after,
-.product-form__submit::after {
+.cart__checkout-button::after {
   content: '';
   position: absolute;
   top: 0;
@@ -5105,6 +5103,11 @@ details-disclosure > details {
 @keyframes vuraBtnShine {
   0% { left: -150%; }
   100% { left: 150%; }
+}
+
+/* Hide main page Add to Cart button (below the family pack) to rely on Sticky Add to Cart */
+.product__info-container .product-form__submit {
+  display: none !important;
 }
 
 /* Inline B2G1 Unlock Message Banner styling */
