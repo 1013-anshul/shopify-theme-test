@@ -38,7 +38,7 @@
   <!-- 3 Pack (Best Value — Buy 2 Get 1) -->
   <label class="vura-bundle-card vura-bundle-card--selected vura-bundle-card--featured-gradient" data-qty="3">
     <input type="radio" name="vura-bundle" value="3" checked class="vura-bundle-radio visually-hidden">
-    <span class="vura-bundle-card__badge">BEST VALUE</span>
+    <span class="vura-bundle-card__badge">RECOMMENDED</span>
     <div class="vura-bundle-card__inner">
       <div class="vura-bundle-card__header">
         <span class="vura-bundle-card__label">BUY 2 GET 1</span>
@@ -77,13 +77,13 @@
   .vura-bundle-picker {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 1.2rem 0;
+    gap: 16px;
+    margin: 1.5rem 0;
   }
   @media screen and (max-width: 749px) {
     .vura-bundle-picker {
       grid-template-columns: 1fr;
-      gap: 8px;
+      gap: 12px;
     }
   }
   .vura-bundle-card {
@@ -111,25 +111,36 @@
     background: rgba(99,119,70,0.03);
     animation: vuraCardGlow 2.5s infinite ease-in-out;
   }
+  @keyframes vuraBadgeGlare {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
   .vura-bundle-card__badge {
     position: absolute;
     top: -9px;
     left: 50%;
     transform: translateX(-50%);
-    background: #637746;
+    background: linear-gradient(120deg, #637746 0%, #637746 40%, #a2b884 50%, #637746 60%, #637746 100%);
+    background-size: 200% 100%;
+    animation: vuraBadgeGlare 3s infinite linear;
     color: #fff;
     font-family: var(--font-body, Inter, sans-serif);
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 2px 10px;
+    padding: 3px 12px;
     border-radius: 99px;
     white-space: nowrap;
     line-height: 1.4;
+    box-shadow: 0 2px 8px rgba(99, 119, 70, 0.35);
   }
   .vura-bundle-card__inner {
-    padding: 14px 12px 12px;
+    padding: 18px 14px 14px;
     text-align: center;
   }
   .vura-bundle-card__header {
@@ -188,9 +199,9 @@
     .vura-bundle-card__inner {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       text-align: left;
-      padding: 12px 14px;
+      padding: 16px 18px;
     }
     .vura-bundle-card__header {
       margin-bottom: 0;
@@ -203,8 +214,9 @@
     }
     .vura-bundle-card__badge {
       left: auto;
-      right: 10px;
+      right: 15px;
       transform: none;
+      top: -9px;
     }
   }
 
@@ -212,6 +224,8 @@
   .vura-bundle-card--featured-gradient {
     background: linear-gradient(135deg, rgba(99, 119, 70, 0.04) 0%, rgba(99, 119, 70, 0.12) 50%, rgba(99, 119, 70, 0.04) 100%) !important;
     background-size: 200% 200% !important;
+  }
+  .vura-bundle-card--featured-gradient.vura-bundle-card--selected {
     border-color: #637746 !important;
     animation: vuraBreathingGradient 3.5s infinite ease-in-out !important;
   }
@@ -224,6 +238,11 @@
       background-position: 100% 50%;
       box-shadow: 0 0 0 1.5px #637746, 0 0 12px 3px rgba(99, 119, 70, 0.35);
     }
+  }
+  /* Enforce clean standard borders on unselected cards to clear highlight */
+  .vura-bundle-card:not(.vura-bundle-card--selected) {
+    border: 1.5px solid rgba(26,42,34,0.12) !important;
+    box-shadow: none !important;
   }
 </style>
 
