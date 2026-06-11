@@ -420,33 +420,9 @@
           });
         }
 
-        // 2. Auto-scroll product page main media gallery
-        function autoScrollProductGallery() {
-          const galleries = document.querySelectorAll('media-gallery');
-          galleries.forEach(gallery => {
-            const sliderComponent = gallery.querySelector('slider-component');
-            if (!sliderComponent) return;
-            
-            const nextBtn = sliderComponent.querySelector('.slider-button--next');
-            if (!nextBtn) return;
-            
-            if (nextBtn.hasAttribute('disabled') || nextBtn.disabled) {
-              const scrollContainer = sliderComponent.querySelector('.slider');
-              if (scrollContainer) {
-                scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
-              }
-            } else {
-              nextBtn.click();
-            }
-          });
-        }
-
         // Initialize and poll for dynamic content
         initVuraSliders();
         setInterval(initVuraSliders, 1000);
-
-        // Run main product gallery auto-scroll every 3.5 seconds
-        setInterval(autoScrollProductGallery, 3500);
       })();
     </script>
 
