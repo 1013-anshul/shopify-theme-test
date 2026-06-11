@@ -8,32 +8,8 @@
   <div class="vura-sticky-atc is-visible" id="VuraStickyAtc">
     <div class="vura-sticky-atc__inner">
       <div class="vura-sticky-atc__left">
-        {%- if product.media.size > 0 -%}
-          <div class="vura-sticky-media-slider" style="position: relative; width: 60px; height: 60px; overflow: hidden; border-radius: 8px; flex-shrink: 0; margin-right: 12px;">
-            {%- for media_item in product.media -%}
-              {%- if media_item.media_type == 'image' -%}
-                <img
-                  src="{{ media_item | image_url: width: 120, height: 120, crop: 'center' }}"
-                  alt="{{ product.title | escape }}"
-                  class="vura-sticky-image"
-                  width="60"
-                  height="60"
-                  loading="lazy"
-                  style="
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    opacity: {% if forloop.first %}1{% else %}0{% endif %};
-                    transition: opacity 0.5s ease-in-out;
-                    z-index: {% if forloop.first %}2{% else %}1{% endif %};
-                  "
-                >
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
+        {%- if product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 120, height: 120, crop: 'center' }}" alt="{{ product.title | escape }}" class="vura-sticky-atc__image" width="60" height="60" loading="lazy">
         {%- endif -%}
         <div class="vura-sticky-atc__info">
           <div class="vura-sticky-atc__title">{{ product.title }}</div>

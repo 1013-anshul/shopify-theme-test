@@ -401,7 +401,7 @@
     <!-- VURA Auto-scrolling media sliders -->
     <script>
       (function() {
-        // 1. Initialize card media sliders and sticky bar media sliders
+        // 1. Initialize card media sliders
         function initVuraSliders() {
           // Card sliders
           const cardSliders = document.querySelectorAll('.vura-card-media-slider:not([data-slider-initialized])');
@@ -416,23 +416,7 @@
               currentIndex = (currentIndex + 1) % images.length;
               images[currentIndex].style.opacity = '1';
               images[currentIndex].style.zIndex = '2';
-            }, 2000);
-          });
-
-          // Sticky ATC sliders
-          const stickySliders = document.querySelectorAll('.vura-sticky-media-slider:not([data-slider-initialized])');
-          stickySliders.forEach(slider => {
-            slider.setAttribute('data-slider-initialized', 'true');
-            const images = slider.querySelectorAll('.vura-sticky-image');
-            if (images.length <= 1) return;
-            let currentIndex = 0;
-            setInterval(() => {
-              images[currentIndex].style.opacity = '0';
-              images[currentIndex].style.zIndex = '1';
-              currentIndex = (currentIndex + 1) % images.length;
-              images[currentIndex].style.opacity = '1';
-              images[currentIndex].style.zIndex = '2';
-            }, 2000);
+            }, 3500);
           });
         }
 
@@ -461,8 +445,8 @@
         initVuraSliders();
         setInterval(initVuraSliders, 1000);
 
-        // Run main product gallery auto-scroll every 2 seconds
-        setInterval(autoScrollProductGallery, 2000);
+        // Run main product gallery auto-scroll every 3.5 seconds
+        setInterval(autoScrollProductGallery, 3500);
       })();
     </script>
 
