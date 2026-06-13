@@ -145,7 +145,7 @@
               <!-- B2G1 Unlock Message Banner -->
               <div class="vura-unlock-banner" id="vura-unlock-banner">
                 <span class="vura-unlock-banner-rocket">🚀</span>
-                <span>You have unlocked <strong style="color: #FFC03F;">1 FREE product!</strong> <span style="font-weight: normal; opacity: 0.95;">Added to cart.</span></span>
+                <span>You have unlocked <strong style="color: #FFC03F;">1 FREE product!</strong> <span style="font-weight: normal; opacity: 0.95;">1 free item at checkout.</span></span>
               </div>
 
               <!-- VURA Cart Upsell Progress Banner -->
@@ -169,16 +169,22 @@
                       {%- unless processed_variant_ids contains var_id_string -%}
                         {%- assign processed_variant_ids = processed_variant_ids | append: var_id_string -%}
                         
-                        {%- comment -%} Aggregate properties for this variant {%- endcomment -%}
                         {%- assign total_qty = 0 -%}
                         {%- assign total_original_line_price = 0 -%}
                         {%- assign total_final_line_price = 0 -%}
                         {%- assign aggregated_discounts = "" -%}
                         {%- assign row_index = item.index | plus: 1 -%}
+                        {%- assign paid_line_index = nil -%}
+                        {%- assign free_qty = 0 -%}
                         
                         {%- for inner_item in cart.items -%}
                           {%- if inner_item.variant_id == item.variant_id -%}
                             {%- assign total_qty = total_qty | plus: inner_item.quantity -%}
+                            {%- if inner_item.final_price > 0 -%}
+                              {%- assign paid_line_index = inner_item.index | plus: 1 -%}
+                            {%- else -%}
+                              {%- assign free_qty = free_qty | plus: inner_item.quantity -%}
+                            {%- endif -%}
                             {%- assign total_original_line_price = total_original_line_price | plus: inner_item.original_line_price -%}
                             {%- assign total_final_line_price = total_final_line_price | plus: inner_item.final_line_price -%}
                             
@@ -191,6 +197,7 @@
                             {%- endfor -%}
                           {%- endif -%}
                         {%- endfor -%}
+                        {%- assign paid_line_index = paid_line_index | default: row_index -%}
                         
                         <tr
                           id="CartDrawer-Item-{{ row_index }}"
@@ -228,7 +235,7 @@
                               <a href="{{ item.url }}" class="cart-item__name h4 break">
                                 {{- item.product.title | escape -}}
                               </a>
-                              <cart-remove-button id="CartDrawer-Remove-{{ row_index }}" data-index="{{ row_index }}" data-variant-id="{{ item.variant.id }}">
+                              <cart-remove-button id="CartDrawer-Remove-{{ row_index }}" data-index="{{ paid_line_index }}">
                                 <button type="button" class="button button--tertiary cart-remove-button" aria-label="Remove item">
                                   <svg class="icon icon-trash" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="3 6 5 6 21 6"></polyline>
@@ -307,20 +314,20 @@
                                   <quantity-input class="quantity cart-quantity{% if total_qty == 1 %} qty-is-one{% endif %}">
                                     <button class="quantity__button" name="minus" type="button">-</button>
                                     <input
-                                      class="quantity__input"
-                                      type="number"
-                                      data-quantity-variant-id="{{ item.variant.id }}"
-                                      name="updates[]"
-                                      value="{{ total_qty }}"
-                                      id="Drawer-quantity-{{ row_index }}"
-                                      data-index="{{ row_index }}"
-                                      min="{{ item.variant.quantity_rule.min }}"
-                                      {% if item.variant.quantity_rule.max != null %}
-                                        max="{{ item.variant.quantity_rule.max }}"
-                                      {% endif %}
-                                      step="{{ item.variant.quantity_rule.increment }}"
-                                      data-min="{{ item.variant.quantity_rule.min }}"
-                                    >
+                                       class="quantity__input"
+                                       type="number"
+                                       name="updates[]"
+                                       value="{{ total_qty }}"
+                                       id="Drawer-quantity-{{ row_index }}"
+                                       data-index="{{ paid_line_index }}"
+                                       data-is-promo="{% if free_qty > 0 %}true{% else %}false{% endif %}"
+                                       min="0"
+                                       {% if item.variant.quantity_rule.max != null %}
+                                         max="{{ item.variant.quantity_rule.max }}"
+                                       {% endif %}
+                                       step="{{ item.variant.quantity_rule.increment }}"
+                                       data-min="{{ item.variant.quantity_rule.min }}"
+                                     >
                                     <button class="quantity__button" name="plus" type="button">+</button>
                                   </quantity-input>
                                 </div>

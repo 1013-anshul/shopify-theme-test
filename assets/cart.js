@@ -79,9 +79,14 @@ class CartItems extends HTMLElement {
     } else {
       event.target.setCustomValidity('');
       event.target.reportValidity();
+      let quantityToUpdate = inputValue;
+      if (event.target.dataset.isPromo === 'true') {
+        // B2G1 Formula: paid = Math.floor(total / 3) * 2 + (total % 3)
+        quantityToUpdate = Math.floor(inputValue / 3) * 2 + (inputValue % 3);
+      }
       this.updateQuantity(
         index,
-        inputValue,
+        quantityToUpdate,
         event,
         document.activeElement.getAttribute('name'),
         event.target.dataset.quantityVariantId

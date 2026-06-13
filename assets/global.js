@@ -265,11 +265,7 @@ class QuantityInput extends HTMLElement {
         this.input.stepUp();
       }
     } else {
-      if (isCart && previousValue === 3) {
-        this.input.value = 1;
-      } else {
-        this.input.stepDown();
-      }
+      this.input.stepDown();
     }
 
     const newValue = parseInt(this.input.value || '0');
@@ -1610,24 +1606,7 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
         showUnlockedBanner();
       }, 1000);
 
-      // Auto-update quantity from 2 to 3 after banner is shown (2000ms + 2800ms = 4800ms) -> halved to 2400ms.
-      // Pass 'none' instead of 'updates[]' to prevent cursor/focus active state on the quantity selector.
-      if (totalQty === 2) {
-        setTimeout(() => {
-          const qtyInput = document.querySelector('.cart-drawer .quantity__input');
-          if (qtyInput && parseInt(qtyInput.value) === 2) {
-            const index = qtyInput.dataset.index;
-            const variantId = qtyInput.dataset.quantityVariantId;
-            const cartDrawerItems = document.querySelector('cart-drawer-items') || document.querySelector('cart-items');
-            if (cartDrawerItems) {
-              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'none', variantId);
-            } else {
-              qtyInput.value = 3;
-              qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-          }
-        }, 2400);
-      }
+
     }
 
   } else {
@@ -1666,24 +1645,7 @@ window.vuraAnimateCartDrawerUI = function(isOpening) {
         showUnlockedBanner();
       }, 600);
 
-      // Auto-update quantity from 2 to 3 after banner is shown (1200ms + 2800ms = 4000ms) -> halved to 2000ms.
-      // Pass 'none' instead of 'updates[]' to prevent cursor/focus active state on the quantity selector.
-      if (totalQty === 2) {
-        setTimeout(() => {
-          const qtyInput = document.querySelector('.cart-drawer .quantity__input');
-          if (qtyInput && parseInt(qtyInput.value) === 2) {
-            const index = qtyInput.dataset.index;
-            const variantId = qtyInput.dataset.quantityVariantId;
-            const cartDrawerItems = document.querySelector('cart-drawer-items') || document.querySelector('cart-items');
-            if (cartDrawerItems) {
-              cartDrawerItems.updateQuantity(index, 3, { currentTarget: qtyInput }, 'none', variantId);
-            } else {
-              qtyInput.value = 3;
-              qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-          }
-        }, 2000);
-      }
+
     }
   }
 
