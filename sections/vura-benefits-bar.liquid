@@ -1,0 +1,103 @@
+{%- style -%}
+  .vura-bbar {
+    background: {{ section.settings.background }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    border-top: 1px solid var(--border-on-paper-soft, rgba(26,42,34,0.08));
+    border-bottom: 1px solid var(--border-on-paper-soft, rgba(26,42,34,0.08));
+  }
+  .vura-bbar__wrap {
+    max-width: 920px; margin: 0 auto; padding: 0 1.5rem;
+    display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 1.6rem;
+  }
+  .vura-bbar__item {
+    flex: 1 1 0; min-width: 120px;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.8rem;
+  }
+  .vura-bbar__icon {
+    width: 46px; height: 46px; border-radius: var(--r-pill, 999px);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--vura-terracotta-tint, #F4E9E4); color: var(--vura-terracotta, #8D3B2D);
+  }
+  .vura-bbar__icon svg { width: 24px; height: 24px; }
+  .vura-bbar__label {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 1.3rem; font-weight: 600; line-height: 1.3; letter-spacing: 0.01em;
+    color: var(--vura-paper-ink, #1A2A22);
+  }
+  @media screen and (max-width: 749px) {
+    .vura-bbar__wrap { gap: 2rem 1rem; }
+    .vura-bbar__item { flex-basis: 40%; }
+    .vura-bbar__label { font-size: 1.2rem; }
+  }
+{%- endstyle -%}
+
+<div class="vura-bbar">
+  <div class="vura-bbar__wrap">
+    {%- for block in section.blocks -%}
+      <div class="vura-bbar__item" {{ block.shopify_attributes }}>
+        <span class="vura-bbar__icon" aria-hidden="true">
+          {%- case block.settings.icon -%}
+            {%- when 'shield' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            {%- when 'leaf' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c9 0 15-5 15-15 0 0-13-1-15 8-0.8 3.6 0 7 0 7z"/><path d="M5 20c2-6 6-9 11-10.5"/></svg>
+            {%- when 'shirt' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3l3 2 3-2 5 3-2 3-2-1v10H8V8L6 9 4 6z"/></svg>
+            {%- when 'pin' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-5.5-6-10a6 6 0 1 1 12 0c0 4.5-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/></svg>
+            {%- when 'droplet' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 11a6 6 0 1 1-12 0c0-5 6-11 6-11z"/></svg>
+            {%- when 'spray' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="9" width="7" height="12" rx="2"/><path d="M9 9V6h5v3"/><path d="M17 5h2M17 8h2M18 11h1.5"/></svg>
+            {%- when 'crystal' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l5 5-5 13L7 8z"/><path d="M7 8h10"/></svg>
+            {%- else -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+          {%- endcase -%}
+        </span>
+        <span class="vura-bbar__label">{{ block.settings.label | escape }}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Vura Benefits Bar",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#F8F3E7" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Aluminium-salt free" },
+        {
+          "type": "select", "id": "icon", "label": "Icon", "default": "shield",
+          "options": [
+            { "value": "shield", "label": "Shield" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "shirt", "label": "Shirt" },
+            { "value": "pin", "label": "Location pin" },
+            { "value": "droplet", "label": "Droplet" },
+            { "value": "spray", "label": "Spray bottle" },
+            { "value": "crystal", "label": "Crystal" },
+            { "value": "check", "label": "Check" }
+          ]
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "Vura Benefits Bar",
+      "blocks": [
+        { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
+        { "type": "benefit", "settings": { "label": "For sensitive skin", "icon": "leaf" } },
+        { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
+        { "type": "benefit", "settings": { "label": "Made in Hyderabad", "icon": "pin" } }
+      ]
+    }
+  ],
+  "enabled_on": { "templates": ["product", "index", "page"] }
+}
+{% endschema %}
