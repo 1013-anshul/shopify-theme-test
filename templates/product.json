@@ -125,7 +125,7 @@
         "b1": { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
         "b2": { "type": "benefit", "settings": { "label": "For sensitive skin", "icon": "leaf" } },
         "b3": { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
-        "b4": { "type": "benefit", "settings": { "label": "Made in Hyderabad", "icon": "pin" } }
+        "b4": { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
       },
       "block_order": ["b1", "b2", "b3", "b4"],
       "settings": { "padding_top": 24, "padding_bottom": 24 }
