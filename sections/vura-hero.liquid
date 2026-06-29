@@ -1,0 +1,309 @@
+{%- liquid
+  assign overlay = section.settings.overlay_opacity | divided_by: 100.0
+-%}
+
+{%- style -%}
+  #vura-hero-{{ section.id }} {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: {{ section.settings.height_mobile }}px;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--vura-forest-deep, #0E2118);
+  }
+  #vura-hero-{{ section.id }} .vura-hero__media,
+  #vura-hero-{{ section.id }} .vura-hero__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+  #vura-hero-{{ section.id }} .vura-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      90deg,
+      rgba(14, 33, 24, {{ overlay }}) 0%,
+      rgba(14, 33, 24, {{ overlay | times: 0.55 }}) 55%,
+      rgba(14, 33, 24, 0) 100%
+    );
+  }
+  #vura-hero-{{ section.id }} .vura-hero__inner {
+    width: 100%;
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+  #vura-hero-{{ section.id }} .vura-hero__content {
+    max-width: 36rem;
+    text-align: {{ section.settings.text_alignment }};
+    color: var(--vura-paper, #F8F3E7);
+  }
+  #vura-hero-{{ section.id }} .vura-hero__eyebrow {
+    display: inline-block;
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--vura-saffron, #FFC03F);
+    font-weight: 600;
+  }
+  #vura-hero-{{ section.id }} .vura-hero__heading {
+    margin: 0 0 1.2rem;
+    font-family: var(--font-display, Georgia, serif);
+    font-size: clamp(2.4rem, 6vw, 4.6rem);
+    line-height: 1.05;
+    color: var(--vura-paper, #F8F3E7);
+  }
+  #vura-hero-{{ section.id }} .vura-hero__subheading {
+    margin: 0 0 2rem;
+    font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+    line-height: 1.5;
+    color: var(--vura-cream-dim, #D9D2C2);
+  }
+  #vura-hero-{{ section.id }} .vura-hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: {% if section.settings.text_alignment == 'center' %}center{% else %}flex-start{% endif %};
+  }
+  #vura-hero-{{ section.id }} .vura-hero__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.1rem 2.4rem;
+    border-radius: 100px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    min-height: 4.4rem;
+  }
+  #vura-hero-{{ section.id }} .vura-hero__btn:hover { transform: translateY(-1px); }
+  #vura-hero-{{ section.id }} .vura-hero__btn--primary {
+    background: var(--vura-saffron, #FFC03F);
+    color: var(--vura-forest-deep, #0E2118);
+    border: 2px solid var(--vura-saffron, #FFC03F);
+  }
+  #vura-hero-{{ section.id }} .vura-hero__btn--secondary {
+    background: transparent;
+    color: var(--vura-paper, #F8F3E7);
+    border: 2px solid rgba(244, 239, 227, 0.6);
+  }
+  #vura-hero-{{ section.id }} .vura-hero__btn--secondary:hover {
+    border-color: var(--vura-paper, #F8F3E7);
+  }
+  #vura-hero-{{ section.id }} .vura-hero__trust {
+    margin: 2.2rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.4rem;
+    font-size: 1.2rem;
+    color: var(--vura-cream-mute, #9DA59A);
+    justify-content: {% if section.settings.text_alignment == 'center' %}center{% else %}flex-start{% endif %};
+  }
+  #vura-hero-{{ section.id }} .vura-hero__trust li {
+    position: relative;
+    padding-left: 1.6rem;
+  }
+  #vura-hero-{{ section.id }} .vura-hero__trust li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    color: var(--vura-saffron, #FFC03F);
+  }
+  @media screen and (min-width: 750px) {
+    #vura-hero-{{ section.id }} { min-height: {{ section.settings.height_desktop }}px; }
+    #vura-hero-{{ section.id }} .vura-hero__inner { padding: 5rem 5rem; }
+  }
+{%- endstyle -%}
+
+<section id="vura-hero-{{ section.id }}" class="vura-hero">
+  <div class="vura-hero__media">
+    {%- if section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 3000
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          sizes: '100vw',
+          widths: '750, 1100, 1500, 2000, 3000',
+          alt: section.settings.image.alt | default: section.settings.heading
+      }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+  <div class="vura-hero__overlay"></div>
+
+  <div class="vura-hero__inner">
+    <div class="vura-hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="vura-hero__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h1 class="vura-hero__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <p class="vura-hero__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank or section.settings.button_label_2 != blank -%}
+        <div class="vura-hero__buttons">
+          {%- if section.settings.button_label != blank -%}
+            <a
+              href="{{ section.settings.button_link | default: '#' }}"
+              class="vura-hero__btn vura-hero__btn--primary"
+            >
+              {{ section.settings.button_label }}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.button_label_2 != blank -%}
+            <a
+              href="{{ section.settings.button_link_2 | default: '#' }}"
+              class="vura-hero__btn vura-hero__btn--secondary"
+            >
+              {{ section.settings.button_label_2 }}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.trust_text != blank -%}
+        <ul class="vura-hero__trust">
+          {%- assign trust_items = section.settings.trust_text | split: '|' -%}
+          {%- for item in trust_items -%}
+            <li>{{ item | strip }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vura hero",
+  "tag": "section",
+  "class": "section section-vura-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Natural underarm care"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stay fresh, the natural way."
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Phitkari-powered underarm spray — fights odour, not your body. Aluminium-chlorohydrate free, non-sticky, all-day fresh."
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Shop now — ₹375"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Secondary button label",
+      "default": "Why phitkari?"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "text",
+      "id": "trust_text",
+      "label": "Trust badges (separate with | )",
+      "info": "Each item separated by a vertical bar.",
+      "default": "Made in India | Aluminium-salt free | Free shipping across India"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Image overlay darkness",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "label": "Desktop height",
+      "min": 400,
+      "max": 820,
+      "step": 20,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "label": "Mobile height",
+      "min": 320,
+      "max": 640,
+      "step": 20,
+      "unit": "px",
+      "default": 480
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vura hero"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index", "page"]
+  }
+}
+{% endschema %}

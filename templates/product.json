@@ -158,10 +158,36 @@
     },
     "vura-comparison-table": {
       "type": "vura-comparison-table",
+      "blocks": {
+        "r1": { "type": "row", "settings": { "label": "Controls odour", "perfume": "partial", "deodorant": "yes", "roll_on": "yes", "vura": "yes" } },
+        "r2": { "type": "row", "settings": { "label": "Long-lasting", "perfume": "partial", "deodorant": "partial", "roll_on": "yes", "vura": "yes" } },
+        "r3": { "type": "row", "settings": { "label": "Skin-friendly", "perfume": "no", "deodorant": "no", "roll_on": "partial", "vura": "yes" } },
+        "r4": { "type": "row", "settings": { "label": "No residue", "perfume": "no", "deodorant": "partial", "roll_on": "no", "vura": "yes" } },
+        "r5": { "type": "row", "settings": { "label": "Can be layered", "perfume": "yes", "deodorant": "no", "roll_on": "no", "vura": "yes" } },
+        "r6": { "type": "row", "settings": { "label": "Suitable after shaving", "perfume": "no", "deodorant": "no", "roll_on": "partial", "vura": "yes" } },
+        "r7": { "type": "row", "settings": { "label": "Travel-friendly", "perfume": "partial", "deodorant": "yes", "roll_on": "yes", "vura": "yes" } },
+        "r8": { "type": "row", "settings": { "label": "Touch-free", "perfume": "partial", "deodorant": "partial", "roll_on": "no", "vura": "yes" } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"],
       "settings": {
-        "heading": "Why Vura",
+        "eyebrow": "The VURA difference",
+        "heading": "How VURA compares",
+        "label_perfume": "Perfume",
+        "label_deodorant": "Deodorant",
+        "label_rollon": "Roll-on",
+        "label_vura": "VURA",
+        "padding_top": 52,
+        "padding_bottom": 60
+      }
+    },
+    "vura-format-compare": {
+      "type": "vura-format-compare",
+      "settings": {
+        "eyebrow": "WHY A MIST",
+        "heading": "Four formats. One clean finish.",
+        "caption": "Only VURA: a touch-free mist",
         "padding_top": 40,
-        "padding_bottom": 52
+        "padding_bottom": 56
       }
     },
     "vura-ingredients": {
@@ -289,9 +315,10 @@
   "order": [
     "main",
     "vura-confidence",
-    "vura-ugc-video",
     "vura-comparison-table",
+    "vura-format-compare",
     "vura-ingredients",
+    "vura-ugc-video",
     "vura-faq",
     "related-products"
   ]
