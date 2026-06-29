@@ -54,7 +54,7 @@
           "settings": {
             "heading": "Benefits",
             "icon": "heart",
-            "content": "<p>Our Mineral Underarm Spray is a natural, non-sticky formula that provides all-day freshness. It works by neutralizing odor-causing bacteria without blocking your body's natural perspiration process. Non-staining, fast-drying, and gentle on sensitive skin.</p>"
+            "content": "<p>Our Mineral Underarm Spray is a natural, non-sticky formula that keeps you fresh through the day. It works by neutralizing odor-causing bacteria without blocking your body's natural perspiration process. Non-staining, fast-drying, and gentle on sensitive skin.</p>"
           }
         },
         "collapsible_tab_ingredients": {
@@ -133,19 +133,19 @@
         "ugc_1": {
           "type": "video_card",
           "settings": {
-            "caption": "\"Game-changer for my gym bag\" — Priya, Mumbai"
+            "caption": "\"Fits in my gym bag — no leak, no smell.\" — Priya, Mumbai"
           }
         },
         "ugc_2": {
           "type": "video_card",
           "settings": {
-            "caption": "\"No white marks, no irritation\" — Arjun, Bangalore"
+            "caption": "\"No white marks, no irritation.\" — Arjun, Bangalore"
           }
         },
         "ugc_3": {
           "type": "video_card",
           "settings": {
-            "caption": "\"My whole family uses it now\" — Meera, Delhi"
+            "caption": "\"One bottle lasted my family a month.\" — Meera, Delhi"
           }
         }
       },

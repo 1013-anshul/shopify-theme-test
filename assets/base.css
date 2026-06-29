@@ -18,8 +18,7 @@
   --vura-saffron-soft:  #F2BD53;
   --vura-saffron-deep:  #E8A82A;
   --vura-terracotta:    #8D3B2D;
-  --vura-vermillion:    #D8412F;
-  --vura-vermillion-tint: #FBEEEA;
+  --vura-terracotta-tint: #F4E9E4;
   --vura-burgundy:      #6E1F1A;
   --vura-burgundy-deep: #48222A;
   --vura-paper:         #F8F3E7;
@@ -76,6 +75,42 @@
   --font-body:       "Inter", "Helvetica Neue", system-ui, sans-serif;
   --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
   --font-devanagari: "Noto Sans Devanagari", "Mukta", sans-serif;
+
+  /* Type scale — design system v0.2.0 */
+  --size-xs: 11px;  --lh-xs: 16px;
+  --size-sm: 13px;  --lh-sm: 20px;
+  --size-base: 15px; --lh-base: 24px;
+  --size-md: 17px;  --lh-md: 26px;
+  --size-lg: 22px;  --lh-lg: 30px;
+  --size-xl: 30px;  --lh-xl: 36px;
+  --size-2xl: 44px; --lh-2xl: 50px;
+  --size-3xl: 64px; --lh-3xl: 68px;
+  --size-4xl: 96px; --lh-4xl: 96px;
+
+  --track-tight: -0.01em;
+  --track-mid:   0.10em;
+  --track-loose: 0.18em;
+
+  /* Spacing — 4px grid */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 20px; --s-6: 24px; --s-8: 32px; --s-10: 40px;
+  --s-12: 48px; --s-16: 64px; --s-20: 80px; --s-24: 96px;
+
+  /* Radius */
+  --r-1: 2px; --r-2: 4px; --r-3: 6px; --r-4: 10px; --r-pill: 999px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.18);
+  --shadow-md: 0 8px 24px rgba(26,42,34,0.10);
+  --shadow-lg: 0 24px 60px rgba(26,42,34,0.16);
+  --shadow-wordmark: 3px 3px 0 var(--vura-terracotta);
+
+  /* Motion */
+  --ease-out:    cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-herbal: cubic-bezier(0.16, 0.84, 0.30, 1);
+  --t-fast: 140ms;
+  --t-base: 220ms;
+  --t-slow: 400ms;
 }
 
 /* Fallback / override standard Shopify variables with Vura Brand Typography Stacks */
