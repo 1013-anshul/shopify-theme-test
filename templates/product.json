@@ -122,13 +122,18 @@
     "vura-benefits-bar": {
       "type": "vura-benefits-bar",
       "blocks": {
-        "b1": { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
-        "b2": { "type": "benefit", "settings": { "label": "For sensitive skin", "icon": "leaf" } },
-        "b3": { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
-        "b4": { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
+        "b1": { "type": "benefit", "settings": { "label": "Hero ingredient: phitkari", "icon": "crystal" } },
+        "b2": { "type": "benefit", "settings": { "label": "Aloe vera infused", "icon": "leaf" } },
+        "b3": { "type": "benefit", "settings": { "label": "Mist-spray format", "icon": "spray" } },
+        "b4": { "type": "benefit", "settings": { "label": "Hygienic no-touch application", "icon": "sparkle" } },
+        "b5": { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
+        "b6": { "type": "benefit", "settings": { "label": "Gentle on sensitive skin", "icon": "heart" } },
+        "b7": { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
+        "b8": { "type": "benefit", "settings": { "label": "Rooted in nature", "icon": "flower" } },
+        "b9": { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
       },
-      "block_order": ["b1", "b2", "b3", "b4"],
-      "settings": { "padding_top": 24, "padding_bottom": 24 }
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9"],
+      "settings": { "background": "#162D24", "padding_top": 16, "padding_bottom": 16 }
     },
     "vura-confidence": {
       "type": "vura-confidence",

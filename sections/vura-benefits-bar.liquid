@@ -1,5 +1,5 @@
 {%- liquid
-  assign repeat = 2
+  assign repeat = 1
 -%}
 
 {%- style -%}
@@ -7,8 +7,6 @@
     background: {{ section.settings.background }};
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
-    border-top: 1px solid var(--border-on-paper-soft, rgba(26,42,34,0.08));
-    border-bottom: 1px solid var(--border-on-paper-soft, rgba(26,42,34,0.08));
     overflow: hidden;
     -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
     mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
@@ -20,20 +18,16 @@
   .vura-bbar:hover .vura-bbar__track { animation-play-state: paused; }
   .vura-bbar__group { display: flex; align-items: center; flex-shrink: 0; }
   .vura-bbar__item {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 0 2.8rem; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 1.1rem; white-space: nowrap; padding: 12px 0;
   }
-  .vura-bbar__icon {
-    width: 40px; height: 40px; border-radius: var(--r-pill, 999px);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    background: var(--vura-terracotta-tint, #F4E9E4); color: var(--vura-terracotta, #8D3B2D);
-  }
-  .vura-bbar__icon svg { width: 22px; height: 22px; }
+  .vura-bbar__icon { display: inline-flex; color: var(--vura-saffron, #FFC03F); }
+  .vura-bbar__icon svg { width: 26px; height: 26px; }
   .vura-bbar__label {
     font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 1.4rem; font-weight: 600; letter-spacing: 0.01em;
-    color: var(--vura-paper-ink, #1A2A22);
+    font-size: 1.7rem; font-weight: 600; letter-spacing: 0.02em;
+    color: var(--vura-cream, #F4EFE3);
   }
+  .vura-bbar__sep { margin: 0 3rem; color: var(--vura-saffron, #FFC03F); font-size: 1rem; line-height: 1; }
   @keyframes vura-bbar-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) {
     .vura-bbar { mask-image: none; -webkit-mask-image: none; }
@@ -44,7 +38,7 @@
 {%- capture benefit_items -%}
   {%- for r in (1..repeat) -%}
     {%- for block in section.blocks -%}
-      <div class="vura-bbar__item"{% if r == 1 %} {{ block.shopify_attributes }}{% endif %}>
+      <span class="vura-bbar__item"{% if r == 1 %} {{ block.shopify_attributes }}{% endif %}>
         <span class="vura-bbar__icon" aria-hidden="true">
           {%- case block.settings.icon -%}
             {%- when 'shield' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
@@ -54,16 +48,20 @@
             {%- when 'droplet' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6 6 11a6 6 0 1 1-12 0c0-5 6-11 6-11z"/></svg>
             {%- when 'spray' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="9" width="7" height="12" rx="2"/><path d="M9 9V6h5v3"/><path d="M17 5h2M17 8h2M18 11h1.5"/></svg>
             {%- when 'crystal' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l5 5-5 13L7 8z"/><path d="M7 8h10"/></svg>
+            {%- when 'sparkle' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4c.5 3.7 1.8 5 5.5 5.5C12.8 10 11.5 11.3 11 15c-.5-3.7-1.8-5-5.5-5.5C9.2 9 10.5 7.7 11 4z"/><path d="M18 14l.5 2 2 .5-2 .5-.5 2-.5-2-2-.5 2-.5z"/></svg>
+            {%- when 'heart' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-7-9.6A3.4 3.4 0 0 1 12 8a3.4 3.4 0 0 1 7 2.4C19 15.4 12 20 12 20z"/></svg>
+            {%- when 'flower' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.4"/><circle cx="12" cy="6.5" r="2.2"/><circle cx="17" cy="9.8" r="2.2"/><circle cx="15.2" cy="15.6" r="2.2"/><circle cx="8.8" cy="15.6" r="2.2"/><circle cx="7" cy="9.8" r="2.2"/></svg>
             {%- else -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
           {%- endcase -%}
         </span>
         <span class="vura-bbar__label">{{ block.settings.label | escape }}</span>
-      </div>
+      </span>
+      <span class="vura-bbar__sep" aria-hidden="true">•</span>
     {%- endfor -%}
   {%- endfor -%}
 {%- endcapture -%}
 
-<div class="vura-bbar" style="--vura-bbar-duration: {{ section.blocks.size | times: 7 }}s;">
+<div class="vura-bbar" style="--vura-bbar-duration: {{ section.blocks.size | times: 3 }}s;">
   <div class="vura-bbar__track">
     <div class="vura-bbar__group">{{ benefit_items }}</div>
     <div class="vura-bbar__group" aria-hidden="true">{{ benefit_items }}</div>
@@ -76,40 +74,48 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    { "type": "color", "id": "background", "label": "Background", "default": "#F8F3E7" },
-    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 20 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 60, "step": 4, "unit": "px", "default": 20 }
+    { "type": "color", "id": "background", "label": "Background", "default": "#162D24" },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 60, "step": 2, "unit": "px", "default": 16 }
   ],
   "blocks": [
     {
       "type": "benefit",
       "name": "Benefit",
       "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Aluminium-salt free" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Aloe vera infused" },
         {
-          "type": "select", "id": "icon", "label": "Icon", "default": "shield",
+          "type": "select", "id": "icon", "label": "Icon", "default": "leaf",
           "options": [
-            { "value": "shield", "label": "Shield" },
-            { "value": "leaf", "label": "Leaf" },
-            { "value": "shirt", "label": "Shirt" },
-            { "value": "pin", "label": "Location pin" },
-            { "value": "droplet", "label": "Droplet" },
-            { "value": "spray", "label": "Spray bottle" },
             { "value": "crystal", "label": "Crystal" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "spray", "label": "Spray bottle" },
+            { "value": "sparkle", "label": "Sparkle" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "shirt", "label": "Shirt" },
+            { "value": "flower", "label": "Flower" },
+            { "value": "droplet", "label": "Droplet" },
+            { "value": "pin", "label": "Location pin" },
             { "value": "check", "label": "Check" }
           ]
         }
       ]
     }
   ],
-  "max_blocks": 6,
+  "max_blocks": 12,
   "presets": [
     {
       "name": "Vura Benefits Bar",
       "blocks": [
+        { "type": "benefit", "settings": { "label": "Hero ingredient: phitkari", "icon": "crystal" } },
+        { "type": "benefit", "settings": { "label": "Aloe vera infused", "icon": "leaf" } },
+        { "type": "benefit", "settings": { "label": "Mist-spray format", "icon": "spray" } },
+        { "type": "benefit", "settings": { "label": "Hygienic no-touch application", "icon": "sparkle" } },
         { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
-        { "type": "benefit", "settings": { "label": "For sensitive skin", "icon": "leaf" } },
+        { "type": "benefit", "settings": { "label": "Gentle on sensitive skin", "icon": "heart" } },
         { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
+        { "type": "benefit", "settings": { "label": "Rooted in nature", "icon": "flower" } },
         { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
       ]
     }
