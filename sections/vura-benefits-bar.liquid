@@ -18,7 +18,7 @@
   .vura-bbar:hover .vura-bbar__track { animation-play-state: paused; }
   .vura-bbar__group { display: flex; align-items: center; flex-shrink: 0; }
   .vura-bbar__item {
-    display: inline-flex; align-items: center; gap: 1.1rem; white-space: nowrap; padding: 12px 0;
+    display: inline-flex; align-items: center; gap: 1.1rem; white-space: nowrap; padding: 12px 2.2rem;
   }
   .vura-bbar__icon { display: inline-flex; color: var(--vura-saffron, #FFC03F); }
   .vura-bbar__icon svg { width: 26px; height: 26px; }
@@ -27,7 +27,6 @@
     font-size: 1.7rem; font-weight: 600; letter-spacing: 0.02em;
     color: var(--vura-cream, #F4EFE3);
   }
-  .vura-bbar__sep { margin: 0 3rem; color: var(--vura-saffron, #FFC03F); font-size: 1rem; line-height: 1; }
   @keyframes vura-bbar-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) {
     .vura-bbar { mask-image: none; -webkit-mask-image: none; }
@@ -56,7 +55,6 @@
         </span>
         <span class="vura-bbar__label">{{ block.settings.label | escape }}</span>
       </span>
-      <span class="vura-bbar__sep" aria-hidden="true">•</span>
     {%- endfor -%}
   {%- endfor -%}
 {%- endcapture -%}
@@ -103,18 +101,22 @@
       ]
     }
   ],
-  "max_blocks": 12,
+  "max_blocks": 16,
   "presets": [
     {
       "name": "Vura Benefits Bar",
       "blocks": [
-        { "type": "benefit", "settings": { "label": "Hero ingredient: phitkari", "icon": "crystal" } },
+        { "type": "benefit", "settings": { "label": "Hero ingredient: Phitkari", "icon": "crystal" } },
         { "type": "benefit", "settings": { "label": "Aloe vera infused", "icon": "leaf" } },
-        { "type": "benefit", "settings": { "label": "Mist-spray format", "icon": "spray" } },
-        { "type": "benefit", "settings": { "label": "Hygienic no-touch application", "icon": "sparkle" } },
+        { "type": "benefit", "settings": { "label": "Natural odour control", "icon": "shield" } },
+        { "type": "benefit", "settings": { "label": "No harsh chemicals", "icon": "sparkle" } },
         { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
+        { "type": "benefit", "settings": { "label": "Mist-spray format", "icon": "spray" } },
+        { "type": "benefit", "settings": { "label": "Hygienic no-touch application", "icon": "check" } },
+        { "type": "benefit", "settings": { "label": "Non-sticky & quick-drying", "icon": "droplet" } },
         { "type": "benefit", "settings": { "label": "Gentle on sensitive skin", "icon": "heart" } },
         { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
+        { "type": "benefit", "settings": { "label": "Unisex & everyday use", "icon": "check" } },
         { "type": "benefit", "settings": { "label": "Rooted in nature", "icon": "flower" } },
         { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
       ]

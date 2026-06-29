@@ -122,17 +122,21 @@
     "vura-benefits-bar": {
       "type": "vura-benefits-bar",
       "blocks": {
-        "b1": { "type": "benefit", "settings": { "label": "Hero ingredient: phitkari", "icon": "crystal" } },
+        "b1": { "type": "benefit", "settings": { "label": "Hero ingredient: Phitkari", "icon": "crystal" } },
         "b2": { "type": "benefit", "settings": { "label": "Aloe vera infused", "icon": "leaf" } },
-        "b3": { "type": "benefit", "settings": { "label": "Mist-spray format", "icon": "spray" } },
-        "b4": { "type": "benefit", "settings": { "label": "Hygienic no-touch application", "icon": "sparkle" } },
+        "b3": { "type": "benefit", "settings": { "label": "Natural odour control", "icon": "shield" } },
+        "b4": { "type": "benefit", "settings": { "label": "No harsh chemicals", "icon": "sparkle" } },
         "b5": { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
-        "b6": { "type": "benefit", "settings": { "label": "Gentle on sensitive skin", "icon": "heart" } },
-        "b7": { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
-        "b8": { "type": "benefit", "settings": { "label": "Rooted in nature", "icon": "flower" } },
-        "b9": { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
+        "b6": { "type": "benefit", "settings": { "label": "Mist-spray format", "icon": "spray" } },
+        "b7": { "type": "benefit", "settings": { "label": "Hygienic no-touch application", "icon": "check" } },
+        "b8": { "type": "benefit", "settings": { "label": "Non-sticky & quick-drying", "icon": "droplet" } },
+        "b9": { "type": "benefit", "settings": { "label": "Gentle on sensitive skin", "icon": "heart" } },
+        "b10": { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
+        "b11": { "type": "benefit", "settings": { "label": "Unisex & everyday use", "icon": "check" } },
+        "b12": { "type": "benefit", "settings": { "label": "Rooted in nature", "icon": "flower" } },
+        "b13": { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
       },
-      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9"],
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13"],
       "settings": { "background": "#162D24", "padding_top": 16, "padding_bottom": 16 }
     },
     "vura-confidence": {
