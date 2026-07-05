@@ -63,25 +63,8 @@
       if (!bar || !btn) return;
 
       // Ensure the bar is always visible by default
+      // (shrink-on-scroll / --minimized toggle is handled globally in global.js)
       bar.classList.add('is-visible');
-
-      // Shrink (hide image) on scroll down, restore to full size on scroll up
-      var lastScrollY = window.pageYOffset;
-      var ticking = false;
-      window.addEventListener('scroll', function() {
-        if (ticking) return;
-        ticking = true;
-        window.requestAnimationFrame(function() {
-          var y = window.pageYOffset;
-          if (y > lastScrollY && y > 200) {
-            bar.classList.add('vura-sticky-atc--minimized');
-          } else if (y < lastScrollY) {
-            bar.classList.remove('vura-sticky-atc--minimized');
-          }
-          lastScrollY = y;
-          ticking = false;
-        });
-      }, { passive: true });
 
       // Click handler: find and click the real Add to Cart button
       btn.addEventListener('click', function(e) {
