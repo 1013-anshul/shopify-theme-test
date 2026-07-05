@@ -5,6 +5,11 @@
 {%- endcomment -%}
 
 {%- if request.page_type == 'product' -%}
+  <style>
+    .vura-sticky-atc__inner,
+    .vura-sticky-atc__qty,
+    .vura-sticky-atc__btn { transition: padding 0.25s ease, height 0.25s ease, font-size 0.25s ease; }
+  </style>
   <div class="vura-sticky-atc is-visible" id="VuraStickyAtc">
     <div class="vura-sticky-atc__inner">
       <div class="vura-sticky-atc__left">
@@ -57,8 +62,26 @@
       var btn = document.getElementById('VuraStickyAtcBtn');
       if (!bar || !btn) return;
 
-      // Ensure the bar is always visible by default (removing checkScroll events)
+      // Ensure the bar is always visible by default
       bar.classList.add('is-visible');
+
+      // Shrink (hide image) on scroll down, restore to full size on scroll up
+      var lastScrollY = window.pageYOffset;
+      var ticking = false;
+      window.addEventListener('scroll', function() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function() {
+          var y = window.pageYOffset;
+          if (y > lastScrollY && y > 200) {
+            bar.classList.add('vura-sticky-atc--minimized');
+          } else if (y < lastScrollY) {
+            bar.classList.remove('vura-sticky-atc--minimized');
+          }
+          lastScrollY = y;
+          ticking = false;
+        });
+      }, { passive: true });
 
       // Click handler: find and click the real Add to Cart button
       btn.addEventListener('click', function(e) {
