@@ -1,167 +1,103 @@
-<style>
-  .vura-ingredients {
+{%- style -%}
+  .vura-ing {
+    background: var(--vura-forest, #162D24);
+    color: var(--vura-cream, #F4EFE3);
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
-    background: var(--vura-paper, #F8F3E7);
-    color: var(--vura-paper-ink, #1A2A22);
   }
-
-  .vura-ingredients__container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 20px;
+  .vura-ing__container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+  .vura-ing__header { text-align: center; max-width: 640px; margin: 0 auto 4rem; }
+  .vura-ing__eyebrow {
+    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1.1rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--vura-saffron, #FFC03F); margin: 0 0 1rem;
   }
-
-  .vura-ingredients__header {
-    text-align: center;
-    margin-bottom: 40px;
+  .vura-ing__heading {
+    font-family: var(--font-display, Georgia, serif);
+    font-size: clamp(2.8rem, 4.5vw, 4rem); line-height: 1.1; margin: 0 0 1.2rem;
+    color: var(--vura-cream, #F4EFE3);
   }
-
-  .vura-ingredients__eyebrow {
-    font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--vura-paper-ink-muted, #4A5750);
-    margin-bottom: 12px;
+  .vura-ing__intro {
+    font-family: var(--font-display, Georgia, serif); font-style: italic;
+    font-size: clamp(1.6rem, 2.4vw, 2rem); line-height: 1.4; color: var(--vura-cream-dim, #D9D2C2); margin: 0;
   }
-
-  .vura-ingredients__heading {
-    font-family: var(--font-display, 'Roca One', Georgia, serif);
-    font-size: clamp(26px, 4vw, 44px);
-    line-height: 1.15;
-    color: var(--vura-paper-ink, #1A2A22);
-    margin: 0;
+  .vura-ing__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
+  @media (min-width: 750px) { .vura-ing__grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+  .vura-ing__card {
+    position: relative; display: flex; flex-direction: column;
+    background: var(--vura-cream, #F4EFE3); color: var(--vura-paper-ink, #1A2A22);
+    border-radius: var(--r-4, 10px); padding: 2.4rem 1.8rem 2rem;
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(26,42,34,0.10));
+    transition: transform 220ms var(--ease-out, ease), box-shadow 220ms var(--ease-out, ease);
   }
-
-  .vura-ingredients__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  .vura-ing__card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg, 0 24px 60px rgba(26,42,34,0.16)); }
+  .vura-ing__num {
+    position: absolute; top: 1.6rem; right: 1.8rem;
+    font-family: var(--font-mono, monospace); font-size: 1.1rem; letter-spacing: 0.1em;
+    color: var(--vura-paper-ink-faint, #7A857F);
   }
-
-  @media (min-width: 750px) {
-    .vura-ingredients__grid {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-    }
+  .vura-ing__icon {
+    width: 60px; height: 60px; border-radius: var(--r-pill, 999px);
+    background: var(--vura-terracotta-tint, #F4E9E4); color: var(--vura-terracotta, #8D3B2D);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1.6rem;
   }
-
-  .vura-ingredients__card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 24px 16px;
-    background: var(--vura-paper-deep, #EDE5D2);
-    border: 1px solid var(--border-on-paper, rgba(26,42,34,0.16));
-    border-radius: 6px;
-    transition: box-shadow 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  .vura-ing__icon svg { width: 34px; height: 34px; }
+  .vura-ing__tag {
+    align-self: flex-start; font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--vura-terracotta, #8D3B2D);
+    background: var(--vura-terracotta-tint, #F4E9E4); padding: 0.3rem 0.9rem; border-radius: var(--r-pill, 999px); margin-bottom: 1rem;
   }
-
-  .vura-ingredients__card:hover {
-    box-shadow: 0 8px 24px rgba(26,42,34,0.10);
+  .vura-ing__name {
+    font-family: var(--font-display, Georgia, serif); font-size: 2rem; line-height: 1.15;
+    margin: 0 0 0.6rem; color: var(--vura-paper-ink, #1A2A22);
   }
-
-  .vura-ingredients__icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: rgba(99, 119, 70, 0.14);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-    color: var(--vura-sage, #637746);
-    flex-shrink: 0;
+  .vura-ing__desc {
+    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1.3rem; line-height: 1.55;
+    color: var(--vura-paper-ink-muted, #4A5750); margin: 0;
   }
+{%- endstyle -%}
 
-  .vura-ingredients__icon svg {
-    width: 32px;
-    height: 32px;
-  }
-
-  .vura-ingredients__name {
-    font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--vura-paper-ink, #1A2A22);
-    margin: 0 0 6px 0;
-  }
-
-  .vura-ingredients__desc {
-    font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--vura-paper-ink-muted, #4A5750);
-    margin: 0;
-  }
-
-  @media (min-width: 750px) {
-    .vura-ingredients__card {
-      padding: 32px 20px;
-    }
-
-    .vura-ingredients__name {
-      font-size: 17px;
-    }
-  }
-</style>
-
-<section class="vura-ingredients" aria-labelledby="ingredients-heading-{{ section.id }}">
-  <div class="vura-ingredients__container">
-    <header class="vura-ingredients__header">
-      <p class="vura-ingredients__eyebrow">TRANSPARENCY</p>
-      <h2 class="vura-ingredients__heading" id="ingredients-heading-{{ section.id }}">
-        {{ section.settings.heading }}
-      </h2>
+<section class="vura-ing" aria-labelledby="ing-heading-{{ section.id }}">
+  <div class="vura-ing__container">
+    <header class="vura-ing__header">
+      {%- if section.settings.eyebrow != blank -%}<p class="vura-ing__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vura-ing__heading" id="ing-heading-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {%- if section.settings.intro != blank -%}<p class="vura-ing__intro">{{ section.settings.intro }}</p>{%- endif -%}
     </header>
 
     {%- if section.blocks.size > 0 -%}
-      <div class="vura-ingredients__grid">
+      <div class="vura-ing__grid">
         {%- for block in section.blocks -%}
-          <article class="vura-ingredients__card" {{ block.shopify_attributes }}>
-            <div class="vura-ingredients__icon" aria-hidden="true">
+          <article class="vura-ing__card" {{ block.shopify_attributes }}>
+            <span class="vura-ing__num">{{ forloop.index | prepend: '0' }}</span>
+            <span class="vura-ing__icon" aria-hidden="true">
               {%- case block.settings.icon -%}
                 {%- when 'crystal' -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M 22 16 L 26 36 L 18 48 L 12 36 Z"/>
-                    <path d="M 22 16 L 26 36 L 30 16 L 26 8 Z"/>
-                    <path d="M 30 16 L 38 36 L 30 48 L 26 36 Z"/>
-                    <path d="M 38 16 L 46 36 L 50 16 L 42 8 Z"/>
-                    <path d="M 46 36 L 52 48 L 56 36"/>
-                    <path d="M 12 36 L 14 30 M 38 36 L 40 30 M 52 48 L 56 56"/>
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M 22 16 L 26 36 L 18 48 L 12 36 Z"/><path d="M 22 16 L 26 36 L 30 16 L 26 8 Z"/>
+                    <path d="M 30 16 L 38 36 L 30 48 L 26 36 Z"/><path d="M 38 16 L 46 36 L 50 16 L 42 8 Z"/>
+                    <path d="M 46 36 L 52 48 L 56 36"/><path d="M 12 36 L 14 30 M 38 36 L 40 30 M 52 48 L 56 56"/>
                   </svg>
                 {%- when 'leaf' -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M 32 56 C 32 40 24 32 14 28 C 22 32 30 38 32 50"/>
-                    <path d="M 14 28 C 14 22 18 18 22 18 C 18 22 16 26 18 30"/>
-                    <path d="M 32 56 C 32 38 38 28 50 24 C 42 28 36 34 34 46"/>
-                    <path d="M 50 24 C 50 18 46 14 42 14 C 46 18 48 22 46 26"/>
-                    <path d="M 26 38 C 24 38 22 40 22 42 C 26 42 28 40 28 38 Z"/>
-                    <path d="M 36 32 C 34 32 32 34 32 36 C 36 36 38 34 38 32 Z"/>
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M 32 56 C 32 40 24 32 14 28 C 22 32 30 38 32 50"/><path d="M 14 28 C 14 22 18 18 22 18 C 18 22 16 26 18 30"/>
+                    <path d="M 32 56 C 32 38 38 28 50 24 C 42 28 36 34 34 46"/><path d="M 50 24 C 50 18 46 14 42 14 C 46 18 48 22 46 26"/>
+                    <path d="M 26 38 C 24 38 22 40 22 42 C 26 42 28 40 28 38 Z"/><path d="M 36 32 C 34 32 32 34 32 36 C 36 36 38 34 38 32 Z"/>
                   </svg>
                 {%- when 'drop' -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M 26 10 C 14 26 14 40 26 48 C 38 40 38 26 26 10 Z"/>
-                    <path d="M 24 36 C 22 36 21 38 22 40"/>
-                    <path d="M 44 22 C 36 32 36 42 44 48 C 52 42 52 32 44 22 Z"/>
-                    <path d="M 42 38 C 41 38 40 40 41 41"/>
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M 26 10 C 14 26 14 40 26 48 C 38 40 38 26 26 10 Z"/><path d="M 24 36 C 22 36 21 38 22 40"/>
+                    <path d="M 44 22 C 36 32 36 42 44 48 C 52 42 52 32 44 22 Z"/><path d="M 42 38 C 41 38 40 40 41 41"/>
                   </svg>
                 {%- when 'flower' -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="32" cy="32" r="6"/>
-                    <ellipse cx="32" cy="18" rx="5" ry="10"/>
-                    <ellipse cx="32" cy="46" rx="5" ry="10"/>
-                    <ellipse cx="18" cy="32" rx="10" ry="5"/>
-                    <ellipse cx="46" cy="32" rx="10" ry="5"/>
+                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="32" cy="32" r="6"/><ellipse cx="32" cy="18" rx="5" ry="10"/><ellipse cx="32" cy="46" rx="5" ry="10"/>
+                    <ellipse cx="18" cy="32" rx="10" ry="5"/><ellipse cx="46" cy="32" rx="10" ry="5"/>
                   </svg>
               {%- endcase -%}
-            </div>
-            <h3 class="vura-ingredients__name">{{ block.settings.name }}</h3>
-            <p class="vura-ingredients__desc">{{ block.settings.description }}</p>
+            </span>
+            {%- if block.settings.tag != blank -%}<span class="vura-ing__tag">{{ block.settings.tag }}</span>{%- endif -%}
+            <h3 class="vura-ing__name">{{ block.settings.name }}</h3>
+            <p class="vura-ing__desc">{{ block.settings.description }}</p>
           </article>
         {%- endfor -%}
       </div>
@@ -175,61 +111,28 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "What's Inside"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding top",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding bottom",
-      "default": 52
-    }
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Full transparency" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What's inside" },
+    { "type": "text", "id": "intro", "label": "Intro line", "default": "Aloe and rose, nothing else." },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom", "default": 64 }
   ],
   "blocks": [
     {
       "type": "ingredient",
       "name": "Ingredient",
       "settings": [
+        { "type": "text", "id": "name", "label": "Ingredient name", "default": "Ingredient" },
+        { "type": "text", "id": "tag", "label": "Role tag", "default": "" },
+        { "type": "text", "id": "description", "label": "Description", "default": "Brief description of this ingredient" },
         {
-          "type": "text",
-          "id": "name",
-          "label": "Ingredient name",
-          "default": "Ingredient"
-        },
-        {
-          "type": "text",
-          "id": "description",
-          "label": "Description",
-          "default": "Brief description of this ingredient"
-        },
-        {
-          "type": "select",
-          "id": "icon",
-          "label": "Icon",
+          "type": "select", "id": "icon", "label": "Icon", "default": "crystal",
           "options": [
             { "value": "crystal", "label": "Crystal" },
             { "value": "leaf", "label": "Leaf" },
             { "value": "drop", "label": "Drop" },
             { "value": "flower", "label": "Flower" }
-          ],
-          "default": "crystal"
+          ]
         }
       ]
     }
@@ -239,38 +142,10 @@
     {
       "name": "VURA Ingredients",
       "blocks": [
-        {
-          "type": "ingredient",
-          "settings": {
-            "name": "Phitkari (Alum)",
-            "description": "Traditional mineral salt for natural odour control",
-            "icon": "crystal"
-          }
-        },
-        {
-          "type": "ingredient",
-          "settings": {
-            "name": "Aloe Vera",
-            "description": "Soothing hydration for delicate skin",
-            "icon": "leaf"
-          }
-        },
-        {
-          "type": "ingredient",
-          "settings": {
-            "name": "Rose Water",
-            "description": "Gentle toning with a subtle natural fragrance",
-            "icon": "flower"
-          }
-        },
-        {
-          "type": "ingredient",
-          "settings": {
-            "name": "Purified Water",
-            "description": "Clean base, nothing synthetic",
-            "icon": "drop"
-          }
-        }
+        { "type": "ingredient", "settings": { "name": "Phitkari (Alum)", "tag": "Active", "description": "Mineral salt that controls odour by calming odour-causing bacteria.", "icon": "crystal" } },
+        { "type": "ingredient", "settings": { "name": "Aloe Vera", "tag": "Soothing", "description": "Hydrates and soothes delicate underarm skin.", "icon": "leaf" } },
+        { "type": "ingredient", "settings": { "name": "Rose Water", "tag": "Toning", "description": "Gentle toning with a soft, natural scent.", "icon": "flower" } },
+        { "type": "ingredient", "settings": { "name": "Purified Water", "tag": "Base", "description": "A clean base — nothing synthetic.", "icon": "drop" } }
       ]
     }
   ]

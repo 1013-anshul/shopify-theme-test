@@ -78,7 +78,7 @@
           "settings": {
             "heading": "Shipping & Returns",
             "icon": "truck",
-            "content": "<p><strong>Shipping:</strong> Free shipping across India. Orders are processed within 24 hours and typically delivered in 3-5 business days.</p><p><strong>COD:</strong> Cash on Delivery is available. We will confirm COD orders via WhatsApp before dispatch.</p><p><strong>Returns:</strong> Due to personal hygiene reasons, we only accept returns on damaged or defective items within 7 days of delivery.</p>"
+            "content": "<p><strong>Shipping:</strong> Orders are processed within 24 hours and typically delivered in 3-5 business days.</p><p><strong>COD:</strong> Cash on Delivery is available. We will confirm COD orders via WhatsApp before dispatch.</p><p><strong>Returns:</strong> Due to personal hygiene reasons, we only accept returns on damaged or defective items within 7 days of delivery.</p>"
           }
         },
         "share": {
@@ -96,7 +96,6 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
-        "description",
         "collapsible_tab_benefits",
         "collapsible_tab_ingredients",
         "collapsible_tab_how_to_use",
@@ -204,42 +203,16 @@
     "vura-ingredients": {
       "type": "vura-ingredients",
       "blocks": {
-        "ingredient_1": {
-          "type": "ingredient",
-          "settings": {
-            "name": "Phitkari (Alum)",
-            "description": "Traditional mineral salt for natural odour control",
-            "icon": "crystal"
-          }
-        },
-        "ingredient_2": {
-          "type": "ingredient",
-          "settings": {
-            "name": "Aloe Vera",
-            "description": "Soothing hydration for delicate skin",
-            "icon": "leaf"
-          }
-        },
-        "ingredient_3": {
-          "type": "ingredient",
-          "settings": {
-            "name": "Rose Water",
-            "description": "Gentle toning with a subtle natural fragrance",
-            "icon": "flower"
-          }
-        },
-        "ingredient_4": {
-          "type": "ingredient",
-          "settings": {
-            "name": "Purified Water",
-            "description": "Clean base, nothing synthetic",
-            "icon": "drop"
-          }
-        }
+        "ingredient_1": { "type": "ingredient", "settings": { "name": "Phitkari (Alum)", "tag": "Active", "description": "Mineral salt that controls odour by calming odour-causing bacteria.", "icon": "crystal" } },
+        "ingredient_2": { "type": "ingredient", "settings": { "name": "Aloe Vera", "tag": "Soothing", "description": "Hydrates and soothes delicate underarm skin.", "icon": "leaf" } },
+        "ingredient_3": { "type": "ingredient", "settings": { "name": "Rose Water", "tag": "Toning", "description": "Gentle toning with a soft, natural scent.", "icon": "flower" } },
+        "ingredient_4": { "type": "ingredient", "settings": { "name": "Purified Water", "tag": "Base", "description": "A clean base — nothing synthetic.", "icon": "drop" } }
       },
       "block_order": ["ingredient_1", "ingredient_2", "ingredient_3", "ingredient_4"],
       "settings": {
-        "heading": "What's Inside",
+        "eyebrow": "Full transparency",
+        "heading": "What's inside",
+        "intro": "Aloe and rose, nothing else.",
         "padding_top": 36,
         "padding_bottom": 52
       }
