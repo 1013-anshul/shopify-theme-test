@@ -71,7 +71,7 @@
           "settings": {
             "heading": "Key Ingredients",
             "icon": "leaf",
-            "content": "<p><strong>Phitkari (Potassium Alum):</strong> A natural mineral salt that acts as a potent antibacterial agent to stop body odor at its source.</p><p><strong>Aloe Vera:</strong> Soothes, hydrates, and protects the delicate underarm skin from irritation.</p><p><strong>Pure Water & Essential Oils:</strong> For clean hydration and a subtle, refreshing natural scent.</p>"
+            "content": "<p><strong>Phitkari (Potassium Alum):</strong> A natural mineral salt that acts as a potent antibacterial agent to stop body odor at its source.</p><p><strong>Aloe Vera Extract:</strong> Soothes, hydrates, and protects the delicate underarm skin from irritation.</p><p><strong>Rose Water:</strong> Gentle toning with a soft, natural scent.</p><p><strong>Glycerin:</strong> Draws in moisture to keep skin soft.</p>"
           }
         },
         "collapsible_tab_how_to_use": {
@@ -184,38 +184,13 @@
         "padding_bottom": 36
       }
     },
-    "vura-comparison-table": {
-      "type": "vura-comparison-table",
-      "blocks": {
-        "r1": { "type": "row", "settings": { "label": "Controls odour", "perfume": "partial", "deodorant": "yes", "roll_on": "yes", "vura": "yes" } },
-        "r2": { "type": "row", "settings": { "label": "Long-lasting", "perfume": "partial", "deodorant": "partial", "roll_on": "yes", "vura": "yes" } },
-        "r3": { "type": "row", "settings": { "label": "Gentle on skin", "perfume": "no", "deodorant": "no", "roll_on": "partial", "vura": "yes" } },
-        "r4": { "type": "row", "settings": { "label": "No residue", "perfume": "no", "deodorant": "partial", "roll_on": "no", "vura": "yes" } },
-        "r9": { "type": "row", "settings": { "label": "Even coverage", "perfume": "partial", "deodorant": "partial", "roll_on": "no", "vura": "yes" } },
-        "r5": { "type": "row", "settings": { "label": "Can be layered", "perfume": "yes", "deodorant": "no", "roll_on": "no", "vura": "yes" } },
-        "r6": { "type": "row", "settings": { "label": "Soothing after shaving", "perfume": "no", "deodorant": "no", "roll_on": "partial", "vura": "yes" } },
-        "r7": { "type": "row", "settings": { "label": "Travel-friendly", "perfume": "partial", "deodorant": "yes", "roll_on": "yes", "vura": "yes" } },
-        "r8": { "type": "row", "settings": { "label": "Touch-free mist", "perfume": "partial", "deodorant": "partial", "roll_on": "no", "vura": "yes" } }
-      },
-      "block_order": ["r1", "r2", "r3", "r4", "r9", "r5", "r6", "r7", "r8"],
-      "settings": {
-        "eyebrow": "The VURA difference",
-        "heading": "How VURA compares",
-        "label_perfume": "Perfume",
-        "label_deodorant": "Deodorant",
-        "label_rollon": "Roll-on",
-        "label_vura": "VURA",
-        "padding_top": 52,
-        "padding_bottom": 60
-      }
-    },
     "vura-ingredients": {
       "type": "vura-ingredients",
       "blocks": {
         "ingredient_1": { "type": "ingredient", "settings": { "name": "Phitkari (Alum)", "tag": "Active", "description": "Mineral salt that controls odour by calming odour-causing bacteria.", "icon": "crystal" } },
-        "ingredient_2": { "type": "ingredient", "settings": { "name": "Aloe Vera", "tag": "Soothing", "description": "Hydrates and soothes delicate underarm skin.", "icon": "leaf" } },
+        "ingredient_2": { "type": "ingredient", "settings": { "name": "Aloe Vera Extract", "tag": "Soothing", "description": "Hydrates and soothes delicate underarm skin.", "icon": "leaf" } },
         "ingredient_3": { "type": "ingredient", "settings": { "name": "Rose Water", "tag": "Toning", "description": "Gentle toning with a soft, natural scent.", "icon": "flower" } },
-        "ingredient_4": { "type": "ingredient", "settings": { "name": "Purified Water", "tag": "Base", "description": "A clean base — nothing synthetic.", "icon": "drop" } }
+        "ingredient_4": { "type": "ingredient", "settings": { "name": "Glycerin", "tag": "Hydrating", "description": "Draws in moisture to keep skin soft, not dry.", "icon": "drop" } }
       },
       "block_order": ["ingredient_1", "ingredient_2", "ingredient_3", "ingredient_4"],
       "settings": {
@@ -309,7 +284,6 @@
     "main",
     "vura-benefits-bar",
     "vura-confidence",
-    "vura-comparison-table",
     "vura-ingredients",
     "vura-ugc-video",
     "vura-faq",

@@ -122,6 +122,13 @@
     #vura-hero-{{ section.id }} { min-height: {{ section.settings.height_desktop }}px; }
     #vura-hero-{{ section.id }} .vura-hero__inner { padding: 5rem 5rem; }
   }
+  @media screen and (max-width: 749px) {
+    #vura-hero-{{ section.id }} { min-height: 0; display: block; }
+    #vura-hero-{{ section.id }} .vura-hero__media,
+    #vura-hero-{{ section.id }} .vura-hero__media img { position: static; width: 100%; height: auto; object-fit: contain; }
+    #vura-hero-{{ section.id }} .vura-hero__overlay,
+    #vura-hero-{{ section.id }} .vura-hero__inner { display: none; }
+  }
 {%- endstyle -%}
 
 <section id="vura-hero-{{ section.id }}" class="vura-hero">
