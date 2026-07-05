@@ -539,8 +539,6 @@
 
     {% render 'product-media-modal', variant_images: variant_images %}
 
-    {% render 'vura-sticky-atc' %}
-
     {% assign popups = section.blocks | where: 'type', 'popup' %}
     {%- for block in popups -%}
       <modal-dialog id="PopupModal-{{ block.id }}" class="product-popup-modal" {{ block.shopify_attributes }}>

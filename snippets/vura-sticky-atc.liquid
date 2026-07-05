@@ -9,6 +9,11 @@
     .vura-sticky-atc__inner,
     .vura-sticky-atc__qty,
     .vura-sticky-atc__btn { transition: padding 0.25s ease, height 0.25s ease, font-size 0.25s ease; }
+    .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__image,
+    .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__info { display: none !important; }
+    .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__inner { padding: 8px 16px !important; justify-content: center !important; gap: 12px !important; }
+    .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__qty { height: 34px !important; }
+    .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__btn { height: 34px !important; padding: 0 20px !important; font-size: 11px !important; flex: 1 !important; }
   </style>
   <div class="vura-sticky-atc is-visible" id="VuraStickyAtc">
     <div class="vura-sticky-atc__inner">
@@ -63,8 +68,20 @@
       if (!bar || !btn) return;
 
       // Ensure the bar is always visible by default
-      // (shrink-on-scroll / --minimized toggle is handled globally in global.js)
       bar.classList.add('is-visible');
+
+      // Shrink (hide image) on scroll down, restore to full size on scroll up.
+      // Self-contained here so it works regardless of global.js execution.
+      var lastScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      window.addEventListener('scroll', function() {
+        var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+        if (y > lastScrollY && y > 150) {
+          bar.classList.add('vura-sticky-atc--minimized');
+        } else if (y < lastScrollY) {
+          bar.classList.remove('vura-sticky-atc--minimized');
+        }
+        lastScrollY = y;
+      }, { passive: true });
 
       // Click handler: find and click the real Add to Cart button
       btn.addEventListener('click', function(e) {
