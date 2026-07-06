@@ -1,5 +1,16 @@
 {%- liquid
   assign overlay = section.settings.overlay_opacity | divided_by: 100.0
+  assign slides = section.blocks | where: 'type', 'slide'
+
+  if section.settings.video != blank
+    assign media_ar = section.settings.video.aspect_ratio | default: 1.7778
+  elsif slides.size > 0 and slides.first.settings.image != blank
+    assign media_ar = slides.first.settings.image.aspect_ratio
+  elsif section.settings.image != blank
+    assign media_ar = section.settings.image.aspect_ratio
+  else
+    assign media_ar = 1.7778
+  endif
 -%}
 
 {%- style -%}
@@ -13,13 +24,21 @@
     background: var(--vura-forest-deep, #0E2118);
   }
   #vura-hero-{{ section.id }} .vura-hero__media,
-  #vura-hero-{{ section.id }} .vura-hero__media img {
+  #vura-hero-{{ section.id }} .vura-hero__media img,
+  #vura-hero-{{ section.id }} .vura-hero__media video {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     z-index: -2;
+  }
+  #vura-hero-{{ section.id }} .vura-hero__media--slideshow img {
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  #vura-hero-{{ section.id }} .vura-hero__media--slideshow img.is-active {
+    opacity: 1;
   }
   #vura-hero-{{ section.id }} .vura-hero__overlay {
     position: absolute;
@@ -124,16 +143,63 @@
   }
   @media screen and (max-width: 749px) {
     #vura-hero-{{ section.id }} { min-height: 0; display: block; }
-    #vura-hero-{{ section.id }} .vura-hero__media,
-    #vura-hero-{{ section.id }} .vura-hero__media img { position: static; width: 100%; height: auto; object-fit: contain; }
+    #vura-hero-{{ section.id }} .vura-hero__media {
+      position: relative;
+      width: 100%;
+      height: auto;
+      aspect-ratio: {{ media_ar }};
+    }
+    #vura-hero-{{ section.id }} .vura-hero__media img,
+    #vura-hero-{{ section.id }} .vura-hero__media video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
     #vura-hero-{{ section.id }} .vura-hero__overlay,
     #vura-hero-{{ section.id }} .vura-hero__inner { display: none; }
   }
 {%- endstyle -%}
 
 <section id="vura-hero-{{ section.id }}" class="vura-hero">
-  <div class="vura-hero__media">
-    {%- if section.settings.image != blank -%}
+  <div class="vura-hero__media{% if section.settings.video == blank and slides.size > 1 %} vura-hero__media--slideshow{% endif %}">
+    {%- if section.settings.video != blank -%}
+      {{
+        section.settings.video
+        | video_tag:
+          autoplay: true,
+          loop: true,
+          muted: true,
+          controls: false,
+          playsinline: true,
+          preload: 'metadata'
+      }}
+    {%- elsif slides.size > 0 -%}
+      {%- for block in slides -%}
+        {%- if block.settings.image != blank -%}
+          {%- liquid
+            assign slide_class = 'vura-hero__slide'
+            if forloop.first
+              assign slide_class = 'vura-hero__slide is-active'
+              assign slide_loading = 'eager'
+            else
+              assign slide_loading = 'lazy'
+            endif
+          -%}
+          {{
+            block.settings.image
+            | image_url: width: 3000
+            | image_tag:
+              class: slide_class,
+              loading: slide_loading,
+              sizes: '100vw',
+              widths: '750, 1100, 1500, 2000, 3000',
+              alt: block.settings.image.alt | default: section.settings.heading
+          }}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif section.settings.image != blank -%}
       {{
         section.settings.image
         | image_url: width: 3000
@@ -197,6 +263,24 @@
   </div>
 </section>
 
+{%- if section.settings.video == blank and slides.size > 1 -%}
+  <script>
+    (function () {
+      var wrap = document.querySelector('#vura-hero-{{ section.id }} .vura-hero__media--slideshow');
+      if (!wrap) return;
+      var imgs = wrap.querySelectorAll('img');
+      if (imgs.length < 2) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var i = 0;
+      setInterval(function () {
+        imgs[i].classList.remove('is-active');
+        i = (i + 1) % imgs.length;
+        imgs[i].classList.add('is-active');
+      }, {{ section.settings.slide_interval | default: 5 | times: 1000 }});
+    })();
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Vura hero",
@@ -204,9 +288,30 @@
   "class": "section section-vura-hero",
   "settings": [
     {
+      "type": "header",
+      "content": "Background media"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background video",
+      "info": "Plays muted on loop. Takes priority over images."
+    },
+    {
       "type": "image_picker",
       "id": "image",
-      "label": "Background image"
+      "label": "Background image",
+      "info": "Used when no video is set and no slides are added. Add 'Slide' blocks for a slideshow."
+    },
+    {
+      "type": "range",
+      "id": "slide_interval",
+      "label": "Slideshow speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
     },
     {
       "type": "text",
@@ -304,6 +409,20 @@
       "default": 480
     }
   ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
   "presets": [
     {
       "name": "Vura hero"
