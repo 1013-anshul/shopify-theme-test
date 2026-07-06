@@ -74,7 +74,7 @@
           "settings": {
             "heading": "Shipping & Returns",
             "icon": "truck",
-            "content": "<p><strong>Shipping:</strong> Orders are processed within 24 hours and typically delivered in 3-5 business days.</p><p><strong>COD:</strong> Cash on Delivery is available. We will confirm COD orders via WhatsApp before dispatch.</p><p><strong>Returns:</strong> Due to personal hygiene reasons, we only accept returns on damaged or defective items within 7 days of delivery.</p>",
+            "content": "<p><strong>Shipping:</strong> Orders are processed within 24 hours and typically delivered in 3-5 business days across India.</p><p><strong>Returns:</strong> We accept returns on unopened items only, within 7 days of delivery.</p>",
             "page": ""
           }
         },
@@ -367,14 +367,14 @@
           "type": "faq_item",
           "settings": {
             "question": "What are the shipping timelines?",
-            "answer": "<p>Orders are dispatched within 24 hours. Standard delivery across India takes 3-5 business days. Cash on Delivery is available.</p>"
+            "answer": "<p>Orders are dispatched within 24 hours. Standard delivery across India takes 3-5 business days.</p>"
           }
         },
         "faq_7": {
           "type": "faq_item",
           "settings": {
             "question": "What if I don't like it?",
-            "answer": "<p>We accept returns on unopened/unused items within 7 days of delivery. Contact us at support@vuraskincare.in for assistance.</p>"
+            "answer": "<p>We accept returns on unopened items only, within 7 days of delivery. Contact us at support@vuraskincare.in for assistance.</p>"
           }
         }
       },
