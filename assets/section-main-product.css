@@ -480,6 +480,23 @@ a.product__text {
   transition: color var(--duration-short) ease, opacity var(--duration-short) ease;
 }
 
+/* Zoom loupe: bottom-right corner so it never covers text in the image;
+   slightly translucent on touch screens (desktop already reveals on hover) */
+.product__media-icon:not(.thumbnail__badge) {
+  left: auto;
+  top: auto;
+  right: 1.2rem;
+  bottom: 1.2rem;
+}
+
+@media screen and (max-width: 749px) {
+  .product__media-icon:not(.thumbnail__badge) {
+    opacity: 0.75;
+    height: 2.6rem;
+    width: 2.6rem;
+  }
+}
+
 .product__media-video .product__media-icon {
   opacity: 1;
 }
