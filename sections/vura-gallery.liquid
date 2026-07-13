@@ -156,24 +156,26 @@
     #vura-gallery-{{ section.id }} .vura-gallery__track {
       display: block;
       position: relative;
-      height: 106vw;
+      height: 104vw;
       margin: 0;
       padding: 0;
       overflow: visible;
+      perspective: 1100px;
       scroll-snap-type: none;
     }
     #vura-gallery-{{ section.id }} .vura-gallery__card {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 72vw;
+      width: 68vw;
       transform: translate(-50%, -50%);
-      transition: transform 0.38s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease;
+      transition: none;
       touch-action: pan-y;
       box-shadow: 0 18px 44px rgba(26, 42, 34, 0.24);
       -webkit-user-select: none;
       user-select: none;
-      will-change: transform;
+      backface-visibility: hidden;
+      will-change: transform, opacity;
     }
     #vura-gallery-{{ section.id }} .vura-gallery__card a {
       -webkit-user-drag: none;
@@ -259,145 +261,140 @@
     var prev = root.querySelector('[data-gallery-prev]');
     var next = root.querySelector('[data-gallery-next]');
     var cards = Array.prototype.slice.call(track.querySelectorAll('.vura-gallery__card'));
-    if (!cards.length) return;
+    var N = cards.length;
+    if (!N) return;
 
-    /* ---------- Desktop: clickable arrow scroll ---------- */
-    function step() {
-      var gap = parseInt(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '16', 10) || 16;
-      return cards[0].getBoundingClientRect().width + gap;
-    }
-    function updateArrows() {
-      if (!prev || !next) return;
-      var maxScroll = track.scrollWidth - track.clientWidth - 2;
-      prev.disabled = track.scrollLeft <= 2;
-      next.disabled = track.scrollLeft >= maxScroll;
-    }
-    if (prev && next) {
-      prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
-      next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
-      track.addEventListener('scroll', updateArrows, { passive: true });
-    }
-
-    /* ---------- Mobile: peeking card-stack deck ---------- */
     var mq = window.matchMedia('(max-width: 749px)');
-    var order = cards.map(function (_, i) { return i; });
-    var deckOn = false;
-    var drag = null;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    function tf(p) {
-      if (p === 0) return 'translate(-50%, -50%) rotate(0deg) scale(1)';
-      if (p === 1) return 'translate(calc(-50% + 24px), calc(-50% + 10px)) rotate(4deg) scale(0.94)';
-      if (p === 2) return 'translate(calc(-50% - 24px), calc(-50% + 10px)) rotate(-4deg) scale(0.88)';
-      return 'translate(-50%, calc(-50% + 16px)) rotate(0deg) scale(0.84)';
+    /* Mobile: continuous circular wheel carousel (coverflow), RAF-eased. */
+    var pos = 0;          // fractional current index
+    var target = 0;       // where it eases to
+    var dragUnit = 165;   // px of horizontal drag = one card
+    var raf = null;
+    var drag = null;
+    var on = false;
+
+    function mod(n, m) { return ((n % m) + m) % m; }
+    // shortest signed distance from card i to the current position, wrapped circularly
+    function delta(i) {
+      var d = mod(i - pos, N);
+      if (d > N / 2) d -= N;
+      return d;
     }
-    function place(card, p, animate) {
-      card.style.transition = animate ? '' : 'none';
-      card.style.transform = tf(p);
-      card.style.zIndex = String(100 - p);
-      card.style.opacity = p <= 2 ? '1' : '0';
-      card.style.pointerEvents = p === 0 ? 'auto' : 'none';
+    function transformFor(d) {
+      var spread = 0.55, radius = 300;
+      var ang = d * spread;
+      var x = Math.sin(ang) * radius;
+      var z = (Math.cos(ang) - 1) * radius;      // <= 0, pushes side cards back
+      var ry = -(ang * 180 / Math.PI) * 0.5;     // subtle turn toward centre
+      return 'translate(-50%, -50%) translate3d(' + x.toFixed(2) + 'px, 0, ' + z.toFixed(2) + 'px) rotateY(' + ry.toFixed(2) + 'deg)';
     }
-    function render(animate) {
-      order.forEach(function (idx, p) { place(cards[idx], p, animate !== false); });
+    function opacityFor(d) {
+      var a = Math.abs(d);
+      if (a <= 1) return 1;
+      if (a >= 1.85) return 0;
+      return 1 - (a - 1) / 0.85;
     }
-    function cycleForward() {
-      order.push(order.shift());
-      render(true);
+    function render() {
+      var frontIdx = mod(Math.round(pos), N);
+      for (var i = 0; i < N; i++) {
+        var d = delta(i);
+        var c = cards[i];
+        c.style.transform = transformFor(d);
+        c.style.opacity = opacityFor(d).toFixed(3);
+        c.style.zIndex = String(1000 - Math.round(Math.abs(d) * 100));
+        c.style.pointerEvents = (i === frontIdx) ? 'auto' : 'none';
+      }
     }
+    function animate() {
+      var ease = reduce.matches ? 1 : 0.16;
+      var diff = target - pos;
+      if (Math.abs(diff) < 0.0008) {
+        pos = target;
+        render();
+        raf = null;
+        return;
+      }
+      pos += diff * ease;
+      render();
+      raf = requestAnimationFrame(animate);
+    }
+    function startAnim() { if (!raf) raf = requestAnimationFrame(animate); }
+    function goTo(t) { target = t; startAnim(); }
+
     function suppressClickOnce(card) {
-      var link = card.querySelector('a');
+      var link = card && card.querySelector('a');
       if (!link) return;
-      var handler = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
-      link.addEventListener('click', handler, true);
-      setTimeout(function () { link.removeEventListener('click', handler, true); }, 60);
+      var h = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
+      link.addEventListener('click', h, true);
+      setTimeout(function () { link.removeEventListener('click', h, true); }, 60);
     }
 
     function onDown(e) {
-      if (!deckOn || drag) return;
+      if (!on || drag) return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
-      var card = cards[order[0]];
-      if (!e.target.closest || e.target.closest('.vura-gallery__card') !== card) return;
-      drag = { x: e.clientX, y: e.clientY, dx: 0, decided: false, horizontal: false, moved: false, card: card };
-      card.style.transition = 'none';
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      drag = { x: e.clientX, y: e.clientY, startPos: pos, vel: 0, decided: false, horizontal: false, moved: false };
     }
     function onMove(e) {
       if (!drag) return;
       var dx = e.clientX - drag.x;
       var dy = e.clientY - drag.y;
       if (!drag.decided) {
-        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
         drag.decided = true;
         drag.horizontal = Math.abs(dx) > Math.abs(dy);
       }
       if (!drag.horizontal) return;
       if (e.cancelable) e.preventDefault();
-      drag.dx = dx;
-      if (Math.abs(dx) > 8) drag.moved = true;
-      drag.card.style.transform = 'translate(calc(-50% + ' + dx + 'px), -50%) rotate(' + (dx * 0.05) + 'deg) scale(1)';
+      if (Math.abs(dx) > 6) drag.moved = true;
+      var prevPos = pos;
+      pos = drag.startPos - dx / dragUnit;
+      drag.vel = pos - prevPos;   // card-units since last move
+      render();
     }
     function onUp() {
       if (!drag) return;
-      var card = drag.card;
-      var dx = drag.dx;
       var moved = drag.moved;
+      var vel = drag.vel;
+      var frontCard = cards[mod(Math.round(pos), N)];
       drag = null;
-      card.style.transition = '';
-      var threshold = card.getBoundingClientRect().width * 0.32;
-      if (Math.abs(dx) > threshold) {
-        var dir = dx > 0 ? 1 : -1;
-        card.style.transform = 'translate(calc(-50% + ' + (dir * 460) + 'px), -50%) rotate(' + (dir * 14) + 'deg) scale(0.94)';
-        card.style.opacity = '0';
-        var done = false;
-        var finish = function () {
-          if (done) return;
-          done = true;
-          card.removeEventListener('transitionend', finish);
-          cycleForward();
-        };
-        card.addEventListener('transitionend', finish);
-        setTimeout(finish, 420);
-      } else {
-        render(true);
-      }
-      if (moved) suppressClickOnce(card);
+      // snap to the nearest card; a quick flick nudges one further
+      var momentum = Math.max(-0.6, Math.min(0.6, vel * 3));
+      goTo(Math.round(pos + momentum));
+      if (moved) suppressClickOnce(frontCard);
     }
 
-    function enableDeck() {
-      if (deckOn) return;
-      deckOn = true;
-      order = cards.map(function (_, i) { return i; });
-      render(false);
+    function enable() {
+      if (on) return;
+      on = true;
+      pos = 0; target = 0;
+      render();
       track.addEventListener('pointerdown', onDown);
       window.addEventListener('pointermove', onMove, { passive: false });
       window.addEventListener('pointerup', onUp);
       window.addEventListener('pointercancel', onUp);
     }
-    function disableDeck() {
-      if (!deckOn) return;
-      deckOn = false;
-      drag = null;
+    function disable() {
+      if (!on) return;
+      on = false; drag = null;
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
       track.removeEventListener('pointerdown', onDown);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('pointercancel', onUp);
-      cards.forEach(function (card) {
-        card.style.transition = '';
-        card.style.transform = '';
-        card.style.zIndex = '';
-        card.style.opacity = '';
-        card.style.pointerEvents = '';
+      cards.forEach(function (c) {
+        c.style.transform = ''; c.style.opacity = ''; c.style.zIndex = ''; c.style.pointerEvents = '';
       });
     }
-    function sync() {
-      if (mq.matches) {
-        enableDeck();
-      } else {
-        disableDeck();
-        updateArrows();
-      }
-    }
+    function sync() { if (mq.matches) enable(); else disable(); }
+
+    // Arrows are hidden on this mobile-only section, but keep them working if ever shown.
+    if (prev) prev.addEventListener('click', function () { goTo(Math.round(target) - 1); });
+    if (next) next.addEventListener('click', function () { goTo(Math.round(target) + 1); });
+
     if (mq.addEventListener) { mq.addEventListener('change', sync); } else { mq.addListener(sync); }
-    window.addEventListener('resize', updateArrows);
     sync();
   })();
 </script>

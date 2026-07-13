@@ -1,0 +1,80 @@
+{% comment %}
+  Lightweight momentum smooth-scroll for the page (desktop pointer devices only).
+  - Touch devices keep native scrolling, so the mobile gallery swipe is unaffected.
+  - Respects prefers-reduced-motion.
+  - Never hijacks the wheel over an internally scrollable element (cart drawer,
+    modals, menus, code blocks), so those keep scrolling normally.
+  Self-contained; remove this render from theme.liquid to disable.
+{% endcomment %}
+<script>
+  (function () {
+    var fine = window.matchMedia('(pointer: fine)').matches;
+    var coarse = window.matchMedia('(pointer: coarse)').matches;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!fine || coarse || reduce || !('requestAnimationFrame' in window)) return;
+
+    var docEl = document.documentElement;
+    var current = window.scrollY || window.pageYOffset || 0;
+    var target = current;
+    var running = false;
+    var EASE = 0.12;
+
+    function maxScroll() {
+      return Math.max(0, docEl.scrollHeight - window.innerHeight);
+    }
+    function clamp(v) {
+      var m = maxScroll();
+      return v < 0 ? 0 : (v > m ? m : v);
+    }
+
+    // Should this wheel scroll an inner element instead of the page?
+    function hasScrollableAncestor(node, dy) {
+      while (node && node !== docEl && node !== document.body) {
+        if (node.nodeType === 1) {
+          var st = getComputedStyle(node);
+          var oy = st.overflowY;
+          if ((oy === 'auto' || oy === 'scroll') && node.scrollHeight > node.clientHeight + 1) {
+            var atTop = node.scrollTop <= 0;
+            var atBottom = node.scrollTop >= node.scrollHeight - node.clientHeight - 1;
+            if (!(dy < 0 && atTop) && !(dy > 0 && atBottom)) return true;
+          }
+        }
+        node = node.parentNode;
+      }
+      return false;
+    }
+
+    function tick() {
+      var diff = target - current;
+      if (Math.abs(diff) < 0.5) {
+        current = target;
+        window.scrollTo(0, Math.round(current));
+        running = false;
+        return;
+      }
+      current += diff * EASE;
+      window.scrollTo(0, current);
+      requestAnimationFrame(tick);
+    }
+
+    function onWheel(e) {
+      if (e.ctrlKey || e.defaultPrevented) return;            // pinch-zoom / already handled
+      var dy = e.deltaY;
+      if (!dy) return;
+      if (e.deltaMode === 1) dy *= 32;                         // lines -> px
+      else if (e.deltaMode === 2) dy *= window.innerHeight;    // pages -> px
+      if (hasScrollableAncestor(e.target, dy)) return;         // let inner element scroll
+      e.preventDefault();
+      if (!running) current = window.scrollY;
+      target = clamp((running ? target : current) + dy);
+      if (!running) { running = true; requestAnimationFrame(tick); }
+    }
+
+    // Keep target synced when the user scrolls another way (keyboard, scrollbar, anchors)
+    function onScroll() { if (!running) current = target = window.scrollY; }
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { target = clamp(target); });
+  })();
+</script>
