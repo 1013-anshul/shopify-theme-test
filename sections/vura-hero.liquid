@@ -40,6 +40,13 @@
   #vura-hero-{{ section.id }} .vura-hero__media--slideshow img.is-active {
     opacity: 1;
   }
+  #vura-hero-{{ section.id }} .vura-hero__link {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    cursor: pointer;
+  }
   #vura-hero-{{ section.id }} .vura-hero__overlay {
     position: absolute;
     inset: 0;
@@ -216,6 +223,10 @@
   </div>
   <div class="vura-hero__overlay"></div>
 
+  {%- if section.settings.media_link != blank and section.settings.button_label == blank and section.settings.button_label_2 == blank -%}
+    <a href="{{ section.settings.media_link }}" class="vura-hero__link" aria-label="{{ section.settings.heading | default: 'Shop VURA' }}"></a>
+  {%- endif -%}
+
   <div class="vura-hero__inner">
     <div class="vura-hero__content">
       {%- if section.settings.eyebrow != blank -%}
@@ -312,6 +323,12 @@
       "step": 1,
       "unit": "s",
       "default": 5
+    },
+    {
+      "type": "url",
+      "id": "media_link",
+      "label": "Make banner clickable",
+      "info": "Whole banner links here. Used only when no buttons are set (image/video-only mode)."
     },
     {
       "type": "text",
