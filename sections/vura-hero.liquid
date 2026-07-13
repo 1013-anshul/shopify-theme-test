@@ -149,7 +149,8 @@
     #vura-hero-{{ section.id }} .vura-hero__inner { padding: 5rem 5rem; }
   }
   @media screen and (max-width: 749px) {
-    #vura-hero-{{ section.id }} { min-height: 0; display: block; }
+    /* Hero is hidden on mobile — the card-stack showcase leads instead */
+    #vura-hero-{{ section.id }} { display: none; }
     #vura-hero-{{ section.id }} .vura-hero__media {
       position: relative;
       width: 100%;
