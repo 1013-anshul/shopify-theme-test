@@ -153,11 +153,34 @@
                 {%- if cart.item_count >= 3 -%}
                   🎉 You've unlocked a free product! Auto-applied at checkout.
                 {%- elsif cart.item_count == 2 -%}
-                  ⚡ Almost there! Add 1 more to get your free product.
+                  ⚡ Almost there!
+                  <button type="button" class="vura-unlock-free" data-variant="{{ cart.items.first.variant_id }}">Add 1 more — get it FREE</button>
                 {%- else -%}
                   💡 Add {{ 3 | minus: cart.item_count }} more to unlock Buy 2 Get 1 Free.
                 {%- endif -%}
               </div>
+              <style>
+                .vura-unlock-free { display: inline-block; margin-left: 6px; background: var(--vura-saffron, #FFC03F); color: var(--vura-forest-deep, #0E2118); border: 0; border-radius: 99px; padding: 4px 12px; font-weight: 600; font-size: 12px; cursor: pointer; }
+                .vura-unlock-free[disabled] { opacity: 0.6; cursor: default; }
+              </style>
+              <script>
+                if (!window.__vuraUnlockFreeBound) {
+                  window.__vuraUnlockFreeBound = true;
+                  document.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.vura-unlock-free');
+                    if (!btn) return;
+                    e.preventDefault();
+                    btn.disabled = true;
+                    btn.textContent = 'Adding…';
+                    var root = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
+                    fetch(root + 'cart/add.js', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ items: [{ id: parseInt(btn.dataset.variant, 10), quantity: 1 }] })
+                    }).then(function () { window.location.reload(); });
+                  });
+                }
+              </script>
               <div class="drawer__cart-items-wrapper">
                 <table class="cart-items" role="table">
 

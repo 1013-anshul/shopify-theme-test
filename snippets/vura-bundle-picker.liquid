@@ -275,12 +275,24 @@
       }
     }
 
+    // Set the product-form quantity reliably: update value, fire a change event
+    // so Dawn's <quantity-input> and the sticky bar pick it up (otherwise the
+    // form can submit a stale quantity and the Buy 2 Get 1 discount won't fire).
+    function setQuantity(qty) {
+      const qtyInput = getQuantityInput();
+      if (qtyInput) {
+        qtyInput.value = qty;
+        qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      const stickyQty = document.getElementById('StickyQtyInput');
+      if (stickyQty) stickyQty.value = qty;
+    }
+
     function selectCard(selectedCard) {
       cards.forEach(c => c.classList.remove('vura-bundle-card--selected'));
       selectedCard.classList.add('vura-bundle-card--selected');
       const qty = selectedCard.dataset.qty;
-      const qtyInput = getQuantityInput();
-      if (qtyInput) qtyInput.value = qty;
+      setQuantity(qty);
       updateCTAText(qty);
     }
 
@@ -297,10 +309,7 @@
       const qty = defaultSelected.dataset.qty;
       // Ensure quantity input exists; if not, create one
       setTimeout(function() {
-        const qtyInput = getQuantityInput();
-        if (qtyInput) {
-          qtyInput.value = qty;
-        }
+        setQuantity(qty);
         updateCTAText(qty);
       }, 300);
     }
