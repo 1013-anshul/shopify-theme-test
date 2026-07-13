@@ -96,7 +96,7 @@
         "cta": {
           "type": "custom_liquid",
           "settings": {
-            "custom_liquid": "<style>@media (max-width:749px){.featured-product .product__media-wrapper{display:none!important;}[class*=\"section-\"][class*=\"-padding\"]:has(.featured-product){padding-top:12px!important;}.featured-product .product__info-wrapper{padding-top:0!important;}}</style>\n<a href=\"/products/vura-mineral-underarm-spray\" class=\"button\" style=\"display:inline-block;\">Shop now — Buy 2, Get 1 Free</a>\n<p style=\"margin:0.8rem 0 0;font-size:1.3rem;color:#637746;font-weight:600;\">Free third bottle applied automatically at checkout.</p>"
+            "custom_liquid": "<style>@media (max-width:749px){.featured-product .product__media-wrapper{display:none!important;}[class*=\"section-\"][class*=\"-padding\"]:has(.featured-product){padding-top:12px!important;}.featured-product .product__info-wrapper{padding-top:0!important;}}</style>\n<a href=\"/products/vura-mineral-underarm-spray\" class=\"button\" style=\"display:inline-flex;align-items:center;justify-content:center;text-align:center;\">Shop Now, Buy 2 Get 1 Free</a>\n<p style=\"margin:0.8rem 0 0;font-size:1.3rem;color:#637746;font-weight:600;\">Free third bottle applied automatically at checkout.</p>"
           }
         }
       },
