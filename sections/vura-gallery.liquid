@@ -112,6 +112,18 @@
   #vura-gallery-{{ section.id }} .vura-gallery__arrow--prev { left: 1.5rem; }
   #vura-gallery-{{ section.id }} .vura-gallery__arrow--next { right: 1.5rem; }
 
+  #vura-gallery-{{ section.id }} .vura-gallery__hint {
+    display: none;
+    margin: 1.2rem 0 0;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--vura-terracotta, #8D3B2D);
+    opacity: 0.72;
+  }
+
   @media screen and (min-width: 750px) {
     #vura-gallery-{{ section.id }} .vura-gallery__card {
       width: 340px;
@@ -130,13 +142,38 @@
     }
   }
 
-  /* Mobile: cards are wide so neighbours peek in for the stacked look */
+  /* Mobile: stacked card deck — one card in front, others peek behind */
   @media screen and (max-width: 749px) {
-    #vura-gallery-{{ section.id }} .vura-gallery__card {
-      width: 78vw;
+    #vura-gallery-{{ section.id }} .vura-gallery__viewport {
+      overflow-x: clip;
     }
     #vura-gallery-{{ section.id }} .vura-gallery__track {
-      scroll-padding: 0 11vw;
+      display: block;
+      position: relative;
+      height: 106vw;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+    #vura-gallery-{{ section.id }} .vura-gallery__card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 72vw;
+      transform: translate(-50%, -50%);
+      transition: transform 0.38s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.3s ease;
+      touch-action: pan-y;
+      box-shadow: 0 18px 44px rgba(26, 42, 34, 0.24);
+      -webkit-user-select: none;
+      user-select: none;
+      will-change: transform;
+    }
+    #vura-gallery-{{ section.id }} .vura-gallery__card a {
+      -webkit-user-drag: none;
+    }
+    #vura-gallery-{{ section.id }} .vura-gallery__hint {
+      display: block;
     }
   }
 
@@ -203,6 +240,8 @@
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
+
+  <p class="vura-gallery__hint" aria-hidden="true">&#8592;&ensp;Swipe&ensp;&#8594;</p>
 </section>
 
 <script>
@@ -210,32 +249,150 @@
     var root = document.getElementById('vura-gallery-{{ section.id }}');
     if (!root) return;
     var track = root.querySelector('[data-gallery-track]');
+    if (!track) return;
     var prev = root.querySelector('[data-gallery-prev]');
     var next = root.querySelector('[data-gallery-next]');
-    if (!track || !prev || !next) return;
+    var cards = Array.prototype.slice.call(track.querySelectorAll('.vura-gallery__card'));
+    if (!cards.length) return;
 
+    /* ---------- Desktop: clickable arrow scroll ---------- */
     function step() {
-      var card = track.querySelector('.vura-gallery__card');
-      if (!card) return track.clientWidth * 0.8;
       var gap = parseInt(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '16', 10) || 16;
-      return card.getBoundingClientRect().width + gap;
+      return cards[0].getBoundingClientRect().width + gap;
     }
-
     function updateArrows() {
+      if (!prev || !next) return;
       var maxScroll = track.scrollWidth - track.clientWidth - 2;
       prev.disabled = track.scrollLeft <= 2;
       next.disabled = track.scrollLeft >= maxScroll;
     }
+    if (prev && next) {
+      prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
+      next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
+      track.addEventListener('scroll', updateArrows, { passive: true });
+    }
 
-    prev.addEventListener('click', function () {
-      track.scrollBy({ left: -step(), behavior: 'smooth' });
-    });
-    next.addEventListener('click', function () {
-      track.scrollBy({ left: step(), behavior: 'smooth' });
-    });
-    track.addEventListener('scroll', updateArrows, { passive: true });
+    /* ---------- Mobile: peeking card-stack deck ---------- */
+    var mq = window.matchMedia('(max-width: 749px)');
+    var order = cards.map(function (_, i) { return i; });
+    var deckOn = false;
+    var drag = null;
+
+    function tf(p) {
+      if (p === 0) return 'translate(-50%, -50%) rotate(0deg) scale(1)';
+      if (p === 1) return 'translate(calc(-50% + 24px), calc(-50% + 10px)) rotate(4deg) scale(0.94)';
+      if (p === 2) return 'translate(calc(-50% - 24px), calc(-50% + 10px)) rotate(-4deg) scale(0.88)';
+      return 'translate(-50%, calc(-50% + 16px)) rotate(0deg) scale(0.84)';
+    }
+    function place(card, p, animate) {
+      card.style.transition = animate ? '' : 'none';
+      card.style.transform = tf(p);
+      card.style.zIndex = String(100 - p);
+      card.style.opacity = p <= 2 ? '1' : '0';
+      card.style.pointerEvents = p === 0 ? 'auto' : 'none';
+    }
+    function render(animate) {
+      order.forEach(function (idx, p) { place(cards[idx], p, animate !== false); });
+    }
+    function cycleForward() {
+      order.push(order.shift());
+      render(true);
+    }
+    function suppressClickOnce(card) {
+      var link = card.querySelector('a');
+      if (!link) return;
+      var handler = function (ev) { ev.preventDefault(); ev.stopPropagation(); };
+      link.addEventListener('click', handler, true);
+      setTimeout(function () { link.removeEventListener('click', handler, true); }, 60);
+    }
+
+    function onDown(e) {
+      if (!deckOn || drag) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      var card = cards[order[0]];
+      if (!e.target.closest || e.target.closest('.vura-gallery__card') !== card) return;
+      drag = { x: e.clientX, y: e.clientY, dx: 0, decided: false, horizontal: false, moved: false, card: card };
+      card.style.transition = 'none';
+    }
+    function onMove(e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x;
+      var dy = e.clientY - drag.y;
+      if (!drag.decided) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        drag.decided = true;
+        drag.horizontal = Math.abs(dx) > Math.abs(dy);
+      }
+      if (!drag.horizontal) return;
+      if (e.cancelable) e.preventDefault();
+      drag.dx = dx;
+      if (Math.abs(dx) > 8) drag.moved = true;
+      drag.card.style.transform = 'translate(calc(-50% + ' + dx + 'px), -50%) rotate(' + (dx * 0.05) + 'deg) scale(1)';
+    }
+    function onUp() {
+      if (!drag) return;
+      var card = drag.card;
+      var dx = drag.dx;
+      var moved = drag.moved;
+      drag = null;
+      card.style.transition = '';
+      var threshold = card.getBoundingClientRect().width * 0.32;
+      if (Math.abs(dx) > threshold) {
+        var dir = dx > 0 ? 1 : -1;
+        card.style.transform = 'translate(calc(-50% + ' + (dir * 460) + 'px), -50%) rotate(' + (dir * 14) + 'deg) scale(0.94)';
+        card.style.opacity = '0';
+        var done = false;
+        var finish = function () {
+          if (done) return;
+          done = true;
+          card.removeEventListener('transitionend', finish);
+          cycleForward();
+        };
+        card.addEventListener('transitionend', finish);
+        setTimeout(finish, 420);
+      } else {
+        render(true);
+      }
+      if (moved) suppressClickOnce(card);
+    }
+
+    function enableDeck() {
+      if (deckOn) return;
+      deckOn = true;
+      order = cards.map(function (_, i) { return i; });
+      render(false);
+      track.addEventListener('pointerdown', onDown);
+      window.addEventListener('pointermove', onMove, { passive: false });
+      window.addEventListener('pointerup', onUp);
+      window.addEventListener('pointercancel', onUp);
+    }
+    function disableDeck() {
+      if (!deckOn) return;
+      deckOn = false;
+      drag = null;
+      track.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
+      cards.forEach(function (card) {
+        card.style.transition = '';
+        card.style.transform = '';
+        card.style.zIndex = '';
+        card.style.opacity = '';
+        card.style.pointerEvents = '';
+      });
+    }
+    function sync() {
+      if (mq.matches) {
+        enableDeck();
+      } else {
+        disableDeck();
+        updateArrows();
+      }
+    }
+    if (mq.addEventListener) { mq.addEventListener('change', sync); } else { mq.addListener(sync); }
     window.addEventListener('resize', updateArrows);
-    updateArrows();
+    sync();
   })();
 </script>
 
