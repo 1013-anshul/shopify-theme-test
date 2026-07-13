@@ -1,43 +1,47 @@
 {% comment %}
-  Lightweight momentum smooth-scroll for the page (desktop pointer devices only).
-  - Touch devices keep native scrolling, so the mobile gallery swipe is unaffected.
-  - Respects prefers-reduced-motion.
-  - Never hijacks the wheel over an internally scrollable element (cart drawer,
-    modals, menus, code blocks), so those keep scrolling normally.
-  Self-contained; remove this render from theme.liquid to disable.
+  Momentum smooth-scroll for the whole site (desktop wheel + mobile touch).
+  Guards so it never fights other gestures:
+   - the mobile gallery card-stack (its own swipe handler),
+   - inner scrollables (cart drawer, menus, modals, code blocks),
+   - form fields, and any open overlay / scroll-locked state.
+  Respects prefers-reduced-motion. Self-contained; remove the render from
+  theme.liquid to disable.
 {% endcomment %}
 <script>
   (function () {
-    var fine = window.matchMedia('(pointer: fine)').matches;
-    var coarse = window.matchMedia('(pointer: coarse)').matches;
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!fine || coarse || reduce || !('requestAnimationFrame' in window)) return;
+    if (reduce || !('requestAnimationFrame' in window)) return;
 
+    var supportsTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
     var docEl = document.documentElement;
     var current = window.scrollY || window.pageYOffset || 0;
     var target = current;
     var running = false;
     var EASE = 0.12;
 
-    function maxScroll() {
-      return Math.max(0, docEl.scrollHeight - window.innerHeight);
-    }
-    function clamp(v) {
-      var m = maxScroll();
-      return v < 0 ? 0 : (v > m ? m : v);
+    function maxScroll() { return Math.max(0, docEl.scrollHeight - window.innerHeight); }
+    function clamp(v) { var m = maxScroll(); return v < 0 ? 0 : (v > m ? m : v); }
+
+    function scrollLocked() {
+      var b = document.body;
+      return getComputedStyle(b).overflowY === 'hidden' ||
+        b.classList.contains('overflow-hidden') ||
+        docEl.classList.contains('overflow-hidden');
     }
 
-    // Should this wheel scroll an inner element instead of the page?
-    function hasScrollableAncestor(node, dy) {
+    // Elements whose own scroll/gesture we must not hijack.
+    var OVERLAY_SEL = 'dialog,[role="dialog"],.modal,product-media-modal,.media-modal,' +
+      'cart-drawer,.cart-drawer,.drawer,.menu-drawer,.search-modal,.gradient__media-modal';
+    function insideExcluded(t) {
+      if (!t || t.nodeType !== 1) return false;
+      if (t.closest('[data-gallery-track]')) return true;                 // gallery has its own swipe
+      if (t.closest('input,textarea,select,[contenteditable]')) return true;
+      if (t.closest(OVERLAY_SEL)) return true;
+      var node = t;
       while (node && node !== docEl && node !== document.body) {
         if (node.nodeType === 1) {
-          var st = getComputedStyle(node);
-          var oy = st.overflowY;
-          if ((oy === 'auto' || oy === 'scroll') && node.scrollHeight > node.clientHeight + 1) {
-            var atTop = node.scrollTop <= 0;
-            var atBottom = node.scrollTop >= node.scrollHeight - node.clientHeight - 1;
-            if (!(dy < 0 && atTop) && !(dy > 0 && atBottom)) return true;
-          }
+          var oy = getComputedStyle(node).overflowY;
+          if ((oy === 'auto' || oy === 'scroll') && node.scrollHeight > node.clientHeight + 1) return true;
         }
         node = node.parentNode;
       }
@@ -56,24 +60,65 @@
       window.scrollTo(0, current);
       requestAnimationFrame(tick);
     }
+    function startTick() { if (!running) { running = true; requestAnimationFrame(tick); } }
 
+    /* ---------- Desktop: wheel ---------- */
     function onWheel(e) {
-      if (e.ctrlKey || e.defaultPrevented) return;            // pinch-zoom / already handled
+      if (e.ctrlKey || e.defaultPrevented || scrollLocked()) return;
       var dy = e.deltaY;
       if (!dy) return;
-      if (e.deltaMode === 1) dy *= 32;                         // lines -> px
-      else if (e.deltaMode === 2) dy *= window.innerHeight;    // pages -> px
-      if (hasScrollableAncestor(e.target, dy)) return;         // let inner element scroll
+      if (e.deltaMode === 1) dy *= 32;
+      else if (e.deltaMode === 2) dy *= window.innerHeight;
+      if (insideExcluded(e.target)) return;
       e.preventDefault();
       if (!running) current = window.scrollY;
       target = clamp((running ? target : current) + dy);
-      if (!running) { running = true; requestAnimationFrame(tick); }
+      startTick();
     }
 
-    // Keep target synced when the user scrolls another way (keyboard, scrollbar, anchors)
-    function onScroll() { if (!running) current = target = window.scrollY; }
+    /* ---------- Mobile: touch (1:1 while dragging, glide on release) ---------- */
+    var tActive = false, tLastY = 0, tLastT = 0, tVel = 0;
+    function onTouchStart(e) {
+      if (e.touches.length !== 1 || scrollLocked() || insideExcluded(e.target)) { tActive = false; return; }
+      tActive = true;
+      running = false;
+      current = target = window.scrollY;
+      tLastY = e.touches[0].clientY;
+      tLastT = performance.now();
+      tVel = 0;
+    }
+    function onTouchMove(e) {
+      if (!tActive) return;
+      var y = e.touches[0].clientY;
+      var dy = tLastY - y;
+      var now = performance.now();
+      var dt = now - tLastT || 16;
+      tVel = dy / dt;               // px per ms
+      tLastY = y;
+      tLastT = now;
+      if (e.cancelable) e.preventDefault();
+      target = clamp(target + dy);
+      current = target;             // track the finger exactly
+      window.scrollTo(0, current);
+    }
+    function onTouchEnd() {
+      if (!tActive) return;
+      tActive = false;
+      var v = tVel * 16;            // px per frame at release
+      if (Math.abs(v) < 0.6) return;
+      target = clamp(current + v * 12);  // project a glide, then ease into it
+      startTick();
+    }
+
+    function onScroll() { if (!running && !tActive) current = target = window.scrollY; }
 
     window.addEventListener('wheel', onWheel, { passive: false });
+    if (supportsTouch) {
+      window.addEventListener('touchstart', onTouchStart, { passive: true });
+      window.addEventListener('touchmove', onTouchMove, { passive: false });
+      window.addEventListener('touchend', onTouchEnd, { passive: true });
+      window.addEventListener('touchcancel', onTouchEnd, { passive: true });
+    }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', function () { target = clamp(target); });
   })();
