@@ -18,6 +18,12 @@
     padding-bottom: {{ section.settings.padding_bottom }}px;
     background: {{ section.settings.background }};
   }
+  /* Mobile-only section: the card-stack gallery is hidden on desktop */
+  @media screen and (min-width: 750px) {
+    #vura-gallery-{{ section.id }} {
+      display: none;
+    }
+  }
   #vura-gallery-{{ section.id }} .vura-gallery__header {
     max-width: var(--page-width, 1200px);
     margin: 0 auto 1.6rem;
