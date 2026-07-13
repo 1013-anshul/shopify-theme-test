@@ -14,9 +14,9 @@
 {%- assign three_pack_total = unit_price | times: 3 -%}
 {%- assign three_pack_savings = unit_price -%}
 {%- assign three_pack_savings_money = three_pack_savings | money -%}
-{%- assign six_pack_price = unit_price | times: 5 -%}
+{%- assign six_pack_price = unit_price | times: 4 -%}
 {%- assign six_pack_money = six_pack_price | money -%}
-{%- assign six_pack_savings = unit_price -%}
+{%- assign six_pack_savings = unit_price | times: 2 -%}
 {%- assign six_pack_savings_money = six_pack_savings | money -%}
 {%- assign six_pack_total = unit_price | times: 6 -%}
 
@@ -67,7 +67,7 @@
         <span class="vura-bundle-card__was">
           <s>{{ six_pack_total | money }}</s>
         </span>
-        <span class="vura-bundle-card__savings">Save {{ six_pack_savings_money }}+</span>
+        <span class="vura-bundle-card__savings">Save {{ six_pack_savings_money }}</span>
       </div>
     </div>
   </label>
