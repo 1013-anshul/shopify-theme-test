@@ -54,6 +54,18 @@
         "padding_bottom": 16
       }
     },
+    "vura-gallery": {
+      "type": "vura-gallery",
+      "settings": {
+        "product": "vura-mineral-underarm-spray",
+        "eyebrow": "Every angle",
+        "heading": "Take a closer look",
+        "text_alignment": "center",
+        "background": "#EFE9DA",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
     "vura-spotlight": {
       "type": "featured-product",
       "blocks": {
@@ -221,6 +233,7 @@
   "order": [
     "vura-hero",
     "vura-benefits-bar",
+    "vura-gallery",
     "vura-spotlight",
     "vura-comparison-table",
     "vura-ingredients",

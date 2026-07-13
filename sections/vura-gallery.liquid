@@ -1,0 +1,312 @@
+{% comment %}
+  Vura product image gallery.
+  - Mobile: horizontal swipe / scroll-snap card stack (neighbours peek at the edges).
+  - Desktop: same track, navigated with clickable prev/next arrows.
+  Each card links through to the product page. Images are pulled live from the
+  selected product, so adding/removing product images updates this automatically.
+{% endcomment %}
+
+{%- assign gallery_product = section.settings.product -%}
+{%- if gallery_product != blank -%}
+  {%- assign gallery_images = gallery_product.images -%}
+  {%- assign gallery_url = gallery_product.url -%}
+{%- endif -%}
+
+{%- style -%}
+  #vura-gallery-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background }};
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__header {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto 1.6rem;
+    padding: 0 1.5rem;
+    text-align: {{ section.settings.text_alignment }};
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__eyebrow {
+    display: block;
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--vura-terracotta, #8D3B2D);
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__heading {
+    margin: 0;
+    font-family: var(--font-display, Georgia, serif);
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1.1;
+    color: var(--vura-ink, #1A2A22);
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__viewport {
+    position: relative;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__track {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0.5rem 1.5rem 1.5rem;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__track::-webkit-scrollbar {
+    display: none;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__card {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    width: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--vura-paper, #F8F3E7);
+    box-shadow: 0 12px 30px rgba(26, 42, 34, 0.16);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__card a,
+  #vura-gallery-{{ section.id }} .vura-gallery__card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__card img {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+
+  /* Clickable arrows — desktop only */
+  #vura-gallery-{{ section.id }} .vura-gallery__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background: var(--vura-paper, #F8F3E7);
+    color: var(--vura-ink, #1A2A22);
+    box-shadow: 0 6px 18px rgba(26, 42, 34, 0.22);
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__arrow:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.06);
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__arrow[disabled] {
+    opacity: 0.35;
+    cursor: default;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__arrow--prev { left: 1.5rem; }
+  #vura-gallery-{{ section.id }} .vura-gallery__arrow--next { right: 1.5rem; }
+
+  @media screen and (min-width: 750px) {
+    #vura-gallery-{{ section.id }} .vura-gallery__card {
+      width: 340px;
+    }
+    #vura-gallery-{{ section.id }} .vura-gallery__card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(26, 42, 34, 0.22);
+    }
+    #vura-gallery-{{ section.id }} .vura-gallery__track {
+      padding-left: 5rem;
+      padding-right: 5rem;
+      scroll-padding-left: 5rem;
+    }
+    #vura-gallery-{{ section.id }} .vura-gallery__arrow {
+      display: flex;
+    }
+  }
+
+  /* Mobile: cards are wide so neighbours peek in for the stacked look */
+  @media screen and (max-width: 749px) {
+    #vura-gallery-{{ section.id }} .vura-gallery__card {
+      width: 78vw;
+    }
+    #vura-gallery-{{ section.id }} .vura-gallery__track {
+      scroll-padding: 0 11vw;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #vura-gallery-{{ section.id }} .vura-gallery__track { scroll-behavior: auto; }
+    #vura-gallery-{{ section.id }} .vura-gallery__card { transition: none; }
+  }
+{%- endstyle -%}
+
+<section id="vura-gallery-{{ section.id }}" class="vura-gallery">
+  {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+    <div class="vura-gallery__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="vura-gallery__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="vura-gallery__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="vura-gallery__viewport">
+    <button
+      type="button"
+      class="vura-gallery__arrow vura-gallery__arrow--prev"
+      aria-label="Previous image"
+      data-gallery-prev
+    >
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <ul class="vura-gallery__track" data-gallery-track>
+      {%- if gallery_images != blank and gallery_images.size > 0 -%}
+        {%- for image in gallery_images -%}
+          <li class="vura-gallery__card">
+            <a href="{{ gallery_url }}" aria-label="{{ gallery_product.title | escape }}">
+              {{
+                image
+                | image_url: width: 800
+                | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 750px) 340px, 78vw',
+                  widths: '400, 600, 800, 1000',
+                  alt: image.alt | default: gallery_product.title | escape
+              }}
+            </a>
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          <li class="vura-gallery__card">
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+
+    <button
+      type="button"
+      class="vura-gallery__arrow vura-gallery__arrow--next"
+      aria-label="Next image"
+      data-gallery-next
+    >
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('vura-gallery-{{ section.id }}');
+    if (!root) return;
+    var track = root.querySelector('[data-gallery-track]');
+    var prev = root.querySelector('[data-gallery-prev]');
+    var next = root.querySelector('[data-gallery-next]');
+    if (!track || !prev || !next) return;
+
+    function step() {
+      var card = track.querySelector('.vura-gallery__card');
+      if (!card) return track.clientWidth * 0.8;
+      var gap = parseInt(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '16', 10) || 16;
+      return card.getBoundingClientRect().width + gap;
+    }
+
+    function updateArrows() {
+      var maxScroll = track.scrollWidth - track.clientWidth - 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= maxScroll;
+    }
+
+    prev.addEventListener('click', function () {
+      track.scrollBy({ left: -step(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', function () {
+      track.scrollBy({ left: step(), behavior: 'smooth' });
+    });
+    track.addEventListener('scroll', updateArrows, { passive: true });
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Vura gallery",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product",
+      "info": "Its images are shown in the stack."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Every angle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Take a closer look"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#EFE9DA"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vura gallery"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["index", "page"]
+  }
+}
+{% endschema %}
