@@ -1,18 +1,17 @@
 {%- comment -%}
   VURA Sticky Add-to-Cart Bar
   Renders a fixed bottom bar on product pages that is always visible on page load.
-  Shows product image, name, price, quantity selector, and a pill-shaped Add to Cart CTA.
+  Shows product image, name, price, and a pill-shaped Add to Cart CTA.
+  Pack size is chosen via the pack cards; quantity stays 1 (adjust in the cart).
 {%- endcomment -%}
 
 {%- if request.page_type == 'product' -%}
   <style>
     .vura-sticky-atc__inner,
-    .vura-sticky-atc__qty,
     .vura-sticky-atc__btn { transition: padding 0.25s ease, height 0.25s ease, font-size 0.25s ease; }
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__image,
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__info { display: none !important; }
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__inner { padding: 8px 16px !important; justify-content: center !important; gap: 12px !important; }
-    .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__qty { height: 34px !important; }
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__btn { height: 34px !important; padding: 0 20px !important; font-size: 11px !important; flex: 1 !important; }
   </style>
   <div class="vura-sticky-atc is-visible" id="VuraStickyAtc">
@@ -33,16 +32,6 @@
       </div>
       
       <div class="vura-sticky-atc__actions">
-        <div class="vura-sticky-atc__qty">
-          <button type="button" class="vura-sticky-qty-btn minus" aria-label="Decrease quantity">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          </button>
-          <input type="number" id="StickyQtyInput" value="1" min="1" readonly aria-label="Quantity">
-          <button type="button" class="vura-sticky-qty-btn plus" aria-label="Increase quantity">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          </button>
-        </div>
-        
         <button
           type="button"
           class="vura-sticky-atc__btn btn-press"
@@ -99,30 +88,6 @@
           }, 1200);
         }
       });
-
-      // Quantity stepper — now a plain quantity (1..N) of the selected pack.
-      var qtyInput = document.getElementById('StickyQtyInput');
-      var minusBtn = bar.querySelector('.vura-sticky-qty-btn.minus');
-      var plusBtn = bar.querySelector('.vura-sticky-qty-btn.plus');
-
-      function getMainQtyInput() {
-        return document.querySelector('.product-form__quantity input[name="quantity"]') || document.querySelector('input[name="quantity"]');
-      }
-
-      function syncQuantity(newVal) {
-        if (newVal < 1) newVal = 1;
-        qtyInput.value = newVal;
-        var mainQty = getMainQtyInput();
-        if (mainQty) {
-          mainQty.value = newVal;
-          mainQty.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-      }
-
-      if (minusBtn && plusBtn && qtyInput) {
-        minusBtn.addEventListener('click', function() { syncQuantity((parseInt(qtyInput.value) || 1) - 1); });
-        plusBtn.addEventListener('click', function() { syncQuantity((parseInt(qtyInput.value) || 1) + 1); });
-      }
 
       // Keep the sticky price + availability in sync with the selected pack variant.
       var VURA_VARIANTS = {
