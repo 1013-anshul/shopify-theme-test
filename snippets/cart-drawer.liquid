@@ -321,17 +321,6 @@
                             </div>
                           </td>
                           <td class="cart-item__quantity vura-pack-cell" role="cell" headers="CartDrawer-ColumnQuantity">
-                            {%- unless item.product.has_only_default_variant -%}
-                              <label class="visually-hidden" for="VuraPackSelect-{{ row_index }}">Choose pack size</label>
-                              <div class="vura-pack-select-wrap">
-                                <select class="vura-pack-select" id="VuraPackSelect-{{ row_index }}" data-line-key="{{ item.key }}" data-current="{{ item.variant_id }}" aria-label="Choose pack size">
-                                  {%- for v in item.product.variants -%}
-                                    <option value="{{ v.id }}"{% if v.id == item.variant_id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }} &mdash; {{ v.price | money }}{% unless v.available %} &middot; Sold out{% endunless %}</option>
-                                  {%- endfor -%}
-                                </select>
-                                <span class="vura-pack-select__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-                              </div>
-                            {%- endunless -%}
                             <div id="CartDrawer-LineItemError-{{ row_index }}" class="cart-item__error" role="alert">
                               <small class="cart-item__error-text"></small>
                               <span class="svg-wrapper">{{ 'icon-error.svg' | inline_asset_content }}</span>
@@ -348,10 +337,10 @@
                       <button class="vura-inline-nudge__dismiss" id="vura-nudge-dismiss" type="button" aria-label="Dismiss">&times;</button>
                       <svg class="vura-inline-nudge__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h22v4H5z"/><path d="M7 16v11h18V16"/><path d="M16 12v15"/><path d="M16 12s-5 .6-6.6-1.2C8 9 9 6.4 11 7c2.1.6 5 5 5 5z"/><path d="M16 12s5 .6 6.6-1.2C24 9 23 6.4 21 7c-2.1.6-5 5-5 5z"/></svg>
                       <div class="vura-inline-nudge__text">
-                        <div class="vura-inline-nudge__title">Add 1 more &mdash; get it FREE</div>
-                        <div class="vura-inline-nudge__sub">Switch to the 3-Pack: pay for 2, get 1 free.</div>
+                        <div class="vura-inline-nudge__title">Your 3rd bottle's on us</div>
+                        <div class="vura-inline-nudge__sub">Pay for 2, get 3 bottles.</div>
                       </div>
-                      <button class="vura-inline-nudge__btn" id="vura-nudge-switch" type="button">Switch to 3-Pack</button>
+                      <button class="vura-inline-nudge__btn" id="vura-nudge-switch" type="button">Get 1 bottle FREE</button>
                     </div>
                   </div>
                 {%- endif -%}
@@ -579,17 +568,6 @@
         .catch(function () { refreshDrawer(); });
     }
 
-    /* Line dropdown: intercept in CAPTURE + stopPropagation so Dawn's cart-drawer-items
-       change handler never mis-reads the variant id as a quantity (the "cart error"). */
-    document.addEventListener('change', function (e) {
-      var sel = e.target && e.target.closest && e.target.closest('.vura-pack-select[id^="VuraPackSelect"]');
-      if (!sel) return;
-      e.stopPropagation();
-      var cur = sel.getAttribute('data-current');
-      if (sel.value === cur) return;
-      sel.disabled = true;
-      swapVariant(cur, sel.value);
-    }, true);
 
     /* Nudge button (Switch to 3-Pack) + dismiss */
     document.addEventListener('click', function (e) {

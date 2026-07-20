@@ -96,6 +96,10 @@
         {%- endfor -%}
       };
       function getSelectedVariantId() {
+        // Read the tapped pack card (set synchronously by the bundle picker) — this avoids the
+        // race where [name="id"] is updated by Dawn's async fetch only after our listener runs.
+        var card = document.querySelector('.vura-bundle-card--selected');
+        if (card && card.getAttribute('data-variant-id')) return card.getAttribute('data-variant-id');
         var idInput = document.querySelector('[name="id"]');
         return idInput ? idInput.value : null;
       }
@@ -117,6 +121,12 @@
       document.addEventListener('change', function(e) {
         if (e.target && e.target.closest && e.target.closest('variant-selects')) {
           setTimeout(updateStickyFromVariant, 60);
+        }
+      });
+      // Update the instant a pack card is tapped (bundle picker sets --selected first).
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.closest && e.target.closest('.vura-bundle-card')) {
+          setTimeout(updateStickyFromVariant, 0);
         }
       });
       // Initial pass once the bundle picker has applied its default variant.
