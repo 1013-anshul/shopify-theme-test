@@ -42,7 +42,7 @@
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
 
-    {%- comment -%} VURA: pack dropdown + upgrade nudge + offer-unlock celebration {%- endcomment -%}
+    {%- comment -%} VURA: pack dropdown + inline upgrade nudge + expanding offer-unlock celebration {%- endcomment -%}
     <style>
       .vura-pack-select-wrap { position: relative; display: inline-block; }
       .vura-pack-select {
@@ -57,47 +57,29 @@
       .vura-pack-select__chevron { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #4A5750; display: flex; }
       .vura-pack-cell { vertical-align: middle; }
 
-      .vura-nudge { position: fixed; inset: 0; z-index: 10001; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(14,33,24,0.30); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
-      .vura-nudge.show { display: flex; animation: vuraNudgeFade .22s ease; }
-      @keyframes vuraNudgeFade { from { opacity: 0; } to { opacity: 1; } }
-      .vura-nudge__card { position: relative; width: 100%; max-width: 400px; background: var(--vura-paper, #F8F3E7); border-radius: 16px; padding: 24px 20px 20px; box-shadow: 0 24px 60px rgba(14,33,24,0.34); text-align: center; animation: vuraNudgeUp .34s cubic-bezier(.22,.61,.36,1); }
-      @keyframes vuraNudgeUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-      .vura-nudge__dismiss { position: absolute; top: 8px; right: 12px; background: none; border: 0; font-size: 24px; line-height: 1; color: #7A857F; cursor: pointer; }
-      .vura-nudge__icon { font-size: 36px; line-height: 1; }
-      .vura-nudge__title { font-family: var(--font-display, Georgia, serif); font-size: 2.2rem; color: #162D24; margin: 8px 0 4px; }
-      .vura-nudge__sub { font-family: var(--font-body, Inter, sans-serif); font-size: 1.35rem; color: #4A5750; margin: 0 0 18px; line-height: 1.4; }
-      .vura-nudge__row { display: flex; gap: 10px; align-items: stretch; }
-      .vura-nudge__select-wrap { flex: 1; }
-      .vura-nudge__select-wrap .vura-pack-select { width: 100%; height: 100%; font-size: 1.35rem; }
-      .vura-nudge__cta { flex-shrink: 0; background: var(--vura-saffron, #FFC03F); color: #1A2A22; border: 0; border-radius: 8px; font-family: var(--font-body, Inter, sans-serif); font-weight: 700; font-size: 1.3rem; letter-spacing: 0.02em; padding: 12px 18px; cursor: pointer; transition: transform .12s ease, filter .12s ease; }
-      .vura-nudge__cta:hover { transform: translateY(-1px); filter: brightness(1.04); }
+      /* Inline upgrade nudge (below the cart line) */
+      .vura-inline-nudge { overflow: hidden; max-height: 0; opacity: 0; transform: translateY(-6px); transition: max-height .4s ease, opacity .35s ease, transform .35s ease, margin .35s ease; margin: 0 1.5rem; }
+      .vura-inline-nudge.show { max-height: 220px; opacity: 1; transform: translateY(0); margin: 0 1.5rem 1.2rem; }
+      .vura-inline-nudge__card { position: relative; display: flex; align-items: center; gap: 12px; background: linear-gradient(180deg, rgba(255,192,63,0.16), rgba(255,192,63,0.08)); border: 1.5px solid rgba(255,192,63,0.55); border-radius: 12px; padding: 13px 15px; }
+      .vura-inline-nudge__icon { flex-shrink: 0; width: 32px; height: 32px; color: var(--vura-terracotta, #8D3B2D); }
+      .vura-inline-nudge__text { flex: 1; min-width: 0; }
+      .vura-inline-nudge__title { font-family: var(--font-body, Inter, sans-serif); font-size: 1.35rem; font-weight: 700; color: #162D24; line-height: 1.25; }
+      .vura-inline-nudge__sub { font-family: var(--font-body, Inter, sans-serif); font-size: 1.15rem; color: #4A5750; line-height: 1.3; }
+      .vura-inline-nudge__btn { flex-shrink: 0; background: var(--vura-saffron, #FFC03F); color: #1A2A22; border: 0; border-radius: 8px; font-family: var(--font-body, Inter, sans-serif); font-weight: 700; font-size: 1.2rem; padding: 10px 14px; cursor: pointer; transition: transform .12s ease, filter .12s ease; white-space: nowrap; }
+      .vura-inline-nudge__btn:hover { transform: translateY(-1px); filter: brightness(1.04); }
+      .vura-inline-nudge__btn[disabled] { opacity: 0.6; cursor: default; }
+      .vura-inline-nudge__dismiss { position: absolute; top: 3px; right: 7px; background: none; border: 0; font-size: 18px; line-height: 1; color: #9AA39D; cursor: pointer; }
+      @media (max-width: 480px) { .vura-inline-nudge__card { flex-wrap: wrap; } .vura-inline-nudge__btn { width: 100%; } }
 
-      .vura-unlock-toast { position: fixed; top: 22px; left: 50%; transform: translate(-50%, -16px); z-index: 10002; display: flex; align-items: center; gap: 8px; background: var(--vura-forest, #162D24); color: var(--vura-paper, #F8F3E7); font-family: var(--font-body, Inter, sans-serif); font-size: 1.35rem; font-weight: 600; padding: 11px 20px; border-radius: 99px; box-shadow: 0 12px 34px rgba(14,33,24,0.4); opacity: 0; pointer-events: none; transition: opacity .3s ease, transform .3s ease; }
-      .vura-unlock-toast.show { opacity: 1; transform: translate(-50%, 0); }
-      .vura-unlock-toast__emoji { font-size: 1.6rem; }
-      .vura-unlock-toast strong { color: var(--vura-saffron, #FFC03F); }
+      /* Expanding offer-unlock celebration (top of cart) */
+      .vura-celebrate { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .5s cubic-bezier(.22,.61,.36,1), opacity .4s ease, margin .5s ease; margin: 0 1.5rem; }
+      .vura-celebrate.show { max-height: 180px; opacity: 1; margin: 0.6rem 1.5rem 1.2rem; }
+      .vura-celebrate__card { display: flex; align-items: center; gap: 13px; background: var(--vura-forest, #162D24); color: var(--vura-paper, #F8F3E7); border-radius: 14px; padding: 16px 18px; box-shadow: 0 12px 30px rgba(14,33,24,0.28); }
+      .vura-celebrate__icon { flex-shrink: 0; width: 40px; height: 40px; color: var(--vura-saffron, #FFC03F); }
+      .vura-celebrate__title { font-family: var(--font-display, Georgia, serif); font-size: 1.95rem; line-height: 1.1; }
+      .vura-celebrate__sub { font-family: var(--font-body, Inter, sans-serif); font-size: 1.2rem; color: var(--vura-cream-dim, #D9D2C2); margin-top: 2px; }
+      .vura-celebrate__sub strong { color: var(--vura-saffron, #FFC03F); }
     </style>
-
-    <div class="vura-nudge" id="vura-upgrade-nudge" aria-hidden="true">
-      <div class="vura-nudge__card" role="dialog" aria-label="Unlock the offer">
-        <button class="vura-nudge__dismiss" id="vura-nudge-dismiss" type="button" aria-label="Dismiss">&times;</button>
-        <div class="vura-nudge__icon">&#127873;</div>
-        <div class="vura-nudge__title">Unlock the offer</div>
-        <div class="vura-nudge__sub">Choose the 3-Pack — pay for 2, get 1 free.</div>
-        <div class="vura-nudge__row">
-          <div class="vura-pack-select-wrap vura-nudge__select-wrap">
-            <select class="vura-pack-select" id="vura-nudge-select" aria-label="Choose pack"></select>
-            <span class="vura-pack-select__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
-          </div>
-          <button class="vura-nudge__cta" id="vura-nudge-confirm" type="button">Unlock the offer</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="vura-unlock-toast" id="vura-unlock-toast" aria-hidden="true">
-      <span class="vura-unlock-toast__emoji">&#127881;</span>
-      <span>Offer unlocked! <strong>Buy 2, Get 1 Free</strong></span>
-    </div>
     <div
       class="drawer__inner gradient color-{{ settings.cart_color_scheme }}"
       role="dialog"
@@ -171,6 +153,34 @@
             {%- if cart != empty -%}
               {%- comment -%} Bundle savings now live in the pack-size variants; the Buy-2-Get-1 progress/unlock UI was removed. {%- endcomment -%}
               <div class="drawer__cart-items-wrapper">
+                {%- liquid
+                  assign vura_has_one = false
+                  assign vura_has_three_six = false
+                  assign vura_one_variant = nil
+                  for it in cart.items
+                    if it.variant.title == '1-Pack'
+                      assign vura_has_one = true
+                      assign vura_one_variant = it.variant_id
+                    endif
+                    if it.variant.title == '3-Pack' or it.variant.title == '6-Pack'
+                      assign vura_has_three_six = true
+                    endif
+                  endfor
+                  assign vura_three_variant = nil
+                  if cart.items.first
+                    assign vura_three_variant = cart.items.first.product.variants | where: 'title', '3-Pack' | first
+                  endif
+                -%}
+                {%- comment -%} VURA offer-unlock celebration — JS expands this on the unlock transition {%- endcomment -%}
+                <div class="vura-celebrate" id="vura-celebrate" aria-hidden="true">
+                  <div class="vura-celebrate__card">
+                    <svg class="vura-celebrate__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4c1.1 5 2.9 6.9 8 8-5.1 1.1-6.9 3-8 8-1.1-5-2.9-6.9-8-8 5.1-1.1 6.9-3 8-8z" fill="currentColor"/><path d="M25 6c.4 2 1.1 2.7 3.1 3.1-2 .4-2.7 1.1-3.1 3.1-.4-2-1.1-2.7-3.1-3.1 2-.4 2.7-1.1 3.1-3.1z" fill="currentColor" opacity="0.85"/><path d="M8 20c.35 1.6.9 2.15 2.5 2.5-1.6.35-2.15.9-2.5 2.5-.35-1.6-.9-2.15-2.5-2.5 1.6-.35 2.15-.9 2.5-2.5z" fill="currentColor" opacity="0.7"/></svg>
+                    <div>
+                      <div class="vura-celebrate__title">Offer unlocked!</div>
+                      <div class="vura-celebrate__sub">You're getting <strong>1 bottle free</strong> &mdash; Buy 2, Get 1.</div>
+                    </div>
+                  </div>
+                </div>
                 <table class="cart-items" role="table">
 
 
@@ -332,6 +342,19 @@
                     {%- endfor -%}
                   </tbody>
                 </table>
+                {%- if vura_has_one and vura_has_three_six == false and vura_three_variant -%}
+                  <div class="vura-inline-nudge" id="vura-inline-nudge" data-old="{{ vura_one_variant }}" data-new="{{ vura_three_variant.id }}" aria-hidden="true">
+                    <div class="vura-inline-nudge__card">
+                      <button class="vura-inline-nudge__dismiss" id="vura-nudge-dismiss" type="button" aria-label="Dismiss">&times;</button>
+                      <svg class="vura-inline-nudge__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h22v4H5z"/><path d="M7 16v11h18V16"/><path d="M16 12v15"/><path d="M16 12s-5 .6-6.6-1.2C8 9 9 6.4 11 7c2.1.6 5 5 5 5z"/><path d="M16 12s5 .6 6.6-1.2C24 9 23 6.4 21 7c-2.1.6-5 5-5 5z"/></svg>
+                      <div class="vura-inline-nudge__text">
+                        <div class="vura-inline-nudge__title">Add 1 more &mdash; get it FREE</div>
+                        <div class="vura-inline-nudge__sub">Switch to the 3-Pack: pay for 2, get 1 free.</div>
+                      </div>
+                      <button class="vura-inline-nudge__btn" id="vura-nudge-switch" type="button">Switch to 3-Pack</button>
+                    </div>
+                  </div>
+                {%- endif -%}
               </div>
             {%- endif -%}
             <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
@@ -490,55 +513,49 @@
 
     var R = window.routes || {};
     var CART_URL = R.cart_url || '/cart';
-    var CHANGE_URL = R.cart_change_url || '/cart/change.js';
-    var ADD_URL = R.cart_add_url || '/cart/add.js';
+    var UPDATE_URL = R.cart_update_url || '/cart/update.js';
 
     function drawerEl() { return document.querySelector('cart-drawer'); }
     function isOpen() { var d = drawerEl(); return !!(d && d.classList.contains('active')); }
+    function el(id) { return document.getElementById(id); }
     function lineEls() { return Array.prototype.slice.call(document.querySelectorAll('#CartDrawer-CartItems .cart-item')); }
     function packs() { return lineEls().map(function (l) { return (l.getAttribute('data-pack') || '').trim(); }); }
     function has3or6() { return packs().some(function (p) { return p === '3-Pack' || p === '6-Pack'; }); }
-    function onePackLine() { return lineEls().filter(function (l) { return (l.getAttribute('data-pack') || '').trim() === '1-Pack'; })[0]; }
-    function hasOnly1() { return !!onePackLine() && !has3or6(); }
+    function hasOnly1() { var p = packs(); return p.indexOf('1-Pack') !== -1 && !has3or6(); }
 
-    var toast, nudge, nudgeSelect;
-    function els() {
-      toast = document.getElementById('vura-unlock-toast');
-      nudge = document.getElementById('vura-upgrade-nudge');
-      nudgeSelect = document.getElementById('vura-nudge-select');
-    }
-
+    /* ---- celebration: expanding banner + confetti ---- */
     function celebrate() {
       if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
-      if (toast) { toast.classList.add('show'); clearTimeout(window.__vuraToastT); window.__vuraToastT = setTimeout(function () { toast.classList.remove('show'); }, 2600); }
-    }
-    function showNudge() {
-      if (!nudge || !nudgeSelect) return;
-      if (nudgeSelect.options.length === 0) {
-        var lineSelect = document.querySelector('.vura-pack-select[id^="VuraPackSelect"]');
-        if (lineSelect) {
-          Array.prototype.forEach.call(lineSelect.options, function (o) {
-            if (/3-Pack|6-Pack/.test(o.textContent) && !o.disabled) {
-              var opt = document.createElement('option');
-              opt.value = o.value; opt.textContent = o.textContent;
-              nudgeSelect.appendChild(opt);
-            }
-          });
-          Array.prototype.forEach.call(nudgeSelect.options, function (o) { if (/3-Pack/.test(o.textContent)) o.selected = true; });
-        }
+      var c = el('vura-celebrate');
+      if (c) {
+        c.classList.add('show');
+        clearTimeout(window.__vuraCelebT);
+        window.__vuraCelebT = setTimeout(function () { var cc = el('vura-celebrate'); if (cc) cc.classList.remove('show'); }, 3800);
       }
-      nudge.classList.add('show');
     }
-    function hideNudge() { if (nudge) nudge.classList.remove('show'); }
+
+    /* ---- inline nudge (revealed ~2s after the drawer opens) ---- */
+    function showNudge() { var n = el('vura-inline-nudge'); if (n) n.classList.add('show'); }
+    function hideNudge() { var n = el('vura-inline-nudge'); if (n) n.classList.remove('show'); }
+    var nudgeTimer;
+    // Arm the 2s reveal on discrete triggers (drawer open / after a swap) — NOT on every
+    // evaluate, or drawer mutations would keep resetting it and it would never show.
+    function armNudge() {
+      clearTimeout(nudgeTimer);
+      if (window.__vuraNudgeDismissed) return;
+      nudgeTimer = setTimeout(function () {
+        if (hasOnly1() && isOpen() && !window.__vuraNudgeDismissed) showNudge();
+      }, 2000);
+    }
 
     function evaluate() {
-      els();
       var now3 = has3or6();
       if (!now3) window.__vuraCelebrated = false;
       if (now3 && isOpen() && !window.__vuraCelebrated) { celebrate(); window.__vuraCelebrated = true; }
-      if (!window.__vuraNudgeDismissed && hasOnly1() && isOpen()) { showNudge(); } else { hideNudge(); }
+      if (!(hasOnly1() && isOpen())) hideNudge();
     }
 
+    /* ---- swap the line's variant (atomic; no empty-cart flash) ---- */
     function refreshDrawer() {
       return fetch(CART_URL + '?section_id=cart-drawer')
         .then(function (r) { return r.text(); })
@@ -549,63 +566,59 @@
           var nf = doc.querySelector('.cart-drawer__footer'), cf = document.querySelector('.cart-drawer__footer');
           if (nf && cf) cf.innerHTML = nf.innerHTML;
           evaluate();
+          armNudge();
         });
     }
-
-    function swapVariant(lineKey, newId) {
-      if (!lineKey || !newId) return Promise.resolve();
-      return fetch(CHANGE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ id: lineKey, quantity: 0 }) })
-        .then(function () {
-          return fetch(ADD_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: [{ id: parseInt(newId, 10), quantity: 1 }] }) });
-        })
+    function swapVariant(oldId, newId) {
+      if (!oldId || !newId || String(oldId) === String(newId)) return Promise.resolve();
+      var updates = {};
+      updates[oldId] = 0;
+      updates[newId] = 1;
+      return fetch(UPDATE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ updates: updates }) })
         .then(function () { return refreshDrawer(); })
         .catch(function () { refreshDrawer(); });
     }
 
+    /* Line dropdown: intercept in CAPTURE + stopPropagation so Dawn's cart-drawer-items
+       change handler never mis-reads the variant id as a quantity (the "cart error"). */
     document.addEventListener('change', function (e) {
-      var sel = e.target.closest && e.target.closest('.vura-pack-select[id^="VuraPackSelect"]');
+      var sel = e.target && e.target.closest && e.target.closest('.vura-pack-select[id^="VuraPackSelect"]');
       if (!sel) return;
-      if (sel.value === sel.getAttribute('data-current')) return;
+      e.stopPropagation();
+      var cur = sel.getAttribute('data-current');
+      if (sel.value === cur) return;
       sel.disabled = true;
-      swapVariant(sel.getAttribute('data-line-key'), sel.value);
-    });
+      swapVariant(cur, sel.value);
+    }, true);
 
+    /* Nudge button (Switch to 3-Pack) + dismiss */
     document.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('#vura-nudge-confirm')) {
+      var sw = e.target && e.target.closest && e.target.closest('#vura-nudge-switch');
+      if (sw) {
         e.preventDefault();
-        els();
-        var line = onePackLine();
-        var newId = nudgeSelect ? nudgeSelect.value : null;
-        if (line && newId) { hideNudge(); swapVariant(line.getAttribute('data-line-key'), newId); }
+        var n = el('vura-inline-nudge');
+        if (n) { sw.disabled = true; hideNudge(); swapVariant(n.getAttribute('data-old'), n.getAttribute('data-new')); }
         return;
       }
-      if (e.target.closest && (e.target.closest('#vura-nudge-dismiss') || e.target === nudge)) {
+      if (e.target && e.target.closest && e.target.closest('#vura-nudge-dismiss')) {
         e.preventDefault();
         window.__vuraNudgeDismissed = true;
+        clearTimeout(nudgeTimer);
         hideNudge();
       }
     });
 
     var evalTimer;
     function scheduleEval() { clearTimeout(evalTimer); evalTimer = setTimeout(evaluate, 70); }
-    function dedupe(sel) { var n = document.querySelectorAll(sel); for (var i = 1; i < n.length; i++) n[i].remove(); }
 
     function boot() {
-      // Dawn re-renders the whole #CartDrawer on add, so overlays stay as Liquid
-      // singletons (no moving to body). Clear any stray duplicates defensively.
-      dedupe('#vura-upgrade-nudge');
-      dedupe('#vura-unlock-toast');
-      els();
       window.__vuraCelebrated = has3or6(); // don't celebrate a pre-existing 3-Pack on first open
       var d = drawerEl();
       if (!d) return;
-      // Open/close of the drawer.
       new MutationObserver(function () {
-        els();
-        if (d.classList.contains('active')) { scheduleEval(); }
-        else { hideNudge(); if (toast) toast.classList.remove('show'); }
+        if (d.classList.contains('active')) { scheduleEval(); armNudge(); }
+        else { clearTimeout(nudgeTimer); hideNudge(); var c = el('vura-celebrate'); if (c) c.classList.remove('show'); }
       }).observe(d, { attributes: true, attributeFilter: ['class'] });
-      // Any re-render of the drawer contents (Dawn add, or our swap).
       new MutationObserver(scheduleEval).observe(d, { childList: true, subtree: true });
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
