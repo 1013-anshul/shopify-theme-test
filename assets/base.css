@@ -5119,9 +5119,6 @@ details-disclosure > details {
 /* ===== VURA premium polish ===== */
 ::selection { background: var(--vura-saffron, #FFC03F); color: var(--vura-forest, #162D24); }
 ::-moz-selection { background: var(--vura-saffron, #FFC03F); color: var(--vura-forest, #162D24); }
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
-}
 h1, h2, .h0, .h1, .h2, .product__title h1 {
   text-wrap: balance;
 }
