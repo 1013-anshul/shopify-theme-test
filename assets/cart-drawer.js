@@ -32,9 +32,6 @@ class CartDrawer extends HTMLElement {
     // here the animation doesn't seem to always get triggered. A timeout seem to help
     setTimeout(() => {
       this.classList.add('animate', 'active');
-      if (typeof window.vuraAnimateCartDrawerUI === 'function') {
-        window.vuraAnimateCartDrawerUI(true);
-      }
     });
 
     this.addEventListener(

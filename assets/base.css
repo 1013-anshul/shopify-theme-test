@@ -1448,7 +1448,6 @@ shopify-accelerated-checkout-cart {
   rgba(var(--color-shadow), var(--shadow-opacity));
 }
 
-
 /* Button - other */
 
 .button:disabled,
@@ -4030,48 +4029,6 @@ details-disclosure > details {
   }
 }
 
-/* ===== Free Shipping Progress Bar ===== */
-.vura-cart-shipping-progress {
-  padding: 12px 16px;
-  margin: 12px 16px 4px;
-  background: rgba(99,119,70,0.06);
-  border: 1px solid rgba(99,119,70,0.12);
-  border-radius: 8px;
-  font-family: var(--font-body, Inter, sans-serif);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.vura-cart-progress__bar-bg {
-  height: 6px;
-  background: rgba(26,42,34,0.1);
-  border-radius: 99px;
-  overflow: visible;
-  position: relative;
-}
-
-.vura-cart-progress__bar-fill {
-  height: 100%;
-  background: var(--vura-sage, #637746);
-  border-radius: 99px;
-  transition: width 0.3s ease-out;
-}
-
-.vura-cart-progress {
-  padding: 10px 16px;
-  margin: 4px 16px 12px;
-  border-radius: 8px;
-  font-family: var(--font-body, Inter, sans-serif);
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.4;
-  text-align: center;
-  background: rgba(26,42,34,0.05);
-  border: 1px solid rgba(26,42,34,0.1);
-  color: var(--vura-paper-ink-muted, #4A5750);
-}
-
 /* ===== Vura Coins Points Box & Education Accordion ===== */
 .vura-coins-container {
   margin: 12px 0;
@@ -4282,53 +4239,6 @@ details-disclosure > details {
 
 .vura-announcement-slide {
   line-height: 20px !important;
-}
-
-/* 4. Shipping Progress Bar */
-.vura-cart-shipping-progress {
-  background: transparent !important;
-  border: 0 none !important;
-  border-radius: 0 !important;
-  padding: 0 !important; /* Zero margin offset to snap to vertical layout grid */
-  margin: 0 0 10px !important;
-  gap: 0 !important;
-  display: block !important;
-}
-
-.vura-cart-progress__bar-bg {
-  height: 6px !important; /* Thinner progress bar to save vertical height */
-  background-color: rgba(26,42,34,0.1) !important;
-  border-radius: 10px !important;
-  margin: 6px 0 0 !important;
-  width: 100% !important;
-  overflow: visible !important;
-  position: relative !important;
-}
-
-.vura-cart-progress__bar-fill {
-  background-color: #637746 !important;
-  border-radius: 10px !important;
-  height: 100% !important;
-  display: block !important;
-  position: relative !important;
-}
-
-.vura-cart-progress__text {
-  font-size: 12px !important; /* Reduced size to drop congrats banner hierarchy priority */
-  color: #4A5750 !important; /* Muted color to stop competing with total/checkout */
-  text-align: left !important;
-  margin-top: 6px !important;
-  font-weight: 500 !important;
-}
-
-.vura-cart-progress__text strong {
-  font-weight: 700 !important;
-  color: #8D3B2D !important;
-}
-
-/* Hide extra upsell banner */
-.vura-cart-progress {
-  display: none !important;
 }
 
 /* 5. Desktop Only Compact Flex Cart Items Layout */
@@ -5008,22 +4918,6 @@ details-disclosure > details {
   margin: 0 !important;
 }
 
-/* Shipping Progress Bar: shimmering active gradient fill */
-.vura-cart-progress__bar-fill {
-  height: 100% !important;
-  background: linear-gradient(90deg, #637746, #ffc03f, #637746) !important;
-  background-size: 200% 100% !important;
-  animation: progress-shimmer 2s infinite linear !important;
-  border-radius: 99px !important;
-  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 0 8px rgba(99, 119, 70, 0.3) !important;
-}
-
-@keyframes progress-shimmer {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
 /* Pulsing scale animation for plus button inside cart (activated after bar fills) */
 @keyframes vuraPlusPulse {
   0%, 100% {
@@ -5054,64 +4948,6 @@ details-disclosure > details {
   transform-origin: center !important;
   z-index: 5 !important;
   border-radius: 50% !important;
-}
-
-/* Progress Bar Rocket Visual and Stuck Animate */
-.vura-progress-rocket {
-  position: absolute;
-  right: -12px;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  font-size: 16px;
-  line-height: 1;
-  z-index: 10;
-  display: inline-block;
-  pointer-events: none;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-}
-
-/* Victorious Fire Tail Shadow */
-.vura-cart-shipping-progress:not(.vura-progress--stuck) .vura-progress-rocket {
-  text-shadow: -2px 2px 4px #ffc03f, -4px 4px 6px #8d3b2d;
-}
-
-/* Stuck visual state (trying to fill up) animations */
-.vura-progress--stuck .vura-progress-rocket {
-  animation: vuraStuckRocket 0.4s infinite linear !important;
-}
-.vura-progress--stuck .vura-cart-progress__bar-fill {
-  animation: vuraStuckFill 1.5s infinite ease-in-out !important;
-}
-
-@keyframes vuraStuckRocket {
-  0%, 100% {
-    transform: translateY(-50%) rotate(45deg) translate(0, 0);
-  }
-  25% {
-    transform: translateY(-50%) rotate(47deg) translate(1px, -0.5px);
-  }
-  50% {
-    transform: translateY(-50%) rotate(43deg) translate(-0.5px, 0.5px);
-  }
-  75% {
-    transform: translateY(-50%) rotate(46deg) translate(0.5px, -0.5px);
-  }
-}
-
-@keyframes vuraStuckFill {
-  0%, 100% {
-    background-color: #8d3b2d !important; /* Terracotta */
-    box-shadow: 0 0 4px rgba(141, 59, 45, 0.4);
-  }
-  50% {
-    background-color: #ffc03f !important; /* Saffron trying to ignite! */
-    box-shadow: 0 0 10px rgba(255, 192, 63, 0.8);
-  }
-}
-
-@keyframes rocketPulse {
-  0% { transform: scale(1) rotate(0deg); }
-  100% { transform: scale(1.15) rotate(5deg); }
 }
 
 /* Add to Cart button shine effect */
@@ -5145,48 +4981,6 @@ details-disclosure > details {
 /* Hide main page Add to Cart button (below the family pack) to rely on Sticky Add to Cart */
 .product__info-container .product-form__submit {
   display: none !important;
-}
-
-/* Inline B2G1 Unlock Message Banner styling */
-.vura-unlock-banner {
-  background: #162D24 !important; /* Forest Green */
-  color: #F8F3E7 !important; /* Cream */
-  border: 0px solid #FFC03F !important; /* Gold border initially 0px */
-  border-radius: 12px !important;
-  margin: 0 !important;
-  padding: 0 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 10px !important;
-  font-family: var(--font-body, Inter, sans-serif) !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  overflow: hidden !important;
-  max-height: 0 !important;
-  opacity: 0 !important;
-  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              opacity 0.3s ease, 
-              padding 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              margin 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              border-width 0.3s ease !important;
-  box-sizing: border-box !important;
-}
-
-.vura-unlock-banner.show {
-  max-height: 80px !important;
-  opacity: 1 !important;
-  padding: 12px 16px !important;
-  margin: 12px 0 16px 0 !important;
-  border: 2px solid #FFC03F !important;
-  box-shadow: 0 8px 20px rgba(22, 45, 36, 0.15), 0 0 12px rgba(255, 192, 63, 0.2) !important;
-}
-
-.vura-unlock-banner-rocket {
-  font-size: 20px !important;
-  display: inline-block !important;
-  animation: rocketPulse 1s infinite alternate !important;
 }
 
 /* Slower and highly prominent Active Checkout Button Shine */
@@ -5309,6 +5103,4 @@ details-disclosure > details {
   margin: 0 !important;
   justify-content: flex-start !important;
 }
-
-
 

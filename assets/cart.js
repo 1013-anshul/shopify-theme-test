@@ -213,11 +213,6 @@ class CartItems extends HTMLElement {
             );
           });
 
-          // Trigger VURA cart updates instantly
-          if (typeof window.vuraAnimateCartDrawerUI === 'function') {
-            window.vuraAnimateCartDrawerUI();
-          }
-
           const updatedValue = parsedState.items[line - 1] ? parsedState.items[line - 1].quantity : undefined;
           let message = '';
           if (items.length === parsedState.items.length && updatedValue !== parseInt(quantityElement.value)) {
