@@ -1,5 +1,9 @@
 {% comment %}
-  Renders selectable bundle purchase cards replacing the standard quantity picker.
+  Renders selectable pack-size cards that drive Dawn's native <variant-selects>.
+  Each card maps to a real product variant (1-Pack / 3-Pack / 6-Pack), so the
+  correct variant + SKU is what gets added to cart. The native picker is kept in
+  the DOM (its engine updates price/availability/[name=id]) but hidden visually.
+
   Accepts:
   - product: {Object} Product Liquid object
 
@@ -7,73 +11,73 @@
   {% render 'vura-bundle-picker', product: product %}
 {% endcomment %}
 
-{%- assign unit_price = product.selected_or_first_available_variant.price -%}
-{%- assign unit_price_money = unit_price | money -%}
-{%- assign two_pack_price = unit_price | times: 2 -%}
-{%- assign two_pack_money = two_pack_price | money -%}
-{%- assign three_pack_total = unit_price | times: 3 -%}
-{%- assign three_pack_savings = unit_price -%}
-{%- assign three_pack_savings_money = three_pack_savings | money -%}
-{%- assign six_pack_price = unit_price | times: 4 -%}
-{%- assign six_pack_money = six_pack_price | money -%}
-{%- assign six_pack_savings = unit_price | times: 2 -%}
-{%- assign six_pack_savings_money = six_pack_savings | money -%}
-{%- assign six_pack_total = unit_price | times: 6 -%}
+{%- assign unit_price = product.variants.first.price -%}
 
 <div class="vura-bundle-picker" data-unit-price="{{ unit_price }}">
-  <!-- 1 Pack -->
-  <label class="vura-bundle-card" data-qty="1">
-    <input type="radio" name="vura-bundle" value="1" class="vura-bundle-radio visually-hidden">
-    <div class="vura-bundle-card__inner">
-      <div class="vura-bundle-card__header">
-        <span class="vura-bundle-card__label">TRY IT</span>
-      </div>
-      <div class="vura-bundle-card__body">
-        <span class="vura-bundle-card__qty">1 Pack</span>
-        <span class="vura-bundle-card__price">{{ unit_price_money }}</span>
-      </div>
-    </div>
-  </label>
+  {%- for variant in product.variants -%}
+    {%- liquid
+      assign count = variant.title | split: '-' | first | times: 1
+      if count < 1
+        assign count = 1
+      endif
+      assign was = unit_price | times: count
+      assign savings = was | minus: variant.price
 
-  <!-- 3 Pack (Best Value — Buy 2 Get 1) -->
-  <label class="vura-bundle-card vura-bundle-card--selected vura-bundle-card--featured-gradient" data-qty="3">
-    <input type="radio" name="vura-bundle" value="3" checked class="vura-bundle-radio visually-hidden">
-    <span class="vura-bundle-card__badge">RECOMMENDED</span>
-    <div class="vura-bundle-card__inner">
-      <div class="vura-bundle-card__header">
-        <span class="vura-bundle-card__label">BUY 2 GET 1</span>
-      </div>
-      <div class="vura-bundle-card__body">
-        <span class="vura-bundle-card__qty">3 Pack</span>
-        <span class="vura-bundle-card__price">{{ two_pack_money }}</span>
-        <span class="vura-bundle-card__was">
-          <s>{{ three_pack_total | money }}</s>
-        </span>
-        <span class="vura-bundle-card__savings">Save {{ three_pack_savings_money }}</span>
-      </div>
-    </div>
-  </label>
+      case variant.title
+        when '1-Pack'
+          assign card_label = 'TRY IT'
+        when '3-Pack'
+          assign card_label = 'BUY 2 GET 1'
+        when '6-Pack'
+          assign card_label = 'FAMILY PACK'
+        else
+          assign card_label = variant.title
+      endcase
 
-  <!-- 6 Pack (Family) -->
-  <label class="vura-bundle-card" data-qty="6">
-    <input type="radio" name="vura-bundle" value="6" class="vura-bundle-radio visually-hidden">
-    <div class="vura-bundle-card__inner">
-      <div class="vura-bundle-card__header">
-        <span class="vura-bundle-card__label">FAMILY PACK</span>
+      assign is_recommended = false
+      if variant.title == '3-Pack'
+        assign is_recommended = true
+      endif
+    -%}
+    <label
+      class="vura-bundle-card{% if is_recommended %} vura-bundle-card--selected vura-bundle-card--featured-gradient{% endif %}{% unless variant.available %} vura-bundle-card--soldout{% endunless %}"
+      data-variant-id="{{ variant.id }}"
+      data-variant-value="{{ variant.title | escape }}"
+    >
+      <input
+        type="radio"
+        name="vura-bundle"
+        value="{{ variant.id }}"
+        class="vura-bundle-radio visually-hidden"
+        {% if is_recommended %}checked{% endif %}
+      >
+      {%- if is_recommended -%}<span class="vura-bundle-card__badge">RECOMMENDED</span>{%- endif -%}
+      <div class="vura-bundle-card__inner">
+        <div class="vura-bundle-card__header">
+          <span class="vura-bundle-card__label">{{ card_label }}</span>
+        </div>
+        <div class="vura-bundle-card__body">
+          <span class="vura-bundle-card__qty">{{ variant.title }}</span>
+          <span class="vura-bundle-card__price">{{ variant.price | money }}</span>
+          {%- if savings > 0 and variant.available -%}
+            <span class="vura-bundle-card__was"><s>{{ was | money }}</s></span>
+            <span class="vura-bundle-card__savings">Save {{ savings | money }}</span>
+          {%- endif -%}
+          {%- unless variant.available -%}
+            <span class="vura-bundle-card__soldout">Sold out</span>
+          {%- endunless -%}
+        </div>
       </div>
-      <div class="vura-bundle-card__body">
-        <span class="vura-bundle-card__qty">6 Pack</span>
-        <span class="vura-bundle-card__price">{{ six_pack_money }}</span>
-        <span class="vura-bundle-card__was">
-          <s>{{ six_pack_total | money }}</s>
-        </span>
-        <span class="vura-bundle-card__savings">Save {{ six_pack_savings_money }}</span>
-      </div>
-    </div>
-  </label>
+    </label>
+  {%- endfor -%}
 </div>
 
 <style>
+  /* The native Pack Size picker still powers price/availability — keep it in the
+     DOM but hidden; these cards are the visible selector. */
+  variant-selects {
+    display: none !important;
+  }
   .vura-bundle-picker {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -193,6 +197,23 @@
     border-radius: 99px;
     margin-top: 4px;
   }
+  .vura-bundle-card__soldout {
+    display: inline-block;
+    font-family: var(--font-body, Inter, sans-serif);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9A5B4E;
+    margin-top: 4px;
+  }
+  .vura-bundle-card--soldout {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .vura-bundle-card--soldout:hover {
+    border-color: rgba(26,42,34,0.12);
+  }
 
   /* Mobile: horizontal layout inside cards */
   @media screen and (max-width: 749px) {
@@ -220,10 +241,6 @@
     }
   }
 
-  /* Breathing green gradient for featured Buy 2 Get 1 card */
-  .vura-bundle-card--featured-gradient {
-    /* No custom background gradient shade */
-  }
   .vura-bundle-card--featured-gradient.vura-bundle-card--selected {
     border-color: #637746 !important;
     animation: vuraBreathingGradient 3.5s infinite ease-in-out !important;
@@ -251,67 +268,64 @@
     if (!picker) return;
 
     const cards = picker.querySelectorAll('.vura-bundle-card');
-    const radios = picker.querySelectorAll('.vura-bundle-radio');
 
-    // Find the quantity input in the product form
-    function getQuantityInput() {
-      const parent = picker.closest('.product-form__quantity') || document.querySelector('.product-form__quantity');
-      if (parent) {
-        return parent.querySelector('input[name="quantity"]');
-      }
-      return document.querySelector('input[name="quantity"]');
+    // The native Dawn variant picker (drives price / [name=id] / availability).
+    function getVariantSelects() {
+      return document.querySelector('variant-selects');
     }
 
-    // Update the submit button text
-    function updateCTAText(qty) {
-      const btn = document.querySelector('.product-form__submit span');
-      if (!btn) return;
-      if (qty == 3) {
-        btn.textContent = 'Add 3 to Cart — You Pay for 2';
-      } else if (qty == 6) {
-        btn.textContent = 'Add 6 to Cart — Best Price';
-      } else {
-        btn.textContent = 'Add to Cart';
-      }
-    }
-
-    // Set the product-form quantity reliably: update value, fire a change event
-    // so Dawn's <quantity-input> and the sticky bar pick it up (otherwise the
-    // form can submit a stale quantity and the Buy 2 Get 1 discount won't fire).
-    function setQuantity(qty) {
-      const qtyInput = getQuantityInput();
-      if (qtyInput) {
-        qtyInput.value = qty;
-        qtyInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
+    // Force a quantity of 1 — pack size is now the variant, not the quantity.
+    function setQuantityOne() {
+      const qtyInput =
+        document.querySelector('.product-form__quantity input[name="quantity"]') ||
+        document.querySelector('input[name="quantity"]');
+      if (qtyInput) qtyInput.value = 1;
       const stickyQty = document.getElementById('StickyQtyInput');
-      if (stickyQty) stickyQty.value = qty;
+      if (stickyQty) stickyQty.value = 1;
     }
 
-    function selectCard(selectedCard) {
+    // Select a variant by its option value ("1-Pack" / "3-Pack" / "6-Pack") by
+    // checking the matching native radio and firing change so Dawn updates.
+    function selectVariant(value) {
+      const vs = getVariantSelects();
+      if (!vs) return;
+      const inputs = vs.querySelectorAll('input[type="radio"], option');
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].value === value) {
+          const el = inputs[i];
+          if (el.tagName === 'OPTION') {
+            const select = el.closest('select');
+            if (select) {
+              select.value = value;
+              select.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          } else if (!el.checked) {
+            el.checked = true;
+            el.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+          break;
+        }
+      }
+    }
+
+    function selectCard(card) {
+      if (card.classList.contains('vura-bundle-card--soldout')) return;
       cards.forEach(c => c.classList.remove('vura-bundle-card--selected'));
-      selectedCard.classList.add('vura-bundle-card--selected');
-      const qty = selectedCard.dataset.qty;
-      setQuantity(qty);
-      updateCTAText(qty);
+      card.classList.add('vura-bundle-card--selected');
+      const radio = card.querySelector('.vura-bundle-radio');
+      if (radio) radio.checked = true;
+      selectVariant(card.dataset.variantValue);
+      setQuantityOne();
     }
 
     cards.forEach(card => {
-      card.addEventListener('click', function() {
-        selectCard(this);
-        this.querySelector('.vura-bundle-radio').checked = true;
-      });
+      card.addEventListener('click', function () { selectCard(this); });
     });
 
-    // Initialize with default selection (3 pack)
+    // Apply the default selection (3-Pack) once Dawn's variant engine is ready.
     const defaultSelected = picker.querySelector('.vura-bundle-card--selected');
     if (defaultSelected) {
-      const qty = defaultSelected.dataset.qty;
-      // Ensure quantity input exists; if not, create one
-      setTimeout(function() {
-        setQuantity(qty);
-        updateCTAText(qty);
-      }, 300);
+      setTimeout(function () { selectCard(defaultSelected); }, 300);
     }
   })();
 </script>

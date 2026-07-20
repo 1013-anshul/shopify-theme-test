@@ -94,7 +94,7 @@
       <!-- VURA Cart Drawer Announcement Slider -->
       <div class="vura-cart-announcements">
         <div class="vura-announcement-slider">
-          <div class="vura-announcement-slide">Buy 2 Get 1 Free!!</div>
+          <div class="vura-announcement-slide">3-Pack: Buy 2, Get 1 Free!</div>
           <div class="vura-announcement-slide">Get 2% Vura Coins on every Prepaid order!!</div>
           <div class="vura-announcement-slide">Earn Vura Points on every purchase!</div>
         </div>
@@ -112,75 +112,7 @@
         >
           <div id="CartDrawer-CartItems" class="drawer__contents js-contents">
             {%- if cart != empty -%}
-              {%- assign total_qty = 0 -%}
-              {%- for item in cart.items -%}
-                {%- assign total_qty = total_qty | plus: item.quantity -%}
-              {%- endfor -%}
-              
-              {%- if total_qty == 1 -%}
-                {%- assign percent = 50 -%}
-              {%- elsif total_qty >= 2 -%}
-                {%- assign percent = 100 -%}
-              {%- else -%}
-                {%- assign percent = 0 -%}
-              {%- endif -%}
-
-              <div class="vura-cart-shipping-progress{% if total_qty == 1 %} vura-progress--stuck{% endif %}" data-target-percent="{{ percent }}" data-total-qty="{{ total_qty }}">
-                <div class="vura-cart-progress__bar-bg">
-                  <div class="vura-cart-progress__bar-fill" style="width: 0%;">
-                    <span class="vura-progress-rocket">🚀</span>
-                  </div>
-                </div>
-                <div class="vura-cart-progress__text">
-                  {%- if total_qty == 1 -%}
-                    Add <strong>1 more</strong> to unlock your <strong>FREE PRODUCT!</strong>
-                  {%- elsif total_qty >= 2 -%}
-                    🎉 <strong>Congrats! You've unlocked 1 FREE PRODUCT!</strong>
-                  {%- else -%}
-                    Add <strong>2 items</strong> to get <strong>1 FREE!</strong>
-                  {%- endif -%}
-                </div>
-              </div>
-
-              <!-- B2G1 Unlock Message Banner -->
-              <div class="vura-unlock-banner" id="vura-unlock-banner">
-                <span class="vura-unlock-banner-rocket">🚀</span>
-                <span>You have unlocked <strong style="color: #FFC03F;">1 FREE product!</strong> <span style="font-weight: normal; opacity: 0.95;">1 free item at checkout.</span></span>
-              </div>
-
-              <!-- VURA Cart Upsell Progress Banner -->
-              <div class="vura-cart-progress">
-                {%- if cart.item_count >= 3 -%}
-                  🎉 You've unlocked a free product! Auto-applied at checkout.
-                {%- elsif cart.item_count == 2 -%}
-                  ⚡ Almost there!
-                  <button type="button" class="vura-unlock-free" data-variant="{{ cart.items.first.variant_id }}">Add 1 more — get it FREE</button>
-                {%- else -%}
-                  💡 Add {{ 3 | minus: cart.item_count }} more to unlock Buy 2 Get 1 Free.
-                {%- endif -%}
-              </div>
-              <style>
-                .vura-unlock-free { display: inline-block; margin-left: 6px; background: var(--vura-saffron, #FFC03F); color: var(--vura-forest-deep, #0E2118); border: 0; border-radius: 99px; padding: 4px 12px; font-weight: 600; font-size: 12px; cursor: pointer; }
-                .vura-unlock-free[disabled] { opacity: 0.6; cursor: default; }
-              </style>
-              <script>
-                if (!window.__vuraUnlockFreeBound) {
-                  window.__vuraUnlockFreeBound = true;
-                  document.addEventListener('click', function (e) {
-                    var btn = e.target.closest('.vura-unlock-free');
-                    if (!btn) return;
-                    e.preventDefault();
-                    btn.disabled = true;
-                    btn.textContent = 'Adding…';
-                    var root = (window.Shopify && Shopify.routes && Shopify.routes.root) ? Shopify.routes.root : '/';
-                    fetch(root + 'cart/add.js', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ items: [{ id: parseInt(btn.dataset.variant, 10), quantity: 1 }] })
-                    }).then(function () { window.location.reload(); });
-                  });
-                }
-              </script>
+              {%- comment -%} Bundle savings now live in the pack-size variants; the Buy-2-Get-1 progress/unlock UI was removed. {%- endcomment -%}
               <div class="drawer__cart-items-wrapper">
                 <table class="cart-items" role="table">
 
@@ -269,6 +201,10 @@
                                 </button>
                               </cart-remove-button>
                             </div>
+
+                            {%- unless item.product.has_only_default_variant -%}
+                              <div class="cart-item__pack" style="font-size:1.3rem;color:#7A857F;margin-top:2px;">{{ item.variant.title }}</div>
+                            {%- endunless -%}
 
                             <ul
                               class="discounts list-unstyled"

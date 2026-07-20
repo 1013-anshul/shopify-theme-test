@@ -258,12 +258,12 @@
                   class="product-form__input product-form__quantity"
                   {{ block.shopify_attributes }}
                 >
-                  <!-- Hidden quantity input (updated by bundle picker JS) -->
+                  <!-- Hidden quantity input; pack size is the variant, so qty stays 1 -->
                   <input
                     type="hidden"
                     name="quantity"
                     id="Quantity-{{ section.id }}"
-                    value="3"
+                    value="1"
                     min="1"
                     form="{{ product_form_id }}"
                   >
