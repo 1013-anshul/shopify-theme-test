@@ -41,6 +41,63 @@
 <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
+
+    {%- comment -%} VURA: pack dropdown + upgrade nudge + offer-unlock celebration {%- endcomment -%}
+    <style>
+      .vura-pack-select-wrap { position: relative; display: inline-block; }
+      .vura-pack-select {
+        -webkit-appearance: none; appearance: none;
+        font-family: var(--font-body, Inter, sans-serif);
+        font-size: 1.25rem; font-weight: 600; color: #1A2A22;
+        background: #fff; border: 1.5px solid rgba(26,42,34,0.15); border-radius: 8px;
+        padding: 8px 32px 8px 12px; cursor: pointer; line-height: 1.2; max-width: 100%;
+      }
+      .vura-pack-select:hover { border-color: #637746; }
+      .vura-pack-select:focus { outline: none; border-color: #637746; box-shadow: 0 0 0 2px rgba(99,119,70,0.2); }
+      .vura-pack-select__chevron { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #4A5750; display: flex; }
+      .vura-pack-cell { vertical-align: middle; }
+
+      .vura-nudge { position: fixed; inset: 0; z-index: 10001; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(14,33,24,0.30); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+      .vura-nudge.show { display: flex; animation: vuraNudgeFade .22s ease; }
+      @keyframes vuraNudgeFade { from { opacity: 0; } to { opacity: 1; } }
+      .vura-nudge__card { position: relative; width: 100%; max-width: 400px; background: var(--vura-paper, #F8F3E7); border-radius: 16px; padding: 24px 20px 20px; box-shadow: 0 24px 60px rgba(14,33,24,0.34); text-align: center; animation: vuraNudgeUp .34s cubic-bezier(.22,.61,.36,1); }
+      @keyframes vuraNudgeUp { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+      .vura-nudge__dismiss { position: absolute; top: 8px; right: 12px; background: none; border: 0; font-size: 24px; line-height: 1; color: #7A857F; cursor: pointer; }
+      .vura-nudge__icon { font-size: 36px; line-height: 1; }
+      .vura-nudge__title { font-family: var(--font-display, Georgia, serif); font-size: 2.2rem; color: #162D24; margin: 8px 0 4px; }
+      .vura-nudge__sub { font-family: var(--font-body, Inter, sans-serif); font-size: 1.35rem; color: #4A5750; margin: 0 0 18px; line-height: 1.4; }
+      .vura-nudge__row { display: flex; gap: 10px; align-items: stretch; }
+      .vura-nudge__select-wrap { flex: 1; }
+      .vura-nudge__select-wrap .vura-pack-select { width: 100%; height: 100%; font-size: 1.35rem; }
+      .vura-nudge__cta { flex-shrink: 0; background: var(--vura-saffron, #FFC03F); color: #1A2A22; border: 0; border-radius: 8px; font-family: var(--font-body, Inter, sans-serif); font-weight: 700; font-size: 1.3rem; letter-spacing: 0.02em; padding: 12px 18px; cursor: pointer; transition: transform .12s ease, filter .12s ease; }
+      .vura-nudge__cta:hover { transform: translateY(-1px); filter: brightness(1.04); }
+
+      .vura-unlock-toast { position: fixed; top: 22px; left: 50%; transform: translate(-50%, -16px); z-index: 10002; display: flex; align-items: center; gap: 8px; background: var(--vura-forest, #162D24); color: var(--vura-paper, #F8F3E7); font-family: var(--font-body, Inter, sans-serif); font-size: 1.35rem; font-weight: 600; padding: 11px 20px; border-radius: 99px; box-shadow: 0 12px 34px rgba(14,33,24,0.4); opacity: 0; pointer-events: none; transition: opacity .3s ease, transform .3s ease; }
+      .vura-unlock-toast.show { opacity: 1; transform: translate(-50%, 0); }
+      .vura-unlock-toast__emoji { font-size: 1.6rem; }
+      .vura-unlock-toast strong { color: var(--vura-saffron, #FFC03F); }
+    </style>
+
+    <div class="vura-nudge" id="vura-upgrade-nudge" aria-hidden="true">
+      <div class="vura-nudge__card" role="dialog" aria-label="Unlock the offer">
+        <button class="vura-nudge__dismiss" id="vura-nudge-dismiss" type="button" aria-label="Dismiss">&times;</button>
+        <div class="vura-nudge__icon">&#127873;</div>
+        <div class="vura-nudge__title">Unlock the offer</div>
+        <div class="vura-nudge__sub">Choose the 3-Pack — pay for 2, get 1 free.</div>
+        <div class="vura-nudge__row">
+          <div class="vura-pack-select-wrap vura-nudge__select-wrap">
+            <select class="vura-pack-select" id="vura-nudge-select" aria-label="Choose pack"></select>
+            <span class="vura-pack-select__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+          </div>
+          <button class="vura-nudge__cta" id="vura-nudge-confirm" type="button">Unlock the offer</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="vura-unlock-toast" id="vura-unlock-toast" aria-hidden="true">
+      <span class="vura-unlock-toast__emoji">&#127881;</span>
+      <span>Offer unlocked! <strong>Buy 2, Get 1 Free</strong></span>
+    </div>
     <div
       class="drawer__inner gradient color-{{ settings.cart_color_scheme }}"
       role="dialog"
@@ -158,6 +215,8 @@
                           id="CartDrawer-Item-{{ row_index }}"
                           class="cart-item{% if item.parent_relationship.parent != null %} cart-item__nested-line{% endif %}"
                           role="row"
+                          data-pack="{{ item.variant.title | escape }}"
+                          data-line-key="{{ item.key }}"
                           {% if item.parent_relationship.parent != null %}
                             aria-label="{{- 'products.product.nested_label' | t: title: item.product.title, parent_title: item.parent_relationship.parent.title | escape -}}"
                           {% endif %}
@@ -251,142 +310,22 @@
                               {%- endif -%}
                             </div>
                           </td>
-                          {%- liquid
-                            assign has_qty_rules = false
-                            if item.variant.quantity_rule.increment > 1 or item.variant.quantity_rule.min > 1 or item.variant.quantity_rule.max != null
-                              assign has_qty_rules = true
-                            endif
-
-                            assign has_vol_pricing = false
-                            if item.variant.quantity_price_breaks.size > 0
-                              assign has_vol_pricing = true
-                            endif
-                          -%}
-                          <td
-                            class="cart-item__quantity {% if has_qty_rules or has_vol_pricing %} cart-item__quantity--info{% endif %}"
-                            role="cell"
-                            headers="CartDrawer-ColumnQuantity"
-                          >
-                            <quantity-popover>
-                              <div class="cart-item__quantity-wrapper quantity-popover-wrapper">
-                                <div class="quantity-popover-container">
-                                  <quantity-input class="quantity cart-quantity{% if total_qty == 1 %} qty-is-one{% endif %}">
-                                    <button class="quantity__button" name="minus" type="button">-</button>
-                                    <input
-                                       class="quantity__input"
-                                       type="number"
-                                       name="updates[]"
-                                       value="{{ total_qty }}"
-                                       id="Drawer-quantity-{{ row_index }}"
-                                       data-index="{{ paid_line_index }}"
-                                       data-is-promo="{% if free_qty > 0 %}true{% else %}false{% endif %}"
-                                       min="0"
-                                       {% if item.variant.quantity_rule.max != null %}
-                                         max="{{ item.variant.quantity_rule.max }}"
-                                       {% endif %}
-                                       step="{{ item.variant.quantity_rule.increment }}"
-                                       data-min="{{ item.variant.quantity_rule.min }}"
-                                     >
-                                    <button class="quantity__button" name="plus" type="button">+</button>
-                                  </quantity-input>
-                                </div>
+                          <td class="cart-item__quantity vura-pack-cell" role="cell" headers="CartDrawer-ColumnQuantity">
+                            {%- unless item.product.has_only_default_variant -%}
+                              <label class="visually-hidden" for="VuraPackSelect-{{ row_index }}">Choose pack size</label>
+                              <div class="vura-pack-select-wrap">
+                                <select class="vura-pack-select" id="VuraPackSelect-{{ row_index }}" data-line-key="{{ item.key }}" data-current="{{ item.variant_id }}" aria-label="Choose pack size">
+                                  {%- for v in item.product.variants -%}
+                                    <option value="{{ v.id }}"{% if v.id == item.variant_id %} selected{% endif %}{% unless v.available %} disabled{% endunless %}>{{ v.title }} &mdash; {{ v.price | money }}{% unless v.available %} &middot; Sold out{% endunless %}</option>
+                                  {%- endfor -%}
+                                </select>
+                                <span class="vura-pack-select__chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
                               </div>
-                              {%- if has_qty_rules or has_vol_pricing -%}
-                                <button
-                                  type="button"
-                                  class="quantity-popover__info-button quantity-popover__info-button--icon-with-label button button--tertiary"
-                                  aria-expanded="false"
-                                >
-                                  <span class="svg-wrapper">
-                                    {{- 'icon-info.svg' | inline_asset_content -}}
-                                  </span>
-                                  <span>
-                                    {%- if has_vol_pricing -%}
-                                      {{ 'products.product.volume_pricing.note' | t }}
-                                    {%- elsif has_qty_rules -%}
-                                      {{ 'products.product.quantity.note' | t }}
-                                    {%- endif -%}
-                                  </span>
-                                </button>
-                              {%- endif -%}
-                              {%- if has_vol_pricing or has_qty_rules -%}
-                                <div
-                                  class="cart-items__info global-settings-popup quantity-popover__info"
-                                  tabindex="-1"
-                                  hidden
-                                >
-                                  {%- if has_qty_rules == false -%}
-                                    <span class="volume-pricing-label caption">
-                                      {{- 'products.product.volume_pricing.title' | t -}}
-                                    </span>
-                                  {%- endif -%}
-                                  <div class="quantity__rules caption">
-                                    {%- if item.variant.quantity_rule.increment > 1 -%}
-                                      <span class="divider">
-                                        {{-
-                                          'products.product.quantity.multiples_of'
-                                          | t: quantity: item.variant.quantity_rule.increment
-                                        -}}
-                                      </span>
-                                    {%- endif -%}
-                                    {%- if item.variant.quantity_rule.min > 1 -%}
-                                      <span class="divider">
-                                        {{-
-                                          'products.product.quantity.min_of'
-                                          | t: quantity: item.variant.quantity_rule.min
-                                        -}}
-                                      </span>
-                                    {%- endif -%}
-                                    {%- if item.variant.quantity_rule.max != null -%}
-                                      <span class="divider">
-                                        {{-
-                                          'products.product.quantity.max_of'
-                                          | t: quantity: item.variant.quantity_rule.max
-                                        -}}
-                                      </span>
-                                    {%- endif -%}
-                                  </div>
-                                  <button
-                                    class="button-close button button--tertiary"
-                                    type="button"
-                                    aria-label="{{ 'accessibility.close' | t }}"
-                                  >
-                                    <span class="svg-wrapper">
-                                      {{- 'icon-close.svg' | inline_asset_content -}}
-                                    </span>
-                                  </button>
-                                  {%- if item.variant.quantity_price_breaks.size > 0 -%}
-                                    <volume-pricing class="parent-display">
-                                      <ul class="list-unstyled">
-                                        <li>
-                                          <span>{{ item.variant.quantity_rule.min }}+</span>
-                                          <span>{{ item.variant.price | money_with_currency }}/ea</span>
-                                        </li>
-                                        {%- for price_break in item.variant.quantity_price_breaks -%}
-                                          <li>
-                                            <span>
-                                              {{- price_break.minimum_quantity -}}
-                                              <span aria-hidden="true">+</span></span
-                                            >
-                                            <span>{{ price_break.price | money_with_currency }}/ea</span>
-                                          </li>
-                                        {%- endfor -%}
-                                      </ul>
-                                    </volume-pricing>
-                                  {%- endif -%}
-                                </div>
-                              {%- endif -%}
-                              <div
-                                id="CartDrawer-LineItemError-{{ row_index }}"
-                                class="cart-item__error"
-                                role="alert"
-                              >
-                                <small class="cart-item__error-text"></small>
-                                <span class="svg-wrapper">
-                                  {{- 'icon-error.svg' | inline_asset_content -}}
-                                </span>
-                              </div>
-                            </quantity-popover>
+                            {%- endunless -%}
+                            <div id="CartDrawer-LineItemError-{{ row_index }}" class="cart-item__error" role="alert">
+                              <small class="cart-item__error-text"></small>
+                              <span class="svg-wrapper">{{ 'icon-error.svg' | inline_asset_content }}</span>
+                            </div>
                           </td>
                         </tr>
                       {%- endunless -%}
@@ -543,4 +482,134 @@
     </form>
   </div>
 </div>
+
+<script>
+  (function () {
+    if (window.__vuraCartPackUX) return;
+    window.__vuraCartPackUX = true;
+
+    var R = window.routes || {};
+    var CART_URL = R.cart_url || '/cart';
+    var CHANGE_URL = R.cart_change_url || '/cart/change.js';
+    var ADD_URL = R.cart_add_url || '/cart/add.js';
+
+    function drawerEl() { return document.querySelector('cart-drawer'); }
+    function isOpen() { var d = drawerEl(); return !!(d && d.classList.contains('active')); }
+    function lineEls() { return Array.prototype.slice.call(document.querySelectorAll('#CartDrawer-CartItems .cart-item')); }
+    function packs() { return lineEls().map(function (l) { return (l.getAttribute('data-pack') || '').trim(); }); }
+    function has3or6() { return packs().some(function (p) { return p === '3-Pack' || p === '6-Pack'; }); }
+    function onePackLine() { return lineEls().filter(function (l) { return (l.getAttribute('data-pack') || '').trim() === '1-Pack'; })[0]; }
+    function hasOnly1() { return !!onePackLine() && !has3or6(); }
+
+    var toast, nudge, nudgeSelect;
+    function els() {
+      toast = document.getElementById('vura-unlock-toast');
+      nudge = document.getElementById('vura-upgrade-nudge');
+      nudgeSelect = document.getElementById('vura-nudge-select');
+    }
+
+    function celebrate() {
+      if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
+      if (toast) { toast.classList.add('show'); clearTimeout(window.__vuraToastT); window.__vuraToastT = setTimeout(function () { toast.classList.remove('show'); }, 2600); }
+    }
+    function showNudge() {
+      if (!nudge || !nudgeSelect) return;
+      if (nudgeSelect.options.length === 0) {
+        var lineSelect = document.querySelector('.vura-pack-select[id^="VuraPackSelect"]');
+        if (lineSelect) {
+          Array.prototype.forEach.call(lineSelect.options, function (o) {
+            if (/3-Pack|6-Pack/.test(o.textContent) && !o.disabled) {
+              var opt = document.createElement('option');
+              opt.value = o.value; opt.textContent = o.textContent;
+              nudgeSelect.appendChild(opt);
+            }
+          });
+          Array.prototype.forEach.call(nudgeSelect.options, function (o) { if (/3-Pack/.test(o.textContent)) o.selected = true; });
+        }
+      }
+      nudge.classList.add('show');
+    }
+    function hideNudge() { if (nudge) nudge.classList.remove('show'); }
+
+    function evaluate() {
+      els();
+      var now3 = has3or6();
+      if (!now3) window.__vuraCelebrated = false;
+      if (now3 && isOpen() && !window.__vuraCelebrated) { celebrate(); window.__vuraCelebrated = true; }
+      if (!window.__vuraNudgeDismissed && hasOnly1() && isOpen()) { showNudge(); } else { hideNudge(); }
+    }
+
+    function refreshDrawer() {
+      return fetch(CART_URL + '?section_id=cart-drawer')
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          var ni = doc.querySelector('#CartDrawer-CartItems'), ci = document.querySelector('#CartDrawer-CartItems');
+          if (ni && ci) ci.innerHTML = ni.innerHTML;
+          var nf = doc.querySelector('.cart-drawer__footer'), cf = document.querySelector('.cart-drawer__footer');
+          if (nf && cf) cf.innerHTML = nf.innerHTML;
+          evaluate();
+        });
+    }
+
+    function swapVariant(lineKey, newId) {
+      if (!lineKey || !newId) return Promise.resolve();
+      return fetch(CHANGE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ id: lineKey, quantity: 0 }) })
+        .then(function () {
+          return fetch(ADD_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ items: [{ id: parseInt(newId, 10), quantity: 1 }] }) });
+        })
+        .then(function () { return refreshDrawer(); })
+        .catch(function () { refreshDrawer(); });
+    }
+
+    document.addEventListener('change', function (e) {
+      var sel = e.target.closest && e.target.closest('.vura-pack-select[id^="VuraPackSelect"]');
+      if (!sel) return;
+      if (sel.value === sel.getAttribute('data-current')) return;
+      sel.disabled = true;
+      swapVariant(sel.getAttribute('data-line-key'), sel.value);
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('#vura-nudge-confirm')) {
+        e.preventDefault();
+        els();
+        var line = onePackLine();
+        var newId = nudgeSelect ? nudgeSelect.value : null;
+        if (line && newId) { hideNudge(); swapVariant(line.getAttribute('data-line-key'), newId); }
+        return;
+      }
+      if (e.target.closest && (e.target.closest('#vura-nudge-dismiss') || e.target === nudge)) {
+        e.preventDefault();
+        window.__vuraNudgeDismissed = true;
+        hideNudge();
+      }
+    });
+
+    var evalTimer;
+    function scheduleEval() { clearTimeout(evalTimer); evalTimer = setTimeout(evaluate, 70); }
+    function dedupe(sel) { var n = document.querySelectorAll(sel); for (var i = 1; i < n.length; i++) n[i].remove(); }
+
+    function boot() {
+      // Dawn re-renders the whole #CartDrawer on add, so overlays stay as Liquid
+      // singletons (no moving to body). Clear any stray duplicates defensively.
+      dedupe('#vura-upgrade-nudge');
+      dedupe('#vura-unlock-toast');
+      els();
+      window.__vuraCelebrated = has3or6(); // don't celebrate a pre-existing 3-Pack on first open
+      var d = drawerEl();
+      if (!d) return;
+      // Open/close of the drawer.
+      new MutationObserver(function () {
+        els();
+        if (d.classList.contains('active')) { scheduleEval(); }
+        else { hideNudge(); if (toast) toast.classList.remove('show'); }
+      }).observe(d, { attributes: true, attributeFilter: ['class'] });
+      // Any re-render of the drawer contents (Dawn add, or our swap).
+      new MutationObserver(scheduleEval).observe(d, { childList: true, subtree: true });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+  })();
+</script>
 </cart-drawer>
