@@ -119,18 +119,10 @@
                     <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                   </div>
                 {%- endif -%}
-                {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
+                {%- comment -%} Tax status is shown by the branded "MRP (Incl. of all taxes)" note in price.liquid; only surface the shipping policy here so we don't repeat the tax line. {%- endcomment -%}
+                {%- if shop.shipping_policy.body != blank -%}
                   <div class="product__tax caption rte">
-                    {%- if cart.duties_included and cart.taxes_included -%}
-                      {{ 'products.product.duties_and_taxes_included' | t }}
-                    {%- elsif cart.taxes_included -%}
-                      {{ 'products.product.taxes_included' | t }}
-                    {%- elsif cart.duties_included -%}
-                      {{ 'products.product.duties_included' | t }}
-                    {%- endif -%}
-                    {%- if shop.shipping_policy.body != blank -%}
-                      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                    {%- endif -%}
+                    {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
                   </div>
                 {%- endif -%}
                 <!-- VURA Offer Banner -->

@@ -68,6 +68,19 @@
       .vura-celebrate__title { font-family: var(--font-display, Georgia, serif); font-size: 1.95rem; line-height: 1.1; }
       .vura-celebrate__sub { font-family: var(--font-body, Inter, sans-serif); font-size: 1.2rem; color: var(--vura-cream-dim, #D9D2C2); margin-top: 2px; }
       .vura-celebrate__sub strong { color: var(--vura-saffron, #FFC03F); }
+
+      /* Mobile: larger, tap-friendly popups */
+      @media (max-width: 749px) {
+        .vura-inline-nudge, .vura-inline-nudge.show { margin-left: 1.2rem; margin-right: 1.2rem; }
+        .vura-inline-nudge__card { gap: 12px; padding: 14px 15px; }
+        .vura-inline-nudge__title { font-size: 1.55rem; }
+        .vura-inline-nudge__sub { font-size: 1.3rem; }
+        .vura-inline-nudge__btn { min-height: 44px; font-size: 1.4rem; padding: 11px 16px; }
+        .vura-celebrate.show { margin-left: 1.2rem; margin-right: 1.2rem; }
+        .vura-celebrate__card { padding: 15px 16px; gap: 12px; }
+        .vura-celebrate__title { font-size: 2.1rem; }
+        .vura-celebrate__sub { font-size: 1.35rem; }
+      }
     </style>
     <div
       class="drawer__inner gradient color-{{ settings.cart_color_scheme }}"
@@ -501,9 +514,8 @@
     function has3or6() { return packs().some(function (p) { return p === '3-Pack' || p === '6-Pack'; }); }
     function hasOnly1() { var p = packs(); return p.indexOf('1-Pack') !== -1 && !has3or6(); }
 
-    /* ---- celebration: expanding banner + confetti ---- */
+    /* ---- celebration: expanding in-cart banner ---- */
     function celebrate() {
-      if (typeof window.triggerConfetti === 'function') window.triggerConfetti();
       var c = el('vura-celebrate');
       if (c) {
         c.classList.add('show');

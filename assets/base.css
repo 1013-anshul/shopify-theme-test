@@ -5104,3 +5104,14 @@ details-disclosure > details {
   justify-content: flex-start !important;
 }
 
+
+
+/* ===== VURA mobile polish (text) ===== */
+@media screen and (max-width: 749px) {
+  .product__info-container .product__title h1 {
+    font-size: 3.1rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    word-break: normal;
+  }
+}
