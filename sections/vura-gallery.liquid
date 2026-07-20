@@ -191,7 +191,7 @@
   }
 {%- endstyle -%}
 
-<section id="vura-gallery-{{ section.id }}" class="vura-gallery">
+<section id="vura-gallery-{{ section.id }}" class="vura-gallery{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
   {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
     <div class="vura-gallery__header">
       {%- if section.settings.eyebrow != blank -%}

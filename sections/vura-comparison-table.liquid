@@ -62,7 +62,7 @@
 {%- capture icon_partial -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="12" x2="18" y2="12"/></svg>{%- endcapture -%}
 {%- capture icon_no -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="17" y1="7" x2="7" y2="17"/><line x1="7" y1="7" x2="17" y2="17"/></svg>{%- endcapture -%}
 
-<section class="vura-cmp">
+<section class="vura-cmp{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
   <div class="vura-cmp__wrap">
     <div class="vura-cmp__head">
       {%- if section.settings.eyebrow != blank -%}<p class="vura-cmp__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}

@@ -146,7 +146,7 @@
   }
 </style>
 
-<section class="vura-ugc" aria-labelledby="ugc-heading-{{ section.id }}">
+<section class="vura-ugc{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" aria-labelledby="ugc-heading-{{ section.id }}">
   <div class="vura-ugc__container">
     <header class="vura-ugc__header">
       <p class="vura-ugc__eyebrow">REAL STORIES</p>

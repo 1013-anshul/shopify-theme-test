@@ -126,7 +126,7 @@
   }
 </style>
 
-<section class="vura-faq" aria-labelledby="faq-heading-{{ section.id }}">
+<section class="vura-faq{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" aria-labelledby="faq-heading-{{ section.id }}">
   <div class="vura-faq__container">
     <header class="vura-faq__header">
       <p class="vura-faq__eyebrow">GOT QUESTIONS?</p>

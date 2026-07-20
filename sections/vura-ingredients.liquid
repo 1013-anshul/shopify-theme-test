@@ -57,7 +57,7 @@
   }
 {%- endstyle -%}
 
-<section class="vura-ing" aria-labelledby="ing-heading-{{ section.id }}">
+<section class="vura-ing{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" aria-labelledby="ing-heading-{{ section.id }}">
   <div class="vura-ing__container">
     <header class="vura-ing__header">
       {%- if section.settings.eyebrow != blank -%}<p class="vura-ing__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
