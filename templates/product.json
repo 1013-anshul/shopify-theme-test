@@ -244,37 +244,55 @@
         "ingredient_1": {
           "type": "ingredient",
           "settings": {
-            "name": "Phitkari (Alum)",
+            "name": "Potassium Alum (Phitkari)",
             "tag": "Active",
-            "description": "Mineral salt that controls odour by calming odour-causing bacteria.",
-            "icon": "crystal"
+            "description": "The mineral hero: neutralises odour-causing bacteria — freshness without blocking your sweat.",
+            "icon": "alum"
           }
         },
         "ingredient_2": {
           "type": "ingredient",
           "settings": {
-            "name": "Aloe Vera Extract",
-            "tag": "Soothing",
-            "description": "Hydrates and soothes delicate underarm skin.",
-            "icon": "leaf"
+            "name": "Triethyl Citrate",
+            "tag": "Odour control",
+            "description": "A citrus-derived ester that quietly interrupts the enzymes that turn sweat into smell.",
+            "icon": "citrus"
           }
         },
         "ingredient_3": {
           "type": "ingredient",
           "settings": {
-            "name": "Rose Water",
-            "tag": "Toning",
-            "description": "Gentle toning with a soft, natural scent.",
-            "icon": "flower"
+            "name": "Aloe Vera",
+            "tag": "Soothing",
+            "description": "Calms and hydrates delicate underarm skin, even right after shaving.",
+            "icon": "aloe"
           }
         },
         "ingredient_4": {
           "type": "ingredient",
           "settings": {
+            "name": "Rose Water",
+            "tag": "Toning",
+            "description": "Steam-distilled Damask rose that tones and refreshes with a clean, natural feel.",
+            "icon": "rose"
+          }
+        },
+        "ingredient_5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Rose Oil",
+            "tag": "Fragrance",
+            "description": "A whisper of real rose — our only scent, never a synthetic perfume.",
+            "icon": "roseoil"
+          }
+        },
+        "ingredient_6": {
+          "type": "ingredient",
+          "settings": {
             "name": "Glycerin",
             "tag": "Hydrating",
-            "description": "Draws in moisture to keep skin soft, not dry.",
-            "icon": "drop"
+            "description": "A humectant that draws in moisture so skin stays soft, never tight or dry.",
+            "icon": "glycerin"
           }
         }
       },
@@ -282,14 +300,17 @@
         "ingredient_1",
         "ingredient_2",
         "ingredient_3",
-        "ingredient_4"
+        "ingredient_4",
+        "ingredient_5",
+        "ingredient_6"
       ],
       "settings": {
         "eyebrow": "Full transparency",
         "heading": "What's inside",
-        "intro": "Aloe and rose, nothing else.",
+        "intro": "The heroes that do the work — and the full, honest formula.",
         "padding_top": 56,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid."
       }
     },
     "vura-ugc-video": {

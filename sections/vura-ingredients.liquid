@@ -1,4 +1,4 @@
-{% comment %} What's inside — redesigned editorial ingredients block v2 {% endcomment %}
+{% comment %} What's inside — hero ingredient flip cards (v3): scroll-linked flip to reveal each benefit, plus the full honest formula. {% endcomment %}
 {%- style -%}
   .vura-ing {
     background: var(--vura-forest, #162D24);
@@ -6,8 +6,8 @@
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
   }
-  .vura-ing__container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
-  .vura-ing__header { text-align: center; max-width: 640px; margin: 0 auto 4rem; }
+  .vura-ing__container { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+  .vura-ing__header { text-align: center; max-width: 660px; margin: 0 auto 3.6rem; }
   .vura-ing__eyebrow {
     font-family: var(--font-body, 'Inter', sans-serif); font-size: 1.1rem; font-weight: 600;
     letter-spacing: 0.18em; text-transform: uppercase; color: var(--vura-saffron, #FFC03F); margin: 0 0 1rem;
@@ -21,39 +21,78 @@
     font-family: var(--font-display, Georgia, serif); font-style: italic;
     font-size: clamp(1.6rem, 2.4vw, 2rem); line-height: 1.4; color: var(--vura-cream-dim, #D9D2C2); margin: 0;
   }
-  .vura-ing__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
-  @media (min-width: 750px) { .vura-ing__grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
-  .vura-ing__card {
-    position: relative; display: flex; flex-direction: column;
-    background: var(--vura-cream, #F4EFE3); color: var(--vura-paper-ink, #1A2A22);
-    border-radius: var(--r-4, 10px); padding: 2.4rem 1.8rem 2rem;
-    box-shadow: var(--shadow-md, 0 8px 24px rgba(26,42,34,0.10));
-    transition: transform 220ms var(--ease-out, ease), box-shadow 220ms var(--ease-out, ease);
+
+  .vura-ing__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+  @media (min-width: 750px) { .vura-ing__grid { grid-template-columns: repeat(3, 1fr); gap: 1.8rem; } }
+
+  /* Flip card: front + back stacked in one grid cell so the card sizes to the taller face */
+  .vura-ing__card { position: relative; perspective: 1500px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .vura-ing__card:focus { outline: none; }
+  .vura-ing__card:focus-visible .vura-ing__flip { box-shadow: 0 0 0 3px var(--vura-saffron, #FFC03F); border-radius: 14px; }
+  .vura-ing__flip {
+    position: relative; display: grid; transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .vura-ing__card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg, 0 24px 60px rgba(26,42,34,0.16)); }
+  .vura-ing__card.is-flipped .vura-ing__flip { transform: rotateY(180deg); }
+  .vura-ing__face {
+    grid-area: 1 / 1; -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    display: flex; flex-direction: column; border-radius: 14px; padding: 2.2rem 1.7rem 1.9rem;
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(26,42,34,0.10)); min-height: 220px;
+  }
+  .vura-ing__face--front { background: var(--vura-cream, #F4EFE3); color: var(--vura-paper-ink, #1A2A22); }
+  .vura-ing__face--back {
+    background: var(--vura-forest-card, #275341); color: var(--vura-cream, #F4EFE3);
+    transform: rotateY(180deg); justify-content: center;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
   .vura-ing__num {
-    position: absolute; top: 1.6rem; right: 1.8rem;
-    font-family: var(--font-mono, monospace); font-size: 1.1rem; letter-spacing: 0.1em;
+    position: absolute; top: 1.5rem; right: 1.6rem;
+    font-family: var(--font-mono, monospace); font-size: 1.05rem; letter-spacing: 0.1em;
     color: var(--vura-paper-ink-faint, #7A857F);
   }
   .vura-ing__icon {
-    width: 60px; height: 60px; border-radius: var(--r-pill, 999px);
+    width: 58px; height: 58px; border-radius: 999px;
     background: var(--vura-terracotta-tint, #F4E9E4); color: var(--vura-terracotta, #8D3B2D);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 1.6rem;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1.4rem;
   }
-  .vura-ing__icon svg { width: 34px; height: 34px; }
+  .vura-ing__icon svg { width: 32px; height: 32px; }
   .vura-ing__tag {
-    align-self: flex-start; font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; font-weight: 600;
+    align-self: flex-start; font-family: var(--font-body, 'Inter', sans-serif); font-size: 0.95rem; font-weight: 600;
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--vura-terracotta, #8D3B2D);
-    background: var(--vura-terracotta-tint, #F4E9E4); padding: 0.3rem 0.9rem; border-radius: var(--r-pill, 999px); margin-bottom: 1rem;
+    background: var(--vura-terracotta-tint, #F4E9E4); padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 0.9rem;
   }
   .vura-ing__name {
-    font-family: var(--font-display, Georgia, serif); font-size: 2rem; line-height: 1.15;
-    margin: 0 0 0.6rem; color: var(--vura-paper-ink, #1A2A22);
+    font-family: var(--font-display, Georgia, serif); font-size: 1.9rem; line-height: 1.15;
+    margin: 0; color: var(--vura-paper-ink, #1A2A22);
+  }
+  .vura-ing__hint {
+    margin-top: auto; padding-top: 1.3rem; display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; letter-spacing: 0.02em;
+    color: var(--vura-paper-ink-faint, #7A857F);
+  }
+  .vura-ing__hint svg { width: 15px; height: 15px; }
+  .vura-ing__back-label {
+    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--vura-saffron, #FFC03F); margin: 0 0 0.7rem;
   }
   .vura-ing__desc {
-    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1.3rem; line-height: 1.55;
-    color: var(--vura-paper-ink-muted, #4A5750); margin: 0;
+    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1.35rem; line-height: 1.55;
+    color: var(--vura-cream, #F4EFE3); margin: 0;
+  }
+
+  .vura-ing__formula {
+    max-width: 800px; margin: 3rem auto 0; text-align: center;
+    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1.15rem; line-height: 1.75;
+    letter-spacing: 0.01em; color: var(--vura-cream-dim, #D9D2C2);
+  }
+  .vura-ing__formula-label {
+    display: block; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--vura-saffron, #FFC03F); margin-bottom: 0.6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vura-ing__flip { transition: none; }
   }
 {%- endstyle -%}
 
@@ -66,52 +105,135 @@
     </header>
 
     {%- if section.blocks.size > 0 -%}
-      <div class="vura-ing__grid">
+      <div class="vura-ing__grid" data-vura-ing-flip>
         {%- for block in section.blocks -%}
-          <article class="vura-ing__card" {{ block.shopify_attributes }}>
-            <span class="vura-ing__num">{{ forloop.index | prepend: '0' }}</span>
-            <span class="vura-ing__icon" aria-hidden="true">
-              {%- case block.settings.icon -%}
-                {%- when 'crystal' -%}
-                  {%- comment -%} Faceted alum crystal / gem {%- endcomment -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 13 H43 L53 28 L32 54 L11 28 Z"/>
-                    <path d="M11 28 H53"/>
-                    <path d="M21 13 L27 28 L32 54"/>
-                    <path d="M43 13 L37 28 L32 54"/>
-                    <path d="M27 28 H37"/>
-                    <path d="M32 13 V28"/>
-                  </svg>
-                {%- when 'leaf' -%}
-                  {%- comment -%} Aloe vera — three succulent blades {%- endcomment -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M32 56 C29 42 29 22 32 9 C35 22 35 42 32 56 Z"/>
-                    <path d="M32 56 C23 47 17 33 16 19 C27 25 31 41 32 56 Z"/>
-                    <path d="M32 56 C41 47 47 33 48 19 C37 25 33 41 32 56 Z"/>
-                  </svg>
-                {%- when 'drop' -%}
-                  {%- comment -%} Glycerin — hydration droplet with shine {%- endcomment -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M32 9 C21 26 15 37 19 46 C23 55 41 55 45 46 C49 37 43 26 32 9 Z"/>
-                    <path d="M25 41 C23 44 24 49 29 50"/>
-                  </svg>
-                {%- when 'flower' -%}
-                  {%- comment -%} Rose water — layered rose bloom {%- endcomment -%}
-                  <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="32" cy="32" r="21"/>
-                    <path d="M32 17 C41 17 47 24 47 32 C47 42 38 48 29 45 C22 43 18 34 23 27 C27 21 37 21 40 29 C42 35 38 40 33 40 C29 40 27 36 29 33"/>
-                  </svg>
-              {%- endcase -%}
-            </span>
-            {%- if block.settings.tag != blank -%}<span class="vura-ing__tag">{{ block.settings.tag }}</span>{%- endif -%}
-            <h3 class="vura-ing__name">{{ block.settings.name }}</h3>
-            <p class="vura-ing__desc">{{ block.settings.description }}</p>
+          <article
+            class="vura-ing__card"
+            tabindex="0"
+            role="button"
+            aria-pressed="false"
+            aria-label="{{ block.settings.name | escape }} — tap to reveal its benefit"
+            {{ block.shopify_attributes }}
+          >
+            <div class="vura-ing__flip">
+              <div class="vura-ing__face vura-ing__face--front">
+                <span class="vura-ing__num">{{ forloop.index | prepend: '0' }}</span>
+                <span class="vura-ing__icon" aria-hidden="true">
+                  {%- case block.settings.icon -%}
+                    {%- when 'alum' -%}
+                      {%- comment -%} Potassium Alum — faceted mineral crystal {%- endcomment -%}
+                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 14 H42 L52 27 L32 52 L12 27 Z"/>
+                        <path d="M12 27 H52"/>
+                        <path d="M22 14 L27 27 L32 52"/>
+                        <path d="M42 14 L37 27 L32 52"/>
+                        <path d="M32 14 V27"/>
+                      </svg>
+                    {%- when 'citrus' -%}
+                      {%- comment -%} Triethyl Citrate — citrus slice (citrus-derived odour control) {%- endcomment -%}
+                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="32" cy="32" r="20"/>
+                        <circle cx="32" cy="32" r="14.5"/>
+                        <path d="M32 17.5 V46.5 M17.5 32 H46.5 M21.7 21.7 L42.3 42.3 M42.3 21.7 L21.7 42.3"/>
+                      </svg>
+                    {%- when 'aloe' -%}
+                      {%- comment -%} Aloe Vera — three succulent blades {%- endcomment -%}
+                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M32 55 C29 41 29 22 32 9 C35 22 35 41 32 55 Z"/>
+                        <path d="M32 55 C23 47 17 33 16 19 C27 25 31 41 32 55 Z"/>
+                        <path d="M32 55 C41 47 47 33 48 19 C37 25 33 41 32 55 Z"/>
+                      </svg>
+                    {%- when 'rose' -%}
+                      {%- comment -%} Rose Water — layered Damask rose bloom {%- endcomment -%}
+                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="32" cy="32" r="20"/>
+                        <path d="M32 18 C40 18 46 24 46 32 C46 41 38 46 30 43 C23 41 20 33 24 27 C28 22 36 22 39 29 C41 34 37 39 32 39 C29 39 27 36 28 33"/>
+                      </svg>
+                    {%- when 'roseoil' -%}
+                      {%- comment -%} Rose Oil — fragrance drop cradling a rose {%- endcomment -%}
+                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M32 8 C22 25 16 36 20 45 C24 54 40 54 44 45 C48 36 42 25 32 8 Z"/>
+                        <circle cx="32" cy="39" r="2.4"/>
+                        <path d="M32 30 C36 30 39 33 38 37 C37 41 32 42 29 39 C27 37 28 33 31 32"/>
+                      </svg>
+                    {%- when 'glycerin' -%}
+                      {%- comment -%} Glycerin — hydration droplet with shine {%- endcomment -%}
+                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M32 8 C22 26 16 37 20 46 C24 55 40 55 44 46 C48 37 42 26 32 8 Z"/>
+                        <path d="M26 41 C24 44 25 49 30 50"/>
+                      </svg>
+                    {%- else -%}
+                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 14 H42 L52 27 L32 52 L12 27 Z"/><path d="M12 27 H52"/>
+                      </svg>
+                  {%- endcase -%}
+                </span>
+                {%- if block.settings.tag != blank -%}<span class="vura-ing__tag">{{ block.settings.tag }}</span>{%- endif -%}
+                <h3 class="vura-ing__name">{{ block.settings.name }}</h3>
+                <span class="vura-ing__hint" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                  Reveal benefit
+                </span>
+              </div>
+              <div class="vura-ing__face vura-ing__face--back">
+                <p class="vura-ing__back-label">Why it's in</p>
+                <p class="vura-ing__desc">{{ block.settings.description }}</p>
+              </div>
+            </div>
           </article>
         {%- endfor -%}
       </div>
     {%- endif -%}
+
+    {%- if section.settings.full_list != blank -%}
+      <p class="vura-ing__formula">
+        <span class="vura-ing__formula-label">Full formula — nothing hidden</span>
+        {{ section.settings.full_list }}
+      </p>
+    {%- endif -%}
   </div>
 </section>
+
+<script>
+  (function () {
+    function initIngFlip(grid) {
+      if (!grid || grid.__vuraFlipInit) return;
+      grid.__vuraFlipInit = true;
+      var cards = Array.prototype.slice.call(grid.querySelectorAll('.vura-ing__card'));
+      if (!cards.length) return;
+
+      function setFlipped(card, on) {
+        card.classList.toggle('is-flipped', on);
+        card.setAttribute('aria-pressed', on ? 'true' : 'false');
+      }
+      // Manual toggle (tap / click / keyboard) — works everywhere.
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () { setFlipped(card, !card.classList.contains('is-flipped')); });
+        card.addEventListener('keydown', function (e) {
+          if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); setFlipped(card, !card.classList.contains('is-flipped')); }
+        });
+      });
+
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) return;
+
+      // Scroll-linked flip: a card shows its benefit once it rises past the mid-line,
+      // and flips back to the name when it drops below it again.
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { setFlipped(entry.target, entry.isIntersecting); });
+      }, { rootMargin: '0px 0px -50% 0px', threshold: 0 });
+      cards.forEach(function (card) { io.observe(card); });
+    }
+
+    function boot() {
+      Array.prototype.forEach.call(document.querySelectorAll('[data-vura-ing-flip]'), initIngFlip);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+    // Re-init when edited in the Shopify theme editor.
+    document.addEventListener('shopify:section:load', boot);
+  })();
+</script>
 
 {% schema %}
 {
@@ -121,7 +243,8 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Full transparency" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "What's inside" },
-    { "type": "text", "id": "intro", "label": "Intro line", "default": "Aloe and rose, nothing else." },
+    { "type": "text", "id": "intro", "label": "Intro line", "default": "The heroes that do the work — and the full, honest formula." },
+    { "type": "textarea", "id": "full_list", "label": "Full ingredient list (INCI)", "default": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid." },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top", "default": 56 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom", "default": 64 }
   ],
@@ -132,28 +255,32 @@
       "settings": [
         { "type": "text", "id": "name", "label": "Ingredient name", "default": "Ingredient" },
         { "type": "text", "id": "tag", "label": "Role tag" },
-        { "type": "text", "id": "description", "label": "Description", "default": "Brief description of this ingredient" },
+        { "type": "text", "id": "description", "label": "Benefit (card back)", "default": "What this ingredient does for skin." },
         {
-          "type": "select", "id": "icon", "label": "Icon", "default": "crystal",
+          "type": "select", "id": "icon", "label": "Icon", "default": "alum",
           "options": [
-            { "value": "crystal", "label": "Crystal" },
-            { "value": "leaf", "label": "Leaf" },
-            { "value": "drop", "label": "Drop" },
-            { "value": "flower", "label": "Flower" }
+            { "value": "alum", "label": "Alum crystal" },
+            { "value": "citrus", "label": "Citrus slice" },
+            { "value": "aloe", "label": "Aloe blades" },
+            { "value": "rose", "label": "Rose bloom" },
+            { "value": "roseoil", "label": "Rose oil drop" },
+            { "value": "glycerin", "label": "Glycerin drop" }
           ]
         }
       ]
     }
   ],
-  "max_blocks": 6,
+  "max_blocks": 8,
   "presets": [
     {
       "name": "VURA Ingredients",
       "blocks": [
-        { "type": "ingredient", "settings": { "name": "Phitkari (Alum)", "tag": "Active", "description": "Mineral salt that controls odour by calming odour-causing bacteria.", "icon": "crystal" } },
-        { "type": "ingredient", "settings": { "name": "Aloe Vera Extract", "tag": "Soothing", "description": "Hydrates and soothes delicate underarm skin.", "icon": "leaf" } },
-        { "type": "ingredient", "settings": { "name": "Rose Water", "tag": "Toning", "description": "Gentle toning with a soft, natural scent.", "icon": "flower" } },
-        { "type": "ingredient", "settings": { "name": "Glycerin", "tag": "Hydrating", "description": "Draws in moisture to keep skin soft, not dry.", "icon": "drop" } }
+        { "type": "ingredient", "settings": { "name": "Potassium Alum (Phitkari)", "tag": "Active", "description": "The mineral hero: neutralises odour-causing bacteria — freshness without blocking your sweat.", "icon": "alum" } },
+        { "type": "ingredient", "settings": { "name": "Triethyl Citrate", "tag": "Odour control", "description": "A citrus-derived ester that quietly interrupts the enzymes that turn sweat into smell.", "icon": "citrus" } },
+        { "type": "ingredient", "settings": { "name": "Aloe Vera", "tag": "Soothing", "description": "Calms and hydrates delicate underarm skin, even right after shaving.", "icon": "aloe" } },
+        { "type": "ingredient", "settings": { "name": "Rose Water", "tag": "Toning", "description": "Steam-distilled Damask rose that tones and refreshes with a clean, natural feel.", "icon": "rose" } },
+        { "type": "ingredient", "settings": { "name": "Rose Oil", "tag": "Fragrance", "description": "A whisper of real rose — our only scent, never a synthetic perfume.", "icon": "roseoil" } },
+        { "type": "ingredient", "settings": { "name": "Glycerin", "tag": "Hydrating", "description": "A humectant that draws in moisture so skin stays soft, never tight or dry.", "icon": "glycerin" } }
       ]
     }
   ]

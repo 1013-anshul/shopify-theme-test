@@ -33,21 +33,113 @@
     "vura-benefits-bar": {
       "type": "vura-benefits-bar",
       "blocks": {
-        "b1": { "type": "benefit", "settings": { "label": "Hero ingredient: Phitkari", "icon": "crystal" } },
-        "b2": { "type": "benefit", "settings": { "label": "Aloe vera infused", "icon": "leaf" } },
-        "b3": { "type": "benefit", "settings": { "label": "Natural odour control", "icon": "shield" } },
-        "b4": { "type": "benefit", "settings": { "label": "No harsh chemicals", "icon": "sparkle" } },
-        "b5": { "type": "benefit", "settings": { "label": "Aluminium-salt free", "icon": "shield" } },
-        "b6": { "type": "benefit", "settings": { "label": "Mist-spray format", "icon": "spray" } },
-        "b7": { "type": "benefit", "settings": { "label": "Hygienic no-touch application", "icon": "check" } },
-        "b8": { "type": "benefit", "settings": { "label": "Non-sticky & quick-drying", "icon": "droplet" } },
-        "b9": { "type": "benefit", "settings": { "label": "Gentle on sensitive skin", "icon": "heart" } },
-        "b10": { "type": "benefit", "settings": { "label": "No white marks", "icon": "shirt" } },
-        "b11": { "type": "benefit", "settings": { "label": "Unisex & everyday use", "icon": "check" } },
-        "b12": { "type": "benefit", "settings": { "label": "Rooted in nature", "icon": "flower" } },
-        "b13": { "type": "benefit", "settings": { "label": "Made in India", "icon": "pin" } }
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "label": "Hero ingredient: Phitkari",
+            "icon": "crystal"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "label": "Aloe vera infused",
+            "icon": "leaf"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "label": "Natural odour control",
+            "icon": "shield"
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "label": "No harsh chemicals",
+            "icon": "sparkle"
+          }
+        },
+        "b5": {
+          "type": "benefit",
+          "settings": {
+            "label": "Aluminium-salt free",
+            "icon": "shield"
+          }
+        },
+        "b6": {
+          "type": "benefit",
+          "settings": {
+            "label": "Mist-spray format",
+            "icon": "spray"
+          }
+        },
+        "b7": {
+          "type": "benefit",
+          "settings": {
+            "label": "Hygienic no-touch application",
+            "icon": "check"
+          }
+        },
+        "b8": {
+          "type": "benefit",
+          "settings": {
+            "label": "Non-sticky & quick-drying",
+            "icon": "droplet"
+          }
+        },
+        "b9": {
+          "type": "benefit",
+          "settings": {
+            "label": "Gentle on sensitive skin",
+            "icon": "heart"
+          }
+        },
+        "b10": {
+          "type": "benefit",
+          "settings": {
+            "label": "No white marks",
+            "icon": "shirt"
+          }
+        },
+        "b11": {
+          "type": "benefit",
+          "settings": {
+            "label": "Unisex & everyday use",
+            "icon": "check"
+          }
+        },
+        "b12": {
+          "type": "benefit",
+          "settings": {
+            "label": "Rooted in nature",
+            "icon": "flower"
+          }
+        },
+        "b13": {
+          "type": "benefit",
+          "settings": {
+            "label": "Made in India",
+            "icon": "pin"
+          }
+        }
       },
-      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "b13"],
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7",
+        "b8",
+        "b9",
+        "b10",
+        "b11",
+        "b12",
+        "b13"
+      ],
       "settings": {
         "background": "#162d24",
         "padding_top": 16,
@@ -100,7 +192,13 @@
           }
         }
       },
-      "block_order": ["eyebrow", "title", "price", "pitch", "cta"],
+      "block_order": [
+        "eyebrow",
+        "title",
+        "price",
+        "pitch",
+        "cta"
+      ],
       "settings": {
         "product": "vura-mineral-underarm-spray",
         "color_scheme": "scheme-1",
@@ -119,16 +217,97 @@
     "vura-comparison-table": {
       "type": "vura-comparison-table",
       "blocks": {
-        "r1": { "type": "row", "settings": { "label": "Controls odour", "perfume": "partial", "deodorant": "yes", "roll_on": "yes", "vura": "yes" } },
-        "r2": { "type": "row", "settings": { "label": "Long-lasting", "perfume": "partial", "deodorant": "partial", "roll_on": "yes", "vura": "yes" } },
-        "r3": { "type": "row", "settings": { "label": "Gentle on skin", "perfume": "no", "deodorant": "no", "roll_on": "partial", "vura": "yes" } },
-        "r4": { "type": "row", "settings": { "label": "No residue", "perfume": "no", "deodorant": "partial", "roll_on": "no", "vura": "yes" } },
-        "r5": { "type": "row", "settings": { "label": "Even coverage", "perfume": "partial", "deodorant": "partial", "roll_on": "no", "vura": "yes" } },
-        "r6": { "type": "row", "settings": { "label": "Aluminium-salt free", "perfume": "partial", "deodorant": "no", "roll_on": "no", "vura": "yes" } },
-        "r7": { "type": "row", "settings": { "label": "Soothing after shaving", "perfume": "no", "deodorant": "no", "roll_on": "partial", "vura": "yes" } },
-        "r8": { "type": "row", "settings": { "label": "Touch-free mist", "perfume": "partial", "deodorant": "partial", "roll_on": "no", "vura": "yes" } }
+        "r1": {
+          "type": "row",
+          "settings": {
+            "label": "Controls odour",
+            "perfume": "partial",
+            "deodorant": "yes",
+            "roll_on": "yes",
+            "vura": "yes"
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "label": "Long-lasting",
+            "perfume": "partial",
+            "deodorant": "partial",
+            "roll_on": "yes",
+            "vura": "yes"
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "label": "Gentle on skin",
+            "perfume": "no",
+            "deodorant": "no",
+            "roll_on": "partial",
+            "vura": "yes"
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "label": "No residue",
+            "perfume": "no",
+            "deodorant": "partial",
+            "roll_on": "no",
+            "vura": "yes"
+          }
+        },
+        "r5": {
+          "type": "row",
+          "settings": {
+            "label": "Even coverage",
+            "perfume": "partial",
+            "deodorant": "partial",
+            "roll_on": "no",
+            "vura": "yes"
+          }
+        },
+        "r6": {
+          "type": "row",
+          "settings": {
+            "label": "Aluminium-salt free",
+            "perfume": "partial",
+            "deodorant": "no",
+            "roll_on": "no",
+            "vura": "yes"
+          }
+        },
+        "r7": {
+          "type": "row",
+          "settings": {
+            "label": "Soothing after shaving",
+            "perfume": "no",
+            "deodorant": "no",
+            "roll_on": "partial",
+            "vura": "yes"
+          }
+        },
+        "r8": {
+          "type": "row",
+          "settings": {
+            "label": "Touch-free mist",
+            "perfume": "partial",
+            "deodorant": "partial",
+            "roll_on": "no",
+            "vura": "yes"
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "r6",
+        "r7",
+        "r8"
+      ],
       "settings": {
         "eyebrow": "The VURA difference",
         "heading": "Why a mineral mist",
@@ -143,18 +322,76 @@
     "vura-ingredients": {
       "type": "vura-ingredients",
       "blocks": {
-        "ingredient_1": { "type": "ingredient", "settings": { "name": "Phitkari (Alum)", "tag": "Active", "description": "Mineral salt that controls odour by calming odour-causing bacteria.", "icon": "crystal" } },
-        "ingredient_2": { "type": "ingredient", "settings": { "name": "Aloe Vera Extract", "tag": "Soothing", "description": "Hydrates and soothes delicate underarm skin.", "icon": "leaf" } },
-        "ingredient_3": { "type": "ingredient", "settings": { "name": "Rose Water", "tag": "Toning", "description": "Gentle toning with a soft, natural scent.", "icon": "flower" } },
-        "ingredient_4": { "type": "ingredient", "settings": { "name": "Glycerin", "tag": "Hydrating", "description": "Draws in moisture to keep skin soft, not dry.", "icon": "drop" } }
+        "ingredient_1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Potassium Alum (Phitkari)",
+            "tag": "Active",
+            "description": "The mineral hero: neutralises odour-causing bacteria — freshness without blocking your sweat.",
+            "icon": "alum"
+          }
+        },
+        "ingredient_2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Triethyl Citrate",
+            "tag": "Odour control",
+            "description": "A citrus-derived ester that quietly interrupts the enzymes that turn sweat into smell.",
+            "icon": "citrus"
+          }
+        },
+        "ingredient_3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Aloe Vera",
+            "tag": "Soothing",
+            "description": "Calms and hydrates delicate underarm skin, even right after shaving.",
+            "icon": "aloe"
+          }
+        },
+        "ingredient_4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Rose Water",
+            "tag": "Toning",
+            "description": "Steam-distilled Damask rose that tones and refreshes with a clean, natural feel.",
+            "icon": "rose"
+          }
+        },
+        "ingredient_5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Rose Oil",
+            "tag": "Fragrance",
+            "description": "A whisper of real rose — our only scent, never a synthetic perfume.",
+            "icon": "roseoil"
+          }
+        },
+        "ingredient_6": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Glycerin",
+            "tag": "Hydrating",
+            "description": "A humectant that draws in moisture so skin stays soft, never tight or dry.",
+            "icon": "glycerin"
+          }
+        }
       },
-      "block_order": ["ingredient_1", "ingredient_2", "ingredient_3", "ingredient_4"],
+      "block_order": [
+        "ingredient_1",
+        "ingredient_2",
+        "ingredient_3",
+        "ingredient_4",
+        "ingredient_5",
+        "ingredient_6"
+      ],
       "settings": {
         "eyebrow": "Full transparency",
         "heading": "What's inside",
-        "intro": "Aloe and rose, nothing else.",
+        "intro": "The heroes that do the work — and the full, honest formula.",
         "padding_top": 56,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid."
       }
     },
     "vura-confidence": {
@@ -168,11 +405,30 @@
     "vura-ugc-video": {
       "type": "vura-ugc-video",
       "blocks": {
-        "ugc_1": { "type": "video_card", "settings": { "caption": "\"Fits in my gym bag — no leak, no smell.\" — Priya, Mumbai" } },
-        "ugc_2": { "type": "video_card", "settings": { "caption": "\"No white marks, no irritation.\" — Arjun, Bangalore" } },
-        "ugc_3": { "type": "video_card", "settings": { "caption": "\"One bottle lasted my family a month.\" — Meera, Delhi" } }
+        "ugc_1": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"Fits in my gym bag — no leak, no smell.\" — Priya, Mumbai"
+          }
+        },
+        "ugc_2": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"No white marks, no irritation.\" — Arjun, Bangalore"
+          }
+        },
+        "ugc_3": {
+          "type": "video_card",
+          "settings": {
+            "caption": "\"One bottle lasted my family a month.\" — Meera, Delhi"
+          }
+        }
       },
-      "block_order": ["ugc_1", "ugc_2", "ugc_3"],
+      "block_order": [
+        "ugc_1",
+        "ugc_2",
+        "ugc_3"
+      ],
       "settings": {
         "heading": "Hear from real users",
         "padding_top": 36,
@@ -182,15 +438,65 @@
     "vura-faq": {
       "type": "vura-faq",
       "blocks": {
-        "faq_1": { "type": "faq_item", "settings": { "question": "Is this safe for sensitive skin?", "answer": "<p>Yes. Our formula uses natural Phitkari (potassium alum) and Aloe Vera — both known for being gentle. It contains no harsh chemicals, alcohol, or synthetic fragrances.</p>" } },
-        "faq_2": { "type": "faq_item", "settings": { "question": "How long does one bottle last?", "answer": "<p>With daily use (2-3 sprays per application), one 100ml bottle typically lasts 6-8 weeks.</p>" } },
-        "faq_3": { "type": "faq_item", "settings": { "question": "What does it smell like?", "answer": "<p>It has a very subtle, clean, natural scent — not overpowering. Most users describe it as 'fresh' or 'barely there'.</p>" } },
-        "faq_4": { "type": "faq_item", "settings": { "question": "Does it contain aluminum chlorohydrate?", "answer": "<p>No. We use potassium alum (Phitkari), a natural mineral salt. This is different from the aluminum compounds found in conventional antiperspirants.</p>" } },
-        "faq_5": { "type": "faq_item", "settings": { "question": "How does the Buy 2 Get 1 offer work?", "answer": "<p>Choose the <strong>3-Pack</strong> on the product page. It's priced as pay for 2, get 1 free — ₹750 for three bottles. No code needed; the bundle price is already built in. The 6-Pack works the same way (pay for 4).</p>" } },
-        "faq_6": { "type": "faq_item", "settings": { "question": "What are the shipping timelines?", "answer": "<p>Orders are dispatched within 24 hours. Standard delivery across India takes 3-5 business days.</p>" } },
-        "faq_7": { "type": "faq_item", "settings": { "question": "What if I don't like it?", "answer": "<p>We accept returns on unopened items only, within 7 days of delivery. Contact us at support@vuraskincare.in for assistance.</p>" } }
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is this safe for sensitive skin?",
+            "answer": "<p>Yes. Our formula uses natural Phitkari (potassium alum) and Aloe Vera — both known for being gentle. It contains no harsh chemicals, alcohol, or synthetic fragrances.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does one bottle last?",
+            "answer": "<p>With daily use (2-3 sprays per application), one 100ml bottle typically lasts 6-8 weeks.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What does it smell like?",
+            "answer": "<p>It has a very subtle, clean, natural scent — not overpowering. Most users describe it as 'fresh' or 'barely there'.</p>"
+          }
+        },
+        "faq_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does it contain aluminum chlorohydrate?",
+            "answer": "<p>No. We use potassium alum (Phitkari), a natural mineral salt. This is different from the aluminum compounds found in conventional antiperspirants.</p>"
+          }
+        },
+        "faq_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does the Buy 2 Get 1 offer work?",
+            "answer": "<p>Choose the <strong>3-Pack</strong> on the product page. It's priced as pay for 2, get 1 free — ₹750 for three bottles. No code needed; the bundle price is already built in. The 6-Pack works the same way (pay for 4).</p>"
+          }
+        },
+        "faq_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the shipping timelines?",
+            "answer": "<p>Orders are dispatched within 24 hours. Standard delivery across India takes 3-5 business days.</p>"
+          }
+        },
+        "faq_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if I don't like it?",
+            "answer": "<p>We accept returns on unopened items only, within 7 days of delivery. Contact us at support@vuraskincare.in for assistance.</p>"
+          }
+        }
       },
-      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5", "faq_6", "faq_7"],
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4",
+        "faq_5",
+        "faq_6",
+        "faq_7"
+      ],
       "settings": {
         "heading": "Frequently asked questions",
         "padding_top": 36,
@@ -222,7 +528,11 @@
           }
         }
       },
-      "block_order": ["heading", "text", "button"],
+      "block_order": [
+        "heading",
+        "text",
+        "button"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "padding_top": 40,
