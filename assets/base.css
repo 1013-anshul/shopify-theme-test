@@ -4029,132 +4029,6 @@ details-disclosure > details {
   }
 }
 
-/* ===== Vura Coins Points Box & Education Accordion ===== */
-.vura-coins-container {
-  margin: 12px 0;
-  padding: 0;
-  font-family: var(--font-body, Inter, sans-serif);
-}
-
-.vura-coins-box {
-  background-color: rgb(255, 243, 243);
-  border: 1px solid rgba(141, 59, 45, 0.15);
-  border-radius: 8px;
-  padding: 10px 12px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Shine animation across the pink container */
-.vura-coins-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: skewX(-25deg);
-  animation: vuraCoinsShine 6s infinite;
-}
-
-@keyframes vuraCoinsShine {
-  0% { left: -150%; }
-  15% { left: 150%; }
-  100% { left: 150%; }
-}
-
-.vura-coins-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--vura-terracotta, #8D3B2D);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  line-height: 1.3;
-}
-
-.vura-coin-emoji {
-  display: inline-block;
-  animation: vuraCoinRotate 3s infinite ease-in-out;
-  transform-origin: center;
-}
-
-@keyframes vuraCoinRotate {
-  0% { transform: scale(1) rotate(0deg); }
-  15% { transform: scale(1.2) rotate(15deg); }
-  30% { transform: scale(1.2) rotate(-15deg); }
-  45% { transform: scale(1) rotate(0deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
-.vura-coins-subtext {
-  font-size: 11px;
-  color: var(--vura-paper-ink-muted, #4A5750);
-  margin-top: 4px;
-  font-weight: 500;
-}
-
-/* Collapsible education accordion */
-.vura-coins-education {
-  margin-top: 6px;
-  border: 1px solid rgba(26,42,34,0.08);
-  border-radius: 6px;
-  background: rgba(26,42,34,0.02);
-  overflow: hidden;
-}
-
-.vura-coins-summary {
-  padding: 8px 12px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--vura-paper-ink-muted, #4A5750);
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  user-select: none;
-  list-style: none;
-}
-
-.vura-coins-summary::-webkit-details-marker {
-  display: none;
-}
-
-.vura-coins-arrow {
-  font-size: 8px;
-  transition: transform 0.2s ease;
-}
-
-.vura-coins-education[open] .vura-coins-arrow {
-  transform: rotate(180deg);
-}
-
-.vura-coins-details {
-  padding: 0 12px 10px;
-  border-top: 1px solid rgba(26,42,34,0.06);
-}
-
-.vura-coins-details ul {
-  margin: 6px 0 0;
-  padding-left: 16px;
-  list-style-type: disc;
-}
-
-.vura-coins-details li {
-  font-size: 11px;
-  color: var(--vura-paper-ink-muted, #4A5750);
-  line-height: 1.4;
-  margin-bottom: 4px;
-}
-
 /* Readability & Contrast Improvements */
 .cart-drawer .tax-note {
   color: var(--vura-paper-ink-muted, #4A5750) !important;
@@ -4516,43 +4390,6 @@ details-disclosure > details {
   display: none !important;
 }
 
-/* 8. Vura Coins Message Box */
-.vura-coins-container {
-  margin: 4px 0 !important;
-}
-
-.vura-coins-box {
-  background-color: #FFF9E6 !important; /* Vura Soft Saffron */
-  border: 1px solid rgba(26,42,34,0.08) !important;
-  border-radius: 6px !important;
-  padding: 12px 16px !important; /* Visual padding cushion */
-  text-align: left !important;
-}
-
-.vura-coins-box::before {
-  display: none !important;
-}
-
-.vura-coins-title {
-  font-size: 12px !important;
-  font-weight: 600 !important;
-  color: #8D3B2D !important; /* Vura Terracotta */
-  justify-content: flex-start !important;
-  line-height: 1.3 !important;
-}
-
-.vura-coins-subtext {
-  font-size: 10px !important;
-  color: #4A5750 !important;
-  margin-top: 2px !important;
-  font-weight: 400 !important;
-}
-
-/* Show accordion details so users are educated */
-.vura-coins-education {
-  display: block !important;
-}
-
 /* 9. Commerce CTA Button (VURA Brand Theme pressed style) */
 .cart__checkout-button.button {
   width: 100% !important;
@@ -4647,48 +4484,6 @@ details-disclosure > details {
 /* Standardized Premium Image Corner Rounding */
 .cart-drawer .cart-item__image {
   border-radius: 6px !important;
-}
-
-/* Vura Coins Collapsible Accordion Whitespace Improvements */
-.vura-coins-education {
-  margin-top: 8px !important;
-  background-color: rgba(26,42,34,0.02) !important;
-  border: 1px solid rgba(26,42,34,0.08) !important;
-  border-radius: 6px !important;
-  overflow: hidden !important;
-  display: block !important;
-}
-
-.vura-coins-summary {
-  padding: 8px 12px !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  color: #4a5750 !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-}
-
-.vura-coins-details {
-  padding: 12px 16px !important;
-  border-top: 1px solid rgba(26,42,34,0.06) !important;
-  background-color: #fffdf7 !important; /* Extremely soft light cream inside details */
-}
-
-.vura-coins-details ul {
-  margin: 0 !important;
-  padding-left: 16px !important;
-}
-
-.vura-coins-details li {
-  font-size: 11.5px !important;
-  color: #4a5750 !important;
-  line-height: 1.5 !important;
-  margin-bottom: 6px !important;
-}
-
-.vura-coins-details li:last-child {
-  margin-bottom: 0 !important;
 }
 
 /* Announcement Slider Auto-Slide Keyframe Animation */
@@ -5103,8 +4898,6 @@ details-disclosure > details {
   margin: 0 !important;
   justify-content: flex-start !important;
 }
-
-
 
 /* ===== VURA mobile polish (text) ===== */
 @media screen and (max-width: 749px) {

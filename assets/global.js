@@ -1440,7 +1440,6 @@ function runPriceReformatter() {
     '.price', '.totals__total-value', '.cart-item__price', 
     '.totals__total', '.price-item', '.product-option',
     '.cart-drawer__footer', '.drawer__footer', '.totals',
-    '.vura-coins-box', '.vura-coins-details', '.vura-coins-container',
     '.cart-item__discounted-prices', '.cart-item__old-price'
   ];
   priceSelectors.forEach(selector => {

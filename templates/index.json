@@ -214,111 +214,6 @@
         "padding_bottom": 52
       }
     },
-    "vura-comparison-table": {
-      "type": "vura-comparison-table",
-      "blocks": {
-        "r1": {
-          "type": "row",
-          "settings": {
-            "label": "Controls odour",
-            "perfume": "partial",
-            "deodorant": "yes",
-            "roll_on": "yes",
-            "vura": "yes"
-          }
-        },
-        "r2": {
-          "type": "row",
-          "settings": {
-            "label": "Long-lasting",
-            "perfume": "partial",
-            "deodorant": "partial",
-            "roll_on": "yes",
-            "vura": "yes"
-          }
-        },
-        "r3": {
-          "type": "row",
-          "settings": {
-            "label": "Gentle on skin",
-            "perfume": "no",
-            "deodorant": "no",
-            "roll_on": "partial",
-            "vura": "yes"
-          }
-        },
-        "r4": {
-          "type": "row",
-          "settings": {
-            "label": "No residue",
-            "perfume": "no",
-            "deodorant": "partial",
-            "roll_on": "no",
-            "vura": "yes"
-          }
-        },
-        "r5": {
-          "type": "row",
-          "settings": {
-            "label": "Even coverage",
-            "perfume": "partial",
-            "deodorant": "partial",
-            "roll_on": "no",
-            "vura": "yes"
-          }
-        },
-        "r6": {
-          "type": "row",
-          "settings": {
-            "label": "Aluminium-salt free",
-            "perfume": "partial",
-            "deodorant": "no",
-            "roll_on": "no",
-            "vura": "yes"
-          }
-        },
-        "r7": {
-          "type": "row",
-          "settings": {
-            "label": "Soothing after shaving",
-            "perfume": "no",
-            "deodorant": "no",
-            "roll_on": "partial",
-            "vura": "yes"
-          }
-        },
-        "r8": {
-          "type": "row",
-          "settings": {
-            "label": "Touch-free mist",
-            "perfume": "partial",
-            "deodorant": "partial",
-            "roll_on": "no",
-            "vura": "yes"
-          }
-        }
-      },
-      "block_order": [
-        "r1",
-        "r2",
-        "r3",
-        "r4",
-        "r5",
-        "r6",
-        "r7",
-        "r8"
-      ],
-      "settings": {
-        "eyebrow": "The VURA difference",
-        "heading": "Why a mineral mist",
-        "label_perfume": "Perfume",
-        "label_deodorant": "Deodorant",
-        "label_rollon": "Roll-on",
-        "label_vura": "VURA",
-        "padding_top": 52,
-        "padding_bottom": 60
-      }
-    },
     "vura-ingredients": {
       "type": "vura-ingredients",
       "blocks": {
@@ -525,7 +420,6 @@
     "vura-benefits-bar",
     "vura-gallery",
     "vura-spotlight",
-    "vura-comparison-table",
     "vura-ingredients",
     "vura-confidence",
     "vura-ugc-video",

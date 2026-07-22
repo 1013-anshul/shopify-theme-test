@@ -142,8 +142,8 @@
       <div class="vura-cart-announcements">
         <div class="vura-announcement-slider">
           <div class="vura-announcement-slide">3-Pack: Buy 2, Get 1 Free!</div>
-          <div class="vura-announcement-slide">Get 2% Vura Coins on every Prepaid order!!</div>
-          <div class="vura-announcement-slide">Earn Vura Points on every purchase!</div>
+          <div class="vura-announcement-slide">Dispatched within 24 hours</div>
+          <div class="vura-announcement-slide">Aluminium-salt free, gentle on skin</div>
         </div>
       </div>
       <form
@@ -446,39 +446,7 @@
           </small>
         </div>
 
-        <!-- VURA Coins Points System -->
-        {%- if cart != empty -%}
-          {%- assign coins = cart.total_price | divided_by: 5000 | floor -%}
-          {%- if coins > 0 -%}
-            <div class="vura-coins-container">
-              <div class="vura-coins-box" id="vura-coins-msg">
-                <div class="vura-coins-title">
-                  <span class="vura-coin-emoji">🪙</span> You'll earn <strong>{{ coins }} Vura Coins</strong> on this order!
-                </div>
-                <div class="vura-coins-subtext">
-                  1 coin = ₹0.50 · Redeemable on your next purchase
-                </div>
-              </div>
-              
-              <details class="vura-coins-education">
-                <summary class="vura-coins-summary">
-                  <span>How do Vura Coins work?</span>
-                  <span class="vura-coins-arrow">▼</span>
-                </summary>
-                <div class="vura-coins-details">
-                  <ul>
-                    <li><strong>Earn:</strong> Get 2% back in coins on every order (value calculated on subtotal).</li>
-                    <li><strong>Value:</strong> 1 Vura Coin = ₹0.50. E.g., {{ coins }} coins = {{ coins | times: 50 | money }} savings.</li>
-                    <li><strong>Auto-Credit:</strong> Coins are auto-credited to your account after delivery.</li>
-                    <li><strong>Redeem:</strong> Redeem coins at checkout on your next purchase automatically!</li>
-                  </ul>
-                </div>
-              </details>
-            </div>
-          {%- endif -%}
-        {%- endif -%}
 
-        <!-- CTAs -->
 
         <div class="cart__ctas" {{ block.shopify_attributes }}>
           <button
