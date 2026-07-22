@@ -26,11 +26,11 @@
   @media (min-width: 750px) { .vura-ing__grid { grid-template-columns: repeat(4, 1fr); gap: 1.6rem; } }
 
   /* Flip card: front + back stacked in one grid cell so the card sizes to the taller face */
-  .vura-ing__card { position: relative; perspective: 1500px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .vura-ing__card { position: relative; display: grid; perspective: 1500px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .vura-ing__card:focus { outline: none; }
   .vura-ing__card:focus-visible .vura-ing__flip { box-shadow: 0 0 0 3px var(--vura-saffron, #FFC03F); border-radius: 14px; }
   .vura-ing__flip {
-    position: relative; display: grid; transform-style: preserve-3d;
+    position: relative; display: grid; height: 100%; transform-style: preserve-3d;
     transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .vura-ing__card.is-flipped .vura-ing__flip { transform: rotateY(180deg); }
