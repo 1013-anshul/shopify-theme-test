@@ -1866,6 +1866,14 @@ details[open] > .share-button__fallback {
   letter-spacing: 0.04rem;
 }
 
+/* VURA: once the user types in the search or email field, drop the floating
+   label so the word (Search / Email) disappears instead of floating up. */
+.search__input:not(:placeholder-shown) ~ .field__label,
+input[type="email"].field__input:not(:placeholder-shown) ~ .field__label {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .field__input:focus,
 .field__input:not(:placeholder-shown),
 .field__input:-webkit-autofill,
