@@ -1866,12 +1866,20 @@ details[open] > .share-button__fallback {
   letter-spacing: 0.04rem;
 }
 
-/* VURA: once the user types in the search or email field, drop the floating
-   label so the word (Search / Email) disappears instead of floating up. */
-.search__input:not(:placeholder-shown) ~ .field__label,
-input[type="email"].field__input:not(:placeholder-shown) ~ .field__label {
-  opacity: 0;
-  visibility: hidden;
+/* VURA: hide the "Search" / "Email" field label entirely so no placeholder
+   word ever shows (empty or while typing). Kept in the a11y tree for screen
+   readers via the visually-hidden technique. */
+.search__input ~ .field__label,
+input[type="email"].field__input ~ .field__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .field__input:focus,
