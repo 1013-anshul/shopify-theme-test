@@ -1882,6 +1882,17 @@ input[type="email"].field__input ~ .field__label {
   border: 0;
 }
 
+/* Labels are hidden for these fields, so keep the input padding symmetric — Dawn
+   otherwise adds top padding to sit under the floated label, dropping the cursor. */
+.search__input.field__input:focus,
+.search__input.field__input:not(:placeholder-shown),
+.search__input.field__input:-webkit-autofill,
+input[type="email"].field__input:focus,
+input[type="email"].field__input:not(:placeholder-shown),
+input[type="email"].field__input:-webkit-autofill {
+  padding: 1.5rem;
+}
+
 .field__input:focus,
 .field__input:not(:placeholder-shown),
 .field__input:-webkit-autofill,
