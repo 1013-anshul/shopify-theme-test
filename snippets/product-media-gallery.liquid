@@ -332,17 +332,24 @@
 </media-gallery>
 
 {%- comment -%} VURA: on the product image (>=750px) the cursor is always a left/right arrow based on
-   whether it's left or right of centre, and clicking goes to the prev/next image. Mobile keeps native
-   swipe. {%- endcomment -%}
+   whether it's left or right of centre, and clicking goes to the prev/next image. The lightbox zoom
+   button is hidden on desktop (clicking navigates), so only the arrow shows. Mobile keeps native
+   swipe + the zoom button. {%- endcomment -%}
 <style>
   @media (min-width: 750px) {
     media-gallery [id^="GalleryViewer"].vura-zone-prev,
     media-gallery [id^="GalleryViewer"].vura-zone-prev * {
-      cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2NCcgaGVpZ2h0PSc2NCcgdmlld0JveD0nMCAwIDY0IDY0Jz48Y2lyY2xlIGN4PSczMicgY3k9JzMyJyByPSczMCcgZmlsbD0ncmdiKDIyLDQ1LDM2KScgZmlsbC1vcGFjaXR5PScwLjYyJy8+PHBhdGggZD0nTTM3IDIwIEwyNSAzMiBMMzcgNDQnIGZpbGw9J25vbmUnIHN0cm9rZT0ncmdiKDI0OCwyNDMsMjMxKScgc3Ryb2tlLXdpZHRoPSc0LjYnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPjwvc3ZnPg==') 32 32, w-resize !important;
+      cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0OCcgaGVpZ2h0PSc0OCcgdmlld0JveD0nMCAwIDQ4IDQ4Jz48Y2lyY2xlIGN4PScyNCcgY3k9JzI0JyByPScyMicgZmlsbD0ncmdiKDIyLDQ1LDM2KScgZmlsbC1vcGFjaXR5PScwLjY2Jy8+PHBhdGggZD0nTTI4IDE1IEwxOCAyNCBMMjggMzMnIGZpbGw9J25vbmUnIHN0cm9rZT0ncmdiKDI0OCwyNDMsMjMxKScgc3Ryb2tlLXdpZHRoPSczLjQnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPjwvc3ZnPg==') 24 24, w-resize !important;
     }
     media-gallery [id^="GalleryViewer"].vura-zone-next,
     media-gallery [id^="GalleryViewer"].vura-zone-next * {
-      cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2NCcgaGVpZ2h0PSc2NCcgdmlld0JveD0nMCAwIDY0IDY0Jz48Y2lyY2xlIGN4PSczMicgY3k9JzMyJyByPSczMCcgZmlsbD0ncmdiKDIyLDQ1LDM2KScgZmlsbC1vcGFjaXR5PScwLjYyJy8+PHBhdGggZD0nTTI3IDIwIEwzOSAzMiBMMjcgNDQnIGZpbGw9J25vbmUnIHN0cm9rZT0ncmdiKDI0OCwyNDMsMjMxKScgc3Ryb2tlLXdpZHRoPSc0LjYnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPjwvc3ZnPg==') 32 32, e-resize !important;
+      cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0OCcgaGVpZ2h0PSc0OCcgdmlld0JveD0nMCAwIDQ4IDQ4Jz48Y2lyY2xlIGN4PScyNCcgY3k9JzI0JyByPScyMicgZmlsbD0ncmdiKDIyLDQ1LDM2KScgZmlsbC1vcGFjaXR5PScwLjY2Jy8+PHBhdGggZD0nTTIwIDE1IEwzMCAyNCBMMjAgMzMnIGZpbGw9J25vbmUnIHN0cm9rZT0ncmdiKDI0OCwyNDMsMjMxKScgc3Ryb2tlLXdpZHRoPSczLjQnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPjwvc3ZnPg==') 24 24, e-resize !important;
+    }
+    /* hide the hover zoom button so only the arrow shows */
+    media-gallery [id^="GalleryViewer"] .product__media-toggle,
+    media-gallery [id^="GalleryViewer"] .product__media-icon--lightbox,
+    media-gallery [id^="GalleryViewer"] .product__media-zoom-lightbox {
+      display: none !important;
     }
   }
 </style>
@@ -369,7 +376,6 @@
         var n = (i + dir + arr.length) % arr.length;
         if (typeof g.setActiveMedia === 'function') g.setActiveMedia(arr[n], false);
       }
-      // Whole image: left of centre = prev, right of centre = next (arrow always shown).
       function zoneAt(e) {
         var r = viewer.getBoundingClientRect();
         if (!r.width) return null;
@@ -386,7 +392,6 @@
         viewer.classList.add(z === 'prev' ? PREV : NEXT);
       });
       viewer.addEventListener('mouseleave', function () { viewer.classList.remove(PREV, NEXT); cur = ''; });
-      // Capture phase so the side click beats the zoom modal-opener.
       viewer.addEventListener('click', function (e) {
         if (!desktop()) return;
         var z = zoneAt(e);
