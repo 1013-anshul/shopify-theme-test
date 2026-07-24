@@ -140,7 +140,7 @@
         "eyebrow": "Every angle",
         "heading": "Take a closer look",
         "text_alignment": "center",
-        "background": "#EFE9DA",
+        "background": "#efe9da",
         "padding_top": 20,
         "padding_bottom": 4
       }
@@ -251,9 +251,9 @@
         "eyebrow": "Full transparency",
         "heading": "What's inside",
         "intro": "The few things that do the work, plus our full formula so you can see everything.",
+        "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid.",
         "padding_top": 56,
-        "padding_bottom": 64,
-        "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid."
+        "padding_bottom": 64
       }
     },
     "vura-confidence": {
@@ -386,7 +386,10 @@
           "settings": {
             "button_label": "Shop now, buy 2 get 1 free",
             "button_link": "shopify://products/vura-mineral-underarm-spray",
-            "button_style_secondary": false
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
           }
         }
       },
@@ -396,9 +399,29 @@
         "button"
       ],
       "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
         "color_scheme": "scheme-1",
+        "full_width": true,
         "padding_top": 40,
         "padding_bottom": 52
+      }
+    },
+    "1784928196f1654230": {
+      "type": "apps",
+      "blocks": {
+        "gsc_instagram_feed_instafeed_pByh6m": {
+          "type": "shopify://apps/gsc-instagram-feed/blocks/instafeed/96970b1b-b770-454f-b16b-51f47e1aa4ed",
+          "settings": {
+            "widget_id": "GSC-vIziIBVizOIhCnJ"
+          }
+        }
+      },
+      "block_order": [
+        "gsc_instagram_feed_instafeed_pByh6m"
+      ],
+      "settings": {
+        "include_margins": true
       }
     }
   },
@@ -411,6 +434,7 @@
     "vura-confidence",
     "vura-ugc-video",
     "vura-faq",
-    "vura-closing-cta"
+    "vura-closing-cta",
+    "1784928196f1654230"
   ]
 }
