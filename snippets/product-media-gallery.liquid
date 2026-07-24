@@ -330,3 +330,78 @@
     </slider-component>
   {%- endif -%}
 </media-gallery>
+
+{%- comment -%} VURA: on the product image, hovering the left/right side turns the cursor into an
+   arrow and clicking goes to the prev/next image; the center keeps click-to-zoom. Mobile keeps
+   native swipe + tap-to-zoom (this only runs at >=750px). {%- endcomment -%}
+<style>
+  @media (min-width: 750px) {
+    media-gallery [id^="GalleryViewer"].vura-zone-prev,
+    media-gallery [id^="GalleryViewer"].vura-zone-prev * {
+      cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMicgaGVpZ2h0PSczMicgdmlld0JveD0nMCAwIDMyIDMyJz48Y2lyY2xlIGN4PScxNicgY3k9JzE2JyByPScxNScgZmlsbD0ncmdiKDIyLDQ1LDM2KScgZmlsbC1vcGFjaXR5PScwLjYyJy8+PHBhdGggZD0nTTE4LjUgMTAgTDEyLjUgMTYgTDE4LjUgMjInIGZpbGw9J25vbmUnIHN0cm9rZT0ncmdiKDI0OCwyNDMsMjMxKScgc3Ryb2tlLXdpZHRoPScyLjQnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPjwvc3ZnPg==') 16 16, w-resize !important;
+    }
+    media-gallery [id^="GalleryViewer"].vura-zone-next,
+    media-gallery [id^="GalleryViewer"].vura-zone-next * {
+      cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMicgaGVpZ2h0PSczMicgdmlld0JveD0nMCAwIDMyIDMyJz48Y2lyY2xlIGN4PScxNicgY3k9JzE2JyByPScxNScgZmlsbD0ncmdiKDIyLDQ1LDM2KScgZmlsbC1vcGFjaXR5PScwLjYyJy8+PHBhdGggZD0nTTEzLjUgMTAgTDE5LjUgMTYgTDEzLjUgMjInIGZpbGw9J25vbmUnIHN0cm9rZT0ncmdiKDI0OCwyNDMsMjMxKScgc3Ryb2tlLXdpZHRoPScyLjQnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPjwvc3ZnPg==') 16 16, e-resize !important;
+    }
+  }
+</style>
+<script>
+  (function () {
+    var PREV = 'vura-zone-prev', NEXT = 'vura-zone-next';
+    function init(g) {
+      if (g.__vuraGnav) return;
+      var viewer = g.querySelector('[id^="GalleryViewer"]');
+      if (!viewer) return;
+      if (g.querySelectorAll('.product__media-item').length <= 1) return;
+      g.__vuraGnav = true;
+
+      function desktop() { return window.matchMedia('(min-width: 750px)').matches; }
+      function ids() {
+        return Array.prototype.slice.call(g.querySelectorAll('.product__media-item')).map(function (li) { return li.dataset.mediaId; });
+      }
+      function go(dir) {
+        var a = g.querySelector('.product__media-item.is-active');
+        var arr = ids();
+        if (!arr.length) return;
+        var i = a ? arr.indexOf(a.dataset.mediaId) : 0;
+        if (i < 0) i = 0;
+        var n = (i + dir + arr.length) % arr.length;
+        if (typeof g.setActiveMedia === 'function') g.setActiveMedia(arr[n], false);
+      }
+      function zoneAt(e) {
+        var r = viewer.getBoundingClientRect();
+        if (!r.width) return 'center';
+        var x = (e.clientX - r.left) / r.width;
+        if (x < 0.33) return 'prev';
+        if (x > 0.67) return 'next';
+        return 'center';
+      }
+
+      var cur = '';
+      viewer.addEventListener('mousemove', function (e) {
+        if (!desktop()) { if (cur) { viewer.classList.remove(PREV, NEXT); cur = ''; } return; }
+        var z = zoneAt(e);
+        if (z === cur) return;
+        cur = z;
+        viewer.classList.remove(PREV, NEXT);
+        if (z === 'prev') viewer.classList.add(PREV);
+        else if (z === 'next') viewer.classList.add(NEXT);
+      });
+      viewer.addEventListener('mouseleave', function () { viewer.classList.remove(PREV, NEXT); cur = ''; });
+      // Capture phase: intercept side clicks before the zoom modal-opener sees them.
+      viewer.addEventListener('click', function (e) {
+        if (!desktop()) return;
+        var z = zoneAt(e);
+        if (z === 'center') return; // let the image zoom
+        e.preventDefault();
+        e.stopPropagation();
+        go(z === 'prev' ? -1 : 1);
+      }, true);
+    }
+    function boot() { Array.prototype.forEach.call(document.querySelectorAll('media-gallery'), init); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+    document.addEventListener('shopify:section:load', boot);
+  })();
+</script>
