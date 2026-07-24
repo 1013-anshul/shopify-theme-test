@@ -1,7 +1,13 @@
 {% comment %}
-  Momentum smooth-scroll for the whole site (desktop wheel + mobile touch).
-  Guards so it never fights other gestures:
-   - the mobile gallery card-stack (its own swipe handler),
+  Momentum smooth-scroll for the desktop mouse wheel only.
+
+  Touch is deliberately left alone: a window-level touchmove handler with
+  preventDefault turns every drag into vertical page scrolling, which stops
+  horizontal scrollers (the product image slider) from ever seeing a swipe.
+  Phones already scroll smoothly on their own, so we let the OS do it.
+
+  Guards so the wheel easing never fights other gestures:
+   - the gallery card-stack (its own drag handler),
    - inner scrollables (cart drawer, menus, modals, code blocks),
    - form fields, and any open overlay / scroll-locked state.
   Respects prefers-reduced-motion. Self-contained; remove the render from
@@ -12,7 +18,6 @@
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || !('requestAnimationFrame' in window)) return;
 
-    var supportsTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
     var docEl = document.documentElement;
     var current = window.scrollY || window.pageYOffset || 0;
     var target = current;
@@ -76,49 +81,9 @@
       startTick();
     }
 
-    /* ---------- Mobile: touch (1:1 while dragging, glide on release) ---------- */
-    var tActive = false, tLastY = 0, tLastT = 0, tVel = 0;
-    function onTouchStart(e) {
-      if (e.touches.length !== 1 || scrollLocked() || insideExcluded(e.target)) { tActive = false; return; }
-      tActive = true;
-      running = false;
-      current = target = window.scrollY;
-      tLastY = e.touches[0].clientY;
-      tLastT = performance.now();
-      tVel = 0;
-    }
-    function onTouchMove(e) {
-      if (!tActive) return;
-      var y = e.touches[0].clientY;
-      var dy = tLastY - y;
-      var now = performance.now();
-      var dt = now - tLastT || 16;
-      tVel = dy / dt;               // px per ms
-      tLastY = y;
-      tLastT = now;
-      if (e.cancelable) e.preventDefault();
-      target = clamp(target + dy);
-      current = target;             // track the finger exactly
-      window.scrollTo(0, current);
-    }
-    function onTouchEnd() {
-      if (!tActive) return;
-      tActive = false;
-      var v = tVel * 16;            // px per frame at release
-      if (Math.abs(v) < 0.6) return;
-      target = clamp(current + v * 12);  // project a glide, then ease into it
-      startTick();
-    }
-
-    function onScroll() { if (!running && !tActive) current = target = window.scrollY; }
+    function onScroll() { if (!running) current = target = window.scrollY; }
 
     window.addEventListener('wheel', onWheel, { passive: false });
-    if (supportsTouch) {
-      window.addEventListener('touchstart', onTouchStart, { passive: true });
-      window.addEventListener('touchmove', onTouchMove, { passive: false });
-      window.addEventListener('touchend', onTouchEnd, { passive: true });
-      window.addEventListener('touchcancel', onTouchEnd, { passive: true });
-    }
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', function () { target = clamp(target); });
   })();

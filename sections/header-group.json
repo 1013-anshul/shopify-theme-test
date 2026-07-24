@@ -17,21 +17,21 @@
         "a1": {
           "type": "announcement",
           "settings": {
-            "text": "Made slowly in India",
+            "text": "We make it slowly, in India",
             "link": ""
           }
         },
         "a2": {
           "type": "announcement",
           "settings": {
-            "text": "100% Secure UPI & Card Payments",
+            "text": "Your UPI and card payments are secure",
             "link": ""
           }
         },
         "a3": {
           "type": "announcement",
           "settings": {
-            "text": "Freshness Guaranteed, Rooted in Science",
+            "text": "Freshness you can count on",
             "link": ""
           }
         }

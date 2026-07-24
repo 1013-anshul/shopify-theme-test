@@ -18,15 +18,9 @@
     padding-bottom: {{ section.settings.padding_bottom }}px;
     background: {{ section.settings.background }};
   }
-  /* Mobile-only section: the card-stack gallery is hidden on desktop */
-  @media screen and (min-width: 750px) {
-    #vura-gallery-{{ section.id }} {
-      display: none;
-    }
-  }
   #vura-gallery-{{ section.id }} .vura-gallery__header {
     max-width: var(--page-width, 1200px);
-    margin: 0 auto 1.6rem;
+    margin: 0 auto 0.8rem;
     padding: 0 1.5rem;
     text-align: {{ section.settings.text_alignment }};
   }
@@ -49,29 +43,37 @@
   #vura-gallery-{{ section.id }} .vura-gallery__viewport {
     position: relative;
   }
+  /* Card deck — one card in front, the rest curve away behind it. Same on
+     every screen size; only the dimensions change. */
   #vura-gallery-{{ section.id }} .vura-gallery__track {
-    display: flex;
-    gap: 16px;
+    display: block;
+    position: relative;
+    height: 98vw;
     margin: 0;
-    padding: 0.5rem 1.5rem 1.5rem;
+    padding: 0;
     list-style: none;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  #vura-gallery-{{ section.id }} .vura-gallery__track::-webkit-scrollbar {
-    display: none;
+    overflow: visible;
+    perspective: 1100px;
   }
   #vura-gallery-{{ section.id }} .vura-gallery__card {
-    flex: 0 0 auto;
-    scroll-snap-align: center;
-    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 68vw;
+    transform: translate(-50%, -50%);
     border-radius: 20px;
     overflow: hidden;
     background: var(--vura-paper, #F8F3E7);
-    box-shadow: 0 12px 30px rgba(26, 42, 34, 0.16);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 18px 44px rgba(26, 42, 34, 0.24);
+    touch-action: pan-y;
+    -webkit-user-select: none;
+    user-select: none;
+    backface-visibility: hidden;
+    will-change: transform, opacity;
+    cursor: pointer;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__card a {
+    -webkit-user-drag: none;
   }
   #vura-gallery-{{ section.id }} .vura-gallery__card a,
   #vura-gallery-{{ section.id }} .vura-gallery__card img {
@@ -83,40 +85,6 @@
     aspect-ratio: 3 / 4;
     object-fit: cover;
   }
-
-  /* Clickable arrows — desktop only */
-  #vura-gallery-{{ section.id }} .vura-gallery__arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 3;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border: none;
-    border-radius: 50%;
-    background: var(--vura-paper, #F8F3E7);
-    color: var(--vura-ink, #1A2A22);
-    box-shadow: 0 6px 18px rgba(26, 42, 34, 0.22);
-    cursor: pointer;
-    transition: transform 0.15s ease, background 0.15s ease;
-  }
-  #vura-gallery-{{ section.id }} .vura-gallery__arrow:hover {
-    background: #fff;
-    transform: translateY(-50%) scale(1.06);
-  }
-  #vura-gallery-{{ section.id }} .vura-gallery__arrow[disabled] {
-    opacity: 0.35;
-    cursor: default;
-  }
-  #vura-gallery-{{ section.id }} .vura-gallery__arrow svg {
-    width: 20px;
-    height: 20px;
-  }
-  #vura-gallery-{{ section.id }} .vura-gallery__arrow--prev { left: 1.5rem; }
-  #vura-gallery-{{ section.id }} .vura-gallery__arrow--next { right: 1.5rem; }
 
   #vura-gallery-{{ section.id }} .vura-gallery__hint {
     display: none;
@@ -130,63 +98,23 @@
     opacity: 0.72;
   }
 
-  @media screen and (min-width: 750px) {
-    #vura-gallery-{{ section.id }} .vura-gallery__card {
-      width: 340px;
-    }
-    #vura-gallery-{{ section.id }} .vura-gallery__card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 18px 40px rgba(26, 42, 34, 0.22);
-    }
-    #vura-gallery-{{ section.id }} .vura-gallery__track {
-      padding-left: 5rem;
-      padding-right: 5rem;
-      scroll-padding-left: 5rem;
-    }
-    #vura-gallery-{{ section.id }} .vura-gallery__arrow {
-      display: flex;
-    }
+  #vura-gallery-{{ section.id }} .vura-gallery__viewport {
+    overflow-x: clip;
+  }
+  #vura-gallery-{{ section.id }} .vura-gallery__hint {
+    display: block;
   }
 
-  /* Mobile: stacked card deck — one card in front, others peek behind */
-  @media screen and (max-width: 749px) {
-    #vura-gallery-{{ section.id }} .vura-gallery__viewport {
-      overflow-x: clip;
-    }
+  @media screen and (min-width: 750px) {
     #vura-gallery-{{ section.id }} .vura-gallery__track {
-      display: block;
-      position: relative;
-      height: 104vw;
-      margin: 0;
-      padding: 0;
-      overflow: visible;
-      perspective: 1100px;
-      scroll-snap-type: none;
+      height: 560px;
     }
     #vura-gallery-{{ section.id }} .vura-gallery__card {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 68vw;
-      transform: translate(-50%, -50%);
-      transition: none;
-      touch-action: pan-y;
-      box-shadow: 0 18px 44px rgba(26, 42, 34, 0.24);
-      -webkit-user-select: none;
-      user-select: none;
-      backface-visibility: hidden;
-      will-change: transform, opacity;
-    }
-    #vura-gallery-{{ section.id }} .vura-gallery__card a {
-      -webkit-user-drag: none;
-    }
-    #vura-gallery-{{ section.id }} .vura-gallery__hint {
-      display: block;
+      width: min(380px, 30vw);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    #vura-gallery-{{ section.id }} .vura-gallery__track { scroll-behavior: auto; }
     #vura-gallery-{{ section.id }} .vura-gallery__card { transition: none; }
   }
 {%- endstyle -%}
@@ -204,15 +132,6 @@
   {%- endif -%}
 
   <div class="vura-gallery__viewport">
-    <button
-      type="button"
-      class="vura-gallery__arrow vura-gallery__arrow--prev"
-      aria-label="Previous image"
-      data-gallery-prev
-    >
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-
     <ul class="vura-gallery__track" data-gallery-track>
       {%- if gallery_images != blank and gallery_images.size > 0 -%}
         {%- for image in gallery_images -%}
@@ -238,18 +157,9 @@
         {%- endfor -%}
       {%- endif -%}
     </ul>
-
-    <button
-      type="button"
-      class="vura-gallery__arrow vura-gallery__arrow--next"
-      aria-label="Next image"
-      data-gallery-next
-    >
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
   </div>
 
-  <p class="vura-gallery__hint" aria-hidden="true">&#8592;&ensp;Swipe&ensp;&#8594;</p>
+  <p class="vura-gallery__hint" aria-hidden="true">&#8592;&ensp;Swipe or tap&ensp;&#8594;</p>
 </section>
 
 <script>
@@ -258,19 +168,17 @@
     if (!root) return;
     var track = root.querySelector('[data-gallery-track]');
     if (!track) return;
-    var prev = root.querySelector('[data-gallery-prev]');
-    var next = root.querySelector('[data-gallery-next]');
     var cards = Array.prototype.slice.call(track.querySelectorAll('.vura-gallery__card'));
     var N = cards.length;
     if (!N) return;
 
-    var mq = window.matchMedia('(max-width: 749px)');
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    /* Mobile: continuous circular wheel carousel (coverflow), RAF-eased. */
+    /* Continuous circular wheel carousel (coverflow), RAF-eased. Runs at every
+       screen size so desktop behaves exactly like mobile. */
     var pos = 0;          // fractional current index
     var target = 0;       // where it eases to
-    var dragUnit = 165;   // px of horizontal drag = one card
+    var dragUnit = 165;   // px of horizontal drag = one card (recalculated on resize)
     var raf = null;
     var drag = null;
     var on = false;
@@ -283,7 +191,7 @@
       return d;
     }
     function transformFor(d) {
-      var spread = 0.55, radius = 300;
+      var spread = 0.55, radius = window.innerWidth >= 750 ? 420 : 300;
       var ang = d * spread;
       var x = Math.sin(ang) * radius;
       var z = (Math.cos(ang) - 1) * radius;      // <= 0, pushes side cards back
@@ -366,12 +274,20 @@
       if (moved) suppressClickOnce(frontCard);
     }
 
+    // Once a drag is judged horizontal, stop the browser from panning the page
+    // vertically at the same time. pointermove's preventDefault can't do this,
+    // so it needs its own non-passive touchmove listener.
+    function onTouchMove(e) {
+      if (drag && drag.decided && drag.horizontal && e.cancelable) e.preventDefault();
+    }
+
     function enable() {
       if (on) return;
       on = true;
       pos = 0; target = 0;
       render();
       track.addEventListener('pointerdown', onDown);
+      track.addEventListener('touchmove', onTouchMove, { passive: false });
       window.addEventListener('pointermove', onMove, { passive: false });
       window.addEventListener('pointerup', onUp);
       window.addEventListener('pointercancel', onUp);
@@ -381,6 +297,7 @@
       on = false; drag = null;
       if (raf) { cancelAnimationFrame(raf); raf = null; }
       track.removeEventListener('pointerdown', onDown);
+      track.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('pointercancel', onUp);
@@ -388,24 +305,17 @@
         c.style.transform = ''; c.style.opacity = ''; c.style.zIndex = ''; c.style.pointerEvents = '';
       });
     }
-    function sync() { if (mq.matches) enable(); else disable(); }
-
-    // Arrows are hidden on this mobile-only section, but keep them working if ever shown.
-    if (prev) prev.addEventListener('click', function () { goTo(Math.round(target) - 1); });
-    if (next) next.addEventListener('click', function () { goTo(Math.round(target) + 1); });
-
-    // Tap the image to move through the photos (left half = previous, right half
-    // = next) — the same left/right model as the product page. A clean tap advances;
-    // a swipe/drag is suppressed above so it never navigates or double-fires.
+    // Tap or click the image to move through the photos: left half goes back,
+    // right half goes forward, the same as the product page. A clean tap
+    // advances; a drag is suppressed above so it never navigates or double-fires.
     track.addEventListener('click', function (e) {
-      if (!on) return;                       // carousel only active on mobile
       e.preventDefault();                    // don't follow the card's product link
-      var dir = (e.clientX < window.innerWidth / 2) ? -1 : 1;
+      var r = track.getBoundingClientRect();
+      var dir = (e.clientX - r.left) / r.width < 0.5 ? -1 : 1;
       goTo(Math.round(target) + dir);
     });
 
-    if (mq.addEventListener) { mq.addEventListener('change', sync); } else { mq.addListener(sync); }
-    sync();
+    enable();
   })();
 </script>
 

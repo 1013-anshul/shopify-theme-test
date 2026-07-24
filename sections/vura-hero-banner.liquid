@@ -13,13 +13,13 @@
     assign hero_w = section.settings.image.width
     assign hero_h = section.settings.image.height
   else
-    assign hero_src = 'vura_hero_banner.webp' | asset_url
+    assign hero_src = 'vura_hero_banner_light.jpg' | asset_url
     assign hero_w = 1672
     assign hero_h = 941
   endif
 -%}
 {%- style -%}
-  .vura-herob { position: relative; width: 100%; background: #0e2018; overflow: hidden; line-height: 0; }
+  .vura-herob { position: relative; width: 100%; background: #C9B99A; overflow: hidden; line-height: 0; }
   .vura-herob__link { display: block; text-decoration: none; color: inherit; }
   .vura-herob__img { display: block; width: 100%; height: auto; transition: filter 0.4s ease; }
   @media (min-width: 750px) {
@@ -32,11 +32,7 @@
       object-position: center 42%;
     }
   }
-  .vura-herob__link:hover .vura-herob__img { filter: brightness(1.04); }
-  .vura-herob__scrim {
-    position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background: linear-gradient(90deg, rgba(8,20,14,0.45) 0%, rgba(8,20,14,0.18) 30%, rgba(8,20,14,0) 52%);
-  }
+  .vura-herob__link:hover .vura-herob__img { filter: brightness(0.97); }
   .vura-herob__text {
     position: absolute; left: 6%; top: 50%; transform: translateY(-50%);
     width: 42%; max-width: 640px; z-index: 2; line-height: 1.1;
@@ -44,12 +40,12 @@
   .vura-herob__eyebrow {
     margin: 0 0 0.55em; font-family: var(--font-body, Inter, sans-serif);
     text-transform: uppercase; letter-spacing: 0.22em; font-weight: 600;
-    color: var(--vura-saffron, #FFC03F); font-size: clamp(0.62rem, 1.45vw, 1.5rem);
+    color: var(--vura-terracotta, #8D3B2D); font-size: clamp(0.62rem, 1.45vw, 1.5rem);
   }
   .vura-herob__title {
-    margin: 0; font-family: var(--font-display, Georgia, serif); font-weight: 400;
-    color: var(--vura-cream, #F8F3E7); line-height: 1.05; text-wrap: balance;
-    font-size: clamp(1.35rem, 4.7vw, 5rem); text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+    margin: 0; font-family: var(--font-display, Georgia, serif); font-weight: 700;
+    color: var(--vura-forest, #162D24); line-height: 1.05; text-wrap: balance;
+    font-size: clamp(1.35rem, 4.7vw, 5rem);
   }
 {%- endstyle -%}
 
@@ -64,7 +60,6 @@
       loading="eager"
       fetchpriority="high"
     >
-    <span class="vura-herob__scrim"></span>
     {%- if eyebrow != blank or heading != blank -%}
       <div class="vura-herob__text">
         {%- if eyebrow != blank -%}<p class="vura-herob__eyebrow">{{ eyebrow }}</p>{%- endif -%}

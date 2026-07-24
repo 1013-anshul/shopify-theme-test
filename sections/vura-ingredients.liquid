@@ -112,7 +112,7 @@
             tabindex="0"
             role="button"
             aria-pressed="false"
-            aria-label="{{ block.settings.name | escape }} — tap to reveal its benefit"
+            aria-label="{{ block.settings.name | escape }}, tap to see what it does"
             {{ block.shopify_attributes }}
           >
             <div class="vura-ing__flip">
@@ -187,7 +187,7 @@
 
     {%- if section.settings.full_list != blank -%}
       <p class="vura-ing__formula">
-        <span class="vura-ing__formula-label">Full formula — nothing hidden</span>
+        <span class="vura-ing__formula-label">Our full formula, nothing hidden</span>
         {{ section.settings.full_list }}
       </p>
     {%- endif -%}
@@ -243,7 +243,7 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Full transparency" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "What's inside" },
-    { "type": "text", "id": "intro", "label": "Intro line", "default": "The heroes that do the work — and the full, honest formula." },
+    { "type": "text", "id": "intro", "label": "Intro line", "default": "The few things that do the work, plus our full formula so you can see everything." },
     { "type": "textarea", "id": "full_list", "label": "Full ingredient list (INCI)", "default": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid." },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding top", "default": 56 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding bottom", "default": 64 }
@@ -275,7 +275,7 @@
     {
       "name": "VURA Ingredients",
       "blocks": [
-        { "type": "ingredient", "settings": { "name": "Phitkari", "tag": "Active", "description": "The mineral hero: neutralises odour-causing bacteria — freshness without blocking your sweat.", "icon": "alum" } },
+        { "type": "ingredient", "settings": { "name": "Phitkari", "tag": "Active", "description": "Our hero. It calms the bacteria behind odour, so you stay fresh without blocking your sweat.", "icon": "alum" } },
         { "type": "ingredient", "settings": { "name": "Aloe Vera", "tag": "Soothing", "description": "Calms and hydrates delicate underarm skin, even right after shaving.", "icon": "aloe" } },
         { "type": "ingredient", "settings": { "name": "Rose Extracts", "tag": "Tone & scent", "description": "Damask rose water tones and refreshes, while a whisper of real rose oil is our only, natural scent.", "icon": "rose" } },
         { "type": "ingredient", "settings": { "name": "Glycerin", "tag": "Hydrating", "description": "A humectant that draws in moisture so skin stays soft, never tight or dry.", "icon": "glycerin" } }

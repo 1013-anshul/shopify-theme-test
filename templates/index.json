@@ -23,14 +23,14 @@
         "b1": {
           "type": "benefit",
           "settings": {
-            "label": "Hero ingredient: Phitkari",
+            "label": "Made with Phitkari",
             "icon": "crystal"
           }
         },
         "b2": {
           "type": "benefit",
           "settings": {
-            "label": "Aloe vera infused",
+            "label": "Aloe vera inside",
             "icon": "leaf"
           }
         },
@@ -51,35 +51,35 @@
         "b5": {
           "type": "benefit",
           "settings": {
-            "label": "Aluminium-salt free",
+            "label": "No aluminium salts",
             "icon": "shield"
           }
         },
         "b6": {
           "type": "benefit",
           "settings": {
-            "label": "Mist-spray format",
+            "label": "A fine, even mist",
             "icon": "spray"
           }
         },
         "b7": {
           "type": "benefit",
           "settings": {
-            "label": "Hygienic no-touch application",
+            "label": "Nothing to touch",
             "icon": "check"
           }
         },
         "b8": {
           "type": "benefit",
           "settings": {
-            "label": "Non-sticky & quick-drying",
+            "label": "Dries fast, never sticky",
             "icon": "droplet"
           }
         },
         "b9": {
           "type": "benefit",
           "settings": {
-            "label": "Gentle on sensitive skin",
+            "label": "Kind to sensitive skin",
             "icon": "heart"
           }
         },
@@ -93,7 +93,7 @@
         "b11": {
           "type": "benefit",
           "settings": {
-            "label": "Unisex & everyday use",
+            "label": "For everyone, every day",
             "icon": "check"
           }
         },
@@ -141,8 +141,8 @@
         "heading": "Take a closer look",
         "text_alignment": "center",
         "background": "#EFE9DA",
-        "padding_top": 40,
-        "padding_bottom": 8
+        "padding_top": 20,
+        "padding_bottom": 4
       }
     },
     "vura-spotlight": {
@@ -168,7 +168,7 @@
         "pitch": {
           "type": "text",
           "settings": {
-            "text": "Mineral-rich Phitkari for sensitive underarms — aluminium-salt free, non-sticky, no synthetic fragrance. A touch-free mist that dries fast and leaves no white marks.",
+            "text": "We made this for sensitive underarms. Phitkari does the work, with no aluminium salts and no synthetic fragrance. You spray it on without touching your skin, it dries quickly, and it leaves no white marks on your clothes.",
             "text_style": "body"
           }
         },
@@ -209,7 +209,7 @@
           "settings": {
             "name": "Phitkari",
             "tag": "Active",
-            "description": "The mineral hero: neutralises odour-causing bacteria — freshness without blocking your sweat.",
+            "description": "Our hero. It calms the bacteria behind odour, so you stay fresh without blocking your sweat.",
             "icon": "alum"
           }
         },
@@ -218,7 +218,7 @@
           "settings": {
             "name": "Aloe Vera",
             "tag": "Soothing",
-            "description": "Calms and hydrates delicate underarm skin, even right after shaving.",
+            "description": "Soothes and hydrates the delicate skin under your arms, even straight after shaving.",
             "icon": "aloe"
           }
         },
@@ -227,7 +227,7 @@
           "settings": {
             "name": "Rose Extracts",
             "tag": "Tone & scent",
-            "description": "Damask rose water tones and refreshes, while a whisper of real rose oil is our only, natural scent.",
+            "description": "Damask rose water tones and refreshes. A trace of real rose oil is the only scent we use.",
             "icon": "rose"
           }
         },
@@ -236,7 +236,7 @@
           "settings": {
             "name": "Glycerin",
             "tag": "Hydrating",
-            "description": "A humectant that draws in moisture so skin stays soft, never tight or dry.",
+            "description": "Draws in moisture and holds it there, so your skin stays soft instead of tight and dry.",
             "icon": "glycerin"
           }
         }
@@ -250,7 +250,7 @@
       "settings": {
         "eyebrow": "Full transparency",
         "heading": "What's inside",
-        "intro": "The heroes that do the work — and the full, honest formula.",
+        "intro": "The few things that do the work, plus our full formula so you can see everything.",
         "padding_top": 56,
         "padding_bottom": 64,
         "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid."
@@ -270,19 +270,19 @@
         "ugc_1": {
           "type": "video_card",
           "settings": {
-            "caption": "\"Fits in my gym bag — no leak, no smell.\" — Priya, Mumbai"
+            "caption": "Priya from Mumbai: \"Fits in my gym bag, no leak and no smell.\""
           }
         },
         "ugc_2": {
           "type": "video_card",
           "settings": {
-            "caption": "\"No white marks, no irritation.\" — Arjun, Bangalore"
+            "caption": "Arjun from Bangalore: \"No white marks and no irritation.\""
           }
         },
         "ugc_3": {
           "type": "video_card",
           "settings": {
-            "caption": "\"One bottle lasted my family a month.\" — Meera, Delhi"
+            "caption": "Meera from Delhi: \"One bottle lasted my family a month.\""
           }
         }
       },
@@ -292,7 +292,7 @@
         "ugc_3"
       ],
       "settings": {
-        "heading": "Hear from real users",
+        "heading": "What people tell us",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -304,49 +304,49 @@
           "type": "faq_item",
           "settings": {
             "question": "Is this safe for sensitive skin?",
-            "answer": "<p>Yes. Our formula uses natural Phitkari (potassium alum) and Aloe Vera — both known for being gentle. It contains no harsh chemicals, alcohol, or synthetic fragrances.</p>"
+            "answer": "<p>Yes. We use natural Phitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p>"
           }
         },
         "faq_2": {
           "type": "faq_item",
           "settings": {
             "question": "How long does one bottle last?",
-            "answer": "<p>With daily use (2-3 sprays per application), one 100ml bottle typically lasts 6-8 weeks.</p>"
+            "answer": "<p>If you use it daily, about 2 to 3 sprays each time, one 100ml bottle usually lasts you 6 to 8 weeks.</p>"
           }
         },
         "faq_3": {
           "type": "faq_item",
           "settings": {
             "question": "What does it smell like?",
-            "answer": "<p>It has a very subtle, clean, natural scent — not overpowering. Most users describe it as 'fresh' or 'barely there'.</p>"
+            "answer": "<p>Very subtle and clean, never overpowering. Most people tell us it smells fresh, or that they barely notice it at all.</p>"
           }
         },
         "faq_4": {
           "type": "faq_item",
           "settings": {
-            "question": "Does it contain aluminum chlorohydrate?",
-            "answer": "<p>No. We use potassium alum (Phitkari), a natural mineral salt. This is different from the aluminum compounds found in conventional antiperspirants.</p>"
+            "question": "Does it contain aluminium chlorohydrate?",
+            "answer": "<p>No. We use potassium alum, which you may know as Phitkari. It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p>"
           }
         },
         "faq_5": {
           "type": "faq_item",
           "settings": {
-            "question": "How does the Buy 2 Get 1 offer work?",
-            "answer": "<p>Choose the <strong>3-Pack</strong> on the product page. It's priced as pay for 2, get 1 free — ₹750 for three bottles. No code needed; the bundle price is already built in. The 6-Pack works the same way (pay for 4).</p>"
+            "question": "How does the Buy 2, Get 1 offer work?",
+            "answer": "<p>Pick the <strong>3-Pack</strong> and you pay for two bottles and get three, so ₹750 in total. You do not need a code, the price already includes it. The 6-Pack works the same way, where you pay for four.</p>"
           }
         },
         "faq_6": {
           "type": "faq_item",
           "settings": {
-            "question": "What are the shipping timelines?",
-            "answer": "<p>Orders are dispatched within 24 hours. Standard delivery across India takes 3-5 business days.</p>"
+            "question": "When will my order arrive?",
+            "answer": "<p>We dispatch your order within 24 hours. Delivery anywhere in India usually takes 3 to 5 business days.</p>"
           }
         },
         "faq_7": {
           "type": "faq_item",
           "settings": {
             "question": "What if I don't like it?",
-            "answer": "<p>We accept returns on unopened items only, within 7 days of delivery. Contact us at support@vuraskincare.in for assistance.</p>"
+            "answer": "<p>Write to us at support@vuraskincare.in within 7 days of delivery and we will help you. We can only take back items that are still unopened.</p>"
           }
         }
       },
@@ -360,7 +360,7 @@
         "faq_7"
       ],
       "settings": {
-        "heading": "Frequently asked questions",
+        "heading": "Questions we get asked",
         "padding_top": 36,
         "padding_bottom": 52
       }
@@ -378,13 +378,13 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Phitkari-powered freshness for sensitive skin. No aluminium salts, no white marks, no synthetic fragrance.</p>"
+            "text": "<p>Phitkari keeps you fresh, and your skin gets a break. No aluminium salts, no white marks, no synthetic fragrance.</p>"
           }
         },
         "button": {
           "type": "button",
           "settings": {
-            "button_label": "Shop VURA — Buy 2, Get 1 Free",
+            "button_label": "Shop now, buy 2 get 1 free",
             "button_link": "shopify://products/vura-mineral-underarm-spray",
             "button_style_secondary": false
           }
