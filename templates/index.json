@@ -9,25 +9,12 @@
  */
 {
   "sections": {
-    "vura-hero": {
-      "type": "vura-hero",
+    "vura-hero-banner": {
+      "type": "vura-hero-banner",
       "settings": {
-        "video": "shopify://files/videos/Untitled design.mp4",
-        "image": "shopify://shop_images/Vibrant_lifestyle_product_photo__shot_202606261419.jpg",
-        "slide_interval": 5,
-        "media_link": "shopify://products/vura-mineral-underarm-spray",
-        "eyebrow": "",
-        "heading": "",
-        "subheading": "",
-        "button_label": "",
-        "button_link": "",
-        "button_label_2": "",
-        "button_link_2": "",
-        "trust_text": "",
-        "text_alignment": "left",
-        "overlay_opacity": 0,
-        "height_desktop": 620,
-        "height_mobile": 480
+        "eyebrow": "Introducing",
+        "heading": "Phitkari in a spray",
+        "link": "shopify://products/vura-mineral-underarm-spray"
       }
     },
     "vura-benefits-bar": {
@@ -416,7 +403,7 @@
     }
   },
   "order": [
-    "vura-hero",
+    "vura-hero-banner",
     "vura-benefits-bar",
     "vura-gallery",
     "vura-spotlight",
