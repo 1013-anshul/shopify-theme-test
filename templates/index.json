@@ -129,8 +129,8 @@
       ],
       "settings": {
         "background": "#162d24",
-        "padding_top": 8,
-        "padding_bottom": 8
+        "padding_top": 6,
+        "padding_bottom": 6
       }
     },
     "vura-gallery": {
