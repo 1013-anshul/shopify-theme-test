@@ -394,6 +394,16 @@
     if (prev) prev.addEventListener('click', function () { goTo(Math.round(target) - 1); });
     if (next) next.addEventListener('click', function () { goTo(Math.round(target) + 1); });
 
+    // Tap the image to move through the photos (left half = previous, right half
+    // = next) — the same left/right model as the product page. A clean tap advances;
+    // a swipe/drag is suppressed above so it never navigates or double-fires.
+    track.addEventListener('click', function (e) {
+      if (!on) return;                       // carousel only active on mobile
+      e.preventDefault();                    // don't follow the card's product link
+      var dir = (e.clientX < window.innerWidth / 2) ? -1 : 1;
+      goTo(Math.round(target) + dir);
+    });
+
     if (mq.addEventListener) { mq.addEventListener('change', sync); } else { mq.addListener(sync); }
     sync();
   })();
