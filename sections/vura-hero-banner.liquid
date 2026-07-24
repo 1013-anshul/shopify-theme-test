@@ -1,12 +1,14 @@
 {% comment %}
-  VURA Hero Banner — one wide image with a left-aligned headline over the empty
-  space. Same composition on mobile and desktop (image keeps its aspect ratio,
-  text scales with the viewport). Falls back to the bundled asset if no image set.
+  VURA Hero Banner — one wide image with a left-aligned headline + CTA over the
+  empty space. On desktop the image is capped to fit within the viewport (below
+  the header); on mobile it keeps its full aspect ratio. Falls back to the
+  bundled asset if no image set.
 {% endcomment %}
 {%- liquid
   assign heading = section.settings.heading
   assign eyebrow = section.settings.eyebrow
-  assign link = section.settings.link
+  assign button_label = section.settings.button_label
+  assign button_link = section.settings.link
   if section.settings.image != blank
     assign hero_src = section.settings.image | image_url: width: 2200
     assign hero_w = section.settings.image.width
@@ -19,8 +21,17 @@
 -%}
 {%- style -%}
   .vura-herob { position: relative; width: 100%; background: #0e2018; overflow: hidden; line-height: 0; }
-  .vura-herob__link { display: block; text-decoration: none; }
   .vura-herob__img { display: block; width: 100%; height: auto; }
+  @media (min-width: 750px) {
+    .vura-herob__img {
+      height: calc(100vh - 190px);
+      height: calc(100svh - 190px);
+      max-height: 660px;
+      min-height: 380px;
+      object-fit: cover;
+      object-position: center 42%;
+    }
+  }
   .vura-herob__scrim {
     position: absolute; inset: 0; z-index: 1; pointer-events: none;
     background: linear-gradient(90deg, rgba(8,20,14,0.45) 0%, rgba(8,20,14,0.18) 30%, rgba(8,20,14,0) 52%);
@@ -39,27 +50,29 @@
     color: var(--vura-cream, #F8F3E7); line-height: 1.05; text-wrap: balance;
     font-size: clamp(1.35rem, 4.7vw, 5rem); text-shadow: 0 2px 24px rgba(0,0,0,0.35);
   }
+  .vura-herob__btn { margin-top: clamp(0.8rem, 1.8vw, 1.8rem); }
 {%- endstyle -%}
 
 <section class="vura-herob">
-  {%- if link != blank -%}<a class="vura-herob__link" href="{{ link }}" aria-label="{{ heading | escape }}">{%- endif -%}
-    <img
-      class="vura-herob__img"
-      src="{{ hero_src }}"
-      alt="{{ heading | default: 'VURA' | escape }}"
-      width="{{ hero_w }}"
-      height="{{ hero_h }}"
-      loading="eager"
-      fetchpriority="high"
-    >
-    <span class="vura-herob__scrim"></span>
-    {%- if eyebrow != blank or heading != blank -%}
-      <div class="vura-herob__text">
-        {%- if eyebrow != blank -%}<p class="vura-herob__eyebrow">{{ eyebrow }}</p>{%- endif -%}
-        {%- if heading != blank -%}<h1 class="vura-herob__title">{{ heading }}</h1>{%- endif -%}
-      </div>
-    {%- endif -%}
-  {%- if link != blank -%}</a>{%- endif -%}
+  <img
+    class="vura-herob__img"
+    src="{{ hero_src }}"
+    alt="{{ heading | default: 'VURA' | escape }}"
+    width="{{ hero_w }}"
+    height="{{ hero_h }}"
+    loading="eager"
+    fetchpriority="high"
+  >
+  <span class="vura-herob__scrim"></span>
+  {%- if eyebrow != blank or heading != blank or button_label != blank -%}
+    <div class="vura-herob__text">
+      {%- if eyebrow != blank -%}<p class="vura-herob__eyebrow">{{ eyebrow }}</p>{%- endif -%}
+      {%- if heading != blank -%}<h1 class="vura-herob__title">{{ heading }}</h1>{%- endif -%}
+      {%- if button_label != blank and button_link != blank -%}
+        <a href="{{ button_link }}" class="button vura-herob__btn">{{ button_label }}</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -71,7 +84,8 @@
     { "type": "image_picker", "id": "image", "label": "Hero image", "info": "Wide banner. Uses the bundled vura_hero_banner.webp if left empty." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Introducing" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Phitkari in a spray" },
-    { "type": "url", "id": "link", "label": "Link (whole banner)" }
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore" },
+    { "type": "url", "id": "link", "label": "Button link" }
   ],
   "presets": [{ "name": "VURA Hero Banner" }]
 }
