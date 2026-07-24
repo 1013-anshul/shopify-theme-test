@@ -264,39 +264,6 @@
         "padding_bottom": 36
       }
     },
-    "vura-ugc-video": {
-      "type": "vura-ugc-video",
-      "blocks": {
-        "ugc_1": {
-          "type": "video_card",
-          "settings": {
-            "caption": "Priya from Mumbai: \"Fits in my gym bag, no leak and no smell.\""
-          }
-        },
-        "ugc_2": {
-          "type": "video_card",
-          "settings": {
-            "caption": "Arjun from Bangalore: \"No white marks and no irritation.\""
-          }
-        },
-        "ugc_3": {
-          "type": "video_card",
-          "settings": {
-            "caption": "Meera from Delhi: \"One bottle lasted my family a month.\""
-          }
-        }
-      },
-      "block_order": [
-        "ugc_1",
-        "ugc_2",
-        "ugc_3"
-      ],
-      "settings": {
-        "heading": "What people tell us",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "vura-faq": {
       "type": "vura-faq",
       "blocks": {
@@ -432,9 +399,8 @@
     "vura-spotlight",
     "vura-ingredients",
     "vura-confidence",
-    "vura-ugc-video",
+    "1784928196f1654230",
     "vura-faq",
-    "vura-closing-cta",
-    "1784928196f1654230"
+    "vura-closing-cta"
   ]
 }
