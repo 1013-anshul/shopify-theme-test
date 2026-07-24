@@ -400,9 +400,9 @@
   "order": [
     "main",
     "vura-benefits-bar",
+    "instagram_feed_product",
     "vura-confidence",
     "vura-ingredients",
-    "instagram_feed_product",
     "vura-faq",
     "related-products"
   ]
