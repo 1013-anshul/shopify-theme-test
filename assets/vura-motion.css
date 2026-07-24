@@ -1,0 +1,171 @@
+/* ==========================================================================
+   VURA motion layer
+
+   Scroll reveals, hover micro-interactions, and scroll-linked parallax.
+   Extends the motion tokens in base.css (--ease-herbal, --t-fast/base/slow);
+   it does not replace Dawn's .scroll-trigger system, which still runs for
+   stock sections.
+
+   Everything is gated behind .vura-motion on <html>, which vura-motion.js
+   sets on boot. If JS never runs, nothing is hidden and the page renders
+   exactly as it does today.
+   ========================================================================== */
+
+:root {
+  /* Quartic ease-out: leaves fast, settles long. The curve that carries
+     almost every reveal on a well-tuned marketing page. */
+  --ease-reveal: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  --reveal-duration: 500ms;
+  --reveal-distance: 1.75rem;
+  --reveal-stagger: 80ms;
+}
+
+/* --------------------------------------------------------------------------
+   Reveals
+   -------------------------------------------------------------------------- */
+
+.vura-motion [data-vura-reveal] {
+  opacity: 0;
+  transition: opacity var(--reveal-duration) var(--ease-reveal),
+    transform var(--reveal-duration) var(--ease-reveal);
+  transition-delay: calc(var(--reveal-order, 0) * var(--reveal-stagger));
+}
+
+.vura-motion [data-vura-reveal='up'],
+.vura-motion [data-vura-reveal=''] {
+  transform: translate3d(0, var(--reveal-distance), 0);
+}
+
+.vura-motion [data-vura-reveal='left'] {
+  transform: translate3d(calc(var(--reveal-distance) * -1), 0, 0);
+}
+
+.vura-motion [data-vura-reveal='right'] {
+  transform: translate3d(var(--reveal-distance), 0, 0);
+}
+
+/* For media, a fractional scale reads as "settling into place" rather than
+   sliding. Kept under 1.04 — past that it looks like a zoom effect. */
+.vura-motion [data-vura-reveal='scale'] {
+  transform: scale(1.035);
+}
+
+.vura-motion [data-vura-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Masked line rise — the type climbs out from behind its own bottom edge, the
+   way a letterpress line lifts off the page. The element itself never fades;
+   the mask is the whole effect, so it wants a longer, weightier curve than the
+   other reveals. Needs an inner .vura-line span to travel inside the clip.
+
+   The padding/margin pair buys room for descenders, which a bare
+   overflow: hidden would shear off. */
+.vura-motion [data-vura-reveal='mask'] {
+  opacity: 1;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.vura-motion [data-vura-reveal='mask'] .vura-line {
+  display: block;
+  transform: translate3d(0, 110%, 0);
+  transition: transform 700ms var(--ease-reveal);
+  transition-delay: calc(var(--reveal-order, 0) * var(--reveal-stagger));
+}
+
+.vura-motion [data-vura-reveal='mask'].is-revealed .vura-line {
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Hover micro-interactions
+
+   Deliberately fast. Reveals get 500ms because you are watching them arrive;
+   hover feedback gets --t-fast (140ms) because you are waiting for it.
+   -------------------------------------------------------------------------- */
+
+.vura-motion [data-vura-lift] {
+  transition: transform var(--t-fast) var(--ease-out),
+    box-shadow var(--t-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .vura-motion [data-vura-lift]:hover {
+    transform: translate3d(0, -3px, 0);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.vura-motion [data-vura-lift]:active {
+  transform: translate3d(0, -1px, 0);
+  transition-duration: 60ms;
+}
+
+/* Media that breathes on hover. The wrapper clips; the child scales. */
+.vura-motion [data-vura-zoom] {
+  overflow: hidden;
+}
+
+/* --t-base (220ms), not --t-slow (400ms): this is hover feedback, and hover
+   wants to land inside the 300ms ceiling that product UI motion works to. */
+.vura-motion [data-vura-zoom] img {
+  transition: transform var(--t-base) var(--ease-reveal);
+}
+
+@media (hover: hover) {
+  .vura-motion [data-vura-zoom]:hover img {
+    transform: scale(1.04);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Scroll-linked parallax
+
+   JS writes --parallax-y each frame. The overscale hides the edges that a
+   translated element would otherwise expose inside a fixed-height frame.
+   -------------------------------------------------------------------------- */
+
+.vura-motion [data-vura-parallax] {
+  transform: translate3d(0, var(--parallax-y, 0px), 0) scale(var(--parallax-scale, 1.08));
+  will-change: transform;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility and editor safety
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .vura-motion [data-vura-reveal],
+  .vura-motion [data-vura-reveal='mask'] .vura-line {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .vura-motion [data-vura-parallax] {
+    transform: none;
+  }
+
+  .vura-motion [data-vura-lift],
+  .vura-motion [data-vura-zoom] img {
+    transition: none;
+  }
+
+  .vura-motion [data-vura-lift]:hover,
+  .vura-motion [data-vura-zoom]:hover img {
+    transform: none;
+  }
+}
+
+/* In the theme editor, sections re-render constantly and hidden content reads
+   as a bug. Show everything, keep hover. */
+.vura-motion--design-mode [data-vura-reveal],
+.vura-motion--design-mode [data-vura-reveal='mask'] .vura-line {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}

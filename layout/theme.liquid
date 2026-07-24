@@ -261,7 +261,23 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'vura-motion.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+
+    {%- comment -%}
+      Arm the motion layer before first paint so revealed content never flashes
+      in and back out. The failsafe timer drops the gate if vura-motion.js
+      fails to boot, so a broken script can never leave the page blank.
+    {%- endcomment -%}
+    <script>
+      if ('IntersectionObserver' in window) {
+        document.documentElement.classList.add('vura-motion');
+        window.__vuraMotionFailsafe = setTimeout(function () {
+          document.documentElement.classList.remove('vura-motion');
+        }, 2500);
+      }
+    </script>
+    <script src="{{ 'vura-motion.js' | asset_url }}" defer="defer"></script>
 
     {%- if settings.cart_type == 'drawer' -%}
       {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}

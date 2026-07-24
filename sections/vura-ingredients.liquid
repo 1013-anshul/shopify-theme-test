@@ -98,9 +98,9 @@
 
 <section class="vura-ing{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" aria-labelledby="ing-heading-{{ section.id }}">
   <div class="vura-ing__container">
-    <header class="vura-ing__header">
-      {%- if section.settings.eyebrow != blank -%}<p class="vura-ing__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
-      <h2 class="vura-ing__heading" id="ing-heading-{{ section.id }}">{{ section.settings.heading }}</h2>
+    <header class="vura-ing__header" data-vura-stagger>
+      {%- if section.settings.eyebrow != blank -%}<p class="vura-ing__eyebrow" data-vura-reveal="up">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="vura-ing__heading" id="ing-heading-{{ section.id }}" data-vura-reveal="mask"><span class="vura-line">{{ section.settings.heading }}</span></h2>
       {%- if section.settings.intro != blank -%}<p class="vura-ing__intro">{{ section.settings.intro }}</p>{%- endif -%}
     </header>
 
@@ -202,7 +202,12 @@
       var cards = Array.prototype.slice.call(grid.querySelectorAll('.vura-ing__card'));
       if (!cards.length) return;
 
-      function setFlipped(card, on) {
+      // `delay` staggers the scroll-driven flips so a row turns as a sequence
+      // rather than all at once. A tap or keypress passes none — a card the
+      // visitor touched must answer immediately.
+      function setFlipped(card, on, delay) {
+        var face = card.querySelector('.vura-ing__flip');
+        if (face) face.style.transitionDelay = (delay || 0) + 'ms';
         card.classList.toggle('is-flipped', on);
         card.setAttribute('aria-pressed', on ? 'true' : 'false');
       }
@@ -220,7 +225,13 @@
       // Scroll-linked flip: a card shows its benefit once it rises past the mid-line,
       // and flips back to the name when it drops below it again.
       var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) { setFlipped(entry.target, entry.isIntersecting); });
+        // Entries arrive in observation order, not visual order, so sort by
+        // position on the page before handing out the stagger.
+        entries.slice().sort(function (a, b) {
+          return cards.indexOf(a.target) - cards.indexOf(b.target);
+        }).forEach(function (entry, i) {
+          setFlipped(entry.target, entry.isIntersecting, i * 110);
+        });
       }, { rootMargin: '0px 0px -50% 0px', threshold: 0 });
       cards.forEach(function (card) { io.observe(card); });
     }

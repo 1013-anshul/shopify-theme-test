@@ -121,12 +121,12 @@
 
 <section id="vura-gallery-{{ section.id }}" class="vura-gallery{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
   {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
-    <div class="vura-gallery__header">
+    <div class="vura-gallery__header" data-vura-stagger>
       {%- if section.settings.eyebrow != blank -%}
-        <span class="vura-gallery__eyebrow">{{ section.settings.eyebrow }}</span>
+        <span class="vura-gallery__eyebrow" data-vura-reveal="up">{{ section.settings.eyebrow }}</span>
       {%- endif -%}
       {%- if section.settings.heading != blank -%}
-        <h2 class="vura-gallery__heading">{{ section.settings.heading }}</h2>
+        <h2 class="vura-gallery__heading" data-vura-reveal="mask"><span class="vura-line">{{ section.settings.heading }}</span></h2>
       {%- endif -%}
     </div>
   {%- endif -%}
@@ -229,7 +229,19 @@
       raf = requestAnimationFrame(animate);
     }
     function startAnim() { if (!raf) raf = requestAnimationFrame(animate); }
-    function goTo(t) { target = t; startAnim(); }
+
+    /* The wheel sits at manual + scrollTurn. `manual` is what drag and tap own;
+       `scrollTurn` is what the page scroll contributes. Keeping them separate
+       means scrolling never fights a card the visitor just chose, and a drag
+       never resets the scroll contribution. */
+    var manual = 0;
+    var scrollTurn = 0;
+    var TURNS = N * 0.5;   // cards advanced across one full pass of the viewport
+
+    // A drag writes `pos` straight out for 1:1 finger tracking, so scroll must
+    // stay out of the way until the finger lifts.
+    function retarget() { if (drag) return; target = manual + scrollTurn; startAnim(); }
+    function goTo(t) { manual = t - scrollTurn; retarget(); }
 
     function suppressClickOnce(card) {
       var link = card && card.querySelector('a');
@@ -281,11 +293,44 @@
       if (drag && drag.decided && drag.horizontal && e.cancelable) e.preventDefault();
     }
 
+    /* Page scroll turns the wheel while the section is on screen. The page goes
+       on scrolling exactly as it did — this rides along on top of it and never
+       captures the gesture. */
+    var inView = false;
+    var scrollQueued = false;
+    var scrollIO = null;
+
+    function measureScroll() {
+      scrollQueued = false;
+      var r = root.getBoundingClientRect();
+      var vh = window.innerHeight || 0;
+      if (!vh) return;
+      // 0 while the section's top edge is at the bottom of the viewport,
+      // 1 once its bottom edge has cleared the top.
+      var p = (vh - r.top) / (vh + r.height);
+      scrollTurn = Math.max(0, Math.min(1, p)) * TURNS;
+      retarget();
+    }
+    function onPageScroll() {
+      if (!inView || scrollQueued) return;
+      scrollQueued = true;
+      requestAnimationFrame(measureScroll);
+    }
+
     function enable() {
       if (on) return;
       on = true;
-      pos = 0; target = 0;
+      pos = 0; target = 0; manual = 0; scrollTurn = 0;
       render();
+      if (!reduce.matches && 'IntersectionObserver' in window) {
+        scrollIO = new IntersectionObserver(function (entries) {
+          inView = entries[0].isIntersecting;
+          if (inView) measureScroll();
+        });
+        scrollIO.observe(root);
+        window.addEventListener('scroll', onPageScroll, { passive: true });
+        window.addEventListener('resize', onPageScroll, { passive: true });
+      }
       track.addEventListener('pointerdown', onDown);
       track.addEventListener('touchmove', onTouchMove, { passive: false });
       window.addEventListener('pointermove', onMove, { passive: false });
@@ -296,6 +341,10 @@
       if (!on) return;
       on = false; drag = null;
       if (raf) { cancelAnimationFrame(raf); raf = null; }
+      if (scrollIO) { scrollIO.disconnect(); scrollIO = null; }
+      inView = false;
+      window.removeEventListener('scroll', onPageScroll);
+      window.removeEventListener('resize', onPageScroll);
       track.removeEventListener('pointerdown', onDown);
       track.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('pointermove', onMove);

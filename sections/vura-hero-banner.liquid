@@ -33,6 +33,11 @@
     }
   }
   .vura-herob__link:hover .vura-herob__img { filter: brightness(0.97); }
+  /* Parallax only where object-fit already crops the banner — on mobile the
+     image runs at its true aspect ratio and an overscale would re-frame it. */
+  @media (max-width: 749px) {
+    .vura-herob__img[data-vura-parallax] { transform: none; }
+  }
   .vura-herob__text {
     position: absolute; left: 6%; top: 50%; transform: translateY(-50%);
     width: 42%; max-width: 640px; z-index: 2; line-height: 1.1;
@@ -59,11 +64,13 @@
       height="{{ hero_h }}"
       loading="eager"
       fetchpriority="high"
+      data-vura-parallax="0.08"
+      data-vura-parallax-scale="1.06"
     >
     {%- if eyebrow != blank or heading != blank -%}
-      <div class="vura-herob__text">
-        {%- if eyebrow != blank -%}<p class="vura-herob__eyebrow">{{ eyebrow }}</p>{%- endif -%}
-        {%- if heading != blank -%}<h1 class="vura-herob__title">{{ heading }}</h1>{%- endif -%}
+      <div class="vura-herob__text" data-vura-stagger>
+        {%- if eyebrow != blank -%}<p class="vura-herob__eyebrow" data-vura-reveal="up">{{ eyebrow }}</p>{%- endif -%}
+        {%- if heading != blank -%}<h1 class="vura-herob__title" data-vura-reveal="up">{{ heading }}</h1>{%- endif -%}
       </div>
     {%- endif -%}
   {%- if link != blank -%}</a>{%- endif -%}
