@@ -395,12 +395,29 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "vura-reels": {
+      "type": "vura-reels",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "eyebrow": "In real life",
+        "heading": "See it in use",
+        "card_gap": 16,
+        "seconds_per_card": 6,
+        "card_width": 340,
+        "pause_on_hover": true,
+        "background": "#EFE9DA",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
     }
   },
   "order": [
     "main",
     "vura-benefits-bar",
     "instagram_feed_product",
+    "vura-reels",
     "vura-confidence",
     "vura-ingredients",
     "vura-faq",

@@ -1,0 +1,395 @@
+{% comment %}
+  VURA Reels — a marquee of self-hosted vertical videos.
+
+  Same feel as the Instagram feed above it, but the clips are uploaded through
+  Shopify, so they come off Shopify's CDN with no third-party JavaScript.
+
+  Two things worth knowing before editing:
+
+  1. The seam. The track holds two identical groups and animates 0 -> -50%, so
+     the loop is only invisible if each group is exactly half the track. That
+     means the spacing lives on every card as margin-right, never as a flex gap
+     on the track or group — a gap would add one extra space between the groups
+     and the loop would visibly jump.
+
+  2. The video source. video_tag hardcodes a single high-bitrate rendition
+     (Shopify's own docs show HD-1080p-7.2Mbps.mp4), which is wasteful for a
+     ~340px card. We pick the 720p mp4 by hand for the card and keep the largest
+     rendition for the fullscreen player.
+{% endcomment %}
+
+{%- liquid
+  assign gap = section.settings.card_gap
+  assign card_w = section.settings.card_width
+  assign count = section.blocks.size
+  assign duration = count | times: section.settings.seconds_per_card
+  if duration <= 0
+    assign duration = 24
+  endif
+-%}
+
+{%- style -%}
+  .vura-reels { position: relative; overflow: hidden; }
+  /* Dissolve both ends rather than shearing the cards off at the edge. */
+  .vura-reels__viewport {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .vura-reels__header {
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto 1.6rem;
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+  .vura-reels__eyebrow {
+    display: block; margin: 0 0 0.5rem;
+    font-family: var(--font-body, Inter, sans-serif);
+    font-size: 1.1rem; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 600; color: var(--vura-terracotta, #8D3B2D);
+  }
+  .vura-reels__heading {
+    margin: 0; font-family: var(--font-display, Georgia, serif); font-weight: 700;
+    font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.1;
+    color: var(--vura-ink, #1A2A22);
+  }
+  .vura-reels__track {
+    display: flex; width: max-content; will-change: transform;
+    animation: vura-reels-scroll var(--vura-reels-dur, 48s) linear infinite;
+  }
+  .vura-reels__group { display: flex; flex-shrink: 0; }
+  .vura-reels.is-paused .vura-reels__track,
+  .vura-reels[data-pause-on-hover="true"]:hover .vura-reels__track {
+    animation-play-state: paused;
+  }
+  @keyframes vura-reels-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .vura-reels__card {
+    position: relative; flex: 0 0 auto;
+    width: var(--vura-reels-card, 340px);
+    aspect-ratio: 9 / 16;
+    /* The spacing lives here — see the note at the top of this file. */
+    margin: 0 var(--vura-reels-gap, 16px) 0 0;
+    padding: 0; border: 0; border-radius: 20px; overflow: hidden;
+    background: var(--vura-forest-deep, #0E2118);
+    box-shadow: 0 14px 34px rgba(26, 42, 34, 0.2);
+    cursor: pointer; display: block;
+    transition: transform 0.25s var(--ease-herbal, ease), box-shadow 0.25s ease;
+  }
+  .vura-reels__card:hover { transform: translateY(-4px); box-shadow: 0 20px 44px rgba(26, 42, 34, 0.28); }
+  .vura-reels__card:focus-visible {
+    outline: var(--focus-ring-width, 2px) solid var(--vura-saffron, #FFC03F);
+    outline-offset: 3px;
+  }
+  .vura-reels__poster,
+  .vura-reels__video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  /* The video sits over the poster and is transparent until it has frames, so
+     the poster is what shows while nothing has been downloaded yet. */
+  .vura-reels__video { z-index: 1; }
+  .vura-reels__caption {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    margin: 0; padding: 2.4rem 1.4rem 1.2rem;
+    font-family: var(--font-body, Inter, sans-serif);
+    font-size: 1.25rem; line-height: 1.35; text-align: left;
+    color: var(--vura-paper, #F8F3E7);
+    background: linear-gradient(to top, rgba(8, 20, 14, 0.72), rgba(8, 20, 14, 0));
+  }
+  .vura-reels__play {
+    position: absolute; z-index: 2; right: 1.1rem; top: 1.1rem;
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(8, 20, 14, 0.55); color: var(--vura-paper, #F8F3E7);
+    backdrop-filter: blur(2px); pointer-events: none;
+  }
+  .vura-reels__play svg { width: 15px; height: 15px; }
+
+  /* Fullscreen player */
+  .vura-reels__lightbox {
+    width: min(94vw, 460px); max-width: 94vw; max-height: 92vh;
+    padding: 0; border: 0; border-radius: 18px; overflow: hidden;
+    background: #000; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  }
+  .vura-reels__lightbox::backdrop { background: rgba(8, 20, 14, 0.82); }
+  .vura-reels__lightbox video { display: block; width: 100%; height: auto; max-height: 92vh; background: #000; }
+  .vura-reels__close {
+    position: absolute; top: 10px; right: 10px; z-index: 3;
+    width: 38px; height: 38px; border: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(8, 20, 14, 0.6); color: #fff; font-size: 20px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vura-reels__close:hover { background: rgba(8, 20, 14, 0.85); }
+
+  @media screen and (max-width: 749px) {
+    .vura-reels__card { border-radius: 16px; }
+    .vura-reels__header { margin-bottom: 1.2rem; }
+  }
+
+  /* No marquee for anyone who asked for less motion — the row becomes a plain
+     horizontal scroller they drive themselves, and nothing autoplays. */
+  @media (prefers-reduced-motion: reduce) {
+    .vura-reels__track { animation: none; }
+    .vura-reels__viewport { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .vura-reels__card { transition: none; }
+    .vura-reels__card:hover { transform: none; }
+  }
+{%- endstyle -%}
+
+{%- capture reel_cards -%}
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign vid = block.settings.video
+      assign card_src = blank
+      assign full_src = blank
+      if vid != blank
+        # Pick by width, not height: on a portrait clip the height is the long
+        # side, so a height rule would reject every rendition. The card wants the
+        # smallest file that still covers it at 2x; the fullscreen player wants
+        # the biggest one we have.
+        for s in vid.sources
+          if s.format != 'mp4'
+            continue
+          endif
+          if full_src == blank or s.width > full_src.width
+            assign full_src = s
+          endif
+          if s.width >= 600
+            if card_src == blank or s.width < card_src.width
+              assign card_src = s
+            endif
+          endif
+        endfor
+        if card_src == blank
+          assign card_src = full_src
+        endif
+      endif
+      assign label = block.settings.caption | default: 'Play video'
+    -%}
+    {%- if card_src != blank -%}
+      <button
+        type="button"
+        class="vura-reels__card"
+        data-reel-card
+        data-full-src="{{ full_src.url }}"
+        aria-label="{{ label | escape }}"
+        {{ block.shopify_attributes }}
+      >
+        {%- if vid.preview_image != blank -%}
+          <img
+            class="vura-reels__poster"
+            src="{{ vid.preview_image | image_url: width: 480 }}"
+            alt=""
+            width="{{ card_w }}"
+            height="{{ card_w | times: 16 | divided_by: 9 }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+        <video class="vura-reels__video" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
+          <source src="{{ card_src.url }}" type="{{ card_src.mime_type }}">
+        </video>
+        <span class="vura-reels__play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        {%- if block.settings.caption != blank -%}
+          <p class="vura-reels__caption">{{ block.settings.caption }}</p>
+        {%- endif -%}
+      </button>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<section
+  class="vura-reels{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+  id="vura-reels-{{ section.id }}"
+  data-pause-on-hover="{{ section.settings.pause_on_hover }}"
+  style="
+    --vura-reels-gap: {{ gap }}px;
+    --vura-reels-card: {{ card_w }}px;
+    --vura-reels-dur: {{ duration }}s;
+    background: {{ section.settings.background }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+    <div class="vura-reels__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="vura-reels__eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="vura-reels__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if reel_cards contains 'vura-reels__card' -%}
+    <div class="vura-reels__viewport">
+      <div class="vura-reels__track" data-reel-track>
+        <div class="vura-reels__group">{{ reel_cards }}</div>
+        {%- comment -%} The duplicate is what makes the loop seamless. {%- endcomment -%}
+        <div class="vura-reels__group" aria-hidden="true" data-reel-clone>{{ reel_cards }}</div>
+      </div>
+    </div>
+
+    <dialog class="vura-reels__lightbox" data-reel-lightbox aria-label="Video">
+      <button type="button" class="vura-reels__close" data-reel-close aria-label="Close video">&times;</button>
+      <video data-reel-player playsinline controls loop preload="none"></video>
+    </dialog>
+  {%- elsif request.design_mode -%}
+    <p style="text-align:center; padding: 2rem 1.5rem; font-style: italic; color: var(--vura-paper-ink-muted, #4A5750);">
+      Add a video block to fill this row.
+    </p>
+  {%- endif -%}
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('vura-reels-{{ section.id }}');
+    if (!root || root.dataset.reelsReady) return;
+    root.dataset.reelsReady = '1';
+
+    var track = root.querySelector('[data-reel-track]');
+    var cards = [].slice.call(root.querySelectorAll('[data-reel-card]'));
+    if (!track || !cards.length) return;
+
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // Clones are decorative: keep them off the tab order and out of the a11y tree.
+    var clone = root.querySelector('[data-reel-clone]');
+    if (clone) {
+      [].forEach.call(clone.querySelectorAll('[data-reel-card]'), function (c) {
+        c.tabIndex = -1;
+      });
+    }
+
+    /* ---------- play only what is actually on screen ---------- */
+    // Nothing downloads until the section itself is near the viewport, and then
+    // only the cards in view ever decode. preload="none" does the rest.
+    function armPlayback() {
+      if (calm.matches) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var v = e.target.querySelector('.vura-reels__video');
+          if (!v) return;
+          if (e.isIntersecting) {
+            var p = v.play();
+            if (p && p.catch) p.catch(function () {});
+          } else if (!v.paused) {
+            v.pause();
+          }
+        });
+      }, { threshold: 0.35 });
+      cards.forEach(function (c) { io.observe(c); });
+    }
+
+    var sectionIO = new IntersectionObserver(function (entries, obs) {
+      if (entries.some(function (e) { return e.isIntersecting; })) {
+        obs.disconnect();
+        armPlayback();
+      }
+    }, { rootMargin: '300px 0px' });
+    sectionIO.observe(root);
+
+    /* ---------- tap a card for the full clip, with sound ---------- */
+    var box = root.querySelector('[data-reel-lightbox]');
+    var player = root.querySelector('[data-reel-player]');
+    var closeBtn = root.querySelector('[data-reel-close]');
+    var opener = null;
+
+    function open(card) {
+      if (!box || !player) return;
+      var src = card.getAttribute('data-full-src');
+      if (!src) return;
+      opener = card;
+      player.src = src;
+      player.muted = false;
+      player.currentTime = 0;
+      root.classList.add('is-paused');       // hold the marquee while watching
+      if (typeof box.showModal === 'function') box.showModal();
+      else box.setAttribute('open', '');
+      var p = player.play();
+      if (p && p.catch) p.catch(function () {});
+    }
+
+    function close() {
+      if (!box) return;
+      player.pause();
+      player.removeAttribute('src');
+      player.load();                          // drop the buffer
+      root.classList.remove('is-paused');
+      if (box.open) {
+        if (typeof box.close === 'function') box.close();
+        else box.removeAttribute('open');
+      }
+      if (opener) { opener.focus(); opener = null; }
+    }
+
+    cards.forEach(function (c) {
+      c.addEventListener('click', function () { open(c); });
+    });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (box) {
+      box.addEventListener('close', close);
+      // click outside the video closes it
+      box.addEventListener('click', function (e) {
+        if (e.target === box) close();
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "VURA Reels",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "In real life" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "See it in use" },
+    {
+      "type": "range", "id": "card_gap", "label": "Space between cards",
+      "min": 0, "max": 48, "step": 2, "unit": "px", "default": 16
+    },
+    {
+      "type": "range", "id": "seconds_per_card", "label": "Scroll speed",
+      "info": "Seconds each card takes to cross. Higher is slower. Speed stays the same as you add videos.",
+      "min": 2, "max": 14, "step": 1, "unit": "s", "default": 6
+    },
+    {
+      "type": "range", "id": "card_width", "label": "Card width",
+      "min": 220, "max": 420, "step": 10, "unit": "px", "default": 340
+    },
+    { "type": "checkbox", "id": "pause_on_hover", "label": "Pause when hovered", "default": true },
+    { "type": "color", "id": "background", "label": "Background", "default": "#EFE9DA" },
+    {
+      "type": "range", "id": "padding_top", "label": "Padding top",
+      "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40
+    },
+    {
+      "type": "range", "id": "padding_bottom", "label": "Padding bottom",
+      "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "reel",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video", "id": "video", "label": "Video",
+          "info": "Upload a 9:16 clip, 1080x1920, about 6 to 8 seconds. Keep the audio track for the fullscreen player."
+        },
+        { "type": "text", "id": "caption", "label": "Caption", "info": "Optional. Shown over the bottom of the card." }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [{ "name": "VURA Reels", "blocks": [{ "type": "reel" }, { "type": "reel" }, { "type": "reel" }] }],
+  "enabled_on": { "templates": ["index", "product", "page"] }
+}
+{% endschema %}
