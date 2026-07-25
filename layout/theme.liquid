@@ -20,15 +20,34 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- liquid
+      # Homepage SEO fallback. Shopify's Online Store > Preferences homepage title and
+      # meta description have no Admin API equivalent, so without this the homepage
+      # ships as <title>Vura</title> with no meta description at all. Setting a homepage
+      # title in Preferences makes page_title differ from shop.name, which switches
+      # these fallbacks back off on their own.
+      assign seo_title = page_title
+      assign seo_description = page_description
+
+      if template.name == 'index'
+        if page_title == shop.name
+          assign seo_title = 'Vura | Phitkari Natural Deodorant Spray, Aluminium Free'
+        endif
+        if page_description == blank
+          assign seo_description = 'A mineral underarm spray built on Phitkari. Controls odour without blocking sweat. No aluminium chlorohydrate, no alcohol, no synthetic fragrance. Made in Bharat.'
+        endif
+      endif
+    -%}
+
     <title>
-      {{ page_title }}
+      {{ seo_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- unless seo_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
+    {% if seo_description %}
+      <meta name="description" content="{{ seo_description | escape }}">
     {% endif %}
 
     {% render 'meta-tags' %}
