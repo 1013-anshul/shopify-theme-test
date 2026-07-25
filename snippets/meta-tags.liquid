@@ -4,13 +4,16 @@
   assign og_type = 'website'
   assign og_description = page_description | default: shop.description | default: shop.name
 
-  # theme.liquid passes its homepage SEO fallback in, since {% render %} does not
-  # inherit parent scope. Without this the homepage shares as just "Vura".
-  if seo_title != blank
-    assign og_title = seo_title
-  endif
-  if seo_description != blank
-    assign og_description = seo_description
+  # Homepage SEO fallback, mirroring layout/theme.liquid. Kept self-contained rather
+  # than passed in via {% render %} params, which did not arrive at runtime. Without
+  # this the homepage shares on social as just "Vura", since shop.description is empty.
+  if template.name == 'index'
+    if page_title == shop.name
+      assign og_title = 'Vura | Phitkari Natural Deodorant Spray, Aluminium Free'
+    endif
+    if page_description == blank
+      assign og_description = 'A mineral underarm spray built on Phitkari. Controls odour without blocking sweat. No aluminium chlorohydrate, no alcohol, no synthetic fragrance. Made in Bharat.'
+    endif
   endif
 
   if request.page_type == 'product'
