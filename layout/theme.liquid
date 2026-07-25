@@ -50,7 +50,7 @@
       <meta name="description" content="{{ seo_description | escape }}">
     {% endif %}
 
-    {% render 'meta-tags' %}
+    {% render 'meta-tags', seo_title: seo_title, seo_description: seo_description %}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
