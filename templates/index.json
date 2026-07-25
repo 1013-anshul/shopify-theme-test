@@ -256,6 +256,89 @@
         "padding_bottom": 64
       }
     },
+    "1784928196f1654230": {
+      "type": "apps",
+      "blocks": {
+        "gsc_instagram_feed_instafeed_pByh6m": {
+          "type": "shopify://apps/gsc-instagram-feed/blocks/instafeed/96970b1b-b770-454f-b16b-51f47e1aa4ed",
+          "settings": {
+            "widget_id": "GSC-vIziIBVizOIhCnJ"
+          }
+        }
+      },
+      "block_order": [
+        "gsc_instagram_feed_instafeed_pByh6m"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "vura-reels": {
+      "type": "vura-reels",
+      "blocks": {
+        "reel_dUq4hJ": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-40356.mp4",
+            "caption": ""
+          }
+        },
+        "reel_UWBJRd": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-6715.mp4",
+            "caption": ""
+          }
+        },
+        "reel_kMWWDh": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-18934.mp4",
+            "caption": ""
+          }
+        },
+        "reel_9tphmb": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-91525.mp4",
+            "caption": ""
+          }
+        },
+        "reel_4rFTkz": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-43938.mp4",
+            "caption": ""
+          }
+        },
+        "reel_QCBXNU": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-11426.mp4",
+            "caption": ""
+          }
+        }
+      },
+      "block_order": [
+        "reel_dUq4hJ",
+        "reel_UWBJRd",
+        "reel_kMWWDh",
+        "reel_9tphmb",
+        "reel_4rFTkz",
+        "reel_QCBXNU"
+      ],
+      "settings": {
+        "eyebrow": "Join our community for daily inspiration and a closer look at our creations",
+        "heading": "Follow us on Instagram",
+        "card_gap": 16,
+        "seconds_per_card": 6,
+        "card_width": 340,
+        "pause_on_hover": true,
+        "background": "#efe9da",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "vura-confidence": {
       "type": "vura-confidence",
       "settings": {
@@ -372,39 +455,6 @@
         "full_width": true,
         "padding_top": 40,
         "padding_bottom": 52
-      }
-    },
-    "1784928196f1654230": {
-      "type": "apps",
-      "blocks": {
-        "gsc_instagram_feed_instafeed_pByh6m": {
-          "type": "shopify://apps/gsc-instagram-feed/blocks/instafeed/96970b1b-b770-454f-b16b-51f47e1aa4ed",
-          "settings": {
-            "widget_id": "GSC-vIziIBVizOIhCnJ"
-          }
-        }
-      },
-      "block_order": [
-        "gsc_instagram_feed_instafeed_pByh6m"
-      ],
-      "settings": {
-        "include_margins": true
-      }
-    },
-    "vura-reels": {
-      "type": "vura-reels",
-      "blocks": {},
-      "block_order": [],
-      "settings": {
-        "eyebrow": "In real life",
-        "heading": "See it in use",
-        "card_gap": 16,
-        "seconds_per_card": 6,
-        "card_width": 340,
-        "pause_on_hover": true,
-        "background": "#EFE9DA",
-        "padding_top": 40,
-        "padding_bottom": 40
       }
     }
   },

@@ -288,9 +288,9 @@
         "eyebrow": "Full transparency",
         "heading": "What's inside",
         "intro": "The few things that do the work, plus our full formula so you can see everything.",
+        "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid.",
         "padding_top": 56,
-        "padding_bottom": 64,
-        "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid."
+        "padding_bottom": 64
       }
     },
     "vura-faq": {
@@ -398,8 +398,6 @@
     },
     "vura-reels": {
       "type": "vura-reels",
-      "blocks": {},
-      "block_order": [],
       "settings": {
         "eyebrow": "In real life",
         "heading": "See it in use",
