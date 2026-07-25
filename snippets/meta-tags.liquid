@@ -7,9 +7,9 @@
   # Homepage SEO fallback, mirroring layout/theme.liquid. Self-contained on purpose:
   # passing the values in as render parameters did not arrive at runtime. Without this
   # the homepage shares on social as just "Vura", since shop.description is empty.
-  # Note: never write a Liquid tag delimiter inside a liquid-tag comment. The parser
-  # closes the block at the first closing delimiter it sees, even inside a comment.
-  if template.name == 'index'
+  # Uses request.page_type rather than template.name: template.name did not evaluate
+  # inside this snippet, while request.page_type is already used below for og:type.
+  if request.page_type == 'index'
     if page_title == shop.name
       assign og_title = 'Vura | Phitkari Natural Deodorant Spray, Aluminium Free'
     endif
