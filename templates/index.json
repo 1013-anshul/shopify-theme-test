@@ -330,7 +330,7 @@
       "settings": {
         "eyebrow": "",
         "heading": "Follow us on Instagram",
-        "card_gap": 16,
+        "card_gap": 8,
         "seconds_per_card": 6,
         "card_width": 340,
         "pause_on_hover": true,
@@ -338,7 +338,7 @@
         "padding_top": 40,
         "padding_bottom": 40,
         "subheading": "Join our community for daily inspiration and a closer look at our creations",
-        "aspect": "9 / 16",
+        "aspect": "3 / 4",
         "button_label": "Visit Instagram",
         "button_link": "https://www.instagram.com/"
       }

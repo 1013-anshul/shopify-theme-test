@@ -401,14 +401,14 @@
       "settings": {
         "eyebrow": "In real life",
         "heading": "See it in use",
-        "card_gap": 16,
+        "card_gap": 8,
         "seconds_per_card": 6,
         "card_width": 340,
         "pause_on_hover": true,
         "background": "#EFE9DA",
         "padding_top": 40,
         "padding_bottom": 40,
-        "aspect": "9 / 16",
+        "aspect": "3 / 4",
         "button_label": "Visit Instagram",
         "button_link": "https://www.instagram.com/"
       }

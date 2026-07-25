@@ -140,9 +140,12 @@
   @media screen and (max-width: 749px) {
     .vura-reels__sub { font-size: 1.35rem; }
     .vura-reels__cta { margin-top: 1.8rem; }
+    /* Matched to the Instagram row above. Its true layout size is 340px wide on
+       desktop and 109px on a 390px phone, which is 28vw. Measure that row with
+       offsetWidth, not getBoundingClientRect: its spotlight-stack effect scales
+       the centred slide, so the painted box reads anywhere from 340 to 367. */
     .vura-reels__card {
-      width: min(var(--vura-reels-card, 340px), 32vw);
-      margin-right: calc(var(--vura-reels-gap, 16px) * 0.55);
+      width: min(var(--vura-reels-card, 340px), 28vw);
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(26, 42, 34, 0.18);
     }
@@ -460,7 +463,7 @@
     },
     {
       "type": "range", "id": "card_gap", "label": "Space between cards",
-      "min": 0, "max": 48, "step": 2, "unit": "px", "default": 16
+      "min": 0, "max": 48, "step": 1, "unit": "px", "default": 6
     },
     {
       "type": "range", "id": "seconds_per_card", "label": "Scroll speed",
@@ -469,7 +472,7 @@
     },
     {
       "type": "range", "id": "card_width", "label": "Card width",
-      "min": 220, "max": 420, "step": 10, "unit": "px", "default": 340
+      "min": 200, "max": 480, "step": 10, "unit": "px", "default": 340
     },
     { "type": "checkbox", "id": "pause_on_hover", "label": "Pause when hovered", "default": true },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Visit Instagram" },
