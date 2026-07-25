@@ -53,6 +53,13 @@
     font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.1;
     color: var(--vura-ink, #1A2A22);
   }
+  .vura-reels__sub {
+    margin: 0.6rem auto 0; max-width: 46rem;
+    font-family: var(--font-body, Inter, sans-serif);
+    font-size: 1.5rem; line-height: 1.45;
+    color: var(--vura-paper-ink-muted, #4A5750);
+  }
+  .vura-reels__cta { margin-top: 2.4rem; text-align: center; }
   .vura-reels__track {
     display: flex; width: max-content; will-change: transform;
     animation: vura-reels-scroll var(--vura-reels-dur, 48s) linear infinite;
@@ -70,7 +77,7 @@
   .vura-reels__card {
     position: relative; flex: 0 0 auto;
     width: var(--vura-reels-card, 340px);
-    aspect-ratio: 9 / 16;
+    aspect-ratio: var(--vura-reels-aspect, 9 / 16);
     /* The spacing lives here — see the note at the top of this file. */
     margin: 0 var(--vura-reels-gap, 16px) 0 0;
     padding: 0; border: 0; border-radius: 20px; overflow: hidden;
@@ -108,6 +115,8 @@
     backdrop-filter: blur(2px); pointer-events: none;
   }
   .vura-reels__play svg { width: 15px; height: 15px; }
+  .vura-reels__play { transition: opacity 0.3s ease; }
+  .vura-reels__card.is-playing .vura-reels__play { opacity: 0; }
 
   /* Fullscreen player */
   .vura-reels__lightbox {
@@ -125,9 +134,22 @@
   }
   .vura-reels__close:hover { background: rgba(8, 20, 14, 0.85); }
 
+  /* Phones get a much smaller card. At the desktop width a 9:16 card is taller
+     than the viewport and swallows the screen, so it scales with the viewport
+     instead, which is what the Instagram row above it does too. */
   @media screen and (max-width: 749px) {
-    .vura-reels__card { border-radius: 16px; }
+    .vura-reels__sub { font-size: 1.35rem; }
+    .vura-reels__cta { margin-top: 1.8rem; }
+    .vura-reels__card {
+      width: min(var(--vura-reels-card, 340px), 32vw);
+      margin-right: calc(var(--vura-reels-gap, 16px) * 0.55);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(26, 42, 34, 0.18);
+    }
     .vura-reels__header { margin-bottom: 1.2rem; }
+    .vura-reels__play { width: 24px; height: 24px; right: 0.5rem; top: 0.5rem; }
+    .vura-reels__play svg { width: 10px; height: 10px; }
+    .vura-reels__caption { font-size: 1.05rem; padding: 1.6rem 0.8rem 0.7rem; }
   }
 
   /* No marquee for anyone who asked for less motion — the row becomes a plain
@@ -148,9 +170,10 @@
       assign full_src = blank
       if vid != blank
         # Pick by width, not height: on a portrait clip the height is the long
-        # side, so a height rule would reject every rendition. The card wants the
-        # smallest file that still covers it at 2x; the fullscreen player wants
-        # the biggest one we have.
+        # side, so a height rule would reject every rendition. The threshold is
+        # the card's own width rather than a fixed number, because a 720x1280
+        # upload only yields renditions 270/404/606 wide and any fixed cutoff
+        # near 600 would push every card onto the largest file.
         for s in vid.sources
           if s.format != 'mp4'
             continue
@@ -158,7 +181,7 @@
           if full_src == blank or s.width > full_src.width
             assign full_src = s
           endif
-          if s.width >= 600
+          if s.width >= card_w
             if card_src == blank or s.width < card_src.width
               assign card_src = s
             endif
@@ -211,6 +234,7 @@
     --vura-reels-gap: {{ gap }}px;
     --vura-reels-card: {{ card_w }}px;
     --vura-reels-dur: {{ duration }}s;
+    --vura-reels-aspect: {{ section.settings.aspect }};
     background: {{ section.settings.background }};
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
@@ -224,6 +248,9 @@
       {%- if section.settings.heading != blank -%}
         <h2 class="vura-reels__heading">{{ section.settings.heading }}</h2>
       {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="vura-reels__sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
     </div>
   {%- endif -%}
 
@@ -235,6 +262,14 @@
         <div class="vura-reels__group" aria-hidden="true" data-reel-clone>{{ reel_cards }}</div>
       </div>
     </div>
+
+    {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+      <div class="vura-reels__cta">
+        <a class="button" href="{{ section.settings.button_link }}" target="_blank" rel="noopener">
+          {{ section.settings.button_label }}
+        </a>
+      </div>
+    {%- endif -%}
 
     <dialog class="vura-reels__lightbox" data-reel-lightbox aria-label="Video">
       <button type="button" class="vura-reels__close" data-reel-close aria-label="Close video">&times;</button>
@@ -270,21 +305,76 @@
     /* ---------- play only what is actually on screen ---------- */
     // Nothing downloads until the section itself is near the viewport, and then
     // only the cards in view ever decode. preload="none" does the rest.
+    // Shopify only hands the theme one mp4 rendition, so every clip is the full
+    // 1080-line file. Decoding six of those at once is what makes a phone stutter,
+    // so only a few of the most visible cards ever play; the rest hold on their
+    // poster. MAX is deliberately small.
+    var MAX = window.matchMedia('(min-width: 750px)').matches ? 4 : 3;
+    var visible = [];
+
+    function refresh() {
+      // most visible first, so the ones a shopper is actually looking at win
+      visible.sort(function (a, b) { return b.ratio - a.ratio; });
+      visible.forEach(function (item, i) {
+        var v = item.card.querySelector('.vura-reels__video');
+        if (!v) return;
+        if (i < MAX) {
+          if (v.paused) {
+            v.muted = true;          // iOS only ever autoplays muted
+            var p = v.play();
+            if (p && p.then) {
+              p.then(function () { item.card.classList.add('is-playing'); })
+               .catch(function () {});   // refused: low power mode, data saver
+            } else {
+              item.card.classList.add('is-playing');
+            }
+          }
+        } else if (!v.paused) {
+          v.pause();
+          item.card.classList.remove('is-playing');
+        }
+      });
+    }
+
+    var armed = false;
     function armPlayback() {
-      if (calm.matches) return;
+      if (armed || calm.matches) return;
+      armed = true;
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-          var v = e.target.querySelector('.vura-reels__video');
-          if (!v) return;
+          var idx = -1;
+          for (var i = 0; i < visible.length; i++) {
+            if (visible[i].card === e.target) { idx = i; break; }
+          }
           if (e.isIntersecting) {
-            var p = v.play();
-            if (p && p.catch) p.catch(function () {});
-          } else if (!v.paused) {
-            v.pause();
+            if (idx === -1) visible.push({ card: e.target, ratio: e.intersectionRatio });
+            else visible[idx].ratio = e.intersectionRatio;
+          } else {
+            if (idx !== -1) visible.splice(idx, 1);
+            var v = e.target.querySelector('.vura-reels__video');
+            if (v && !v.paused) { v.pause(); e.target.classList.remove('is-playing'); }
           }
         });
-      }, { threshold: 0.35 });
+        refresh();
+      }, { threshold: [0, 0.3, 0.6, 0.9] });
       cards.forEach(function (c) { io.observe(c); });
+
+      // Belt and braces: if the observer never reports back, every card would
+      // sit frozen on its poster. Start the first few regardless.
+      setTimeout(function () {
+        if (visible.length) return;
+        cards.slice(0, MAX).forEach(function (c) {
+          var v = c.querySelector('.vura-reels__video');
+          if (!v || !v.paused) return;
+          v.muted = true;
+          var p = v.play();
+          if (p && p.then) {
+            p.then(function () { c.classList.add('is-playing'); }).catch(function () {});
+          } else {
+            c.classList.add('is-playing');
+          }
+        });
+      }, 1600);
     }
 
     var sectionIO = new IntersectionObserver(function (entries, obs) {
@@ -294,6 +384,14 @@
       }
     }, { rootMargin: '300px 0px' });
     sectionIO.observe(root);
+
+    // Same reasoning one level up: arming must not depend solely on the
+    // observer firing. Late enough that it costs nothing on a normal load.
+    setTimeout(function () {
+      if (armed) return;
+      var r = root.getBoundingClientRect();
+      if (r.top < (window.innerHeight || 800) * 2) armPlayback();
+    }, 2500);
 
     /* ---------- tap a card for the full clip, with sound ---------- */
     var box = root.querySelector('[data-reel-lightbox]');
@@ -351,6 +449,15 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "In real life" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "See it in use" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "info": "Shown under the heading." },
+    {
+      "type": "select", "id": "aspect", "label": "Card shape", "default": "9 / 16",
+      "options": [
+        { "value": "9 / 16", "label": "Tall (reel)" },
+        { "value": "3 / 4", "label": "Portrait (matches the Instagram row)" },
+        { "value": "1 / 1", "label": "Square" }
+      ]
+    },
     {
       "type": "range", "id": "card_gap", "label": "Space between cards",
       "min": 0, "max": 48, "step": 2, "unit": "px", "default": 16
@@ -365,6 +472,8 @@
       "min": 220, "max": 420, "step": 10, "unit": "px", "default": 340
     },
     { "type": "checkbox", "id": "pause_on_hover", "label": "Pause when hovered", "default": true },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Visit Instagram" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Your Instagram profile." },
     { "type": "color", "id": "background", "label": "Background", "default": "#EFE9DA" },
     {
       "type": "range", "id": "padding_top", "label": "Padding top",

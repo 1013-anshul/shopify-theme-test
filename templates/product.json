@@ -407,7 +407,10 @@
         "pause_on_hover": true,
         "background": "#EFE9DA",
         "padding_top": 40,
-        "padding_bottom": 40
+        "padding_bottom": 40,
+        "aspect": "9 / 16",
+        "button_label": "Visit Instagram",
+        "button_link": "https://www.instagram.com/"
       }
     }
   },
