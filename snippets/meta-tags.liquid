@@ -27,6 +27,9 @@
   endif
 %}
 
+{%- comment -%}TEMPORARY diagnostic, remove once the homepage og: fallback is fixed.{%- endcomment -%}
+<meta name="vura-debug" content="pt=[{{ request.page_type }}] tn=[{{ template.name }}] pt_title=[{{ page_title }}] shop=[{{ shop.name }}] eq=[{% if page_title == shop.name %}Y{% else %}N{% endif %}] desc_blank=[{% if page_description == blank %}Y{% else %}N{% endif %}]">
+
 <meta property="og:site_name" content="{{ shop.name }}">
 <meta property="og:url" content="{{ og_url }}">
 <meta property="og:title" content="{{ og_title | escape }}">
