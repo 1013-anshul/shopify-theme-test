@@ -4,15 +4,15 @@
   assign og_type = 'website'
   assign og_description = page_description | default: shop.description | default: shop.name
 
-  # Homepage SEO fallback, mirroring layout/theme.liquid. Self-contained on purpose:
-  # passing the values in as render parameters did not arrive at runtime. Without this
-  # the homepage shares on social as just "Vura", since shop.description is empty.
-  # Uses request.page_type rather than template.name: template.name did not evaluate
-  # inside this snippet, while request.page_type is already used below for og:type.
-  if request.page_type == 'index'
-    if page_title == shop.name
-      assign og_title = 'Vura | Phitkari Natural Deodorant Spray, Aluminium Free'
-    endif
+  # Homepage SEO fallback, mirroring layout/theme.liquid, so the homepage does not
+  # share on social as just "Vura" (shop.description is empty).
+  #
+  # No page-type check: page_title only equals shop.name on the homepage anyway, and
+  # this is the exact comparison that works in layout/theme.liquid. Both the
+  # template.name and request.page_type variants of the outer check failed here.
+  if page_title == shop.name
+    assign og_title = 'Vura | Phitkari Natural Deodorant Spray, Aluminium Free'
+
     if page_description == blank
       assign og_description = 'A mineral underarm spray built on Phitkari. Controls odour without blocking sweat. No aluminium chlorohydrate, no alcohol, no synthetic fragrance. Made in Bharat.'
     endif
@@ -26,9 +26,6 @@
     assign og_url = request.origin
   endif
 %}
-
-{%- comment -%}TEMPORARY diagnostic, remove once the homepage og: fallback is fixed.{%- endcomment -%}
-<meta name="vura-debug" content="pt=[{{ request.page_type }}] tn=[{{ template.name }}] pt_title=[{{ page_title }}] shop=[{{ shop.name }}] eq=[{% if page_title == shop.name %}Y{% else %}N{% endif %}] desc_blank=[{% if page_description == blank %}Y{% else %}N{% endif %}]">
 
 <meta property="og:site_name" content="{{ shop.name }}">
 <meta property="og:url" content="{{ og_url }}">
