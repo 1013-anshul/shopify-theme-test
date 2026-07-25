@@ -110,8 +110,8 @@
         "image_zoom": "lightbox",
         "hide_variants": true,
         "enable_video_looping": false,
-        "padding_top": 60,
-        "padding_bottom": 60
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
     "vura-benefits-bar": {
@@ -234,8 +234,9 @@
       "type": "vura-confidence",
       "settings": {
         "heading": "Buy with confidence",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "color_scheme": "scheme-1"
       }
     },
     "vura-ingredients": {
@@ -290,7 +291,7 @@
         "intro": "The few things that do the work, plus our full formula so you can see everything.",
         "full_list": "Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid.",
         "padding_top": 56,
-        "padding_bottom": 64
+        "padding_bottom": 56
       }
     },
     "vura-faq": {
@@ -357,8 +358,8 @@
       ],
       "settings": {
         "heading": "Questions we get asked",
-        "padding_top": 36,
-        "padding_bottom": 52
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
     "related-products": {
@@ -375,25 +376,8 @@
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
-        "padding_top": 0,
-        "padding_bottom": 60
-      }
-    },
-    "instagram_feed_product": {
-      "type": "apps",
-      "blocks": {
-        "gsc_instagram_feed_instafeed_pByh6m": {
-          "type": "shopify://apps/gsc-instagram-feed/blocks/instafeed/96970b1b-b770-454f-b16b-51f47e1aa4ed",
-          "settings": {
-            "widget_id": "GSC-vIziIBVizOIhCnJ"
-          }
-        }
-      },
-      "block_order": [
-        "gsc_instagram_feed_instafeed_pByh6m"
-      ],
-      "settings": {
-        "include_margins": true
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
     "vura-reels": {
@@ -402,12 +386,12 @@
         "eyebrow": "In real life",
         "heading": "See it in use",
         "card_gap": 8,
-        "seconds_per_card": 6,
+        "seconds_per_card": 3,
         "card_width": 340,
         "pause_on_hover": true,
-        "background": "#EFE9DA",
-        "padding_top": 40,
-        "padding_bottom": 40,
+        "background": "#F8F3E7",
+        "padding_top": 56,
+        "padding_bottom": 56,
         "aspect": "3 / 4",
         "button_label": "Visit Instagram",
         "button_link": "https://www.instagram.com/vura.skincare"
@@ -417,7 +401,6 @@
   "order": [
     "main",
     "vura-benefits-bar",
-    "instagram_feed_product",
     "vura-reels",
     "vura-confidence",
     "vura-ingredients",

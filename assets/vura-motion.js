@@ -3,8 +3,12 @@
  *
  * Three things, in order of how much they matter:
  *   1. Scroll reveals  — opacity + translate, staggered within a group.
- *   2. Parallax        — scroll-linked transform on hero media.
- *   3. Failsafe        — if anything here throws, content becomes visible.
+ *   2. Failsafe        — if anything here throws, content becomes visible.
+ *
+ * There was a parallax pass here that ran getBoundingClientRect on every
+ * scroll frame. It was removed: the page already runs its own animation loops
+ * for the gallery deck and the reels row, and stacking a third scroll-linked
+ * loop on top was making scrolling stutter.
  *
  * Pairs with vura-motion.css. The CSS only applies while <html> carries the
  * .vura-motion class, which the inline boot snippet in theme.liquid sets.
@@ -68,53 +72,6 @@
   }
 
   /* ----------------------------------------------------------------------
-     Parallax
-     ---------------------------------------------------------------------- */
-
-  var parallaxItems = [];
-  var ticking = false;
-
-  function measure(el) {
-    var rect = el.getBoundingClientRect();
-    var vh = window.innerHeight;
-    var centre = rect.top + rect.height / 2;
-    // -1 when the element sits below the fold, +1 once it is above it.
-    var progress = (centre - vh / 2) / (vh / 2 + rect.height / 2);
-    return Math.max(-1, Math.min(1, progress));
-  }
-
-  function paint() {
-    ticking = false;
-    for (var i = 0; i < parallaxItems.length; i++) {
-      var item = parallaxItems[i];
-      if (!item.visible) continue;
-      var shift = measure(item.el) * item.speed * 100;
-      item.el.style.setProperty('--parallax-y', shift.toFixed(2) + 'px');
-    }
-  }
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(paint);
-  }
-
-  var parallaxObserver = null;
-
-  function initParallax(scope) {
-    var els = (scope || document).querySelectorAll('[data-vura-parallax]:not([data-vura-px-seen])');
-    els.forEach(function (el) {
-      el.setAttribute('data-vura-px-seen', '');
-      var speed = parseFloat(el.getAttribute('data-vura-parallax')) || 0.12;
-      var scale = el.getAttribute('data-vura-parallax-scale');
-      if (scale) el.style.setProperty('--parallax-scale', scale);
-      parallaxItems.push({ el: el, speed: speed, visible: false });
-      parallaxObserver.observe(el);
-    });
-    if (parallaxItems.length) paint();
-  }
-
-  /* ----------------------------------------------------------------------
      Boot
      ---------------------------------------------------------------------- */
 
@@ -134,22 +91,7 @@
       { rootMargin: '0px 0px -12% 0px', threshold: 0.01 }
     );
 
-    parallaxObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        for (var i = 0; i < parallaxItems.length; i++) {
-          if (parallaxItems[i].el === entry.target) {
-            parallaxItems[i].visible = entry.isIntersecting;
-          }
-        }
-      });
-      onScroll();
-    });
-
     initReveals(document);
-    initParallax(document);
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
 
     // Only now, with the observers actually wired, stand the boot failsafe
     // down. If anything above threw, it still fires and un-hides the page.
@@ -173,7 +115,6 @@
     document.addEventListener('shopify:section:load', function (event) {
       if (REDUCED.matches) return;
       initReveals(event.target);
-      initParallax(event.target);
     });
   }
 

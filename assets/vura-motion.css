@@ -1,7 +1,7 @@
 /* ==========================================================================
    VURA motion layer
 
-   Scroll reveals, hover micro-interactions, and scroll-linked parallax.
+   Scroll reveals and hover micro-interactions.
    Extends the motion tokens in base.css (--ease-herbal, --t-fast/base/slow);
    it does not replace Dawn's .scroll-trigger system, which still runs for
    stock sections.
@@ -123,18 +123,6 @@
 }
 
 /* --------------------------------------------------------------------------
-   Scroll-linked parallax
-
-   JS writes --parallax-y each frame. The overscale hides the edges that a
-   translated element would otherwise expose inside a fixed-height frame.
-   -------------------------------------------------------------------------- */
-
-.vura-motion [data-vura-parallax] {
-  transform: translate3d(0, var(--parallax-y, 0px), 0) scale(var(--parallax-scale, 1.08));
-  will-change: transform;
-}
-
-/* --------------------------------------------------------------------------
    Accessibility and editor safety
    -------------------------------------------------------------------------- */
 
@@ -144,10 +132,6 @@
     opacity: 1;
     transform: none;
     transition: none;
-  }
-
-  .vura-motion [data-vura-parallax] {
-    transform: none;
   }
 
   .vura-motion [data-vura-lift],

@@ -45,6 +45,12 @@
   padding-top: 3rem;
 }
 
+/* With no blocks and no newsletter column the top row collapses to nothing, so
+   its 5rem of padding would otherwise stack on the section padding below. */
+.footer__content-top:empty {
+  padding-bottom: 0;
+}
+
 .footer__content-bottom:only-child {
   border-top: 0;
 }

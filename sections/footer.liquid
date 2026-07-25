@@ -159,6 +159,22 @@
           </div>
         {%- endif -%}
 
+        {%- liquid
+          # This column renders empty whenever all three of its parts are off,
+          # and an empty column still holds the 5rem padding on the row above,
+          # which is most of why the footer looked lopsided.
+          assign show_newsletter_col = false
+          if section.settings.newsletter_enable
+            assign show_newsletter_col = true
+          endif
+          if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop
+            assign show_newsletter_col = true
+          endif
+          if section.settings.show_social and has_social_icons
+            assign show_newsletter_col = true
+          endif
+        -%}
+        {%- if show_newsletter_col -%}
         <div
           class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {% if settings.animations_reveal_on_scroll %}
@@ -246,6 +262,7 @@
             {%- render 'social-icons', class: 'footer__list-social' -%}
           {%- endif -%}
         </div>
+        {%- endif -%}
       </div>
     {%- endunless -%}
   {%- endif -%}

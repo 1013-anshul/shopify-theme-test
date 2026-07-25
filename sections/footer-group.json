@@ -40,8 +40,8 @@
       "settings": {
         "color_scheme": "scheme-28bfbc84-df48-4cbc-84ef-bf2d52b586ae",
         "full_width": true,
-        "padding_top": 28,
-        "padding_bottom": 0
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
     "footer": {
@@ -57,8 +57,8 @@
         "payment_enable": true,
         "show_policy": true,
         "margin_top": 0,
-        "padding_top": 44,
-        "padding_bottom": 60
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     }
   },
