@@ -28,6 +28,11 @@
   {% endunless %}
 
   {%- style -%}
+    /* This section has no slider layout, so the full gallery would otherwise
+       wrap into a 2000px column. Show only the active item and let the same
+       arrow navigation the product page uses move between them. */
+    .featured-product .product__media-item { display: none; }
+    .featured-product .product__media-item.is-active { display: block; }
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
       padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -73,7 +78,11 @@
       <div class="featured-product product product--{{ section.settings.media_size }} grid grid--1-col gradient color-{{ section.settings.color_scheme }} product--{{ section.settings.media_position }}{% if section.settings.secondary_background == false %} isolate{% endif %} {% if product.media.size > 0 or section.settings.product == blank %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
         <div class="grid__item product__media-wrapper">
           {%- unless placeholder -%}
-            {% render 'product-media-gallery', product: product, variant_images: variant_images, limit: 1 %}
+            {%- comment -%} No limit: the spotlight gets the full gallery so it can be
+                 navigated with the same arrows as the product page. This
+                 section has no gallery_layout or mobile_thumbnails setting,
+                 so the thumbnail rail stays off. {%- endcomment -%}
+            {% render 'product-media-gallery', product: product, variant_images: variant_images %}
           {%- else -%}
             <div class="product__media-item">
               <div

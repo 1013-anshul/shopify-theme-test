@@ -392,8 +392,23 @@
         viewer.classList.add(z === 'prev' ? PREV : NEXT);
       });
       viewer.addEventListener('mouseleave', function () { viewer.classList.remove(PREV, NEXT); cur = ''; });
+      // On the product page the mobile gallery is a real horizontal scroller, so
+      // taps must not fight the swipe. Where nothing scrolls there is no swipe
+      // to protect and a tap is the only way through, so allow it there.
+      //
+      // Measure the inner list, not the viewer: the viewer is a <slider-component>
+      // wrapper whose own scrollWidth always equals its clientWidth, so testing it
+      // would report "no swipe" on the product page and re-break swiping.
+      function scroller() {
+        return viewer.querySelector('[id^="Slider-Gallery"], .slider') || viewer;
+      }
+      function tapNavigable() {
+        if (desktop()) return true;
+        var sc = scroller();
+        return sc.scrollWidth <= sc.clientWidth + 1;
+      }
       viewer.addEventListener('click', function (e) {
-        if (!desktop()) return;
+        if (!tapNavigable()) return;
         var z = zoneAt(e);
         if (!z) return;
         e.preventDefault();
