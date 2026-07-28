@@ -230,13 +230,30 @@
         "padding_bottom": 0
       }
     },
+    "vura-reels": {
+      "type": "vura-reels",
+      "settings": {
+        "eyebrow": "In real life",
+        "heading": "See it in use",
+        "subheading": "",
+        "aspect": "3 / 4",
+        "card_gap": 8,
+        "seconds_per_card": 3,
+        "card_width": 340,
+        "pause_on_hover": true,
+        "background": "#f8f3e7",
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "button_label": "Visit Instagram",
+        "button_link": "https://www.instagram.com/vura.skincare"
+      }
+    },
     "vura-confidence": {
       "type": "vura-confidence",
       "settings": {
         "heading": "Buy with confidence",
         "padding_top": 56,
-        "padding_bottom": 56,
-        "color_scheme": "scheme-1"
+        "padding_bottom": 56
       }
     },
     "vura-ingredients": {
@@ -380,21 +397,24 @@
         "padding_bottom": 56
       }
     },
-    "vura-reels": {
-      "type": "vura-reels",
+    "178523266248565c9e": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_KWBM3E": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_KWBM3E"
+      ],
       "settings": {
-        "eyebrow": "In real life",
-        "heading": "See it in use",
-        "card_gap": 8,
-        "seconds_per_card": 3,
-        "card_width": 340,
-        "pause_on_hover": true,
-        "background": "#F8F3E7",
-        "padding_top": 56,
-        "padding_bottom": 56,
-        "aspect": "3 / 4",
-        "button_label": "Visit Instagram",
-        "button_link": "https://www.instagram.com/vura.skincare"
+        "include_margins": true
       }
     }
   },
@@ -405,6 +425,7 @@
     "vura-confidence",
     "vura-ingredients",
     "vura-faq",
-    "related-products"
+    "related-products",
+    "178523266248565c9e"
   ]
 }
