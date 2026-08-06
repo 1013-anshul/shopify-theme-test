@@ -4822,7 +4822,7 @@ details-disclosure > details {
      the square images still fill it with no crop and the 20px radius keeps
      hugging the picture. */
   .product__media-wrapper .product-media-container {
-    max-width: 285px;
+    max-width: 315px;
     margin-left: auto;
     margin-right: auto;
   }
