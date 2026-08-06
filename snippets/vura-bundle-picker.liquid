@@ -1,6 +1,6 @@
 {% comment %}
   Renders selectable pack-size cards that drive Dawn's native <variant-selects>.
-  Each card maps to a real product variant (1-Pack / 3-Pack / 6-Pack), so the
+  Each card maps to a real product variant, one card per variant, so the
   correct variant + SKU is what gets added to cart. The native picker is kept in
   the DOM (its engine updates price/availability/[name=id]) but hidden visually.
 
@@ -26,6 +26,8 @@
       case variant.title
         when '1-Pack'
           assign card_label = 'TRY IT'
+        when '2-Pack'
+          assign card_label = 'STOCK UP'
         when '3-Pack'
           assign card_label = 'BUY 2 GET 1'
         when '6-Pack'
@@ -80,8 +82,11 @@
   }
   .vura-bundle-picker {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    /* Fits however many packs the product has — a hardcoded 3 columns stranded
+       the 6-Pack alone on a second row once the 2-Pack was added. The info column
+       is only ~460px wide, so the minimum has to be small enough for four across. */
+    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+    gap: 10px;
     margin: 1.5rem 0;
   }
   @media screen and (max-width: 749px) {
@@ -149,6 +154,12 @@
   }
   .vura-bundle-card__header {
     margin-bottom: 6px;
+    /* Reserve two lines so a label that wraps ("FAMILY PACK") doesn't push its
+       card's price out of line with the others. */
+    min-height: 2.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .vura-bundle-card__label {
     font-family: var(--font-body, Inter, sans-serif);

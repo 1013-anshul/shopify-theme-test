@@ -6,9 +6,36 @@
 {%- endcomment -%}
 
 {%- if request.page_type == 'product' -%}
+  {%- liquid
+    # A visitor arriving from an ad sees this bar before they have scrolled far
+    # enough to reach the pack cards, so it has to say what the price buys — a
+    # bare multi-pack price reads as the price of a single bottle.
+    assign unit_price = product.variants.first.price
+    assign sel = product.selected_or_first_available_variant
+    assign sel_count = sel.title | split: '-' | first | times: 1
+    if sel_count < 1
+      assign sel_count = 1
+    endif
+    assign sel_was = unit_price | times: sel_count
+    assign sel_savings = sel_was | minus: sel.price
+  -%}
   <style>
     .vura-sticky-atc__inner,
     .vura-sticky-atc__btn { transition: padding 0.25s ease, height 0.25s ease, font-size 0.25s ease; }
+
+    /* The bar is position: fixed, so the layout reserves no space for it and it
+       covers the last ~120px of the page. JS refines this to the measured height. */
+    body { padding-bottom: 120px; }
+
+    .vura-sticky-atc__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 6px; }
+    .vura-sticky-atc__packname { font-weight: 700; }
+    .vura-sticky-atc__packname::after { content: "·"; margin-left: 6px; opacity: 0.45; font-weight: 400; }
+    .vura-sticky-atc__save {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+      color: #3D4B22; background: rgba(99,119,70,0.14);
+      padding: 1px 6px; border-radius: 99px; white-space: nowrap;
+    }
+    .vura-sticky-atc__save:empty { display: none; }
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__image,
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__info { display: none !important; }
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__inner { padding: 8px 16px !important; justify-content: center !important; gap: 12px !important; }
@@ -23,10 +50,13 @@
         <div class="vura-sticky-atc__info">
           <div class="vura-sticky-atc__title">{{ product.title }}</div>
           <div class="vura-sticky-atc__price">
-            {{ product.selected_or_first_available_variant.price | money }}
-            {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
-              <s style="opacity:0.5; margin-left:4px;">{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
-            {%- endif -%}
+            {%- unless product.has_only_default_variant -%}
+              <span class="vura-sticky-atc__packname">{{ sel.title }}</span>
+            {%- endunless -%}
+            <span class="vura-sticky-atc__amount">{{ sel.price | money }}</span>
+            <span class="vura-sticky-atc__save">
+              {%- if sel_savings > 0 and sel.available -%}Save {{ sel_savings | money }}{%- endif -%}
+            </span>
           </div>
         </div>
       </div>
@@ -58,6 +88,16 @@
 
       // Ensure the bar is always visible by default
       bar.classList.add('is-visible');
+
+      // Reserve the bar's real height at the end of the page. Measured only while
+      // the bar is at full height — the minimized state is shorter, and shrinking
+      // the reserve on scroll would move the page under the reader.
+      function reserveBarSpace() {
+        if (bar.classList.contains('vura-sticky-atc--minimized')) return;
+        document.body.style.paddingBottom = bar.offsetHeight + 'px';
+      }
+      reserveBarSpace();
+      window.addEventListener('resize', reserveBarSpace);
 
       // Shrink (hide image) on scroll down, restore to full size on scroll up.
       // Self-contained here so it works regardless of global.js execution.
@@ -92,7 +132,20 @@
       // Keep the sticky price + availability in sync with the selected pack variant.
       var VURA_VARIANTS = {
         {%- for v in product.variants -%}
-          "{{ v.id }}": { priceMoney: {{ v.price | money | json }}, available: {{ v.available | json }} }{%- unless forloop.last -%},{%- endunless -%}
+          {%- liquid
+            assign count = v.title | split: '-' | first | times: 1
+            if count < 1
+              assign count = 1
+            endif
+            assign was = unit_price | times: count
+            assign savings = was | minus: v.price
+          -%}
+          "{{ v.id }}": {
+            priceMoney: {{ v.price | money | json }},
+            packName: {{ v.title | json }},
+            savingsMoney: {%- if savings > 0 -%}{{ savings | money | prepend: 'Save ' | json }}{%- else -%}""{%- endif -%},
+            available: {{ v.available | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
         {%- endfor -%}
       };
       function getSelectedVariantId() {
@@ -107,8 +160,12 @@
         var id = getSelectedVariantId();
         if (!id || !VURA_VARIANTS[id]) return;
         var v = VURA_VARIANTS[id];
-        var priceEl = bar.querySelector('.vura-sticky-atc__price');
-        if (priceEl) priceEl.innerHTML = v.priceMoney;
+        var amountEl = bar.querySelector('.vura-sticky-atc__amount');
+        var packEl = bar.querySelector('.vura-sticky-atc__packname');
+        var saveEl = bar.querySelector('.vura-sticky-atc__save');
+        if (amountEl) amountEl.textContent = v.priceMoney;
+        if (packEl) packEl.textContent = v.packName;
+        if (saveEl) saveEl.textContent = v.savingsMoney;
         var span = btn.querySelector('span');
         if (v.available) {
           btn.disabled = false;

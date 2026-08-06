@@ -1403,57 +1403,12 @@ class CartPerformance {
 
 // ===== VURA CUSTOM SCRIPTS =====
 
-// 1. Auto-trigger Add to Cart from homepage link (?add-to-cart=true)
-document.addEventListener('DOMContentLoaded', function() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('add-to-cart') === 'true') {
-    const onePackCard = document.querySelector('.vura-bundle-card[data-qty="1"]');
-    if (onePackCard) {
-      onePackCard.click();
-    }
-    setTimeout(function() {
-      const atcButton = document.querySelector('.product-form__submit') || document.getElementById('AddToCartBtn');
-      if (atcButton) {
-        atcButton.click();
-        const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-        window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
-      }
-    }, 800);
-  }
-});
-
-// 2. Safe Targeted Rupee Symbol (Rs./Rs/INR -> ₹) Reformatter
-function replaceCurrencyInElement(el) {
-  if (!el) return;
-  // Use TreeWalker to find all text nodes within this specific element
-  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
-  let textNode;
-  while (textNode = walk.nextNode()) {
-    if (/\b(Rs|INR)\b/i.test(textNode.nodeValue)) {
-      textNode.nodeValue = textNode.nodeValue.replace(/\b(Rs|INR)\b\.?\s*/gi, '₹');
-    }
-  }
-}
-
-function runPriceReformatter() {
-  const priceSelectors = [
-    '.price', '.totals__total-value', '.cart-item__price', 
-    '.totals__total', '.price-item', '.product-option',
-    '.cart-drawer__footer', '.drawer__footer', '.totals',
-    '.cart-item__discounted-prices', '.cart-item__old-price'
-  ];
-  priceSelectors.forEach(selector => {
-    document.querySelectorAll(selector).forEach(replaceCurrencyInElement);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  runPriceReformatter();
-  const observer = new MutationObserver((mutations) => {
-    runPriceReformatter();
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-});
+// The rupee symbol is set in Shopify's own currency format (Settings → Store
+// details → Currency formatting), so every price — storefront, cart, checkout,
+// order emails, Shop app — renders as ₹ server-side. The DOM reformatter that
+// used to patch "Rs."/"INR" into ₹ after render lived here and has been removed:
+// it only covered a hardcoded list of selectors, so it converted some prices and
+// missed others, and it never reached checkout at all.
 
 // Scroll listener to minimize Sticky ATC
 let lastScrollY = window.scrollY;

@@ -242,7 +242,6 @@
                           <td
                             class="cart-item__media"
                             role="cell"
-                            headers="CartDrawer-ColumnProductImage"
                           >
                             {% if item.image %}
                               {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
@@ -258,7 +257,7 @@
                             {% endif %}
                           </td>
 
-                          <td class="cart-item__details" role="cell" headers="CartDrawer-ColumnProduct">
+                          <td class="cart-item__details" role="cell">
                             {%- if settings.show_vendor -%}
                               <p class="caption-with-letter-spacing light">{{ item.product.vendor }}</p>
                             {%- endif -%}
@@ -280,7 +279,7 @@
                             </div>
 
                             {%- unless item.product.has_only_default_variant -%}
-                              <div class="cart-item__pack" style="font-size:1.3rem;color:#7A857F;margin-top:2px;">{{ item.variant.title }}</div>
+                              <div class="cart-item__pack" style="font-size:1.3rem;color:#5A625E;margin-top:2px;">{{ item.variant.title }}</div>
                             {%- endunless -%}
 
                             <ul
@@ -299,7 +298,7 @@
                             </ul>
                           </td>
 
-                          <td class="cart-item__totals right" role="cell" headers="CartDrawer-ColumnTotal">
+                          <td class="cart-item__totals right" role="cell">
                             {%- render 'loading-spinner' -%}
                             <div class="cart-item__price-wrapper">
                               {%- if total_original_line_price != total_final_line_price -%}
@@ -328,7 +327,7 @@
                               {%- endif -%}
                             </div>
                           </td>
-                          <td class="cart-item__quantity vura-pack-cell" role="cell" headers="CartDrawer-ColumnQuantity">
+                          <td class="cart-item__quantity vura-pack-cell" role="cell">
                             <quantity-input class="quantity cart-quantity">
                               <button class="quantity__button" name="minus" type="button">
                                 <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: item.product.title | escape }}</span>
