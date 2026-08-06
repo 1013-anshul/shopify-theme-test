@@ -4827,14 +4827,12 @@ details-disclosure > details {
     margin-right: auto;
   }
 
-  /* No prev/next arrows — the "1/8" counter is cue enough that there is more to
-     swipe, and the arrows cost 44px of the first screen. */
-  .product__media-wrapper .slider-button {
-    display: none;
-  }
+  /* Drop the whole pager — arrows and the "1/8" counter — which cost 44px of a
+     681px first screen. Hidden rather than removed from the DOM so Dawn's
+     slider-component still finds the nodes it wires up. Swiping still works;
+     the trade is that nothing now advertises that there are eight images. */
   .product__media-wrapper .slider-buttons {
-    margin-top: 0.2rem;
-    padding: 0;
+    display: none;
   }
 
   /* Smaller title: at full size it spent 75px on two lines of a 681px screen.
