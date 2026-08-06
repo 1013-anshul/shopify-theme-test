@@ -4805,47 +4805,53 @@ details-disclosure > details {
 }
 
 /* ===== Mobile: bring the offer above the fold =====
-   On a 360x800 phone only 681px sits above the sticky bar. A full-width square
-   gallery plus its pager pushed the "3rd bottle free" banner and the pack cards
-   past that line, so someone arriving from an ad saw a price with nothing
-   explaining what it buys — and 95% of paid traffic lands on this page.
-
-   The gallery is scaled down, not cropped: three of the eight images are
-   infographics, and object-fit: cover would cut their text off. Space is
-   reclaimed from the section padding and the pager too, so the image gives up
-   less than it otherwise would. Desktop is untouched. */
+   On a 360x800 phone only 681px sits above the sticky bar, and 95% of paid
+   traffic lands on this page. Everything here buys room for the "3rd bottle
+   free" banner and the top of the pack cards, so a visitor from an ad sees what
+   the price buys without scrolling. Desktop is untouched — every rule is inside
+   the breakpoint. */
 @media screen and (max-width: 749px) {
   product-info {
     padding-top: 1.2rem !important;
   }
 
-  /* The gallery's height comes from Dawn's inline padding-top aspect-ratio box
-     (a square, so 315px tall at this width). Capping that box is what actually
-     shrinks it — a max-width on the wrapper loses to a more specific rule, and
-     the `max-height: 55vh` block further up never applies at all because nothing
-     on the page carries a .template-product class.
-
-     `contain` is not optional here. Five of the eight gallery images are
-     full-bleed infographics: at `cover` a 240/315 box crops 12% off the top and
-     bottom, which removes the headline from one and the icon row from another.
-     Contain letterboxes instead, so every slide stays whole. */
-  .product__media-wrapper .product__media {
-    padding-top: 240px !important;
-  }
-  .product__media-wrapper .product__media img,
-  .product__media-wrapper .product__media video {
-    object-fit: contain !important;
+  /* Narrower, but still square. Constrain the radius-carrying container, not the
+     inner .product__media: its height comes from `padding-top: 100%`, and a
+     padding percentage resolves against the *parent's* width, so capping the
+     child left a 285x315 box. Capping the parent keeps it square, which means
+     the square images still fill it with no crop and the 20px radius keeps
+     hugging the picture. */
+  .product__media-wrapper .product-media-container {
+    max-width: 285px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  /* Tighter pager — keeps the "1/8" counter, which is the cue that there is
-     more than one image to swipe through. */
+  /* No prev/next arrows — the "1/8" counter is cue enough that there is more to
+     swipe, and the arrows cost 44px of the first screen. */
+  .product__media-wrapper .slider-button {
+    display: none;
+  }
   .product__media-wrapper .slider-buttons {
     margin-top: 0.2rem;
     padding: 0;
   }
-  .product__media-wrapper .slider-button {
-    height: 3.2rem;
-    width: 3.2rem;
+
+  /* Smaller title: at full size it spent 75px on two lines of a 681px screen.
+     The h1 carries its own heading-scale font-size, so it needs naming directly
+     — setting it on the .product__title wrapper alone left the h1 untouched. */
+  .product__info-container .product__title,
+  .product__info-container .product__title h1,
+  .product__info-container .product__title > * {
+    font-size: 2.5rem !important;
+    line-height: 1.2;
+  }
+
+  /* The sticky bar carries the selected pack's price and saving, and every pack
+     card shows its own, so this large block was a third copy of the same number
+     sitting between the shopper and the offer. */
+  .product__info-container div[id^='price-'] {
+    display: none;
   }
 
   .product__info-container .vura-bundle-picker {
