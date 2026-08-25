@@ -64,7 +64,7 @@
         "brand": {
           "type": "text",
           "settings": {
-            "heading": "Vura",
+            "heading": "",
             "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p>"
           }
         },
@@ -88,9 +88,18 @@
             "heading": "Reach us",
             "subtext": "<p><a href=\"mailto:support@vuraskincare.in\" title=\"Email us\">support@vuraskincare.in</a><br>We read every message and reply ourselves.</p>"
           }
+        },
+        "logo": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/12.png",
+            "image_width": 90,
+            "alignment": "left"
+          }
         }
       },
       "block_order": [
+        "logo",
         "brand",
         "explore",
         "help",
