@@ -58,9 +58,6 @@
   }
   .footer .footer-block__logo { margin: 0 0 1.2rem; height: 6.4rem; }
   .footer .footer-block__logo img { display: block; height: 100%; width: auto; }
-  @media screen and (max-width: 749px) {
-    .footer .footer-block__logo { height: 7.2rem; }
-  }
 
   /* Contact line: its own centred row under the columns. */
   .footer .footer__contact {
@@ -129,23 +126,27 @@
   }
 
   @media screen and (max-width: 749px) {
+    /* Dawn turns the footer grid into a block here, but .grid__item keeps its
+       25% width -- which left the signup column and its rule short. */
+    .footer .footer__blocks-wrapper > .grid__item {
+      width: 100%;
+      max-width: 100%;
+    }
+    .footer .footer__blocks-wrapper { row-gap: 0; }
+
+    .footer .footer-block__logo { height: 6.4rem; margin: 0 0 2.4rem; }
+    .footer .footer-block + .footer-block { margin-top: 0; }
+
     .footer .footer-block__chevron { display: block; }
-    .footer .footer-block__accordion {
+    .footer .footer-block__accordion,
+    .footer .footer-block--newsletter {
       border-top: 0.1rem solid rgba(var(--color-foreground), 0.14);
       padding: 1.4rem 0;
     }
     .footer .footer-block__accordion[open] .footer-block__details-content { padding-top: 1rem; }
-    .footer .footer-block + .footer-block { margin-top: 0; }
-    /* Brand column reads as a centred masthead above the accordions. */
-    .footer .footer-block:first-child { text-align: center; margin-bottom: 2rem; }
-    .footer .footer-block:first-child .footer-block__logo { margin-left: auto; margin-right: auto; }
-    .footer .footer-block:first-child .footer-block__details-content { max-width: none; }
-    /* The signup stays open, but takes the same rule as the accordion rows so
-       the stack reads as one list. */
-    .footer .footer-block--newsletter {
-      border-top: 0.1rem solid rgba(var(--color-foreground), 0.14);
-      padding-top: 1.4rem;
-    }
+    .footer .footer-block--newsletter .footer-block__heading { margin-bottom: 1.2rem; }
+    .footer .footer-block--newsletter .field,
+    .footer .footer-block--newsletter .newsletter-form { width: 100%; }
   }
 {%- endstyle -%}
 
