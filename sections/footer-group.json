@@ -21,11 +21,11 @@
         "show_social": true,
         "enable_country_selector": true,
         "enable_language_selector": true,
-        "payment_enable": true,
+        "payment_enable": false,
         "show_policy": true,
         "margin_top": 0,
-        "padding_top": 40,
-        "padding_bottom": 20
+        "padding_top": 72,
+        "padding_bottom": 40
       },
       "blocks": {
         "brand": {
@@ -36,17 +36,17 @@
           }
         },
         "explore": {
-          "type": "link_list",
+          "type": "text",
           "settings": {
             "heading": "Explore",
-            "menu": "main-menu"
+            "subtext": "<p><a href=\"/\" title=\"Home\">Home</a><br><a href=\"/collections/all\" title=\"Catalog\">Catalog</a><br><a href=\"/blogs/journal\" title=\"Journal\">Journal</a></p>"
           }
         },
         "help": {
           "type": "text",
           "settings": {
             "heading": "Help",
-            "subtext": "<p><a href=\"/pages/about\" title=\"About\">About us</a><br><a href=\"/policies/privacy-policy\" title=\"Privacy policy\">Privacy policy</a><br><a href=\"/policies/refund-policy\" title=\"Refund policy\">Refund policy</a></p>"
+            "subtext": "<p><a href=\"/pages/about\" title=\"About us\">About us</a><br><a href=\"/policies/privacy-policy\" title=\"Privacy policy\">Privacy policy</a><br><a href=\"/policies/refund-policy\" title=\"Refund policy\">Refund policy</a></p>"
           }
         }
       },
