@@ -25,6 +25,31 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  /* Compact footer. Dawn's stock rhythm -- 5rem under the block row, 3rem above
+     the bottom bar, 2rem under every block heading -- reads far too airy here. */
+  .footer .footer__content-top { padding-bottom: 1.6rem; }
+  .footer .footer__content-bottom { padding-top: 1.6rem; }
+  .footer .footer__blocks-wrapper { row-gap: 2.4rem; }
+  .footer .footer-block__heading {
+    margin-bottom: 0.9rem;
+    font-size: calc(var(--font-heading-scale) * 1.5rem);
+  }
+  .footer .footer-block__details-content { margin-bottom: 0.8rem; line-height: 1.5; }
+  .footer .footer-block__details-content:last-child { margin-bottom: 0; }
+  .footer .footer-block__details-content > p { margin: 0 0 0.6rem; }
+  .footer .footer-block__details-content > p:last-child { margin-bottom: 0; }
+  .footer .footer-block--menu .list-menu__item--link { padding: 0.4rem 0; line-height: 1.4; }
+
+  @media screen and (max-width: 749px) {
+    .footer .footer-block + .footer-block { margin-top: 2.4rem; }
+  }
+
+  @media screen and (min-width: 990px) {
+    .footer .footer-block__heading { font-size: calc(var(--font-heading-scale) * 1.5rem); }
+    /* Keeps the brand line from running the full column width. */
+    .footer .footer-block__details-content { max-width: 32ch; }
+  }
 {%- endstyle -%}
 
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
