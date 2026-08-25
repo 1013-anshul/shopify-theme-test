@@ -50,8 +50,11 @@
   /* Headings -- and the logo, which stands in for one -- share a baseline. */
   .footer .footer-block__heading {
     margin: 0 0 1.2rem;
-    font-size: calc(var(--font-heading-scale) * 1.5rem);
+    font-size: calc(var(--font-heading-scale) * 1.3rem);
     line-height: 1.3;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 700;
   }
   .footer .footer-block__logo { margin: 0 0 1.2rem; height: 2.4rem; }
   .footer .footer-block__logo img { display: block; height: 100%; width: auto; }
@@ -86,6 +89,46 @@
 
   @media screen and (max-width: 749px) {
     .footer .footer-block + .footer-block { margin-top: 3.2rem; }
+  }
+  /* --- Accordion columns ------------------------------------------------
+     Desktop keeps every column open and inert; below 750px each headed
+     column collapses behind its heading. */
+  .footer .footer-block__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    list-style: none;
+    cursor: pointer;
+  }
+  .footer .footer-block__summary::-webkit-details-marker { display: none; }
+  .footer .footer-block__summary .footer-block__heading { margin-bottom: 0; }
+  .footer .footer-block__chevron {
+    display: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    transition: transform 0.2s ease;
+  }
+  .footer .footer-block__chevron svg { width: 100%; height: 100%; }
+  .footer .footer-block__accordion[open] .footer-block__chevron { transform: rotate(180deg); }
+
+  @media screen and (min-width: 750px) {
+    .footer .footer-block__summary { cursor: default; pointer-events: none; }
+    .footer .footer-block__summary .footer-block__heading { margin-bottom: 1.2rem; }
+  }
+
+  @media screen and (max-width: 749px) {
+    .footer .footer-block__chevron { display: block; }
+    .footer .footer-block__accordion {
+      border-top: 0.1rem solid rgba(var(--color-foreground), 0.14);
+      padding: 1.4rem 0;
+    }
+    .footer .footer-block__accordion[open] .footer-block__details-content { padding-top: 1rem; }
+    .footer .footer-block + .footer-block { margin-top: 0; }
+    /* Brand column reads as a centred masthead above the accordions. */
+    .footer .footer-block:first-child { text-align: center; margin-bottom: 2rem; }
+    .footer .footer-block:first-child .footer-block__logo { margin-left: auto; margin-right: auto; }
+    .footer .footer-block:first-child .footer-block__details-content { max-width: none; }
   }
 {%- endstyle -%}
 
@@ -161,10 +204,7 @@
                     }}
                   </div>
                 {%- endif -%}
-                {%- if block.settings.heading != blank -%}
-                  <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
-                {%- endif -%}
-
+                {%- capture block_body -%}
                 {%- case block.type -%}
                   {%- when '@app' -%}
                     {% render block %}
@@ -240,6 +280,25 @@
                       {%- endif -%}
                     </div>
                 {%- endcase -%}
+                {%- endcapture -%}
+
+                {%- if block.settings.heading != blank -%}
+                  {%- comment -%}
+                    A <details> so each column collapses on small screens; a
+                    script forces them open from 750px up.
+                  {%- endcomment -%}
+                  <details class="footer-block__accordion" data-footer-accordion>
+                    <summary class="footer-block__summary">
+                      <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
+                      <span class="footer-block__chevron svg-wrapper" aria-hidden="true">
+                        {{- 'icon-caret.svg' | inline_asset_content -}}
+                      </span>
+                    </summary>
+                    {{ block_body }}
+                  </details>
+                {%- else -%}
+                  {{ block_body }}
+                {%- endif -%}
               </div>
             {%- endfor -%}
         {%- if show_newsletter_col -%}
@@ -410,6 +469,20 @@
     </div>
   </div>
 </footer>
+
+<script>
+  (function () {
+    var panels = document.querySelectorAll('[data-footer-accordion]');
+    if (!panels.length) return;
+    var wide = window.matchMedia('(min-width: 750px)');
+    function sync() {
+      for (var i = 0; i < panels.length; i++) panels[i].open = wide.matches;
+    }
+    sync();
+    if (wide.addEventListener) wide.addEventListener('change', sync);
+    else if (wide.addListener) wide.addListener(sync);
+  })();
+</script>
 
 {% schema %}
 {
