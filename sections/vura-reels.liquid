@@ -103,21 +103,6 @@
   }
   .vura-reels__cta .button svg { width: 19px; height: 19px; flex-shrink: 0; }
 
-  /* Fullscreen player */
-  .vura-reels__lightbox {
-    width: min(94vw, 460px); max-width: 94vw; max-height: 92vh;
-    padding: 0; border: 0; border-radius: 18px; overflow: hidden;
-    background: #000; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-  }
-  .vura-reels__lightbox::backdrop { background: rgba(8, 20, 14, 0.82); }
-  .vura-reels__lightbox video { display: block; width: 100%; height: auto; max-height: 92vh; background: #000; }
-  .vura-reels__close {
-    position: absolute; top: 10px; right: 10px; z-index: 3;
-    width: 38px; height: 38px; border: 0; border-radius: 50%; cursor: pointer;
-    background: rgba(8, 20, 14, 0.6); color: #fff; font-size: 20px; line-height: 1;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .vura-reels__close:hover { background: rgba(8, 20, 14, 0.85); }
 
   /* Phones get a much smaller card, matched to the Instagram row above: its
      true layout size is 340px wide on desktop and 109px on a 390px phone,
@@ -214,8 +199,8 @@
               type="button"
               class="vura-reels__card"
               data-reel-card
-              data-full-src="{{ full_src.url }}"
-              aria-label="{{ label | escape }}"
+              data-reel-link="{{ block.settings.link | default: section.settings.button_link }}"
+              aria-label="{{ label | escape }} — opens Instagram"
               {{ block.shopify_attributes }}
             >
               {%- if vid.preview_image != blank -%}
@@ -256,10 +241,6 @@
       </div>
     {%- endif -%}
 
-    <dialog class="vura-reels__lightbox" data-reel-lightbox aria-label="Video">
-      <button type="button" class="vura-reels__close" data-reel-close aria-label="Close video">&times;</button>
-      <video data-reel-player playsinline controls loop preload="none"></video>
-    </dialog>
   {%- elsif request.design_mode -%}
     <p style="text-align:center; padding: 2rem 1.5rem; font-style: italic; color: var(--vura-paper-ink-muted, #4A5750);">
       Add a video block to fill this row.
@@ -437,48 +418,15 @@
     window.addEventListener('pointerup', onUp);
     window.addEventListener('pointercancel', onUp);
 
-    /* ---------- tap a card for the full clip, with sound ---------- */
-    var box = root.querySelector('[data-reel-lightbox]');
-    var player = root.querySelector('[data-reel-player]');
-    var closeBtn = root.querySelector('[data-reel-close]');
-    var opener = null;
-
-    function open(card) {
-      if (!box || !player) return;
-      var src = card.getAttribute('data-full-src');
-      if (!src) return;
-      opener = card;
-      player.src = src;
-      player.muted = false;
-      player.currentTime = 0;
-      paused = true;                      // hold the row while watching
-      if (typeof box.showModal === 'function') box.showModal();
-      else box.setAttribute('open', '');
-      var p = player.play();
-      if (p && p.catch) p.catch(function () {});
-    }
-
-    function close() {
-      if (!box) return;
-      player.pause();
-      player.removeAttribute('src');
-      player.load();                      // drop the buffer
-      paused = false;
-      if (box.open) {
-        if (typeof box.close === 'function') box.close();
-        else box.removeAttribute('open');
-      }
-      if (opener) { opener.focus(); opener = null; }
-    }
-
+    /* ---------- tap a card to open the clip on Instagram ---------- */
     cards.forEach(function (c) {
-      c.addEventListener('click', function () { if (!swallow) open(c); });
+      c.addEventListener('click', function () {
+        if (swallow) return;                 // it was a drag, not a tap
+        var url = c.getAttribute('data-reel-link');
+        if (!url) return;
+        window.open(url, '_blank', 'noopener');
+      });
     });
-    if (closeBtn) closeBtn.addEventListener('click', close);
-    if (box) {
-      box.addEventListener('close', close);
-      box.addEventListener('click', function (e) { if (e.target === box) close(); });
-    }
 
     /* ---------- boot ---------- */
     // Nothing downloads until the row is near the viewport.
@@ -560,7 +508,8 @@
           "type": "video", "id": "video", "label": "Video",
           "info": "Upload a vertical clip, about 6 to 8 seconds. Keep the audio track for the fullscreen player."
         },
-        { "type": "text", "id": "caption", "label": "Caption", "info": "Optional. Shown over the bottom of the card." }
+        { "type": "text", "id": "caption", "label": "Caption", "info": "Optional. Shown over the bottom of the card." },
+        { "type": "url", "id": "link", "label": "Instagram link", "info": "Where this clip opens. Falls back to the section's Instagram link." }
       ]
     }
   ],
