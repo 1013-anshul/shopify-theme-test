@@ -87,10 +87,18 @@
         "judge_me_reviews_preview_badge_NaPP7T": {
           "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {}
+        },
+        "size": {
+          "type": "text",
+          "settings": {
+            "text": "50 ml",
+            "text_style": "subtitle"
+          }
         }
       },
       "block_order": [
         "title",
+        "size",
         "rating",
         "price",
         "variant_picker",
@@ -330,7 +338,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How long does one bottle last?",
-            "answer": "<p>If you use it daily, about 2 to 3 sprays each time, one 100ml bottle usually lasts you 6 to 8 weeks.</p>"
+            "answer": "<p>If you use it daily, about 2 to 3 sprays each time, one 50 ml bottle usually lasts you about 2 months.</p>"
           }
         },
         "faq_3": {
