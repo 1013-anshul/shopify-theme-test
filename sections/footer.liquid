@@ -56,8 +56,19 @@
     letter-spacing: 0.14em;
     font-weight: 700;
   }
-  .footer .footer-block__logo { margin: 0 0 1.2rem; height: 2.4rem; }
+  .footer .footer-block__logo { margin: 0 0 1.2rem; height: 6.4rem; }
   .footer .footer-block__logo img { display: block; height: 100%; width: auto; }
+  @media screen and (max-width: 749px) {
+    .footer .footer-block__logo { height: 7.2rem; }
+  }
+
+  /* Contact line: its own centred row under the columns. */
+  .footer .footer__contact {
+    margin: 4rem 0 0;
+    text-align: center;
+    line-height: 1.7;
+  }
+  .footer .footer__contact > p { margin: 0; }
 
   .footer .footer-block__details-content { margin-bottom: 0; line-height: 1.6; }
   .footer .footer-block__details-content > p { margin: 0 0 1.2rem; }
@@ -399,6 +410,9 @@
 
         </div>
         {%- endif -%}
+        {%- if section.settings.contact_text != blank -%}
+          <div class="footer__contact rte">{{ section.settings.contact_text }}</div>
+        {%- endif -%}
       </div>
     {%- endunless -%}
   {%- endif -%}
@@ -664,6 +678,12 @@
     {
       "type": "header",
       "content": "t:sections.all.spacing"
+    },
+    {
+      "type": "richtext",
+      "id": "contact_text",
+      "label": "Contact line",
+      "info": "Centred under the columns, above the legal row."
     },
     {
       "type": "range",

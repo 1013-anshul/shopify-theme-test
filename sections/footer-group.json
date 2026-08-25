@@ -25,14 +25,15 @@
         "show_policy": true,
         "margin_top": 0,
         "padding_top": 72,
-        "padding_bottom": 40
+        "padding_bottom": 40,
+        "contact_text": "<p>Write to us at <a href=\"mailto:support@vuraskincare.in\" title=\"Email us\">support@vuraskincare.in</a><br>We read every message and reply ourselves.</p>"
       },
       "blocks": {
         "brand": {
           "type": "text",
           "settings": {
             "heading": "",
-            "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p><p>Write to us at <a href=\"mailto:support@vuraskincare.in\" title=\"Email us\">support@vuraskincare.in</a><br>We read every message and reply ourselves.</p>"
+            "subtext": ""
           }
         },
         "explore": {

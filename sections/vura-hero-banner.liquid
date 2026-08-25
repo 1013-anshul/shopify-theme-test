@@ -48,20 +48,11 @@
     color: var(--vura-forest, #162D24); line-height: 1.05; text-wrap: balance;
     font-size: clamp(1.35rem, 4.7vw, 5rem);
   }
-  /* Not an <a>: the whole banner is already one, and links cannot nest. */
-  .vura-herob__cta {
-    display: inline-block; margin-top: 1.15em; line-height: 1.2;
-    padding: 0.85em 2em; border-radius: 40px;
-    background: var(--vura-sun, #FFC03F); color: var(--vura-forest-deep, #0E2118);
-    font-family: var(--font-body, Inter, sans-serif); font-weight: 600;
-    letter-spacing: 0.02em; font-size: clamp(0.85rem, 1.95vw, 1.6rem);
-    transition: transform 0.25s ease, filter 0.25s ease;
-  }
-  .vura-herob__link:hover .vura-herob__cta { filter: brightness(1.06); transform: translateY(-1px); }
-  @media (prefers-reduced-motion: reduce) {
-    .vura-herob__cta { transition: none; }
-    .vura-herob__link:hover .vura-herob__cta { transform: none; }
-  }
+  /* Not an <a>: the whole banner is already one, and links cannot nest.
+     Everything visual comes from Dawn's .button plus color-scheme-1, so it is
+     the same object as Add to cart and Checkout. */
+  .vura-herob__cta { margin-top: 1.15em; line-height: 1; }
+  .vura-herob__link:hover .vura-herob__cta { filter: brightness(1.04); }
 {%- endstyle -%}
 
 <section class="vura-herob">
@@ -80,7 +71,7 @@
         {%- if eyebrow != blank -%}<p class="vura-herob__eyebrow" data-vura-reveal="up">{{ eyebrow }}</p>{%- endif -%}
         {%- if heading != blank -%}<h1 class="vura-herob__title" data-vura-reveal="up">{{ heading }}</h1>{%- endif -%}
         {%- if cta_label != blank and link != blank -%}
-          <span class="vura-herob__cta" data-vura-reveal="up">{{ cta_label }}</span>
+          <span class="button color-scheme-1 vura-herob__cta" data-vura-reveal="up">{{ cta_label }}</span>
         {%- endif -%}
       </div>
     {%- endif -%}
