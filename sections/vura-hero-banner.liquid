@@ -56,12 +56,15 @@
      .button's minimums do not -- which left the CTA wider than the copy above it.
      Desktop keeps the stock button; small screens scale with the headline. */
   @media screen and (max-width: 749px) {
-    .vura-herob__cta {
+    /* base.css sets the global pill's size with !important, so matching that
+       weight is the only way to scale it down here. */
+    .vura-herob .vura-herob__cta {
       min-width: 0;
       min-height: 0;
-      padding: 0.7em 1.4em;
-      font-size: clamp(0.55rem, 2.1vw, 1rem);
-      letter-spacing: 0.06em;
+      padding: 0.7em 1.3em !important;
+      font-size: clamp(0.62rem, 2.3vw, 1rem) !important;
+      letter-spacing: 0.06em !important;
+      box-shadow: 2px 2px 0 0 var(--vura-terracotta) !important;
     }
   }
   .vura-herob__link:hover .vura-herob__cta { filter: brightness(1.04); }
