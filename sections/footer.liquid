@@ -98,33 +98,6 @@
   @media screen and (max-width: 749px) {
     .footer .footer-block + .footer-block { margin-top: 3.2rem; }
   }
-  /* --- Accordion columns ------------------------------------------------
-     Desktop keeps every column open and inert; below 750px each headed
-     column collapses behind its heading. */
-  .footer .footer-block__summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    list-style: none;
-    cursor: pointer;
-  }
-  .footer .footer-block__summary::-webkit-details-marker { display: none; }
-  .footer .footer-block__summary .footer-block__heading { margin-bottom: 0; }
-  .footer .footer-block__chevron {
-    display: none;
-    width: 1.2rem;
-    height: 1.2rem;
-    transition: transform 0.2s ease;
-  }
-  .footer .footer-block__chevron svg { width: 100%; height: 100%; }
-  .footer .footer-block__accordion[open] .footer-block__chevron { transform: rotate(180deg); }
-
-  @media screen and (min-width: 750px) {
-    .footer .footer-block__summary { cursor: default; pointer-events: none; }
-    .footer .footer-block__summary .footer-block__heading { margin-bottom: 1.2rem; }
-  }
-
   @media screen and (max-width: 749px) {
     /* Dawn turns the footer grid into a block here, but .grid__item keeps its
        25% width -- which left the signup column and its rule short. */
@@ -133,18 +106,14 @@
       max-width: 100%;
     }
     .footer .footer__blocks-wrapper { row-gap: 0; }
-
     .footer .footer-block__logo { height: 6.4rem; margin: 0 0 2.4rem; }
     .footer .footer-block + .footer-block { margin-top: 0; }
 
-    .footer .footer-block__chevron { display: block; }
-    .footer .footer-block__accordion,
-    .footer .footer-block--newsletter {
+    /* Rules separate the stacked columns; nothing collapses. */
+    .footer .footer__blocks-wrapper > .grid__item + .grid__item {
       border-top: 0.1rem solid rgba(var(--color-foreground), 0.14);
-      padding: 1.4rem 0;
+      padding: 1.6rem 0;
     }
-    .footer .footer-block__accordion[open] .footer-block__details-content { padding-top: 1rem; }
-    .footer .footer-block--newsletter .footer-block__heading { margin-bottom: 1.2rem; }
     .footer .footer-block--newsletter .field,
     .footer .footer-block--newsletter .newsletter-form { width: 100%; }
   }
@@ -301,22 +270,9 @@
                 {%- endcapture -%}
 
                 {%- if block.settings.heading != blank -%}
-                  {%- comment -%}
-                    A <details> so each column collapses on small screens; a
-                    script forces them open from 750px up.
-                  {%- endcomment -%}
-                  <details class="footer-block__accordion" data-footer-accordion>
-                    <summary class="footer-block__summary">
-                      <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
-                      <span class="footer-block__chevron svg-wrapper" aria-hidden="true">
-                        {{- 'icon-caret.svg' | inline_asset_content -}}
-                      </span>
-                    </summary>
-                    {{ block_body }}
-                  </details>
-                {%- else -%}
-                  {{ block_body }}
+                  <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
                 {%- endif -%}
+                {{ block_body }}
               </div>
             {%- endfor -%}
         {%- if show_newsletter_col -%}
@@ -491,19 +447,6 @@
   </div>
 </footer>
 
-<script>
-  (function () {
-    var panels = document.querySelectorAll('[data-footer-accordion]');
-    if (!panels.length) return;
-    var wide = window.matchMedia('(min-width: 750px)');
-    function sync() {
-      for (var i = 0; i < panels.length; i++) panels[i].open = wide.matches;
-    }
-    sync();
-    if (wide.addEventListener) wide.addEventListener('change', sync);
-    else if (wide.addListener) wide.addListener(sync);
-  })();
-</script>
 
 {% schema %}
 {

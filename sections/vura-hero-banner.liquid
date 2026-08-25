@@ -52,6 +52,18 @@
      Everything visual comes from Dawn's .button plus color-scheme-1, so it is
      the same object as Add to cart and Checkout. */
   .vura-herob__cta { margin-top: 1.15em; line-height: 1; }
+  /* The hero's text column is 42% of the viewport, so it shrinks on phones while
+     .button's minimums do not -- which left the CTA wider than the copy above it.
+     Desktop keeps the stock button; small screens scale with the headline. */
+  @media screen and (max-width: 749px) {
+    .vura-herob__cta {
+      min-width: 0;
+      min-height: 0;
+      padding: 0.7em 1.4em;
+      font-size: clamp(0.55rem, 2.1vw, 1rem);
+      letter-spacing: 0.06em;
+    }
+  }
   .vura-herob__link:hover .vura-herob__cta { filter: brightness(1.04); }
 {%- endstyle -%}
 
