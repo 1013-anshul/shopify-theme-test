@@ -14,7 +14,8 @@
       "settings": {
         "eyebrow": "Introducing",
         "heading": "Phitkari in a spray",
-        "link": "shopify://products/vura-mineral-underarm-spray"
+        "link": "shopify://products/vura-mineral-underarm-spray",
+        "cta_label": "Explore the product"
       }
     },
     "vura-benefits-bar": {

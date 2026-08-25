@@ -61,11 +61,19 @@
         "padding_bottom": 56
       },
       "blocks": {
+        "logo": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/12.png",
+            "image_width": 120,
+            "alignment": "left"
+          }
+        },
         "brand": {
           "type": "text",
           "settings": {
             "heading": "",
-            "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p>"
+            "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p><p><a href=\"/pages/about\" title=\"About\">About us</a></p>"
           }
         },
         "explore": {
@@ -75,26 +83,11 @@
             "menu": "main-menu"
           }
         },
-        "help": {
-          "type": "text",
-          "settings": {
-            "heading": "Help",
-            "subtext": "<p><a href=\"/pages/about\" title=\"About\">About</a><br><a href=\"/policies/privacy-policy\" title=\"Privacy policy\">Privacy policy</a><br><a href=\"/policies/refund-policy\" title=\"Refund policy\">Refund policy</a></p>"
-          }
-        },
         "reach": {
           "type": "text",
           "settings": {
             "heading": "Reach us",
             "subtext": "<p><a href=\"mailto:support@vuraskincare.in\" title=\"Email us\">support@vuraskincare.in</a><br>We read every message and reply ourselves.</p>"
-          }
-        },
-        "logo": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/12.png",
-            "image_width": 90,
-            "alignment": "left"
           }
         }
       },
@@ -102,7 +95,6 @@
         "logo",
         "brand",
         "explore",
-        "help",
         "reach"
       ]
     }
