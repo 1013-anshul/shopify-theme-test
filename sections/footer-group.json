@@ -61,19 +61,13 @@
         "padding_bottom": 20
       },
       "blocks": {
-        "logo": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/12.png",
-            "image_width": 120,
-            "alignment": "left"
-          }
-        },
         "brand": {
           "type": "text",
           "settings": {
             "heading": "",
-            "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p><p><a href=\"/pages/about\" title=\"About\">About us</a></p>"
+            "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p><p><a href=\"/pages/about\" title=\"About\">About us</a></p>",
+            "image": "shopify://shop_images/12.png",
+            "image_width": 120
           }
         },
         "explore": {
@@ -92,7 +86,6 @@
         }
       },
       "block_order": [
-        "logo",
         "brand",
         "explore",
         "reach"
