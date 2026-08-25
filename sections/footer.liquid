@@ -54,8 +54,11 @@
       flex: 1 1 0;
     }
   }
-  .footer .footer-block__logo { max-width: 120px; margin-bottom: 1.2rem; }
+  .footer .footer__logo-row { margin-bottom: 2.4rem; }
+  .footer .footer-block__logo { max-width: 110px; }
   .footer .footer-block__logo img { display: block; width: 100%; height: auto; }
+  /* Every column now starts at the same line. */
+  .footer .footer__blocks-wrapper > .grid__item > :first-child { margin-top: 0; }
 
   @media screen and (min-width: 990px) {
     .footer .footer-block__heading { font-size: calc(var(--font-heading-scale) * 1.5rem); }
@@ -97,6 +100,24 @@
               assign footer_grid_class = 'grid--3-col-tablet'
             endif
           -%}
+          {%- if settings.logo != blank -%}
+            {%- comment -%}
+              Its own row above the columns. Inside the first block it pushed
+              that column's copy far below the headings in the others.
+            {%- endcomment -%}
+            <div class="footer__logo-row">
+              <div class="footer-block__image-wrapper footer-block__logo">
+                {{
+                  settings.logo
+                  | image_url: width: 400
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '80, 120, 160, 240, 320, 400',
+                    alt: shop.name
+                }}
+              </div>
+            </div>
+          {%- endif -%}
           <div
             class="footer__blocks-wrapper grid grid--1-col grid--2-col grid--4-col-tablet {{ footer_grid_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             {% if settings.animations_reveal_on_scroll %}
@@ -112,23 +133,6 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {%- if forloop.first and settings.logo != blank -%}
-                  {%- comment -%}
-                    Sits in the first block rather than a block of its own: as a
-                    separate block the logo took a whole column and left a wide
-                    gap before the brand copy.
-                  {%- endcomment -%}
-                  <div class="footer-block__image-wrapper footer-block__logo">
-                    {{
-                      settings.logo
-                      | image_url: width: 400
-                      | image_tag:
-                        loading: 'lazy',
-                        widths: '80, 120, 160, 240, 320, 400',
-                        alt: shop.name
-                    }}
-                  </div>
-                {%- endif -%}
                 {%- if block.settings.heading != blank -%}
                   <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
                 {%- endif -%}
