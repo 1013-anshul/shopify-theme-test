@@ -79,7 +79,7 @@
           "type": "text",
           "settings": {
             "heading": "Help",
-            "subtext": "<p><a href=\"/pages/about\" title=\"About\">About</a><br><a href=\"/pages/contact\" title=\"Contact\">Contact</a><br><a href=\"/blogs/journal\" title=\"Journal\">Journal</a><br><a href=\"/policies/privacy-policy\" title=\"Privacy policy\">Privacy policy</a><br><a href=\"/policies/refund-policy\" title=\"Refund policy\">Refund policy</a></p>"
+            "subtext": "<p><a href=\"/pages/about\" title=\"About\">About</a><br><a href=\"/policies/privacy-policy\" title=\"Privacy policy\">Privacy policy</a><br><a href=\"/policies/refund-policy\" title=\"Refund policy\">Refund policy</a></p>"
           }
         },
         "reach": {
