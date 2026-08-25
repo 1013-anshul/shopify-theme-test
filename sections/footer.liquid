@@ -54,8 +54,8 @@
       flex: 1 1 0;
     }
   }
-  .footer .footer-block__text-image { margin-bottom: 1.2rem; }
-  .footer .footer-block__text-image img { display: block; width: 100%; height: auto; }
+  .footer .footer-block__logo { max-width: 120px; margin-bottom: 1.2rem; }
+  .footer .footer-block__logo img { display: block; width: 100%; height: auto; }
 
   @media screen and (min-width: 990px) {
     .footer .footer-block__heading { font-size: calc(var(--font-heading-scale) * 1.5rem); }
@@ -112,6 +112,23 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
+                {%- if forloop.first and settings.logo != blank -%}
+                  {%- comment -%}
+                    Sits in the first block rather than a block of its own: as a
+                    separate block the logo took a whole column and left a wide
+                    gap before the brand copy.
+                  {%- endcomment -%}
+                  <div class="footer-block__image-wrapper footer-block__logo">
+                    {{
+                      settings.logo
+                      | image_url: width: 400
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '80, 120, 160, 240, 320, 400',
+                        alt: shop.name
+                    }}
+                  </div>
+                {%- endif -%}
                 {%- if block.settings.heading != blank -%}
                   <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
                 {%- endif -%}
@@ -120,22 +137,6 @@
                   {%- when '@app' -%}
                     {% render block %}
                   {%- when 'text' -%}
-                    {%- if block.settings.image != blank -%}
-                      {%- assign text_image_2x = block.settings.image_width | times: 2 | at_most: 5760 -%}
-                      <div
-                        class="footer-block__image-wrapper footer-block__text-image"
-                        style="max-width: min(100%, {{ block.settings.image_width }}px);"
-                      >
-                        <img
-                          srcset="{{ block.settings.image | image_url: width: block.settings.image_width }}, {{ block.settings.image | image_url: width: text_image_2x }} 2x"
-                          src="{{ block.settings.image | image_url: width: 760 }}"
-                          alt="{{ block.settings.image.alt | escape }}"
-                          loading="lazy"
-                          width="{{ block.settings.image.width }}"
-                          height="{{ block.settings.image.height }}"
-                        >
-                      </div>
-                    {%- endif -%}
                     <div class="footer-block__details-content rte">
                       {{ block.settings.subtext }}
                     </div>
@@ -450,18 +451,6 @@
           "id": "subtext",
           "default": "t:sections.footer.blocks.text.settings.subtext.default",
           "label": "t:sections.footer.blocks.text.settings.subtext.label"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image",
-          "info": "Optional. Sits above the text, in the same column."
-        },
-        {
-          "type": "range",
-          "id": "image_width",
-          "label": "Image width",
-          "min": 40, "max": 300, "step": 10, "unit": "px", "default": 120
         }
       ]
     },
