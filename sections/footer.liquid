@@ -54,11 +54,23 @@
       flex: 1 1 0;
     }
   }
-  .footer .footer__logo-row { margin-bottom: 2.4rem; }
-  .footer .footer-block__logo { max-width: 110px; }
+  .footer .footer-block__logo { max-width: 110px; margin-bottom: 1.6rem; }
   .footer .footer-block__logo img { display: block; width: 100%; height: auto; }
-  /* Every column now starts at the same line. */
+  /* Every column starts on the same line. */
   .footer .footer__blocks-wrapper > .grid__item > :first-child { margin-top: 0; }
+  .footer .footer__blocks-wrapper { align-items: start; }
+  /* Dawn centres and bottom-aligns the newsletter for its own row; as a column
+     it has to behave like the others. */
+  .footer .footer-block--newsletter {
+    display: block;
+    margin-top: 0;
+    text-align: left;
+  }
+  @media screen and (min-width: 750px) {
+    .footer .footer-block--newsletter { justify-content: flex-start; }
+  }
+  .footer .footer-block--newsletter .footer__newsletter { margin: 0; max-width: 100%; }
+  .footer .footer-block--newsletter .newsletter-form__field-wrapper { max-width: 100%; }
 
   @media screen and (min-width: 990px) {
     .footer .footer-block__heading { font-size: calc(var(--font-heading-scale) * 1.5rem); }
@@ -100,24 +112,21 @@
               assign footer_grid_class = 'grid--3-col-tablet'
             endif
           -%}
-          {%- if settings.logo != blank -%}
-            {%- comment -%}
-              Its own row above the columns. Inside the first block it pushed
-              that column's copy far below the headings in the others.
-            {%- endcomment -%}
-            <div class="footer__logo-row">
-              <div class="footer-block__image-wrapper footer-block__logo">
-                {{
-                  settings.logo
-                  | image_url: width: 400
-                  | image_tag:
-                    loading: 'lazy',
-                    widths: '80, 120, 160, 240, 320, 400',
-                    alt: shop.name
-                }}
-              </div>
-            </div>
-          {%- endif -%}
+        {%- liquid
+          # This column renders empty whenever all three of its parts are off,
+          # and an empty column still holds the 5rem padding on the row above,
+          # which is most of why the footer looked lopsided.
+          assign show_newsletter_col = false
+          if section.settings.newsletter_enable
+            assign show_newsletter_col = true
+          endif
+          if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop
+            assign show_newsletter_col = true
+          endif
+          if section.settings.show_social and has_social_icons
+            assign show_newsletter_col = true
+          endif
+        -%}
           <div
             class="footer__blocks-wrapper grid grid--1-col grid--2-col grid--4-col-tablet {{ footer_grid_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             {% if settings.animations_reveal_on_scroll %}
@@ -133,6 +142,15 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
+                {%- if forloop.first and settings.logo != blank -%}
+                  <div class="footer-block__image-wrapper footer-block__logo">
+                    {{
+                      settings.logo
+                      | image_url: width: 400
+                      | image_tag: loading: 'lazy', widths: '80, 120, 160, 240, 320, 400', alt: shop.name
+                    }}
+                  </div>
+                {%- endif -%}
                 {%- if block.settings.heading != blank -%}
                   <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
                 {%- endif -%}
@@ -214,27 +232,9 @@
                 {%- endcase -%}
               </div>
             {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-        {%- liquid
-          # This column renders empty whenever all three of its parts are off,
-          # and an empty column still holds the 5rem padding on the row above,
-          # which is most of why the footer looked lopsided.
-          assign show_newsletter_col = false
-          if section.settings.newsletter_enable
-            assign show_newsletter_col = true
-          endif
-          if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop
-            assign show_newsletter_col = true
-          endif
-          if section.settings.show_social and has_social_icons
-            assign show_newsletter_col = true
-          endif
-        -%}
         {%- if show_newsletter_col -%}
         <div
-          class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          class="footer-block--newsletter grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {% if settings.animations_reveal_on_scroll %}
             data-cascade
           {% endif %}
@@ -319,6 +319,9 @@
           {%- if section.settings.show_social and has_social_icons -%}
             {%- render 'social-icons', class: 'footer__list-social' -%}
           {%- endif -%}
+          </div>
+        {%- endif -%}
+
         </div>
         {%- endif -%}
       </div>

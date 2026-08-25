@@ -11,44 +11,11 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "newsletter": {
-      "type": "newsletter",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Stay in touch",
-            "heading_size": "h2"
-          }
-        },
-        "paragraph": {
-          "type": "paragraph",
-          "settings": {
-            "text": "<p>We'll write when we have something new, and never more than that.</p>"
-          }
-        },
-        "email-form": {
-          "type": "email_form",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email-form"
-      ],
-      "settings": {
-        "color_scheme": "scheme-28bfbc84-df48-4cbc-84ef-bf2d52b586ae",
-        "full_width": true,
-        "padding_top": 24,
-        "padding_bottom": 20
-      }
-    },
     "footer": {
       "type": "footer",
       "settings": {
         "color_scheme": "scheme-28bfbc84-df48-4cbc-84ef-bf2d52b586ae",
-        "newsletter_enable": false,
+        "newsletter_enable": true,
         "newsletter_heading": "Stay in touch",
         "enable_follow_on_shop": true,
         "show_social": true,
@@ -57,7 +24,7 @@
         "payment_enable": true,
         "show_policy": true,
         "margin_top": 0,
-        "padding_top": 28,
+        "padding_top": 40,
         "padding_bottom": 20
       },
       "blocks": {
@@ -65,7 +32,7 @@
           "type": "text",
           "settings": {
             "heading": "",
-            "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p><p><a href=\"/pages/about\" title=\"About\">About us</a></p>"
+            "subtext": "<p>Phitkari in a spray. We blend our batches slowly, and we will always tell you what is in them.</p><p>Write to us at <a href=\"mailto:support@vuraskincare.in\" title=\"Email us\">support@vuraskincare.in</a><br>We read every message and reply ourselves.</p>"
           }
         },
         "explore": {
@@ -75,23 +42,22 @@
             "menu": "main-menu"
           }
         },
-        "reach": {
+        "help": {
           "type": "text",
           "settings": {
-            "heading": "Reach us",
-            "subtext": "<p><a href=\"mailto:support@vuraskincare.in\" title=\"Email us\">support@vuraskincare.in</a><br>We read every message and reply ourselves.</p>"
+            "heading": "Help",
+            "subtext": "<p><a href=\"/pages/about\" title=\"About\">About us</a><br><a href=\"/policies/privacy-policy\" title=\"Privacy policy\">Privacy policy</a><br><a href=\"/policies/refund-policy\" title=\"Refund policy\">Refund policy</a></p>"
           }
         }
       },
       "block_order": [
         "brand",
         "explore",
-        "reach"
+        "help"
       ]
     }
   },
   "order": [
-    "newsletter",
     "footer"
   ]
 }
