@@ -81,7 +81,7 @@
           "settings": {
             "heading": "Shipping and returns",
             "icon": "truck",
-            "content": "<p><strong>Shipping:</strong> Orders are processed within 24 hours and typically delivered in 3-5 business days across India.</p><p><strong>Returns:</strong> We accept returns on unopened items only, within 7 days of delivery.</p>",
+            "content": "<p><strong>Shipping:</strong> Orders are processed within 24 hours and delivered in 4–7 days across India, with free shipping on every order.</p><p><strong>Returns:</strong> We accept returns on unopened items only, within 7 days of delivery.</p>",
             "page": ""
           }
         },
@@ -245,6 +245,7 @@
     },
     "vura-reels": {
       "type": "vura-reels",
+      "disabled": true,
       "settings": {
         "eyebrow": "In real life",
         "heading": "See it in use",
@@ -359,14 +360,14 @@
           "type": "faq_item",
           "settings": {
             "question": "How does the Buy 2, Get 1 offer work?",
-            "answer": "<p>Pick the <strong>3-Pack</strong> and you pay for two bottles and get three, so ₹900 in total. You do not need a code, the price already includes it. The 6-Pack works the same way, where you pay for four.</p>"
+            "answer": "<p>Pick the <strong>3-Pack</strong> and you pay for two bottles and get three, so ₹900 in total. You do not need a code, the price already includes it.</p>"
           }
         },
         "faq_6": {
           "type": "faq_item",
           "settings": {
             "question": "When will my order arrive?",
-            "answer": "<p>We dispatch your order within 24 hours. Delivery anywhere in India usually takes 3 to 5 business days.</p>"
+            "answer": "<p>We dispatch your order within 24 hours. Delivery anywhere in India takes 4 to 7 days, and shipping is free on every order.</p>"
           }
         },
         "faq_7": {

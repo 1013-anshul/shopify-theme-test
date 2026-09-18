@@ -40,9 +40,18 @@
       if variant.title == '3-Pack'
         assign is_recommended = true
       endif
+
+      # Open on the variant Liquid resolves (the 1-Pack, or ?variant= from a link) so the
+      # first price a new visitor sees is the entry price. The 3-Pack keeps its badge.
+      assign is_default = false
+      if variant.id == product.selected_or_first_available_variant.id
+        assign is_default = true
+      endif
+
+      assign per_bottle = variant.price | divided_by: count
     -%}
     <label
-      class="vura-bundle-card{% if is_recommended %} vura-bundle-card--selected vura-bundle-card--featured-gradient{% endif %}{% unless variant.available %} vura-bundle-card--soldout{% endunless %}"
+      class="vura-bundle-card{% if is_default %} vura-bundle-card--selected{% endif %}{% if is_recommended %} vura-bundle-card--featured-gradient{% endif %}{% unless variant.available %} vura-bundle-card--soldout{% endunless %}"
       data-variant-id="{{ variant.id }}"
       data-variant-value="{{ variant.title | escape }}"
     >
@@ -51,7 +60,7 @@
         name="vura-bundle"
         value="{{ variant.id }}"
         class="vura-bundle-radio visually-hidden"
-        {% if is_recommended %}checked{% endif %}
+        {% if is_default %}checked{% endif %}
       >
       {%- if is_recommended -%}<span class="vura-bundle-card__badge">RECOMMENDED</span>{%- endif -%}
       <div class="vura-bundle-card__inner">
@@ -64,6 +73,9 @@
           {%- if savings > 0 and variant.available -%}
             <span class="vura-bundle-card__was"><s>{{ was | money }}</s></span>
             <span class="vura-bundle-card__savings">Save {{ savings | money }}</span>
+          {%- endif -%}
+          {%- if count > 1 and variant.available -%}
+            <span class="vura-bundle-card__per">{{ per_bottle | money_without_trailing_zeros }}/bottle</span>
           {%- endif -%}
           {%- unless variant.available -%}
             <span class="vura-bundle-card__soldout">Sold out</span>
@@ -194,6 +206,11 @@
   }
   .vura-bundle-card__was s {
     text-decoration: line-through;
+  }
+  .vura-bundle-card__per {
+    flex-basis: 100%;
+    font-size: 12px;
+    color: var(--text-on-paper-muted, #4A5750);
   }
   .vura-bundle-card__savings {
     display: inline-block;
@@ -346,7 +363,7 @@
       card.addEventListener('click', function () { selectCard(this); });
     });
 
-    // Apply the default selection (3-Pack) once Dawn's variant engine is ready.
+    // Re-apply the default selection once Dawn's variant engine is ready.
     const defaultSelected = picker.querySelector('.vura-bundle-card--selected');
     if (defaultSelected) {
       setTimeout(function () { selectCard(defaultSelected); }, 300);
