@@ -12,10 +12,13 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
-    <!-- Google Fonts for Vura Skincare (Inter & Noto Sans Devanagari) -->
+    <!-- Google Fonts for Vura Skincare (Bree Serif display, Mulish body, Noto Sans Devanagari).
+         Bree Serif stands in for "Roca One" (a commercial Latinotype face with no binaries in
+         this repo) — it's the nearest free equivalent in shape and carries only weight 400, so
+         display type gets its emphasis from size, never from bolder weight. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Mulish:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>

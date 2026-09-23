@@ -70,9 +70,12 @@
   --focus-ring-on-paper: var(--vura-terracotta);
   --focus-ring-on-block: var(--vura-saffron);
 
-  /* Typography Stacks */
-  --font-display:    "Roca One", "Recoleta", Georgia, serif;
-  --font-body:       "Inter", "Helvetica Neue", system-ui, sans-serif;
+  /* Typography Stacks — two families only: Bree Serif for display, Mulish for
+     body. (Was "Roca One"/"Recoleta" for display, which was never loaded as a
+     webfont anywhere in the theme, so every heading was silently falling back
+     to the browser's default Georgia/serif — not a real choice, just a bug.) */
+  --font-display:    "Bree Serif", Georgia, serif;
+  --font-body:       "Mulish", "Helvetica Neue", system-ui, sans-serif;
   --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
   --font-devanagari: "Noto Sans Devanagari", "Mukta", sans-serif;
 

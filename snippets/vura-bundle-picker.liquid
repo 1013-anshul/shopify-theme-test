@@ -13,6 +13,7 @@
 
 {%- assign unit_price = product.variants.first.price -%}
 
+<p class="vura-bundle-picker__label">Pack Size</p>
 <div class="vura-bundle-picker" data-unit-price="{{ unit_price }}">
   {%- for variant in product.variants -%}
     {%- liquid
@@ -51,7 +52,7 @@
       assign per_bottle = variant.price | divided_by: count
     -%}
     <label
-      class="vura-bundle-card{% if is_default %} vura-bundle-card--selected{% endif %}{% if is_recommended %} vura-bundle-card--featured-gradient{% endif %}{% unless variant.available %} vura-bundle-card--soldout{% endunless %}"
+      class="vura-bundle-card{% if is_default %} vura-bundle-card--selected{% endif %}{% unless variant.available %} vura-bundle-card--soldout{% endunless %}"
       data-variant-id="{{ variant.id }}"
       data-variant-value="{{ variant.title | escape }}"
     >
@@ -62,24 +63,31 @@
         class="vura-bundle-radio visually-hidden"
         {% if is_default %}checked{% endif %}
       >
-      {%- if is_recommended -%}<span class="vura-bundle-card__badge">RECOMMENDED</span>{%- endif -%}
+      <span class="vura-bundle-card__corner">
+        <span class="vura-bundle-card__tag{% if is_recommended %} vura-bundle-card__tag--gold{% endif %}">{{ card_label }}</span>
+        {%- if is_recommended -%}<span class="vura-bundle-card__tag vura-bundle-card__tag--dark">RECOMMENDED</span>{%- endif -%}
+      </span>
       <div class="vura-bundle-card__inner">
-        <div class="vura-bundle-card__header">
-          <span class="vura-bundle-card__label">{{ card_label }}</span>
-        </div>
+        <span class="vura-bundle-card__radio" aria-hidden="true"></span>
         <div class="vura-bundle-card__body">
           <span class="vura-bundle-card__qty">{{ variant.title }}</span>
           <span class="vura-bundle-card__price">{{ variant.price | money }}</span>
           {%- if savings > 0 and variant.available -%}
             <span class="vura-bundle-card__was"><s>{{ was | money }}</s></span>
-            <span class="vura-bundle-card__savings">Save {{ savings | money }}</span>
-          {%- endif -%}
-          {%- if count > 1 and variant.available -%}
-            <span class="vura-bundle-card__per">{{ per_bottle | money_without_trailing_zeros }}/bottle</span>
           {%- endif -%}
           {%- unless variant.available -%}
             <span class="vura-bundle-card__soldout">Sold out</span>
           {%- endunless -%}
+          {%- if savings > 0 or count > 1 and variant.available -%}
+            <span class="vura-bundle-card__meta-row">
+              {%- if savings > 0 and variant.available -%}
+                <span class="vura-bundle-card__savings">Save {{ savings | money }}</span>
+              {%- endif -%}
+              {%- if count > 1 and variant.available -%}
+                <span class="vura-bundle-card__per">{{ per_bottle | money_without_trailing_zeros }}/bottle</span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
         </div>
       </div>
     </label>
@@ -92,111 +100,130 @@
   variant-selects {
     display: none !important;
   }
+  /* This snippet lives inside Dawn's .product-form__quantity wrapper (repurposed
+     to hold pack cards instead of a qty stepper), which Dawn caps at max-width:
+     44rem (~462px) — narrower than the rest of the info column, which is why
+     the offer banner above it looked wider than the cards below it. Only lift
+     the cap on the wrapper that actually holds this picker. */
+  .product-form__quantity:has(.vura-bundle-picker) {
+    max-width: none;
+  }
+  .vura-bundle-picker__label {
+    font-family: var(--font-body, Mulish, sans-serif);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--vura-paper-ink, #1A2A22);
+    margin: 1.5rem 0 0.6rem;
+  }
   .vura-bundle-picker {
     display: grid;
-    /* Fits however many packs the product has — a hardcoded 3 columns stranded
-       the 6-Pack alone on a second row once the 2-Pack was added. The info column
-       is only ~460px wide, so the minimum has to be small enough for four across. */
-    grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-    gap: 10px;
-    margin: 1.5rem 0;
-  }
-  @media screen and (max-width: 749px) {
-    .vura-bundle-picker {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
+    /* Always one card per row, full width — matches the reference design.
+       A side-by-side grid squeezed each card's corner badges into the next
+       card's, which is what caused them to overlap on desktop. */
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 0 0 1.5rem;
   }
   .vura-bundle-card {
     position: relative;
     cursor: pointer;
-    border: 1.5px solid rgba(26,42,34,0.12);
-    border-radius: 8px;
+    border: 1.5px solid rgba(26,42,34,0.16);
+    border-radius: 14px;
     background: #fff;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
     overflow: visible;
   }
   .vura-bundle-card:hover {
     border-color: rgba(99,119,70,0.4);
   }
-  @keyframes vuraCardGlow {
-    0%, 100% {
-      box-shadow: 0 0 0 1px #637746, 0 0 0 0 rgba(99, 119, 70, 0);
-    }
-    50% {
-      box-shadow: 0 0 0 1.5px #637746, 0 0 8px 3px rgba(99, 119, 70, 0.3);
-    }
-  }
   .vura-bundle-card--selected {
-    border-color: #637746;
-    background: rgba(99,119,70,0.03);
-    animation: vuraCardGlow 2.5s infinite ease-in-out;
+    border-color: var(--vura-forest-deep, #0E2118);
+    border-width: 2px;
+    background: var(--vura-paper-deep, #EDE5D2);
   }
-  @keyframes vuraBadgeGlare {
-    0% {
-      background-position: -200% 0;
-    }
-    100% {
-      background-position: 200% 0;
-    }
-  }
-  .vura-bundle-card__badge {
+  /* Corner tags — a small row of pill badges overlapping the card's top-right
+     border, one per card ("TRY IT" etc.) plus an extra "RECOMMENDED" tag on
+     the featured pack. */
+  .vura-bundle-card__corner {
     position: absolute;
     top: -9px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(120deg, #637746 0%, #637746 40%, #a2b884 50%, #637746 60%, #637746 100%);
-    background-size: 200% 100%;
-    animation: vuraBadgeGlare 3s infinite linear;
+    right: 12px;
+    display: flex;
+    gap: 6px;
+    z-index: 1;
+  }
+  .vura-bundle-card__tag {
+    background: var(--vura-forest-deep, #0E2118);
     color: #fff;
-    font-family: var(--font-body, Inter, sans-serif);
+    font-family: var(--font-body, Mulish, sans-serif);
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 3px 12px;
+    padding: 4px 11px;
     border-radius: 99px;
     white-space: nowrap;
     line-height: 1.4;
-    box-shadow: 0 2px 8px rgba(99, 119, 70, 0.35);
+  }
+  .vura-bundle-card__tag--gold {
+    background: var(--vura-saffron, #FFC03F);
+    color: var(--vura-forest-deep, #0E2118);
+  }
+  .vura-bundle-card__tag--dark {
+    background: var(--vura-forest-deep, #0E2118);
+    color: #fff;
   }
   .vura-bundle-card__inner {
-    padding: 18px 14px 14px;
-    text-align: center;
-  }
-  .vura-bundle-card__header {
-    margin-bottom: 6px;
-    /* Reserve two lines so a label that wraps ("FAMILY PACK") doesn't push its
-       card's price out of line with the others. */
-    min-height: 2.8em;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 14px;
+    text-align: left;
+    padding: 18px 18px;
+    min-height: 64px;
   }
-  .vura-bundle-card__label {
-    font-family: var(--font-body, Inter, sans-serif);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #4A5750;
+  .vura-bundle-card__radio {
+    display: block;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(26,42,34,0.25);
+    background: #fff;
+    position: relative;
+    transition: border-color 0.18s ease, background-color 0.18s ease;
+  }
+  .vura-bundle-card--selected .vura-bundle-card__radio {
+    border-color: var(--vura-forest-deep, #0E2118);
+    background: var(--vura-forest-deep, #0E2118);
+  }
+  .vura-bundle-card--selected .vura-bundle-card__radio::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 11px;
+    height: 7px;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: translate(-50%, -60%) rotate(-45deg);
   }
   .vura-bundle-card__body {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 10px;
   }
   .vura-bundle-card__qty {
-    font-family: var(--font-body, Inter, sans-serif);
-    font-size: 16px;
+    font-family: var(--font-body, Mulish, sans-serif);
+    font-size: 18px;
     font-weight: 700;
     color: #1A2A22;
     line-height: 1.3;
   }
   .vura-bundle-card__price {
-    font-family: var(--font-body, Inter, sans-serif);
-    font-size: 15px;
+    font-family: var(--font-body, Mulish, sans-serif);
+    font-size: 16px;
     font-weight: 600;
     color: #1A2A22;
   }
@@ -207,18 +234,28 @@
   .vura-bundle-card__was s {
     text-decoration: line-through;
   }
-  .vura-bundle-card__per {
+  /* Savings + per-bottle price always sit together on their own row, as a
+     group, regardless of how much horizontal room the card has — the two
+     used to only fall onto separate lines by accident when the column was
+     narrow. */
+  .vura-bundle-card__meta-row {
     flex-basis: 100%;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+  .vura-bundle-card__per {
     font-size: 12px;
     color: var(--text-on-paper-muted, #4A5750);
   }
   .vura-bundle-card__savings {
     display: inline-block;
-    font-family: var(--font-body, Inter, sans-serif);
+    font-family: var(--font-body, Mulish, sans-serif);
     font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    letter-spacing: normal;
+    text-transform: none;
     color: #3D4B22;
     background: rgba(99,119,70,0.12);
     padding: 2px 8px;
@@ -227,7 +264,7 @@
   }
   .vura-bundle-card__soldout {
     display: inline-block;
-    font-family: var(--font-body, Inter, sans-serif);
+    font-family: var(--font-body, Mulish, sans-serif);
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -243,63 +280,10 @@
     border-color: rgba(26,42,34,0.12);
   }
 
-  /* Mobile: horizontal layout inside cards */
-  @media screen and (max-width: 749px) {
-    .vura-bundle-card__inner {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-align: left;
-      padding: 18px 18px;
-      min-height: 64px;
-    }
-    .vura-bundle-card__header {
-      margin-bottom: 0;
-      min-width: 84px;
-    }
-    .vura-bundle-card__label {
-      font-size: 11px;
-    }
-    .vura-bundle-card__body {
-      flex-direction: row;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 4px 10px;
-    }
-    .vura-bundle-card__qty {
-      font-size: 18px;
-    }
-    .vura-bundle-card__price {
-      font-size: 16px;
-    }
-    .vura-bundle-card__badge {
-      left: auto;
-      right: 14px;
-      transform: none;
-      top: -8px;
-      font-size: 9px;
-      padding: 3px 11px;
-    }
-  }
-
-  .vura-bundle-card--featured-gradient.vura-bundle-card--selected {
-    border-color: #637746 !important;
-    animation: vuraBreathingGradient 3.5s infinite ease-in-out !important;
-  }
-  @keyframes vuraBreathingGradient {
-    0%, 100% {
-      background-position: 0% 50%;
-      box-shadow: 0 0 0 1px #637746, 0 0 4px rgba(99, 119, 70, 0.15);
-    }
-    50% {
-      background-position: 100% 50%;
-      box-shadow: 0 0 0 1.5px #637746, 0 0 12px 3px rgba(99, 119, 70, 0.35);
-    }
-  }
   /* Enforce clean standard borders on unselected cards to clear highlight */
   .vura-bundle-card:not(.vura-bundle-card--selected) {
-    border: 1.5px solid rgba(26,42,34,0.12) !important;
-    box-shadow: none !important;
+    border: 1.5px solid rgba(26,42,34,0.16) !important;
+    background: #fff !important;
   }
 </style>
 

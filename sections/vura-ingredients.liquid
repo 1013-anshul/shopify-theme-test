@@ -56,7 +56,7 @@
     background: var(--vura-terracotta-tint, #F4E9E4); color: var(--vura-terracotta, #8D3B2D);
     display: flex; align-items: center; justify-content: center; margin-bottom: 1.4rem;
   }
-  .vura-ing__icon svg { width: 32px; height: 32px; }
+  .vura-ing__icon svg, .vura-ing__icon img { width: 32px; height: 32px; display: block; }
   .vura-ing__tag {
     align-self: flex-start; font-family: var(--font-body, 'Inter', sans-serif); font-size: 0.95rem; font-weight: 600;
     letter-spacing: 0.08em; text-transform: uppercase; color: var(--vura-terracotta, #8D3B2D);
@@ -72,6 +72,10 @@
     color: var(--vura-paper-ink-faint, #7A857F);
   }
   .vura-ing__hint svg { width: 15px; height: 15px; }
+  .vura-ing__back-name {
+    font-family: var(--font-display, Georgia, serif); font-size: 1.7rem; line-height: 1.15;
+    margin: 0 0 0.9rem; color: var(--vura-cream, #F4EFE3);
+  }
   .vura-ing__back-label {
     font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase; color: var(--vura-saffron, #FFC03F); margin: 0 0 0.7rem;
@@ -121,14 +125,9 @@
                 <span class="vura-ing__icon" aria-hidden="true">
                   {%- case block.settings.icon -%}
                     {%- when 'alum' -%}
-                      {%- comment -%} Potassium Alum — faceted mineral crystal {%- endcomment -%}
-                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 14 H42 L52 27 L32 52 L12 27 Z"/>
-                        <path d="M12 27 H52"/>
-                        <path d="M22 14 L27 27 L32 52"/>
-                        <path d="M42 14 L37 27 L32 52"/>
-                        <path d="M32 14 V27"/>
-                      </svg>
+                      {%- comment -%} Potassium Alum — Flaticon crystal icon (id 17703344, by Kise1ki), recolored to terracotta {%- endcomment -%}
+                      <img src="{{ 'vura-ing-icon-alum.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
+
                     {%- when 'citrus' -%}
                       {%- comment -%} Triethyl Citrate — citrus slice (citrus-derived odour control) {%- endcomment -%}
                       <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -137,18 +136,13 @@
                         <path d="M32 17.5 V46.5 M17.5 32 H46.5 M21.7 21.7 L42.3 42.3 M42.3 21.7 L21.7 42.3"/>
                       </svg>
                     {%- when 'aloe' -%}
-                      {%- comment -%} Aloe Vera — three succulent blades {%- endcomment -%}
-                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M32 55 C29 41 29 22 32 9 C35 22 35 41 32 55 Z"/>
-                        <path d="M32 55 C23 47 17 33 16 19 C27 25 31 41 32 55 Z"/>
-                        <path d="M32 55 C41 47 47 33 48 19 C37 25 33 41 32 55 Z"/>
-                      </svg>
+                      {%- comment -%} Aloe Vera — Flaticon aloe icon (id 3072084, by Good Ware), recolored to terracotta {%- endcomment -%}
+                      <img src="{{ 'vura-ing-icon-aloe.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
+
                     {%- when 'rose' -%}
-                      {%- comment -%} Rose Water — layered Damask rose bloom {%- endcomment -%}
-                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="32" cy="32" r="20"/>
-                        <path d="M32 18 C40 18 46 24 46 32 C46 41 38 46 30 43 C23 41 20 33 24 27 C28 22 36 22 39 29 C41 34 37 39 32 39 C29 39 27 36 28 33"/>
-                      </svg>
+                      {%- comment -%} Rose Water — Flaticon rose icon (id 15561724, by Vectorslab), recolored to terracotta {%- endcomment -%}
+                      <img src="{{ 'vura-ing-icon-rose.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
+
                     {%- when 'roseoil' -%}
                       {%- comment -%} Rose Oil — fragrance drop cradling a rose {%- endcomment -%}
                       <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -157,11 +151,9 @@
                         <path d="M32 30 C36 30 39 33 38 37 C37 41 32 42 29 39 C27 37 28 33 31 32"/>
                       </svg>
                     {%- when 'glycerin' -%}
-                      {%- comment -%} Glycerin — hydration droplet with shine {%- endcomment -%}
-                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M32 8 C22 26 16 37 20 46 C24 55 40 55 44 46 C48 37 42 26 32 8 Z"/>
-                        <path d="M26 41 C24 44 25 49 30 50"/>
-                      </svg>
+                      {%- comment -%} Glycerin — Flaticon water-drop icon (id 3119434, by Bartama Graphic), recolored to terracotta {%- endcomment -%}
+                      <img src="{{ 'vura-ing-icon-glycerin.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
+
                     {%- else -%}
                       <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 14 H42 L52 27 L32 52 L12 27 Z"/><path d="M12 27 H52"/>
@@ -176,6 +168,7 @@
                 </span>
               </div>
               <div class="vura-ing__face vura-ing__face--back">
+                <h3 class="vura-ing__back-name">{{ block.settings.name }}</h3>
                 <p class="vura-ing__back-label">Why it's in</p>
                 <p class="vura-ing__desc">{{ block.settings.description }}</p>
               </div>

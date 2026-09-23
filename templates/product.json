@@ -53,7 +53,7 @@
           "type": "collapsible_tab",
           "settings": {
             "heading": "Benefits",
-            "icon": "heart",
+            "icon": "star",
             "content": "<p>Our Mineral Underarm Spray is a natural, non-sticky formula that keeps you fresh through the day. It works by neutralizing odor-causing bacteria without blocking your body's natural perspiration process. Non-staining, fast-drying, and gentle on sensitive skin.</p>",
             "page": ""
           }
@@ -71,7 +71,7 @@
           "type": "collapsible_tab",
           "settings": {
             "heading": "How to use",
-            "icon": "box",
+            "icon": "clipboard",
             "content": "<p>1. Shake the bottle well before use.</p><p>2. Spray 2-3 times on clean, dry underarms.</p><p>3. Let it air dry for a few seconds before dressing.</p><p>Use daily after your shower for best results.</p>",
             "page": ""
           }
@@ -114,10 +114,10 @@
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
-        "media_size": "small",
+        "media_size": "large",
         "constrain_to_viewport": true,
         "media_fit": "contain",
-        "gallery_layout": "thumbnail_slider",
+        "gallery_layout": "stacked",
         "mobile_thumbnails": "hide",
         "media_position": "left",
         "image_zoom": "lightbox",
