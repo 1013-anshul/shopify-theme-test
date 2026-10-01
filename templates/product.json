@@ -127,6 +127,10 @@
         "padding_bottom": 56
       }
     },
+    "vura-smell-story": {
+      "type": "vura-smell-story",
+      "settings": {}
+    },
     "vura-benefits-bar": {
       "type": "vura-benefits-bar",
       "blocks": {
@@ -434,6 +438,7 @@
   },
   "order": [
     "main",
+    "vura-smell-story",
     "vura-benefits-bar",
     "vura-reels",
     "vura-confidence",

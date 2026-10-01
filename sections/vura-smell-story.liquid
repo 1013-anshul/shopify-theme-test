@@ -1,0 +1,240 @@
+{% comment %}
+  How it stops the smell, in three beats, driven by the reader's scroll. While the
+  section passes, its panel pins to the screen and the drawing follows the scroll:
+    1. a drop of sweat rises from a pore (it doesn't smell on its own)
+    2. bacteria gather and odour rises (they feed on it; that's the smell)
+    3. the mist lands, the bacteria calm, the odour clears, and sweat still comes through
+  The copy follows the claim already on the site: phitkari calms the bacteria behind
+  odour without blocking sweat.
+
+  Without script the section is a plain list of the three beats beside the finished
+  drawing. With reduced motion each beat gets its own still drawing instead of the scrub.
+{% endcomment %}
+{%- liquid
+  assign line_1 = section.settings.line_1 | default: 'Sweat on its own doesn’t smell.'
+  assign line_2 = section.settings.line_2 | default: 'Bacteria on your skin feed on it. That’s the smell.'
+  assign line_3 = section.settings.line_3 | default: 'Phitkari calms them. You still sweat. The smell doesn’t start.'
+  assign eyebrow = section.settings.eyebrow | default: 'How it works'
+-%}
+{%- style -%}
+  #VuraStory-{{ section.id }} { background: var(--vura-paper, #F8F3E7); color: var(--vura-paper-ink, #1A2A22); }
+  #VuraStory-{{ section.id }} .vura-story__pin { padding: 56px 0; }
+  #VuraStory-{{ section.id }} .vura-story__inner { display: grid; gap: 28px; align-items: center; }
+  #VuraStory-{{ section.id }} .vura-story__eyebrow {
+    margin: 0 0 16px; font-family: var(--font-body, Mulish, sans-serif); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--vura-terracotta, #8D3B2D);
+  }
+  #VuraStory-{{ section.id }} .vura-story__beats { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+  #VuraStory-{{ section.id }} .vura-story__num {
+    display: block; margin-bottom: 8px; font-family: var(--font-body, Mulish, sans-serif); font-size: 12px;
+    font-weight: 700; letter-spacing: 0.12em; color: var(--vura-paper-ink-muted, #4A5750);
+  }
+  #VuraStory-{{ section.id }} .vura-story__line {
+    margin: 0; font-family: var(--font-display, "Bree Serif", Georgia, serif); font-weight: 400;
+    font-size: clamp(2.4rem, 6.9vw, 4rem); line-height: 1.18; text-wrap: balance;
+  }
+  #VuraStory-{{ section.id }} .vura-story__art svg,
+  #VuraStory-{{ section.id }} .vura-story__beat svg { display: block; width: 100%; height: auto; max-width: 560px; margin: 0 auto; }
+  #VuraStory-{{ section.id }} .vura-story__beat svg { max-width: 360px; margin: 14px 0 0; }
+  @media screen and (min-width: 990px) {
+    #VuraStory-{{ section.id }} .vura-story__inner { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; }
+  }
+
+  /* Scrub: the section is 2.5 screens tall and its panel pins for the middle 1.5. The
+     panel's bottom padding keeps the drawing clear of the sticky add-to-cart bar. */
+  #VuraStory-{{ section.id }}.is-scrub { height: 250vh; height: 250svh; }
+  #VuraStory-{{ section.id }}.is-scrub .vura-story__pin {
+    position: sticky; top: 0; height: 100vh; height: 100svh; box-sizing: border-box;
+    display: flex; align-items: center; padding: 72px 0 132px;
+  }
+  #VuraStory-{{ section.id }}.is-scrub .vura-story__inner { width: 100%; }
+  #VuraStory-{{ section.id }}.is-scrub .vura-story__beat { grid-area: 1 / 1; opacity: 0; }
+  @media screen and (min-width: 990px) {
+    #VuraStory-{{ section.id }}.is-scrub .vura-story__pin { padding: 80px 0; }
+  }
+  #VuraStory-{{ section.id }}.is-stills .vura-story__art { display: none; }
+{%- endstyle -%}
+
+<section id="VuraStory-{{ section.id }}" class="vura-story" aria-label="{{ eyebrow | escape }}">
+  <div class="vura-story__pin">
+    <div class="vura-story__inner page-width">
+      <div class="vura-story__copy">
+        <p class="vura-story__eyebrow">{{ eyebrow | escape }}</p>
+        <ol class="vura-story__beats">
+          <li class="vura-story__beat"><span class="vura-story__num" aria-hidden="true">1 / 3</span><p class="vura-story__line">{{ line_1 | escape }}</p></li>
+          <li class="vura-story__beat"><span class="vura-story__num" aria-hidden="true">2 / 3</span><p class="vura-story__line">{{ line_2 | escape }}</p></li>
+          <li class="vura-story__beat"><span class="vura-story__num" aria-hidden="true">3 / 3</span><p class="vura-story__line">{{ line_3 | escape }}</p></li>
+        </ol>
+      </div>
+      <div class="vura-story__art">
+        {%- comment -%} Drawn in its finished state (beat 3); the script moves it. {%- endcomment -%}
+        <svg viewBox="20 100 280 190" aria-hidden="true" focusable="false">
+          <defs>
+            <filter id="VuraStoryWob-{{ section.id }}" x="-5%" y="-5%" width="110%" height="110%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+          </defs>
+          <path d="M0 212 C40 206 90 216 150 211 C152 228 153 243 157 249 C160 253 165 252 167 247 C170 239 170 226 170 211 C230 205 272 216 320 211 L320 300 L0 300 Z" fill="#EDE3CF"/>
+          <g filter="url(#VuraStoryWob-{{ section.id }})" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M0 212 C40 206 90 216 150 211 C152 228 153 243 157 249 C160 253 165 252 167 247 C170 239 170 226 170 211 C230 205 272 216 320 211" stroke="#1A2A22" stroke-width="2.2"/>
+            <path d="M28 252 l14 -9 M62 278 l14 -9 M104 246 l14 -9 M206 258 l14 -9 M252 280 l14 -9 M190 288 l12 -8 M280 244 l12 -8" stroke="#1A2A22" stroke-opacity=".3" stroke-width="1.4"/>
+          </g>
+          <g class="vs-wisps" fill="none" stroke="#B55933" stroke-width="2" stroke-opacity=".8" stroke-linecap="round">
+            <path pathLength="1" stroke-dasharray="1 3" stroke-dashoffset="1.02" d="M100 190 C92 174 108 164 100 148 C92 132 106 124 100 110"/>
+            <path pathLength="1" stroke-dasharray="1 3" stroke-dashoffset="1.02" d="M214 190 C206 174 222 164 214 148 C206 132 220 124 214 110"/>
+            <path pathLength="1" stroke-dasharray="1 3" stroke-dashoffset="1.02" d="M248 194 C240 178 256 168 248 152 C240 136 254 128 248 116"/>
+          </g>
+          <g class="vs-bacteria">
+            {%- assign bacteria = '112,203,-12,3.3|127,200,18,3.45|196,201,-8,3.6|212,205,22,3.75|96,206,4,3.95|229,202,-18,4.1|80,204,14,4.3|245,206,8,4.45|136,198,-25,4.6' | split: '|' -%}
+            {%- for b in bacteria -%}
+              {%- assign p = b | split: ',' -%}
+              <g data-x="{{ p[0] }}" data-y="{{ p[1] }}" data-r="{{ p[2] }}" data-ta="{{ p[3] }}" transform="translate({{ p[0] }} {{ p[1] }}) rotate({{ p[2] }}) scale(.6)" opacity=".2">
+                <rect x="-7.5" y="-3.8" width="15" height="7.6" rx="3.8" fill="#E9BBA7" stroke="#1A2A22" stroke-width="1.6"/>
+                <circle cx="-2.5" cy="0" r="1" fill="#1A2A22" fill-opacity=".5"/>
+              </g>
+            {%- endfor -%}
+          </g>
+          <g class="vs-drop" transform="translate(160 158)" opacity="0">
+            <path d="M0 -17 C7 -7 12 -1 12 6 A12 12 0 0 1 -12 6 C-12 -1 -7 -7 0 -17Z" fill="#FBF8F0" stroke="#1A2A22" stroke-width="2.2"/>
+            <path d="M-6 5 C-6 9 -3 12 1 12" fill="none" stroke="#1A2A22" stroke-opacity=".5" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+          <g class="vs-drop2" transform="translate(160 184)">
+            <path d="M0 -17 C7 -7 12 -1 12 6 A12 12 0 0 1 -12 6 C-12 -1 -7 -7 0 -17Z" fill="#FBF8F0" stroke="#1A2A22" stroke-width="2.2"/>
+            <path d="M-6 5 C-6 9 -3 12 1 12" fill="none" stroke="#1A2A22" stroke-opacity=".5" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+          <g class="vs-mist" fill="#162D24"><circle cx="50" cy="208.4" r="2.3" data-y0="106.4" data-y1="208.4" data-s="6.43"/><circle cx="114.5" cy="206.3" r="2.3" data-y0="106.6" data-y1="206.3" data-s="6.05"/><circle cx="101.7" cy="207.1" r="2.3" data-y0="97.4" data-y1="207.1" data-s="6.22"/><circle cx="198.2" cy="203.8" r="2.3" data-y0="115.2" data-y1="203.8" data-s="6.33"/><circle cx="84.1" cy="208" r="2.3" data-y0="89.9" data-y1="208" data-s="6.15"/><circle cx="192.7" cy="203.7" r="2.3" data-y0="96.1" data-y1="203.7" data-s="6.02"/><circle cx="251.8" cy="206.8" r="2.3" data-y0="95.4" data-y1="206.8" data-s="6.05"/><circle cx="145.4" cy="204.4" r="2.3" data-y0="116.1" data-y1="204.4" data-s="6.36"/><circle cx="100.8" cy="207.2" r="2.3" data-y0="105.6" data-y1="207.2" data-s="6.25"/><circle cx="109.3" cy="206.7" r="2.3" data-y0="86.7" data-y1="206.7" data-s="6.28"/><circle cx="171.4" cy="203.6" r="2.3" data-y0="111.6" data-y1="203.6" data-s="6.17"/><circle cx="102.2" cy="207.1" r="2.3" data-y0="107.1" data-y1="207.1" data-s="6.35"/><circle cx="85.9" cy="207.9" r="2.3" data-y0="110.6" data-y1="207.9" data-s="6.53"/><circle cx="231.9" cy="205.5" r="2.3" data-y0="92" data-y1="205.5" data-s="6.50"/><circle cx="184.9" cy="203.5" r="2.3" data-y0="110.1" data-y1="203.5" data-s="6.14"/><circle cx="130" cy="205.3" r="2.3" data-y0="89.4" data-y1="205.3" data-s="6.23"/><circle cx="130" cy="205.3" r="2.3" data-y0="90.2" data-y1="205.3" data-s="6.46"/><circle cx="135.5" cy="205" r="2.3" data-y0="90.4" data-y1="205" data-s="6.21"/><circle cx="225.2" cy="205.1" r="2.3" data-y0="112.3" data-y1="205.1" data-s="6.24"/><circle cx="157.4" cy="203.9" r="2.3" data-y0="102.6" data-y1="203.9" data-s="6.17"/><circle cx="165.1" cy="203.7" r="2.3" data-y0="101.8" data-y1="203.7" data-s="6.32"/><circle cx="180.9" cy="203.5" r="2.3" data-y0="115.7" data-y1="203.5" data-s="6.26"/><circle cx="122.8" cy="205.8" r="2.3" data-y0="99.4" data-y1="205.8" data-s="6.41"/><circle cx="131.1" cy="205.2" r="2.3" data-y0="101.1" data-y1="205.2" data-s="6.51"/><circle cx="134.8" cy="205" r="2.3" data-y0="103.3" data-y1="205" data-s="6.36"/><circle cx="120.9" cy="205.9" r="2.3" data-y0="108" data-y1="205.9" data-s="6.14"/><circle cx="227.7" cy="205.3" r="2.3" data-y0="112.9" data-y1="205.3" data-s="6.08"/><circle cx="187.9" cy="203.6" r="2.3" data-y0="86.7" data-y1="203.6" data-s="6.24"/><circle cx="125.1" cy="205.6" r="2.3" data-y0="89" data-y1="205.6" data-s="6.37"/><circle cx="188" cy="203.6" r="2.3" data-y0="117.9" data-y1="203.6" data-s="6.24"/></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.getElementById('VuraStory-{{ section.id }}');
+    if (!root || root.__vuraStory) return;
+    root.__vuraStory = true;
+
+    var clamp01 = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+    var seg = function (t, a, b) { return clamp01((t - a) / (b - a)); };
+    var lerp = function (a, b, p) { return a + (b - a) * p; };
+    var inOut = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    var settle = function (x) { return 1 - Math.pow(1 - x, 3); };
+
+    // The story on a 0–8.6 timeline. Beat 1: 0–3, beat 2: 3–6, beat 3: 6–8.6.
+    function draw(svg, t) {
+      var up = settle(seg(t, 0.3, 1.6)), gone = inOut(seg(t, 7.2, 8.1)), next = settle(seg(t, 7.5, 8.5));
+      var drop = svg.querySelector('.vs-drop'), drop2 = svg.querySelector('.vs-drop2');
+      drop.setAttribute('transform', 'translate(160 ' + (lerp(240, 184, up) - 26 * gone).toFixed(2) + ') scale(' + lerp(0.4, 1, up).toFixed(3) + ')');
+      drop.setAttribute('opacity', (1 - gone).toFixed(3));
+      drop2.setAttribute('transform', 'translate(160 ' + lerp(240, 184, next).toFixed(2) + ') scale(' + lerp(0.4, 1, next).toFixed(3) + ')');
+      drop2.setAttribute('opacity', seg(t, 7.5, 7.7).toFixed(3));
+      svg.querySelectorAll('.vs-bacteria > g').forEach(function (g, i) {
+        var d = g.dataset, ta = +d.ta;
+        var grow = settle(seg(t, ta, ta + 0.35)), calm = settle(seg(t, 6.8 + i * 0.05, 7.5 + i * 0.05));
+        g.setAttribute('transform', 'translate(' + d.x + ' ' + d.y + ') rotate(' + d.r + ') scale(' + (grow * lerp(1, 0.6, calm)).toFixed(3) + ')');
+        g.setAttribute('opacity', lerp(1, 0.2, calm).toFixed(3));
+      });
+      svg.querySelectorAll('.vs-wisps path').forEach(function (w, i) {
+        var rise = inOut(seg(t, 4.5 + i * 0.15, 5.4 + i * 0.15)), clear = inOut(seg(t, 6.7 + i * 0.08, 7.3 + i * 0.08));
+        w.setAttribute('stroke-dashoffset', (clear > 0 ? -clear * 1.02 : (1 - rise) * 1.02).toFixed(3));
+      });
+      svg.querySelectorAll('.vs-mist circle').forEach(function (c) {
+        var d = c.dataset, s = +d.s;
+        c.setAttribute('cy', lerp(+d.y0, +d.y1, inOut(seg(t, s, s + 0.7))).toFixed(2));
+        c.setAttribute('opacity', t >= s ? '1' : '0');
+      });
+    }
+
+    var svg = root.querySelector('.vura-story__art svg');
+    var beats = Array.prototype.slice.call(root.querySelectorAll('.vura-story__beat'));
+
+    // Reduced motion: no scrub, a still drawing under each beat.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      [2.9, 5.9, 8.6].forEach(function (t, i) {
+        var still = svg.cloneNode(true);
+        still.querySelector('filter').id += '-' + i;
+        still.querySelector('[filter]').setAttribute('filter', 'url(#' + still.querySelector('filter').id + ')');
+        draw(still, t);
+        beats[i].appendChild(still);
+      });
+      root.classList.add('is-stills');
+      return;
+    }
+
+    root.classList.add('is-scrub');
+    var pin = root.querySelector('.vura-story__pin');
+    var lastT = -1, raf = 0, listening = false;
+
+    function frame() {
+      raf = 0;
+      var r = root.getBoundingClientRect(), vh = window.innerHeight;
+      var span = Math.max(1, r.height - pin.offsetHeight);
+      // While the section scrolls up into view the drop rises (0–1.6); once the
+      // panel pins, the rest of the story follows the scroll (1.6–8.6).
+      var t = r.top > 0 ? clamp01((vh - r.top) / vh) * 1.6 : 1.6 + clamp01(-r.top / span) * 7;
+      if (Math.abs(t - lastT) < 0.002) return;
+      lastT = t;
+      draw(svg, t);
+      beats[0].style.opacity = (1 - seg(t, 2.75, 3)).toFixed(3);
+      beats[1].style.opacity = (seg(t, 3, 3.3) * (1 - seg(t, 5.75, 6))).toFixed(3);
+      beats[2].style.opacity = seg(t, 6, 6.3).toFixed(3);
+    }
+    function onScroll() { if (!raf) raf = requestAnimationFrame(frame); }
+
+    // Only follow the scroll while the section is near the screen.
+    new IntersectionObserver(function (entries) {
+      var near = entries[entries.length - 1].isIntersecting;
+      if (near && !listening) {
+        listening = true;
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        onScroll();
+      } else if (!near && listening) {
+        listening = false;
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onScroll);
+      }
+    }, { rootMargin: '200px 0px' }).observe(root);
+    frame();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Vura smell story",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "How it works"
+    },
+    {
+      "type": "text",
+      "id": "line_1",
+      "label": "Beat 1 (a drop of sweat)",
+      "default": "Sweat on its own doesn’t smell."
+    },
+    {
+      "type": "text",
+      "id": "line_2",
+      "label": "Beat 2 (bacteria and odour)",
+      "default": "Bacteria on your skin feed on it. That’s the smell."
+    },
+    {
+      "type": "text",
+      "id": "line_3",
+      "label": "Beat 3 (the mist lands)",
+      "default": "Phitkari calms them. You still sweat. The smell doesn’t start."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vura smell story"
+    }
+  ]
+}
+{% endschema %}
