@@ -59,6 +59,11 @@ if (!customElements.get('media-gallery')) {
           if (!this.mql.matches || this.elements.thumbnails) {
             activeMedia.parentElement.scrollTo({ left: activeMedia.offsetLeft });
           }
+          // VURA: a pack change (prepend) never moves the page. The shopper is at the
+          // pack cards when they choose, and jumping up to the gallery took them away
+          // from the choice they had just made. The gallery still switches to the
+          // pack's photo in place; only gallery navigation scrolls the page.
+          if (prepend) return;
           const activeMediaRect = activeMedia.getBoundingClientRect();
           // Don't scroll if the image is already in view
           if (activeMediaRect.top > -0.5) return;
