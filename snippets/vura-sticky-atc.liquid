@@ -156,16 +156,28 @@
         var idInput = document.querySelector('[name="id"]');
         return idInput ? idInput.value : null;
       }
+      // When the pack changes, the new value rolls up into place (240 ms). The
+      // text is swapped first and only the entrance is animated, so the bar
+      // shows the right price even if the animation is delayed or skipped.
+      var calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function roll(el, text) {
+        if (!el || el.textContent === text) return;
+        el.textContent = text;
+        if (calm.matches || typeof el.animate !== 'function') return;
+        el.getAnimations().forEach(function(a) { a.cancel(); });
+        el.animate(
+          [{ transform: 'translateY(45%)', opacity: 0 }, { transform: 'translateY(0)', opacity: 1 }],
+          { duration: 240, easing: 'cubic-bezier(0.25, 1, 0.5, 1)' }
+        );
+      }
+
       function updateStickyFromVariant() {
         var id = getSelectedVariantId();
         if (!id || !VURA_VARIANTS[id]) return;
         var v = VURA_VARIANTS[id];
-        var amountEl = bar.querySelector('.vura-sticky-atc__amount');
-        var packEl = bar.querySelector('.vura-sticky-atc__packname');
-        var saveEl = bar.querySelector('.vura-sticky-atc__save');
-        if (amountEl) amountEl.textContent = v.priceMoney;
-        if (packEl) packEl.textContent = v.packName;
-        if (saveEl) saveEl.textContent = v.savingsMoney;
+        roll(bar.querySelector('.vura-sticky-atc__amount'), v.priceMoney);
+        roll(bar.querySelector('.vura-sticky-atc__packname'), v.packName);
+        roll(bar.querySelector('.vura-sticky-atc__save'), v.savingsMoney);
         var span = btn.querySelector('span');
         if (v.available) {
           btn.disabled = false;

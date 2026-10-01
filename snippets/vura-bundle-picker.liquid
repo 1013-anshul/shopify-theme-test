@@ -13,6 +13,42 @@
 
 {%- assign unit_price = product.variants.first.price -%}
 
+{%- comment -%}
+  The bottle drawing. Each bottle is inline, not a <use> of one symbol, because
+  its label prints (vb-*) turn on their own. Their transform attributes hold the
+  front view, which is what shows before the script runs and for reduced motion.
+  The shade overlays stay put, so the light holds still while the bottle turns.
+{%- endcomment -%}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="vura-bottle-shade" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity=".34"/>
+      <stop offset=".2" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".28" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".34" stop-color="#fff" stop-opacity=".16"/>
+      <stop offset=".42" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".74" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".4"/>
+    </linearGradient>
+  </defs>
+</svg>
+{%- capture vura_bottle -%}
+  <svg class="vura-bundle-bottle" viewBox="0 0 16 40" focusable="false">
+    <rect x="5" y=".6" width="6" height="5" rx="1.2" fill="#fff"/>
+    <rect class="vb-nozzle" x="-.5" y="2.3" width="1" height="1.4" fill="#1A2A22" transform="translate(8 0) scale(1.2 1)"/>
+    <rect x="5" y=".6" width="6" height="5" rx="1.2" fill="url(#vura-bottle-shade)" stroke="#1A2A22" stroke-width=".9"/>
+    <rect x="2.6" y="5.6" width="10.8" height="6.4" rx="1.6" fill="#fff"/>
+    <rect x="2.6" y="5.6" width="10.8" height="6.4" rx="1.6" fill="url(#vura-bottle-shade)" stroke="#1A2A22" stroke-width=".9"/>
+    <rect x="1.2" y="12" width="13.6" height="27.4" rx="2.4" fill="#162D24"/>
+    <rect class="vb-band" x="-.5" y="16.4" width="1" height="3.6" fill="#FFC03F" transform="translate(8 0) scale(9.2 1)"/>
+    <rect class="vb-panel" x="-.5" y="27" width="1" height="7.4" fill="#275341" transform="translate(8 0) scale(9.2 1)"/>
+    <g class="vb-back" fill="#F4EFE3" fill-opacity=".6" transform="translate(8 0) scale(0 1)">
+      <rect x="-.5" y="16.6" width="1" height=".8"/><rect x="-.5" y="18.8" width="1" height=".8"/><rect x="-.5" y="21" width="1" height=".8"/><rect x="-.5" y="27.4" width="1" height=".8"/><rect x="-.5" y="29.6" width="1" height=".8"/>
+    </g>
+    <rect x="1.2" y="12" width="13.6" height="27.4" rx="2.4" fill="url(#vura-bottle-shade)"/>
+  </svg>
+{%- endcapture -%}
+
 <p class="vura-bundle-picker__label">Pack Size</p>
 <div class="vura-bundle-picker" data-unit-price="{{ unit_price }}">
   {%- for variant in product.variants -%}
@@ -50,6 +86,14 @@
       endif
 
       assign per_bottle = variant.price | divided_by: count
+
+      # Bottles drawn in the card. On the Buy 2 Get 1 pack the third sits in a
+      # dashed slot until the card is chosen, then drops in with its Free tag.
+      assign free_bottles = 0
+      if variant.title == '3-Pack'
+        assign free_bottles = 1
+      endif
+      assign paid_bottles = count | minus: free_bottles | at_most: 6
     -%}
     <label
       class="vura-bundle-card{% if is_default %} vura-bundle-card--selected{% endif %}{% unless variant.available %} vura-bundle-card--soldout{% endunless %}"
@@ -67,6 +111,28 @@
         <span class="vura-bundle-card__tag{% if is_recommended %} vura-bundle-card__tag--gold{% endif %}">{{ card_label }}</span>
         {%- if is_recommended -%}<span class="vura-bundle-card__tag vura-bundle-card__tag--dark">RECOMMENDED</span>{%- endif -%}
       </span>
+      {%- capture bottles -%}
+        <span class="vura-bundle-bottles" aria-hidden="true">
+          {%- for i in (1..paid_bottles) -%}
+            {{- vura_bottle -}}
+          {%- endfor -%}
+          {%- if free_bottles > 0 -%}
+            <span class="vura-bundle-free">
+              <svg class="vura-bundle-free__ghost" viewBox="0 0 16 40"><path d="M5.4 1.2H10.6V6H13V12.4H14.4V38.8H1.6V12.4H3V6H5.4Z" fill="none" stroke="#1A2A22" stroke-opacity=".35" stroke-width=".9" stroke-dasharray="2 1.6" stroke-linejoin="round"/></svg>
+              {{- vura_bottle | replace: 'class="vura-bundle-bottle"', 'class="vura-bundle-bottle vura-bundle-free__bottle"' -}}
+              <span class="vura-bundle-free__tag">Free</span>
+            </span>
+          {%- endif -%}
+        </span>
+      {%- endcapture -%}
+      {%- liquid
+        # Multi-packs carry the bottles on their Save / per-bottle row, where there
+        # is spare width, so the name and price line keeps the full card width.
+        assign has_meta = false
+        if savings > 0 or count > 1 and variant.available
+          assign has_meta = true
+        endif
+      -%}
       <div class="vura-bundle-card__inner">
         <span class="vura-bundle-card__radio" aria-hidden="true"></span>
         <div class="vura-bundle-card__body">
@@ -78,7 +144,7 @@
           {%- unless variant.available -%}
             <span class="vura-bundle-card__soldout">Sold out</span>
           {%- endunless -%}
-          {%- if savings > 0 or count > 1 and variant.available -%}
+          {%- if has_meta -%}
             <span class="vura-bundle-card__meta-row">
               {%- if savings > 0 and variant.available -%}
                 <span class="vura-bundle-card__savings">Save {{ savings | money }}</span>
@@ -86,9 +152,11 @@
               {%- if count > 1 and variant.available -%}
                 <span class="vura-bundle-card__per">{{ per_bottle | money_without_trailing_zeros }}/bottle</span>
               {%- endif -%}
+              {{- bottles -}}
             </span>
           {%- endif -%}
         </div>
+        {%- unless has_meta -%}{{- bottles -}}{%- endunless -%}
       </div>
     </label>
   {%- endfor -%}
@@ -280,6 +348,72 @@
     border-color: rgba(26,42,34,0.12);
   }
 
+  /* Bottles sit at the right edge of each card: beside the name on the 1-Pack,
+     at the end of the Save / per-bottle row on multi-packs. */
+  .vura-bundle-card__body {
+    flex: 1;
+    min-width: 0;
+  }
+  .vura-bundle-bottles {
+    margin-left: auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .vura-bundle-card__meta-row:has(.vura-bundle-bottles) {
+    align-items: flex-end;
+  }
+  .vura-bundle-bottle {
+    display: block;
+    width: 13.6px;
+    height: 34px;
+  }
+  .vura-bundle-free {
+    position: relative;
+    display: block;
+    width: 13.6px;
+    height: 34px;
+  }
+  .vura-bundle-free > svg {
+    position: absolute;
+    inset: 0;
+  }
+  .vura-bundle-free__ghost { transition: opacity 0.2s ease; }
+  .vura-bundle-free__bottle { opacity: 0; }
+  .vura-bundle-card--selected .vura-bundle-free__ghost { opacity: 0; }
+  .vura-bundle-card--selected .vura-bundle-free__bottle { opacity: 1; }
+  /* Before the 3-Pack is chosen the tag is a dashed outline over the empty
+     slot; once chosen it fills with saffron. */
+  .vura-bundle-free__tag {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 3px);
+    transform: translateX(-50%);
+    font-family: var(--font-body, Mulish, sans-serif);
+    font-size: 8px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 3px 4px 2px;
+    border-radius: 3px;
+    border: 1px dashed rgba(26,42,34,0.35);
+    color: #4A5750;
+    background: transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .vura-bundle-card--selected .vura-bundle-free__tag {
+    border: 1px solid var(--vura-saffron, #FFC03F);
+    background: var(--vura-saffron, #FFC03F);
+    color: var(--vura-forest-deep, #0E2118);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vura-bundle-free__ghost,
+    .vura-bundle-free__tag { transition: none; }
+  }
+
   /* Enforce clean standard borders on unselected cards to clear highlight */
   .vura-bundle-card:not(.vura-bundle-card--selected) {
     border: 1.5px solid rgba(26,42,34,0.16) !important;
@@ -333,10 +467,65 @@
       }
     }
 
+    // Free bottle motion. The card classes set where everything rests; these
+    // animations only play the move between states, so reduced motion (or a
+    // browser without element.animate) simply gets the resting state.
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const canAnimate = () => !calm.matches && typeof Element.prototype.animate === 'function';
+
+    // A damped spring, 1 - e^(-8t)·cos(10t): lands at 160 ms, overshoots about
+    // 3 px, settled by 0.5 s. Sampled into keyframes so every browser plays
+    // the same curve.
+    function dropFrames(from) {
+      const frames = [];
+      for (let i = 0; i <= 24; i++) {
+        const t = (i / 24) * 0.6;
+        const s = 1 - Math.exp(-8 * t) * Math.cos(10 * t);
+        frames.push({ transform: `translateY(${(from * (1 - s)).toFixed(2)}px)`, opacity: Math.min(1, t / 0.06), offset: i / 24 });
+      }
+      return frames;
+    }
+
+    // Cancels whatever the last tap started, so rapid switching never stacks
+    // a lift-out under a drop-in.
+    function freeParts(card) {
+      const bottle = card && card.querySelector('.vura-bundle-free__bottle');
+      if (!bottle) return null;
+      const tag = card.querySelector('.vura-bundle-free__tag');
+      bottle.getAnimations().concat(tag.getAnimations()).forEach(a => a.cancel());
+      return { bottle, tag };
+    }
+
+    function playDropIn(card) {
+      const p = freeParts(card);
+      if (!p || !canAnimate()) return;
+      p.bottle.animate(dropFrames(-28), { duration: 600, easing: 'linear' });
+      p.tag.animate(
+        [{ transform: 'translateX(-50%) scale(1.35)', opacity: 0 }, { transform: 'translateX(-50%) scale(1)', opacity: 1 }],
+        { duration: 200, delay: 260, easing: 'cubic-bezier(0.25, 1, 0.5, 1)', fill: 'backwards' }
+      );
+    }
+
+    function playLiftOut(card) {
+      const p = freeParts(card);
+      if (!p || !canAnimate()) return;
+      p.bottle.animate(
+        [{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(-16px)', opacity: 0 }],
+        { duration: 160, easing: 'cubic-bezier(0.5, 0, 0.75, 0)' }
+      );
+    }
+
     function selectCard(card) {
       if (card.classList.contains('vura-bundle-card--soldout')) return;
+      // Tapping a <label> also clicks its radio, so this runs twice per tap;
+      // only the first call sees a change and plays anything.
+      const prev = picker.querySelector('.vura-bundle-card--selected');
       cards.forEach(c => c.classList.remove('vura-bundle-card--selected'));
       card.classList.add('vura-bundle-card--selected');
+      if (prev && prev !== card) {
+        playLiftOut(prev);
+        playDropIn(card);
+      }
       const radio = card.querySelector('.vura-bundle-radio');
       if (radio) radio.checked = true;
       selectVariant(card.dataset.variantValue);
@@ -346,6 +535,48 @@
     cards.forEach(card => {
       card.addEventListener('click', function () { selectCard(this); });
     });
+
+    // Turntable: every bottle turns in place, one turn every 4.5 s. A cylinder has
+    // the same outline from every side, so only the label prints move: each is
+    // projected onto the body as it goes round, narrowing at the edges and
+    // passing behind, and the back label comes round when the front turns away.
+    // [radius, half-width of the print, facing: 0 front / PI back] in viewBox units.
+    const TURN = 4500;
+    const PRINTS = { 'vb-band': [6.8, 4.6, 0], 'vb-panel': [6.8, 4.6, 0], 'vb-nozzle': [3, 0.6, 0], 'vb-back': [6.8, 3.8, Math.PI] };
+    function turnFrames([r, hw, face]) {
+      const a = Math.asin(Math.min(1, hw / r));
+      const frames = [];
+      for (let i = 0; i <= 72; i++) {
+        let c = face + (i / 72) * 2 * Math.PI;
+        c = Math.atan2(Math.sin(c), Math.cos(c));
+        const lo = Math.max(c - a, -Math.PI / 2), hi = Math.min(c + a, Math.PI / 2);
+        const xl = 8 + r * Math.sin(lo), xr = 8 + r * Math.sin(hi);
+        const w = hi > lo ? xr - xl : 0;
+        frames.push({ transform: `translate(${((xl + xr) / 2).toFixed(3)}px, 0px) scale(${w.toFixed(3)}, 1)`, offset: i / 72 });
+      }
+      return frames;
+    }
+    if (canAnimate()) {
+      const spins = [];
+      for (const k in PRINTS) {
+        const frames = turnFrames(PRINTS[k]);
+        picker.querySelectorAll('.vura-bundle-bottles').forEach(row => {
+          row.querySelectorAll('.vura-bundle-bottle').forEach((bottle, i) => {
+            bottle.querySelectorAll('.' + k).forEach(el => {
+              const spin = el.animate(frames, { duration: TURN, iterations: Infinity });
+              // Each bottle runs 5% of a turn behind the one on its left, so a row turns as a ripple.
+              spin.currentTime = (TURN - i * TURN * 0.05) % TURN;
+              spins.push(spin);
+            });
+          });
+        });
+      }
+      // Only turn while the cards are on screen.
+      new IntersectionObserver(entries => {
+        const visible = entries[entries.length - 1].isIntersecting;
+        spins.forEach(s => (visible ? s.play() : s.pause()));
+      }).observe(picker);
+    }
 
     // Re-apply the default selection once Dawn's variant engine is ready.
     const defaultSelected = picker.querySelector('.vura-bundle-card--selected');
