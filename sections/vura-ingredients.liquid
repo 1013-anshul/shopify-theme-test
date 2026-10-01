@@ -1,4 +1,15 @@
-{% comment %} What's inside — hero ingredient flip cards (v3): scroll-linked flip to reveal each benefit, plus the full honest formula. {% endcomment %}
+{% comment %}
+  What's inside: the hero ingredients, each on a card with a line drawing, its role and
+  why it's in, plus the full honest formula.
+
+  Each drawing draws itself once, the first time its card is half on screen; cards that
+  arrive together draw 150 ms apart. The outline goes first, then the details, then one
+  saffron touch. Every card shows its reason from the start (this used to sit behind a
+  flip). Without script, or with reduced motion, the drawings are simply there.
+
+  Drawings are hand-made paths in an 80 x 56 box, one set per icon option. Each path has
+  pathLength=1, and its --o (start offset) and --t (duration) drive the draw-in.
+{% endcomment %}
 {%- style -%}
   .vura-ing {
     background: var(--vura-forest, #162D24);
@@ -25,65 +36,42 @@
   .vura-ing__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
   @media (min-width: 750px) { .vura-ing__grid { grid-template-columns: repeat(4, 1fr); gap: 1.6rem; } }
 
-  /* Flip card: front + back stacked in one grid cell so the card sizes to the taller face */
-  .vura-ing__card { position: relative; display: grid; perspective: 1500px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .vura-ing__card:focus { outline: none; }
-  .vura-ing__card:focus-visible .vura-ing__flip { box-shadow: 0 0 0 3px var(--vura-saffron, #FFC03F); border-radius: 14px; }
-  .vura-ing__flip {
-    position: relative; display: grid; height: 100%; transform-style: preserve-3d;
-    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .vura-ing__card.is-flipped .vura-ing__flip { transform: rotateY(180deg); }
-  .vura-ing__face {
-    grid-area: 1 / 1; -webkit-backface-visibility: hidden; backface-visibility: hidden;
-    display: flex; flex-direction: column; border-radius: 14px; padding: 2.2rem 1.7rem 1.9rem;
-    box-shadow: var(--shadow-md, 0 8px 24px rgba(26,42,34,0.10)); min-height: 220px;
-  }
-  .vura-ing__face--front { background: var(--vura-cream, #F4EFE3); color: var(--vura-paper-ink, #1A2A22); }
-  .vura-ing__face--back {
+  .vura-ing__card {
+    position: relative; border-radius: 14px; padding: 1.8rem 1.6rem 2rem;
     background: var(--vura-forest-card, #275341); color: var(--vura-cream, #F4EFE3);
-    transform: rotateY(180deg); justify-content: center;
     border: 1px solid rgba(255,255,255,0.08);
   }
-
   .vura-ing__num {
     position: absolute; top: 1.5rem; right: 1.6rem;
     font-family: var(--font-mono, monospace); font-size: 1.05rem; letter-spacing: 0.1em;
-    color: var(--vura-paper-ink-faint, #7A857F);
+    color: rgba(244,239,227,0.45);
   }
-  .vura-ing__icon {
-    width: 58px; height: 58px; border-radius: 999px;
-    background: var(--vura-terracotta-tint, #F4E9E4); color: var(--vura-terracotta, #8D3B2D);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 1.4rem;
-  }
-  .vura-ing__icon svg, .vura-ing__icon img { width: 32px; height: 32px; display: block; }
-  .vura-ing__tag {
-    align-self: flex-start; font-family: var(--font-body, 'Inter', sans-serif); font-size: 0.95rem; font-weight: 600;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--vura-terracotta, #8D3B2D);
-    background: var(--vura-terracotta-tint, #F4E9E4); padding: 0.3rem 0.9rem; border-radius: 999px; margin-bottom: 0.9rem;
-  }
+  .vura-ing__art { display: block; width: 84px; height: auto; margin: 0 0 1.2rem -4px; overflow: visible; }
+  @media (min-width: 750px) { .vura-ing__art { width: 100px; } }
   .vura-ing__name {
     font-family: var(--font-display, Georgia, serif); font-size: 1.9rem; line-height: 1.15;
-    margin: 0; color: var(--vura-paper-ink, #1A2A22);
+    margin: 0 0 0.6rem; color: var(--vura-cream, #F4EFE3);
   }
-  .vura-ing__hint {
-    margin-top: auto; padding-top: 1.3rem; display: inline-flex; align-items: center; gap: 6px;
-    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; letter-spacing: 0.02em;
-    color: var(--vura-paper-ink-faint, #7A857F);
-  }
-  .vura-ing__hint svg { width: 15px; height: 15px; }
-  .vura-ing__back-name {
-    font-family: var(--font-display, Georgia, serif); font-size: 1.7rem; line-height: 1.15;
-    margin: 0 0 0.9rem; color: var(--vura-cream, #F4EFE3);
-  }
-  .vura-ing__back-label {
-    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; font-weight: 600;
+  .vura-ing__label {
+    font-family: var(--font-body, 'Inter', sans-serif); font-size: 1rem; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase; color: var(--vura-saffron, #FFC03F); margin: 0 0 0.7rem;
   }
   .vura-ing__desc {
     font-family: var(--font-body, 'Inter', sans-serif); font-size: 1.35rem; line-height: 1.55;
     color: var(--vura-cream, #F4EFE3); margin: 0;
   }
+
+  /* pathLength=1 strokes with a "1 3" dash: offset 0 is drawn, 1.02 fully hidden. */
+  .vura-ing__art .ia {
+    fill: none; stroke: var(--vura-cream, #F4EFE3); stroke-width: 1.8;
+    stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 3; stroke-dashoffset: 0;
+  }
+  .vura-ing__art .ia--accent { stroke: var(--vura-saffron, #FFC03F); stroke-width: 2.2; }
+  .vura-ing__card.is-armed .ia { stroke-dashoffset: 1.02; }
+  .vura-ing__card.is-armed.is-drawing .ia {
+    animation: vura-ing-draw var(--t, 0.6s) cubic-bezier(0.45, 0, 0.2, 1) calc(var(--i, 0) * 0.15s + var(--o, 0s)) forwards;
+  }
+  @keyframes vura-ing-draw { to { stroke-dashoffset: 0; } }
 
   .vura-ing__formula {
     max-width: 800px; margin: 3rem auto 0; text-align: center;
@@ -96,11 +84,17 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .vura-ing__flip { transition: none; }
+    .vura-ing__card.is-armed .ia { stroke-dashoffset: 0; animation: none; }
   }
 {%- endstyle -%}
 
 <section class="vura-ing{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" aria-labelledby="ing-heading-{{ section.id }}">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="VuraIngWob-{{ section.id }}" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
   <div class="vura-ing__container">
     <header class="vura-ing__header" data-vura-stagger>
       {%- if section.settings.eyebrow != blank -%}<p class="vura-ing__eyebrow" data-vura-reveal="up">{{ section.settings.eyebrow }}</p>{%- endif -%}
@@ -109,70 +103,52 @@
     </header>
 
     {%- if section.blocks.size > 0 -%}
-      <div class="vura-ing__grid" data-vura-ing-flip>
+      <div class="vura-ing__grid" data-vura-ing-draw>
         {%- for block in section.blocks -%}
-          <article
-            class="vura-ing__card"
-            tabindex="0"
-            role="button"
-            aria-pressed="false"
-            aria-label="{{ block.settings.name | escape }}, tap to see what it does"
-            {{ block.shopify_attributes }}
-          >
-            <div class="vura-ing__flip">
-              <div class="vura-ing__face vura-ing__face--front">
-                <span class="vura-ing__num">{{ forloop.index | prepend: '0' }}</span>
-                <span class="vura-ing__icon" aria-hidden="true">
+          <article class="vura-ing__card" {{ block.shopify_attributes }}>
+            <span class="vura-ing__num" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+            <svg class="vura-ing__art" viewBox="0 0 80 56" aria-hidden="true" focusable="false">
+              <g filter="url(#VuraIngWob-{{ section.id }})">
                   {%- case block.settings.icon -%}
                     {%- when 'alum' -%}
-                      {%- comment -%} Potassium Alum — Flaticon crystal icon (id 17703344, by Kise1ki), recolored to terracotta {%- endcomment -%}
-                      <img src="{{ 'vura-ing-icon-alum.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
-
-                    {%- when 'citrus' -%}
-                      {%- comment -%} Triethyl Citrate — citrus slice (citrus-derived odour control) {%- endcomment -%}
-                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="32" cy="32" r="20"/>
-                        <circle cx="32" cy="32" r="14.5"/>
-                        <path d="M32 17.5 V46.5 M17.5 32 H46.5 M21.7 21.7 L42.3 42.3 M42.3 21.7 L21.7 42.3"/>
-                      </svg>
+                    <path class="ia" pathLength="1" d="M21 42 L18 31 L25 19 L38 12 L52 14 L61 24 L60 37 L51 46 L33 48 Z" style="--o:0s;--t:0.8s"/>
+                    <path class="ia" pathLength="1" d="M25 19 L34 29 L52 14 M34 29 L36 47" style="--o:0.45s;--t:0.5s"/>
+                    <path class="ia" pathLength="1" d="M63 47 L66 42 L72 44 L71 49 L65 50 Z" style="--o:0.65s;--t:0.35s"/>
+                    <path class="ia ia--accent" pathLength="1" d="M40 17 L48 18.5" style="--o:1.0s;--t:0.3s"/>
                     {%- when 'aloe' -%}
-                      {%- comment -%} Aloe Vera — Flaticon aloe icon (id 3072084, by Good Ware), recolored to terracotta {%- endcomment -%}
-                      <img src="{{ 'vura-ing-icon-aloe.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
-
+                    <path class="ia" pathLength="1" d="M38 50 C36 36 36 22 40 7 C44 22 45 36 43 50" style="--o:0s;--t:0.7s"/>
+                    <path class="ia" pathLength="1" d="M37 50 C30 42 22 33 13 23 C23 27 31 35 39 45 M44 50 C51 41 58 32 67 25 C59 33 53 41 46 49" style="--o:0.25s;--t:0.75s"/>
+                    <path class="ia" pathLength="1" d="M31 43 l-2 1 M25 36.5 l-2 1 M19 30 l-2 1 M27 51 Q40 54 55 51" style="--o:0.75s;--t:0.4s"/>
+                    <path class="ia ia--accent" pathLength="1" d="M40.4 46 C39.6 34 39.6 22 40.3 12" style="--o:1.0s;--t:0.4s"/>
                     {%- when 'rose' -%}
-                      {%- comment -%} Rose Water — Flaticon rose icon (id 15561724, by Vectorslab), recolored to terracotta {%- endcomment -%}
-                      <img src="{{ 'vura-ing-icon-rose.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
-
-                    {%- when 'roseoil' -%}
-                      {%- comment -%} Rose Oil — fragrance drop cradling a rose {%- endcomment -%}
-                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M32 8 C22 25 16 36 20 45 C24 54 40 54 44 45 C48 36 42 25 32 8 Z"/>
-                        <circle cx="32" cy="39" r="2.4"/>
-                        <path d="M32 30 C36 30 39 33 38 37 C37 41 32 42 29 39 C27 37 28 33 31 32"/>
-                      </svg>
+                    <path class="ia" pathLength="1" d="M26 29 C24 19 32 11 40 11 C48 11 56 19 54 29 C52 37 46 41 40 41 C34 41 28 37 26 29" style="--o:0s;--t:0.8s"/>
+                    <path class="ia" pathLength="1" d="M27 27 C31 31 35 32 38 29 M53 27 C49 31 45 32 42 29" style="--o:0.45s;--t:0.45s"/>
+                    <path class="ia" pathLength="1" d="M40 41 C40 45 41 49 40 54 M40 48 C44 44 50 44 53 46 C49 49 44 49 40 48" style="--o:0.6s;--t:0.45s"/>
+                    <path class="ia ia--accent" pathLength="1" d="M34 23 C34 17 46 16 46 23 C46 29 36 30 36 24 C36 20 42 20 42 24" style="--o:1.0s;--t:0.45s"/>
                     {%- when 'glycerin' -%}
-                      {%- comment -%} Glycerin — Flaticon water-drop icon (id 3119434, by Bartama Graphic), recolored to terracotta {%- endcomment -%}
-                      <img src="{{ 'vura-ing-icon-glycerin.png' | asset_url }}" alt="" width="32" height="32" loading="lazy">
-
+                    <path class="ia" pathLength="1" d="M40 6 C46 16 53 23 53 31 A13 13 0 0 1 27 31 C27 23 34 16 40 6 Z" style="--o:0s;--t:0.8s"/>
+                    <path class="ia" pathLength="1" d="M22 50 C31 46.5 49 46.5 58 50 M29 54 C35 52 45 52 51 54" style="--o:0.5s;--t:0.45s"/>
+                    <path class="ia ia--accent" pathLength="1" d="M33 32 C32 37 35 41 39 42" style="--o:1.0s;--t:0.35s"/>
+                    {%- when 'citrus' -%}
+                    <path class="ia" pathLength="1" d="M40 10 C51 10 60 19 60 30 C60 41 51 50 40 50 C29 50 20 41 20 30 C20 19 29 10 40 10 Z" style="--o:0s;--t:0.8s"/>
+                    <path class="ia" pathLength="1" d="M40 15 C48 15 55 22 55 30 C55 38 48 45 40 45 C32 45 25 38 25 30 C25 22 32 15 40 15 Z" style="--o:0.4s;--t:0.5s"/>
+                    <path class="ia" pathLength="1" d="M40 30 L40 17 M40 30 L51 24 M40 30 L51 36 M40 30 L40 43 M40 30 L29 36 M40 30 L29 24" style="--o:0.65s;--t:0.4s"/>
+                    <path class="ia ia--accent" pathLength="1" d="M44.5 25.5 C45.5 24 47 24 47.5 25.5" style="--o:1.0s;--t:0.3s"/>
+                    {%- when 'roseoil' -%}
+                    <path class="ia" pathLength="1" d="M40 6 C46 16 52 23 52 31 A12 12 0 0 1 28 31 C28 23 34 16 40 6 Z" style="--o:0s;--t:0.8s"/>
+                    <path class="ia" pathLength="1" d="M24 50 C32 47 48 47 56 50" style="--o:0.5s;--t:0.4s"/>
+                    <path class="ia ia--accent" pathLength="1" d="M37 30 C37 26 44 25.5 44 30 C44 34 38 34.5 38 31 C38 28.5 41.5 28.5 41.5 31" style="--o:1.0s;--t:0.45s"/>
                     {%- else -%}
-                      <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 14 H42 L52 27 L32 52 L12 27 Z"/><path d="M12 27 H52"/>
-                      </svg>
+                    <path class="ia" pathLength="1" d="M21 42 L18 31 L25 19 L38 12 L52 14 L61 24 L60 37 L51 46 L33 48 Z" style="--o:0s;--t:0.8s"/>
+                    <path class="ia" pathLength="1" d="M25 19 L34 29 L52 14 M34 29 L36 47" style="--o:0.45s;--t:0.5s"/>
+                    <path class="ia" pathLength="1" d="M63 47 L66 42 L72 44 L71 49 L65 50 Z" style="--o:0.65s;--t:0.35s"/>
+                    <path class="ia ia--accent" pathLength="1" d="M40 17 L48 18.5" style="--o:1.0s;--t:0.3s"/>
                   {%- endcase -%}
-                </span>
-                {%- if block.settings.tag != blank -%}<span class="vura-ing__tag">{{ block.settings.tag }}</span>{%- endif -%}
-                <h3 class="vura-ing__name">{{ block.settings.name }}</h3>
-                <span class="vura-ing__hint" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
-                  Reveal benefit
-                </span>
-              </div>
-              <div class="vura-ing__face vura-ing__face--back">
-                <h3 class="vura-ing__back-name">{{ block.settings.name }}</h3>
-                <p class="vura-ing__back-label">Why it's in</p>
-                <p class="vura-ing__desc">{{ block.settings.description }}</p>
-              </div>
-            </div>
+              </g>
+            </svg>
+            <h3 class="vura-ing__name">{{ block.settings.name }}</h3>
+            <p class="vura-ing__label">{{ block.settings.tag | default: "Why it's in" }}</p>
+            <p class="vura-ing__desc">{{ block.settings.description }}</p>
           </article>
         {%- endfor -%}
       </div>
@@ -189,48 +165,33 @@
 
 <script>
   (function () {
-    function initIngFlip(grid) {
-      if (!grid || grid.__vuraFlipInit) return;
-      grid.__vuraFlipInit = true;
+    // Each drawing draws itself once, the first time its card is half on screen.
+    // Cards that arrive together are numbered in page order (--i) so they draw
+    // 150 ms apart; a card further down starts fresh when it arrives.
+    function initIngDraw(grid) {
+      if (!grid || grid.__vuraIngDraw) return;
+      grid.__vuraIngDraw = true;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
       var cards = Array.prototype.slice.call(grid.querySelectorAll('.vura-ing__card'));
-      if (!cards.length) return;
-
-      // `delay` staggers the scroll-driven flips so a row turns as a sequence
-      // rather than all at once. A tap or keypress passes none — a card the
-      // visitor touched must answer immediately.
-      function setFlipped(card, on, delay) {
-        var face = card.querySelector('.vura-ing__flip');
-        if (face) face.style.transitionDelay = (delay || 0) + 'ms';
-        card.classList.toggle('is-flipped', on);
-        card.setAttribute('aria-pressed', on ? 'true' : 'false');
-      }
-      // Manual toggle (tap / click / keyboard) — works everywhere.
-      cards.forEach(function (card) {
-        card.addEventListener('click', function () { setFlipped(card, !card.classList.contains('is-flipped')); });
-        card.addEventListener('keydown', function (e) {
-          if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); setFlipped(card, !card.classList.contains('is-flipped')); }
-        });
-      });
-
-      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce || !('IntersectionObserver' in window)) return;
-
-      // Scroll-linked flip: a card shows its benefit once it rises past the mid-line,
-      // and flips back to the name when it drops below it again.
       var io = new IntersectionObserver(function (entries) {
-        // Entries arrive in observation order, not visual order, so sort by
-        // position on the page before handing out the stagger.
-        entries.slice().sort(function (a, b) {
-          return cards.indexOf(a.target) - cards.indexOf(b.target);
-        }).forEach(function (entry, i) {
-          setFlipped(entry.target, entry.isIntersecting, i * 110);
+        entries
+          .filter(function (e) { return e.intersectionRatio >= 0.5; })
+          .sort(function (a, b) { return cards.indexOf(a.target) - cards.indexOf(b.target); })
+          .forEach(function (e, k) {
+            e.target.style.setProperty('--i', k);
+            e.target.classList.add('is-armed', 'is-drawing');
+            io.unobserve(e.target);
+          });
+        // Not yet half on screen: hide the drawing so it can draw in when it is.
+        entries.forEach(function (e) {
+          if (e.intersectionRatio < 0.5 && !e.target.classList.contains('is-drawing')) e.target.classList.add('is-armed');
         });
-      }, { rootMargin: '0px 0px -50% 0px', threshold: 0 });
+      }, { threshold: [0, 0.5] });
       cards.forEach(function (card) { io.observe(card); });
     }
 
     function boot() {
-      Array.prototype.forEach.call(document.querySelectorAll('[data-vura-ing-flip]'), initIngFlip);
+      Array.prototype.forEach.call(document.querySelectorAll('[data-vura-ing-draw]'), initIngDraw);
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
     else boot();
@@ -258,10 +219,10 @@
       "name": "Ingredient",
       "settings": [
         { "type": "text", "id": "name", "label": "Ingredient name", "default": "Ingredient" },
-        { "type": "text", "id": "tag", "label": "Role tag" },
-        { "type": "text", "id": "description", "label": "Benefit (card back)", "default": "What this ingredient does for skin." },
+        { "type": "text", "id": "tag", "label": "Role tag (shown above the reason)" },
+        { "type": "text", "id": "description", "label": "Why it's in", "default": "What this ingredient does for skin." },
         {
-          "type": "select", "id": "icon", "label": "Icon", "default": "alum",
+          "type": "select", "id": "icon", "label": "Drawing", "default": "alum",
           "options": [
             { "value": "alum", "label": "Alum crystal" },
             { "value": "citrus", "label": "Citrus slice" },
