@@ -1,0 +1,110 @@
+{% comment %}
+  Styles, the hand-drawn wobble filter and the play-on-view script for vura-proof-slide.
+  Rendered once, at the end of product-media-gallery.
+
+  States: no class = finished slide (the default). .is-armed hides the marks. .is-armed
+  .is-playing draws them in, each after its own --d delay over its own --t duration.
+  A slide plays when at least 55% of it is on screen, and resets once it is fully off
+  screen so it draws again next time it is swiped or scrolled back into view.
+{% endcomment %}
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="vura-proof-wob" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+<style>
+  .vura-proof svg { display: block; width: 100%; height: 100%; }
+  .vura-proof .vp-title { font-family: var(--font-display, "Bree Serif", Georgia, serif); font-size: 25px; fill: #1A2A22; }
+  .vura-proof .vp-head { font-family: var(--font-body, Mulish, sans-serif); font-size: 9px; font-weight: 800; fill: #4A5750; }
+  .vura-proof .vp-head--on { fill: #F4EFE3; }
+  .vura-proof .vp-row { font-family: var(--font-body, Mulish, sans-serif); font-size: 12.5px; font-weight: 700; fill: #1A2A22; }
+  .vura-proof .vp-label { font-family: var(--font-body, Mulish, sans-serif); font-size: 11.5px; font-weight: 600; fill: #1A2A22; }
+  .vura-proof .vp-tag { font-family: var(--font-display, "Bree Serif", Georgia, serif); font-size: 15px; fill: #4A5750; }
+
+  /* pathLength=1 strokes with a "1 3" dash: offset 0 is drawn, 1.02 is fully hidden
+     (a little past 1 so no round-cap dot shows at the start). */
+  .vura-proof .vp-d { stroke-dasharray: 1 3; stroke-dashoffset: 0; }
+  .vura-proof .vp-wash { transform-box: fill-box; transform-origin: 50% 0; }
+  .vura-proof.is-armed .vp-d { stroke-dashoffset: 1.02; }
+  .vura-proof.is-armed .vp-wash { transform: scaleY(0); }
+  .vura-proof.is-armed.is-playing .vp-d {
+    animation: vura-proof-draw var(--t, 0.3s) cubic-bezier(0.45, 0, 0.2, 1) var(--d, 0s) forwards;
+  }
+  .vura-proof.is-armed.is-playing .vp-wash {
+    animation: vura-proof-wash 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) forwards;
+  }
+  @keyframes vura-proof-draw { to { stroke-dashoffset: 0; } }
+  @keyframes vura-proof-wash { to { transform: scaleY(1); } }
+
+  /* Zoom view: a square the width of the other zoomed images. */
+  .vura-proof-modal { width: 100%; max-width: 1100px; aspect-ratio: 1 / 1; }
+  .vura-proof-modal .vura-proof { width: 100%; height: 100%; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .vura-proof.is-armed .vp-d { stroke-dashoffset: 0; animation: none; }
+    .vura-proof.is-armed .vp-wash { transform: none; animation: none; }
+  }
+</style>
+<script>
+  (function () {
+    if (window.__vuraProofSlides) return;
+    window.__vuraProofSlides = true;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+    // The product gallery advances itself every 3.5 s (slider-component in global.js),
+    // which is about when the chart finishes drawing. Hold it on a proof slide long
+    // enough to draw and be read, then carry on from the next slide. If the shopper
+    // touches or hovers the gallery, its own handlers take over and this backs off.
+    function holdGallery(el) {
+      var viewer = el.closest('slider-component');
+      if (!viewer || typeof viewer.stopAutoplay !== 'function' || !viewer.autoplayInterval) return;
+      if (!viewer.__vuraProofBound) {
+        viewer.__vuraProofBound = true;
+        ['touchstart', 'mouseenter'].forEach(function (type) {
+          viewer.addEventListener(type, function () { clearTimeout(viewer.__vuraProofHold); }, { passive: true });
+        });
+      }
+      viewer.stopAutoplay();
+      clearTimeout(viewer.__vuraProofHold);
+      viewer.__vuraProofHold = setTimeout(function () {
+        if (viewer.autoplayInterval) return;
+        if (typeof viewer.nextSlide === 'function') viewer.nextSlide();
+        viewer.startAutoplay();
+      }, el.classList.contains('vura-proof--chart') ? 6000 : 5000);
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var el = e.target;
+        if (e.intersectionRatio >= 0.55) {
+          if (!el.classList.contains('is-playing')) {
+            el.classList.add('is-armed', 'is-playing');
+            holdGallery(el);
+          }
+        } else if (!e.isIntersecting || !el.classList.contains('is-playing')) {
+          // Off screen, or only peeking in before it has played: hide the marks so
+          // they draw once the slide is properly in view.
+          el.classList.remove('is-playing');
+          el.classList.add('is-armed');
+        }
+      });
+    }, { threshold: [0, 0.55] });
+
+    function scan() {
+      document.querySelectorAll('[data-vura-proof]:not([data-vura-proof-seen])').forEach(function (el) {
+        el.setAttribute('data-vura-proof-seen', '');
+        io.observe(el);
+      });
+    }
+    function boot() {
+      scan();
+      // Dawn adds gallery slides when the variant changes; pick up any new ones.
+      var mo = new MutationObserver(scan);
+      document.querySelectorAll('media-gallery').forEach(function (g) { mo.observe(g, { childList: true, subtree: true }); });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+    document.addEventListener('shopify:section:load', scan);
+  })();
+</script>

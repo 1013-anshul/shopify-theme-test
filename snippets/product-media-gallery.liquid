@@ -331,6 +331,9 @@
   {%- endif -%}
 </media-gallery>
 
+{%- comment -%} Styles and play-on-view script for the animated proof slides (vura-proof-slide). {%- endcomment -%}
+{% render 'vura-proof-slides-assets' %}
+
 {%- comment -%} VURA: on the product image (>=750px) the cursor is always a left/right arrow based on
    whether it's left or right of centre, and clicking goes to the prev/next image. The lightbox zoom
    button is hidden on desktop (clicking navigates), so only the arrow shows. Mobile keeps native

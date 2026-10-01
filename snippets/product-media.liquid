@@ -14,7 +14,25 @@
   %}
 {% endcomment %}
 
-{%- if media.media_type == 'image' -%}
+{%- liquid
+  # Same swap as product-thumbnail: the zoom view shows the finished animated slide.
+  assign proof_kind = ''
+  if media.media_type == 'image'
+    if media.preview_image.src contains 'vura_benefits_2'
+      assign proof_kind = 'chart'
+    elsif media.preview_image.src contains 'vura_benefits_1'
+      assign proof_kind = 'benefits'
+    endif
+  endif
+-%}
+{%- if proof_kind != blank -%}
+  <div
+    class="vura-proof-modal global-media-settings global-media-settings--no-shadow{% if variant_image %} product__media-item--variant{% endif %}"
+    data-media-id="{{ media.id }}"
+  >
+    {% render 'vura-proof-slide', kind: proof_kind, alt: media.alt, animate: false %}
+  </div>
+{%- elsif media.media_type == 'image' -%}
   <img
     class="global-media-settings global-media-settings--no-shadow{% if variant_image %} product__media-item--variant{% endif %}"
     srcset="

@@ -48,6 +48,18 @@
   if media.media_type == 'image'
     assign image_class = 'image-magnify-' | append: section.settings.image_zoom
   endif
+
+  # Two gallery images are replaced by animated slides (snippets/vura-proof-slide),
+  # matched by file name. Re-uploading either image under a new name brings the
+  # original back.
+  assign proof_kind = ''
+  if media.media_type == 'image'
+    if media.preview_image.src contains 'vura_benefits_2'
+      assign proof_kind = 'chart'
+    elsif media.preview_image.src contains 'vura_benefits_1'
+      assign proof_kind = 'benefits'
+    endif
+  endif
 -%}
 
 {%- capture sizes -%}
@@ -83,16 +95,20 @@
     </span>
     {%- render 'loading-spinner' -%}
     <div class="product__media media media--transparent">
-      {{
-        media.preview_image
-        | image_url: width: 1946
-        | image_tag:
-          class: image_class,
-          loading: lazy,
-          fetchpriority: fetch_priority,
-          sizes: sizes,
-          widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
-      }}
+      {%- if proof_kind != blank -%}
+        {% render 'vura-proof-slide', kind: proof_kind, alt: media.alt, animate: true %}
+      {%- else -%}
+        {{
+          media.preview_image
+          | image_url: width: 1946
+          | image_tag:
+            class: image_class,
+            loading: lazy,
+            fetchpriority: fetch_priority,
+            sizes: sizes,
+            widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
+        }}
+      {%- endif -%}
     </div>
     <button
       class="product__media-toggle quick-add-hidden product__media-zoom-{{ section.settings.image_zoom }}"

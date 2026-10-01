@@ -1,0 +1,69 @@
+{% comment %}
+  Animated stand-ins for two product gallery images, swapped in by product-thumbnail
+  (gallery) and product-media (zoom view):
+  - 'chart': "Why people are switching to Vura" (replaces vura_benefits_2). Five of the
+    nine rows of the original chart, claims unchanged, led by the two only Vura wins.
+  - 'benefits': the six benefits around the bottle (replaces vura_benefits_1), without the
+    image generator's "*Only include claims..." line that is printed on the original.
+
+  The markup is the finished slide, so it reads complete without script, with reduced
+  motion, and in the zoom view. vura-proof-slides-assets hides the marks and draws them in
+  when the slide comes into view.
+
+  Generated from a script (fixed hand-drawn jitter); edit the text here freely, but keep
+  the vp-d / vp-wash classes and their --d (delay) / --t (duration) styles.
+
+  Accepts:
+  - kind: {String} 'chart' or 'benefits'
+  - alt: {String} text alternative, the original image's alt
+  - animate: {Boolean} draw in when it scrolls into view (false in the zoom view)
+{% endcomment %}
+<div class="vura-proof vura-proof--{{ kind }}"{% if animate %} data-vura-proof{% endif %} role="img" aria-label="{{ alt | escape }}">
+  <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+    {%- if kind == 'chart' -%}
+      <rect width="400" height="400" fill="#F4EFE3"/>
+      <text x="18" y="52" class="vp-title">Why people are</text>
+      <text x="18" y="83" class="vp-title">switching to <tspan fill="#8D3B2D">Vura</tspan></text>
+      <rect x="184" y="104" width="49.5" height="36" rx="3" fill="#162D24"/>
+      <text x="208.75" y="120" text-anchor="middle" class="vp-head vp-head--on">Vura</text>
+      <text x="208.75" y="131" text-anchor="middle" class="vp-head vp-head--on">mist</text>
+      <text x="258.25" y="126" text-anchor="middle" class="vp-head">Roll-on</text>
+      <text x="307.75" y="126" text-anchor="middle" class="vp-head">Cream</text>
+      <text x="357.25" y="120" text-anchor="middle" class="vp-head">Spray</text>
+      <text x="357.25" y="131" text-anchor="middle" class="vp-head">deodorant</text>
+      <rect class="vp-wash" x="184" y="140" width="49.5" height="210" fill="#FFC03F" fill-opacity=".38" style="--d:2.95s"/>
+      <line x1="18" x2="382" y1="140" y2="140" stroke="#1A2A22" stroke-opacity="0.35"/>
+      <line x1="18" x2="382" y1="182" y2="182" stroke="#1A2A22" stroke-opacity="0.12"/>
+      <line x1="18" x2="382" y1="224" y2="224" stroke="#1A2A22" stroke-opacity="0.12"/>
+      <line x1="18" x2="382" y1="266" y2="266" stroke="#1A2A22" stroke-opacity="0.12"/>
+      <line x1="18" x2="382" y1="308" y2="308" stroke="#1A2A22" stroke-opacity="0.12"/>
+      <line x1="18" x2="382" y1="350" y2="350" stroke="#1A2A22" stroke-opacity="0.12"/>
+      <text x="18" y="165.5" class="vp-row">Even coverage</text>
+      <text x="18" y="207.5" class="vp-row">Comfort after shaving</text>
+      <text x="18" y="249.5" class="vp-row">Quick-dry</text>
+      <text x="18" y="291.5" class="vp-row">Touch-free application</text>
+      <text x="18" y="333.5" class="vp-row">No sticky residue</text>
+      <g filter="url(#vura-proof-wob)" fill="none" stroke-linecap="round" stroke-linejoin="round"><path class="vp-d" pathLength="1" d="M257.8 156.5L262.7 164.4L253.2 164.9L259.5 157.1" stroke="#6F7B73" stroke-width="1.8" style="--d:0.25s;--t:0.24s"/><path class="vp-d" pathLength="1" d="M303.7 157.1Q307.7 161 311.4 164.6" stroke="#6F7B73" stroke-width="1.8" style="--d:0.33s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M311.9 156.7Q307.6 161.1 304.2 164.8" stroke="#6F7B73" stroke-width="1.8" style="--d:0.43s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M356.8 156.5L361.5 164.8L352.8 164.6L358.5 157.1" stroke="#6F7B73" stroke-width="1.8" style="--d:0.41s;--t:0.24s"/><path class="vp-d" pathLength="1" d="M201.5 160.6Q204.5 164.1 206.4 166Q210.7 160.4 216.1 154.1" stroke="#162D24" stroke-width="2.6" style="--d:0.55s;--t:0.28s"/><path class="vp-d" pathLength="1" d="M258.6 198.5L262.8 206.2L253.8 207L259.5 199.1" stroke="#6F7B73" stroke-width="1.8" style="--d:0.75s;--t:0.24s"/><path class="vp-d" pathLength="1" d="M303.6 199.6Q307 203.3 312 207.4" stroke="#6F7B73" stroke-width="1.8" style="--d:0.83s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M311.4 198.7Q308.2 203.7 304.1 207.5" stroke="#6F7B73" stroke-width="1.8" style="--d:0.93s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M357.6 198.5L361.7 206.3L352.8 206.1L358.5 199.1" stroke="#6F7B73" stroke-width="1.8" style="--d:0.91s;--t:0.24s"/><path class="vp-d" pathLength="1" d="M202.3 203.5Q204.5 206.1 206.4 208.6Q211.3 202.2 217.1 196.3" stroke="#162D24" stroke-width="2.6" style="--d:1.05s;--t:0.28s"/><path class="vp-d" pathLength="1" d="M254.8 241Q258.9 245.8 262.1 249.3" stroke="#6F7B73" stroke-width="1.8" style="--d:1.25s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M262.2 240.8Q257.5 244.3 254.7 248.4" stroke="#6F7B73" stroke-width="1.8" style="--d:1.35s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M303.7 241.2Q307.6 245 311.2 248.8" stroke="#6F7B73" stroke-width="1.8" style="--d:1.33s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M311.3 241.2Q307.8 245.7 303.4 249.5" stroke="#6F7B73" stroke-width="1.8" style="--d:1.43s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M352.8 245.4Q354.4 246.8 356.4 249.1Q358.6 244 363.2 239.7" stroke="#6F7B73" stroke-width="1.8" style="--d:1.41s;--t:0.2s"/><path class="vp-d" pathLength="1" d="M202.3 245.1Q205.2 247.3 206.5 251Q210.9 243.8 217.4 238" stroke="#162D24" stroke-width="2.6" style="--d:1.55s;--t:0.28s"/><path class="vp-d" pathLength="1" d="M254.8 283.1Q258.3 286.6 261.7 291.3" stroke="#6F7B73" stroke-width="1.8" style="--d:1.75s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M262.6 282.8Q258.7 286.7 254.8 290.8" stroke="#6F7B73" stroke-width="1.8" style="--d:1.85s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M303.3 282.5Q307 287.1 311.4 291.3" stroke="#6F7B73" stroke-width="1.8" style="--d:1.83s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M311.4 283.3Q308.5 287 304.2 290.5" stroke="#6F7B73" stroke-width="1.8" style="--d:1.93s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M352.3 287Q354 288.7 355.9 291Q358.5 286 363.1 282.1" stroke="#6F7B73" stroke-width="1.8" style="--d:1.91s;--t:0.2s"/><path class="vp-d" pathLength="1" d="M200.9 287.2Q205.1 289.7 207 292.1Q211 285.9 216.2 280.4" stroke="#162D24" stroke-width="2.6" style="--d:2.05s;--t:0.28s"/><path class="vp-d" pathLength="1" d="M254.2 324.7Q258.3 329.7 262 332.5" stroke="#6F7B73" stroke-width="1.8" style="--d:2.25s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M262.6 325.5Q258.6 328.6 254.1 332.6" stroke="#6F7B73" stroke-width="1.8" style="--d:2.35s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M303.6 325.6Q308.1 329.1 311.6 332.9" stroke="#6F7B73" stroke-width="1.8" style="--d:2.33s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M311.6 325.4Q307 329.5 304.2 332.3" stroke="#6F7B73" stroke-width="1.8" style="--d:2.43s;--t:0.12s"/><path class="vp-d" pathLength="1" d="M352.5 329Q354.5 330.4 356.4 333.5Q359.2 327.9 362.6 323.9" stroke="#6F7B73" stroke-width="1.8" style="--d:2.41s;--t:0.2s"/><path class="vp-d" pathLength="1" d="M201.5 329.8Q205 331.7 206.6 334.5Q210.7 328.9 216.6 321.6" stroke="#162D24" stroke-width="2.6" style="--d:2.55s;--t:0.28s"/></g>
+    {%- else -%}
+      <rect width="400" height="400" fill="#F4EFE3"/>
+      <text x="200" y="40" text-anchor="middle" class="vp-title">Designed for</text>
+      <text x="200" y="68" text-anchor="middle" class="vp-title">everyday confidence</text>
+      <line x1="186" x2="214" y1="82" y2="82" stroke="#8D3B2D" stroke-width="2"/>
+      <text x="200" y="104" text-anchor="middle" class="vp-tag">Confidence shouldn’t feel complicated.</text>
+      <image href="{{ 'vura-bottle-cutout.webp' | asset_url }}" x="164" y="118" width="72" height="232" preserveAspectRatio="xMidYMid meet"/>
+      <text x="78" y="173" text-anchor="middle" class="vp-label">Quick-dry</text>
+      <text x="78" y="187" text-anchor="middle" class="vp-label">formula</text>
+      <text x="322" y="173" text-anchor="middle" class="vp-label">No sticky</text>
+      <text x="322" y="187" text-anchor="middle" class="vp-label">residue</text>
+      <text x="78" y="249" text-anchor="middle" class="vp-label">Lightweight</text>
+      <text x="78" y="263" text-anchor="middle" class="vp-label">feel</text>
+      <text x="322" y="249" text-anchor="middle" class="vp-label">Fresh</text>
+      <text x="322" y="263" text-anchor="middle" class="vp-label">feeling</text>
+      <text x="78" y="325" text-anchor="middle" class="vp-label">Gentle</text>
+      <text x="78" y="339" text-anchor="middle" class="vp-label">on skin</text>
+      <text x="322" y="325" text-anchor="middle" class="vp-label">Made for</text>
+      <text x="322" y="339" text-anchor="middle" class="vp-label">everyday use</text>
+      <g filter="url(#vura-proof-wob)" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle class="vp-d" pathLength="1" cx="78" cy="136" r="20" transform="rotate(-90 78 136)" stroke="#1A2A22" stroke-opacity=".32" stroke-width="1.4" style="--d:0.15s;--t:.4s"/><path class="vp-d" pathLength="1" transform="translate(78 136)" d="M-10.5 -3.5H-5.5V3.5H-10.5Z M-1.5 -5.5L1.5 -6.7M4.5 -7.8L7.5 -9 M-1.5 0H1.5M4.5 0H7.5 M-1.5 5.5L1.5 6.7M4.5 7.8L7.5 9" stroke="#1A2A22" stroke-width="1.8" style="--d:0.37s;--t:.5s"/><circle class="vp-d" pathLength="1" cx="322" cy="136" r="20" transform="rotate(-90 322 136)" stroke="#1A2A22" stroke-opacity=".32" stroke-width="1.4" style="--d:0.45s;--t:.4s"/><path class="vp-d" pathLength="1" transform="translate(322 136)" d="M0 -10C4 -4 7 -1 7 3.2A7 7 0 0 1 -7 3.2C-7 -1 -4 -4 0 -10Z M-3.4 3.4C-3.4 5.4 -2.2 6.6 -0.2 6.9" stroke="#1A2A22" stroke-width="1.8" style="--d:0.67s;--t:.5s"/><circle class="vp-d" pathLength="1" cx="78" cy="212" r="20" transform="rotate(-90 78 212)" stroke="#1A2A22" stroke-opacity=".32" stroke-width="1.4" style="--d:0.75s;--t:.4s"/><path class="vp-d" pathLength="1" transform="translate(78 212)" d="M-8 9C-3 1 2 -5 8.5 -9.5C8 -2 2.5 4 -4.5 6.2 M-9.5 10.5L-2.5 3.2 M0.5 -0.8L3.5 1.2" stroke="#1A2A22" stroke-width="1.8" style="--d:0.97s;--t:.5s"/><circle class="vp-d" pathLength="1" cx="322" cy="212" r="20" transform="rotate(-90 322 212)" stroke="#1A2A22" stroke-opacity=".32" stroke-width="1.4" style="--d:1.05s;--t:.4s"/><path class="vp-d" pathLength="1" transform="translate(322 212)" d="M0 -10.5C1 -3.2 3.2 -1 10.5 0C3.2 1 1 3.2 0 10.5C-1 3.2 -3.2 1 -10.5 0C-3.2 -1 -1 -3.2 0 -10.5Z" stroke="#1A2A22" stroke-width="1.8" style="--d:1.27s;--t:.5s"/><circle class="vp-d" pathLength="1" cx="78" cy="288" r="20" transform="rotate(-90 78 288)" stroke="#1A2A22" stroke-opacity=".32" stroke-width="1.4" style="--d:1.35s;--t:.4s"/><path class="vp-d" pathLength="1" transform="translate(78 288)" d="M0 -10.5L8.2 -7.4C8.2 1.2 5 6.3 0 10.3C-5 6.3 -8.2 1.2 -8.2 -7.4Z M-3.8 0.2L-0.9 3.1L4.2 -2.8" stroke="#1A2A22" stroke-width="1.8" style="--d:1.57s;--t:.5s"/><circle class="vp-d" pathLength="1" cx="322" cy="288" r="20" transform="rotate(-90 322 288)" stroke="#1A2A22" stroke-opacity=".32" stroke-width="1.4" style="--d:1.65s;--t:.4s"/><path class="vp-d" pathLength="1" transform="translate(322 288)" d="M-9 -6H9V9H-9Z M-9 -1.2H9 M-5 -9.2V-3.6 M5 -9.2V-3.6 M-3.2 4.2L-0.8 6.4L3.6 2" stroke="#1A2A22" stroke-width="1.8" style="--d:1.87s;--t:.5s"/></g>
+    {%- endif -%}
+  </svg>
+</div>
