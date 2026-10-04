@@ -54,7 +54,16 @@
       <meta name="description" content="{{ seo_description | escape }}">
     {% endif %}
 
+    {%- comment -%}
+      Internal search results are thin, endless pages; Google had indexed /search.
+      noindex keeps them out of results while links on them are still followed.
+    {%- endcomment -%}
+    {%- if request.page_type == 'search' -%}
+      <meta name="robots" content="noindex, follow">
+    {%- endif -%}
+
     {% render 'meta-tags' %}
+    {% render 'vura-breadcrumbs-schema' %}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
@@ -315,11 +324,11 @@
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
       {% comment %}theme-check-enable AssetPreload{% endcomment %}
     {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
+    {%- comment -%}
+      No preload for settings.type_header_font: base.css draws every heading in Bree
+      Serif (Google Fonts, above), so that file was 45 KB fetched on every page and
+      never used, competing with the hero image on slow connections.
+    {%- endcomment -%}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}

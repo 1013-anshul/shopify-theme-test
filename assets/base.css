@@ -4785,7 +4785,7 @@ details-disclosure > details {
   content: '';
   position: absolute;
   top: 0;
-  left: -150%;
+  left: 0;
   width: 80%;
   height: 100%;
   background: linear-gradient(
@@ -4794,12 +4794,16 @@ details-disclosure > details {
     rgba(255, 255, 255, 0.85) 50%,
     rgba(255, 255, 255, 0) 100%
   );
-  transform: skewX(-25deg);
+  /* The sweep moves by transform, not `left`: animating `left` is a layout
+     change every frame, and Chrome scored the always-running sticky button
+     at 0.15 CLS on its own. The percentages are of this 80%-wide strip, so
+     -187.5% / 187.5% is the old -150% / 150% of the button. */
+  transform: translateX(-187.5%) skewX(-25deg);
   animation: vuraBtnShine 3s infinite linear !important;
 }
 @keyframes vuraBtnShine {
-  0% { left: -150%; }
-  100% { left: 150%; }
+  0% { transform: translateX(-187.5%) skewX(-25deg); }
+  100% { transform: translateX(187.5%) skewX(-25deg); }
 }
 
 /* Hide main page Add to Cart button (below the family pack) to rely on Sticky Add to Cart */
@@ -4874,10 +4878,11 @@ details-disclosure > details {
   animation: vuraActiveShine 2.8s infinite linear !important; /* Slower and more continuous sweep */
 }
 
+/* This strip is 120% wide, so +-125% of itself is the old +-150% of the button. */
 @keyframes vuraActiveShine {
-  0% { left: -150%; }
-  40% { left: 150%; }
-  100% { left: 150%; }
+  0% { transform: translateX(-125%) skewX(-25deg); }
+  40% { transform: translateX(125%) skewX(-25deg); }
+  100% { transform: translateX(125%) skewX(-25deg); }
 }
 
 /* Minimized Sticky ATC layout on scroll down (swipe up) */

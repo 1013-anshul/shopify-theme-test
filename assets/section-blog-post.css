@@ -173,3 +173,48 @@
 .article-template__back:last-child {
   margin-bottom: 3.2rem;
 }
+
+/* Breadcrumb above the article title */
+.vura-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 1.2rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+.vura-crumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+.vura-crumbs a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+/* "Written by the Vura team" card at the end of every article */
+.vura-author {
+  margin-top: 4rem;
+}
+.vura-author__card {
+  border-top: 2px solid var(--vura-terracotta, #8D3B2D);
+  background: var(--vura-paper-deep, #EDE5D2);
+  padding: 2rem 2.4rem 2.2rem;
+}
+.vura-author__title {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 2rem;
+  line-height: 1.2;
+  color: var(--vura-forest, #162D24);
+}
+.vura-author__bio {
+  margin: 0 0 1.2rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--vura-paper-ink-muted, #4A5750);
+}
+.vura-author__link {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--vura-forest, #162D24);
+}

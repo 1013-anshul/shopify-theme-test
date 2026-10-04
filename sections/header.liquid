@@ -148,8 +148,9 @@
     -%}
 
     {%- if section.settings.logo_position != 'middle-center' -%}
+      {%- comment -%} Dawn makes the logo the homepage <h1>; the hero headline already is one, so it stays a div. {%- endcomment -%}
       {%- if request.page_type == 'index' -%}
-        <h1 class="header__heading">
+        <div class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
@@ -182,7 +183,7 @@
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
-        </h1>
+        </div>
       {%- endif -%}
     {%- endif -%}
 
@@ -197,8 +198,9 @@
     %}
 
     {%- if section.settings.logo_position == 'middle-center' -%}
+      {%- comment -%} Dawn makes the logo the homepage <h1>; the hero headline already is one, so it stays a div. {%- endcomment -%}
       {%- if request.page_type == 'index' -%}
-        <h1 class="header__heading">
+        <div class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
         {%- if settings.logo != blank -%}
@@ -231,7 +233,7 @@
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
-        </h1>
+        </div>
       {%- endif -%}
     {%- endif -%}
 
@@ -446,18 +448,19 @@
     {% if settings.logo %}
       "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}
-    "sameAs": [
-      {{ settings.social_twitter_link | json }},
-      {{ settings.social_facebook_link | json }},
-      {{ settings.social_pinterest_link | json }},
-      {{ settings.social_instagram_link | json }},
-      {{ settings.social_tiktok_link | json }},
-      {{ settings.social_tumblr_link | json }},
-      {{ settings.social_snapchat_link | json }},
-      {{ settings.social_youtube_link | json }},
-      {{ settings.social_vimeo_link | json }}
-    ],
-    "url": {{ request.origin | append: page.url | json }}
+    {%- liquid
+      assign social_keys = 'social_twitter_link,social_facebook_link,social_pinterest_link,social_instagram_link,social_tiktok_link,social_tumblr_link,social_snapchat_link,social_youtube_link,social_vimeo_link' | split: ','
+      assign same_as = ''
+      for key in social_keys
+        if settings[key] != blank
+          assign same_as = same_as | append: '|' | append: settings[key]
+        endif
+      endfor
+      assign same_as = same_as | remove_first: '|' | split: '|'
+    -%}
+    "@id": {{ request.origin | append: '/#organization' | json }},
+    "sameAs": {{ same_as | json }},
+    "url": {{ request.origin | json }}
   }
 </script>
 

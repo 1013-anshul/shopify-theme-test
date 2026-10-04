@@ -46,6 +46,11 @@
           class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
           {{ block.shopify_attributes }}
         >
+          <nav class="vura-crumbs caption-with-letter-spacing" aria-label="Breadcrumb">
+            <a href="{{ routes.root_url }}">Home</a>
+            <span aria-hidden="true">/</span>
+            <a href="{{ blog.url }}">{{ blog.title | escape }}</a>
+          </nav>
           <h1
             class="article-template__title"
           >
@@ -56,11 +61,13 @@
               {{- article.published_at | time_tag: format: 'date' -}}
             </span>
           {%- endif -%}
-          {%- if block.settings.blog_show_author -%}
-            <span class="caption-with-letter-spacing">
-              <span>{{ article.author }}</span>
-            </span>
-          {%- endif -%}
+          {%- comment -%}
+            Always credited to the team. article.author is the staff account name, and the
+            brand speaks as "we" and never names a person, so the setting no longer applies.
+          {%- endcomment -%}
+          <span class="caption-with-letter-spacing">
+            <span>By the Vura team</span>
+          </span>
         </header>
 
       {%- when 'content' -%}
@@ -81,6 +88,19 @@
         </div>
     {%- endcase -%}
   {%- endfor -%}
+
+  {%- assign about_url = pages['about'].url | default: '/pages/about' -%}
+  <aside class="vura-author page-width page-width--narrow" aria-label="About the author">
+    <div class="vura-author__card">
+      <p class="vura-author__title">Written by the Vura team</p>
+      <p class="vura-author__bio">
+        We make Vura, a Phitkari underarm spray. We make it slowly, in Bharat. We write
+        these notes to explain how our ingredients work and what they can't do. We are not
+        doctors, so if irritation lasts more than a few days, please see a dermatologist.
+      </p>
+      <a class="vura-author__link link" href="{{ about_url }}">More about us</a>
+    </div>
+  </aside>
 
   <div class="article-template__back element-margin-top center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
     <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
@@ -288,8 +308,41 @@
   {%- endif -%}
 </article>
 
+{%- liquid
+  assign article_url = request.origin | append: article.url
+  assign article_description = page_description | default: article.excerpt_or_content | strip_html | strip_newlines | truncate: 300
+-%}
+{%- comment -%}
+  Replaces {{ article | structured_data }}, which credits a Person named after the staff
+  account. The author is the team as an Organization, with its About page.
+{%- endcomment -%}
 <script type="application/ld+json">
-  {{ article | structured_data }}
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": {{ article_url | append: '#article' | json }},
+    "mainEntityOfPage": { "@type": "WebPage", "@id": {{ article_url | json }} },
+    "headline": {{ article.title | json }},
+    "description": {{ article_description | json }},
+    {%- if article.image %}
+    "image": [{{ article.image | image_url: width: 1920 | prepend: 'https:' | json }}],
+    {%- endif %}
+    "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%:z' | json }},
+    "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%:z' | json }},
+    "author": {
+      "@type": "Organization",
+      "name": "The Vura team",
+      "url": {{ request.origin | append: about_url | json }}
+    },
+    "publisher": {
+      "@type": "Organization",
+      "@id": {{ request.origin | append: '/#organization' | json }},
+      "name": {{ shop.name | json }}
+      {%- if settings.logo -%}
+        , "logo": { "@type": "ImageObject", "url": {{ settings.logo | image_url: width: 500 | prepend: 'https:' | json }} }
+      {%- endif %}
+    }
+  }
 </script>
 
 {% schema %}

@@ -1,0 +1,59 @@
+{% comment %}
+  BreadcrumbList structured data, so Google can show "vuraskincare.in › Journal › …"
+  in results instead of the raw URL. Rendered once from layout/theme.liquid. Pages
+  outside the list below (home, search, cart, account) get no breadcrumb.
+{% endcomment %}
+{%- liquid
+  assign crumb_2_name = blank
+  assign crumb_3_name = blank
+  case request.page_type
+    when 'product'
+      assign crumb_2_name = product.title
+      assign crumb_2_url = product.url
+    when 'collection'
+      assign crumb_2_name = collection.title
+      assign crumb_2_url = collection.url
+    when 'page'
+      assign crumb_2_name = page.title
+      assign crumb_2_url = page.url
+    when 'blog'
+      assign crumb_2_name = blog.title
+      assign crumb_2_url = blog.url
+    when 'article'
+      assign crumb_2_name = blog.title
+      assign crumb_2_url = blog.url
+      assign crumb_3_name = article.title
+      assign crumb_3_url = article.url
+  endcase
+-%}
+{%- if crumb_2_name != blank -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": {{ request.origin | append: routes.root_url | json }}
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ crumb_2_name | json }},
+          "item": {{ request.origin | append: crumb_2_url | json }}
+        }
+        {%- if crumb_3_name != blank -%}
+          ,
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ crumb_3_name | json }},
+            "item": {{ request.origin | append: crumb_3_url | json }}
+          }
+        {%- endif %}
+      ]
+    }
+  </script>
+{%- endif -%}
