@@ -218,3 +218,40 @@
   font-weight: 700;
   color: var(--vura-forest, #162D24);
 }
+
+/* Comparison tables inside articles. Dawn ships only `table-layout: fixed`, so
+   without this a table reads as loose, borderless text on a phone. */
+.article-template__content table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  margin: 2.4rem 0;
+  font-size: 1.4rem;
+  line-height: 1.45;
+}
+.article-template__content th,
+.article-template__content td {
+  border: 1px solid rgba(22, 45, 36, 0.14);
+  padding: 0.9rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: break-word;
+}
+.article-template__content thead th {
+  background: var(--vura-paper-deep, #EDE5D2);
+  color: var(--vura-forest, #162D24);
+  font-weight: 700;
+}
+.article-template__content tbody td:first-child {
+  font-weight: 600;
+  color: var(--vura-forest, #162D24);
+}
+@media screen and (max-width: 749px) {
+  .article-template__content table {
+    font-size: 1.25rem;
+  }
+  .article-template__content th,
+  .article-template__content td {
+    padding: 0.6rem 0.6rem;
+  }
+}
