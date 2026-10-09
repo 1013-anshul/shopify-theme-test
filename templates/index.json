@@ -13,7 +13,7 @@
       "type": "vura-hero-banner",
       "settings": {
         "eyebrow": "Introducing",
-        "heading": "Phitkari in a spray",
+        "heading": "Fitkari in a spray",
         "link": "shopify://products/vura-mineral-underarm-spray",
         "cta_label": "Explore the product"
       }
@@ -24,7 +24,7 @@
         "b1": {
           "type": "benefit",
           "settings": {
-            "label": "Made with Phitkari",
+            "label": "Made with Fitkari",
             "icon": "crystal"
           }
         },
@@ -169,7 +169,7 @@
         "pitch": {
           "type": "text",
           "settings": {
-            "text": "We made this for sensitive underarms. Phitkari does the work, with no aluminium salts and no synthetic fragrance. You spray it on without touching your skin, it dries quickly, and it leaves no white marks on your clothes.",
+            "text": "We made this for sensitive underarms. Fitkari does the work, with no aluminium salts and no synthetic fragrance. You spray it on without touching your skin, it dries quickly, and it leaves no white marks on your clothes.",
             "text_style": "body"
           }
         },
@@ -208,7 +208,7 @@
         "ingredient_1": {
           "type": "ingredient",
           "settings": {
-            "name": "Phitkari",
+            "name": "Fitkari",
             "tag": "Active",
             "description": "Our hero. It calms the bacteria behind odour, so you stay fresh without blocking your sweat.",
             "icon": "alum"
@@ -343,7 +343,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Is this safe for sensitive skin?",
-            "answer": "<p>Yes. We use natural Phitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p>"
+            "answer": "<p>Yes. We use natural Fitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p>"
           }
         },
         "faq_2": {
@@ -364,7 +364,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Does it contain aluminium chlorohydrate?",
-            "answer": "<p>No. We use potassium alum, which you may know as Phitkari. It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p>"
+            "answer": "<p>No. We use potassium alum, which you may know as fitkari (also spelt phitkari). It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p>"
           }
         },
         "faq_5": {
@@ -417,7 +417,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Phitkari keeps you fresh, and your skin gets a break. No aluminium salts, no white marks, no synthetic fragrance.</p>"
+            "text": "<p>Fitkari keeps you fresh, and your skin gets a break. No aluminium salts, no white marks, no synthetic fragrance.</p>"
           }
         },
         "button": {

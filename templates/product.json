@@ -63,7 +63,7 @@
           "settings": {
             "heading": "Key ingredients",
             "icon": "leaf",
-            "content": "<p><strong>Phitkari (Potassium Alum):</strong> A natural mineral salt that acts as a potent antibacterial agent to stop body odor at its source.</p><p><strong>Aloe Vera Extract:</strong> Soothes, hydrates, and protects the delicate underarm skin from irritation.</p><p><strong>Rose Water:</strong> Gentle toning with a soft, natural scent.</p><p><strong>Glycerin:</strong> Draws in moisture to keep skin soft.</p>",
+            "content": "<p><strong>Fitkari (Potassium Alum):</strong> A natural mineral salt that acts as a potent antibacterial agent to stop body odor at its source.</p><p><strong>Aloe Vera Extract:</strong> Soothes, hydrates, and protects the delicate underarm skin from irritation.</p><p><strong>Rose Water:</strong> Gentle toning with a soft, natural scent.</p><p><strong>Glycerin:</strong> Draws in moisture to keep skin soft.</p>",
             "page": ""
           }
         },
@@ -137,7 +137,7 @@
         "b1": {
           "type": "benefit",
           "settings": {
-            "label": "Made with Phitkari",
+            "label": "Made with Fitkari",
             "icon": "crystal"
           }
         },
@@ -280,7 +280,7 @@
         "ingredient_1": {
           "type": "ingredient",
           "settings": {
-            "name": "Phitkari",
+            "name": "Fitkari",
             "tag": "Active",
             "description": "Our hero. It calms the bacteria behind odour, so you stay fresh without blocking your sweat.",
             "icon": "alum"
@@ -336,7 +336,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Is this safe for sensitive skin?",
-            "answer": "<p>Yes. We use natural Phitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p>"
+            "answer": "<p>Yes. We use natural Fitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p>"
           }
         },
         "faq_2": {
@@ -357,7 +357,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Does it contain aluminium chlorohydrate?",
-            "answer": "<p>No. We use potassium alum, which you may know as Phitkari. It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p>"
+            "answer": "<p>No. We use potassium alum, which you may know as fitkari (also spelt phitkari). It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p>"
           }
         },
         "faq_5": {
