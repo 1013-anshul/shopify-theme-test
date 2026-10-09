@@ -63,7 +63,7 @@
           "settings": {
             "heading": "Key ingredients",
             "icon": "leaf",
-            "content": "<p><strong>Fitkari (Potassium Alum):</strong> A natural mineral salt that acts as a potent antibacterial agent to stop body odor at its source.</p><p><strong>Aloe Vera Extract:</strong> Soothes, hydrates, and protects the delicate underarm skin from irritation.</p><p><strong>Rose Water:</strong> Gentle toning with a soft, natural scent.</p><p><strong>Glycerin:</strong> Draws in moisture to keep skin soft.</p>",
+            "content": "<p><strong>Fitkari (Potassium Alum):</strong> A natural mineral salt that acts as a potent antibacterial agent to stop body odor at its source. <a href=\"/blogs/journal/what-is-phitkari\">What is fitkari?</a></p><p><strong>Aloe Vera Extract:</strong> Soothes, hydrates, and protects the delicate underarm skin from irritation.</p><p><strong>Rose Water:</strong> Gentle toning with a soft, natural scent.</p><p><strong>Glycerin:</strong> Draws in moisture to keep skin soft.</p>",
             "page": ""
           }
         },
@@ -336,7 +336,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Is this safe for sensitive skin?",
-            "answer": "<p>Yes. We use natural Fitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p>"
+            "answer": "<p>Yes. We use natural Fitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p><p>More on <a href=\"/blogs/journal/is-phitkari-safe-for-daily-use\">whether fitkari is safe to use every day</a>.</p>"
           }
         },
         "faq_2": {
@@ -353,11 +353,18 @@
             "answer": "<p>Very subtle and clean, never overpowering. Most people tell us it smells fresh, or that they barely notice it at all.</p>"
           }
         },
+        "faq_8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is fitkari, and how does it stop smell?",
+            "answer": "<p>Fitkari, also called alum or potassium alum, is a natural mineral salt. It makes your skin a harder place for odour-causing bacteria to grow, so less smell gets made. It does not block your sweat.</p><p>Read <a href=\"/blogs/journal/what-is-phitkari\">what fitkari is</a> and <a href=\"/blogs/journal/is-phitkari-good-for-underarms\">how to use it on your underarms</a>.</p>"
+          }
+        },
         "faq_4": {
           "type": "faq_item",
           "settings": {
             "question": "Does it contain aluminium chlorohydrate?",
-            "answer": "<p>No. We use potassium alum, which you may know as fitkari (also spelt phitkari). It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p>"
+            "answer": "<p>No. We use potassium alum, which you may know as fitkari (also spelt phitkari). It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p><p>Here is <a href=\"/blogs/journal/potassium-alum-vs-aluminium-chlorohydrate\">the full difference between potassium alum and aluminium chlorohydrate</a>.</p>"
           }
         },
         "faq_5": {
@@ -378,7 +385,7 @@
           "type": "faq_item",
           "settings": {
             "question": "What if I don't like it?",
-            "answer": "<p>Write to us at support@vuraskincare.in within 7 days of delivery and we will help you. We can only take back items that are still unopened.</p>"
+            "answer": "<p><a href=\"https://wa.me/917875697847\" target=\"_blank\" rel=\"noopener\">WhatsApp us on +91 78756 97847</a> (working hours) or write to support@vuraskincare.in within 7 days of delivery and we will help you. We can only take back items that are still unopened.</p>"
           }
         }
       },
@@ -386,6 +393,7 @@
         "faq_1",
         "faq_2",
         "faq_3",
+        "faq_8",
         "faq_4",
         "faq_5",
         "faq_6",
