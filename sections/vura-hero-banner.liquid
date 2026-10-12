@@ -1,96 +1,252 @@
 {% comment %}
-  VURA Hero Banner — one wide image with a left-aligned headline over the empty
-  space. The whole banner links to the product. On desktop the image is capped
-  to fit within the viewport (below the header); on mobile it keeps its full
-  aspect ratio. Falls back to the bundled asset if no image set.
+  VURA Hero Banner. A still of the real bottle on raw alum crystals, with a
+  six-second loop in which only the palm-leaf shadows on the back wall move.
+  The loop was rendered from the same photo (the bottle and crystals are never
+  resampled), so its first frame is the poster and the swap is invisible.
+
+  Desktop: full-bleed frame, copy over the open wall on the left.
+  Mobile: square crop of the same frame, copy on a forest panel underneath so
+  the button sits above the fold on a 375 x 812 phone.
+
+  Motion, all of it off under prefers-reduced-motion:
+  - the frame settles out of a soft focus on load (a lens pull, once);
+  - the headline rises word by word behind a mask, then the rest follows;
+  - the loop starts only after the page has loaded and while the hero is on
+    screen, and never on Save-Data;
+  - where scroll-driven animations exist, the photo drifts a little slower
+    than the page as it leaves.
+
+  If a merchant picks an image in the editor, that image is shown on its own
+  and the loop is skipped (it would not match).
 {% endcomment %}
 {%- liquid
   assign heading = section.settings.heading
   assign eyebrow = section.settings.eyebrow
   assign link = section.settings.link
   assign cta_label = section.settings.cta_label
-  if section.settings.image != blank
-    assign hero_src = section.settings.image | image_url: width: 2200
-    assign hero_w = section.settings.image.width
-    assign hero_h = section.settings.image.height
-  else
-    assign hero_src = 'vura_hero_banner_light.webp' | asset_url
-    assign hero_w = 1672
-    assign hero_h = 941
+  assign subheading = section.settings.subheading
+  assign meta_note = section.settings.meta_note
+  assign hero_product = all_products['vura-mineral-underarm-spray']
+  assign custom_image = section.settings.image
+  assign use_loop = false
+  if custom_image == blank and section.settings.show_loop
+    assign use_loop = true
   endif
+  assign words = heading | split: ' '
 -%}
 {%- style -%}
-  .vura-herob { position: relative; width: 100%; background: #C9B99A; overflow: hidden; line-height: 0; }
-  .vura-herob__link { display: block; text-decoration: none; color: inherit; }
-  .vura-herob__img { display: block; width: 100%; height: auto; transition: filter 0.4s ease; }
-  @media (min-width: 750px) {
-    .vura-herob__img {
-      height: calc(100vh - 190px);
-      height: calc(100svh - 190px);
-      max-height: 660px;
-      min-height: 380px;
-      object-fit: cover;
-      object-position: center 42%;
+  .vh { position: relative; background: var(--vura-forest, #162D24); color: var(--vura-cream, #F4EFE3); overflow: clip; }
+  .vh__stage { position: relative; overflow: hidden; background: #805438; aspect-ratio: 10 / 9; }
+  .vh__media { position: absolute; inset: 0; display: block; }
+  .vh__parallax { position: absolute; inset: 0; }
+  .vh__poster, .vh__video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: var(--vh-pos, 50% 50%); display: block;
+  }
+  .vh__video { opacity: 0; transition: opacity 0.8s ease; }
+  .vh--live .vh__video { opacity: 1; }
+  .vh__scrim { display: none; }
+
+  .vh__copy { position: relative; padding: 1.9rem 2rem 2.4rem; }
+  .vh__eyebrow {
+    display: flex; align-items: center; gap: 1rem; margin: 0 0 0.9rem;
+    font-family: var(--font-body); font-weight: 700; font-size: 1.1rem;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--vura-saffron, #FFC03F); line-height: 1.2;
+  }
+  .vh__rule { flex: none; width: 2.8rem; height: 1px; background: currentColor; transform-origin: left center; }
+  .vh__title {
+    margin: 0; font-weight: 400; color: var(--vura-cream, #F4EFE3);
+    font-size: 3.2rem; line-height: 1.08; letter-spacing: -0.005em; text-wrap: balance;
+  }
+  /* Each word sits in its own mask so it can rise into place. */
+  .vh__w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+  .vh__w > span { display: inline-block; }
+  .vh__sub {
+    margin: 0.8rem 0 0; font-size: 1.4rem; line-height: 1.5;
+    color: var(--vura-cream-dim, #D9D2C2);
+  }
+  .vh__actions { margin-top: 1.6rem; }
+  .vh .vh__cta { display: flex; width: 100%; justify-content: center; text-decoration: none; }
+  .vh__meta {
+    margin: 1.1rem 0 0; font-size: 1.2rem; line-height: 1.4; letter-spacing: 0.02em;
+    color: var(--vura-cream-dim, #D9D2C2); text-align: center;
+  }
+  .vh__meta strong { color: var(--vura-saffron, #FFC03F); font-weight: 700; }
+
+  @media screen and (min-width: 750px) {
+    .vh__stage {
+      aspect-ratio: auto;
+      height: min(calc(100vh - 150px), 50vw);
+      height: min(calc(100svh - 150px), 50vw);
+      min-height: 420px; max-height: 960px;
+    }
+    .vh__scrim {
+      display: block; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg, rgba(40, 22, 11, 0.5) 0%, rgba(40, 22, 11, 0.24) 34%, rgba(40, 22, 11, 0) 56%);
+    }
+    .vh__copy {
+      position: absolute; inset: 0; z-index: 2; padding: 0 0 0 max(6vw, 4rem);
+      display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+      /* Sit a little above centre: the lower left of the frame is pale crystal. */
+      padding-bottom: clamp(4rem, 9%, 12rem);
+      width: min(48%, 64rem); pointer-events: none;
+    }
+    .vh__copy a { pointer-events: auto; }
+    .vh__eyebrow { font-size: clamp(1.1rem, 0.95vw, 1.4rem); margin-bottom: 1.4rem; }
+    .vh__rule { width: 4rem; }
+    .vh__title { font-size: clamp(3.8rem, 4.6vw, 7rem); line-height: 1.02; text-shadow: 0 1px 24px rgba(40, 22, 11, 0.25); }
+    .vh__sub { margin-top: 1.6rem; max-width: 40ch; font-size: clamp(1.5rem, 1.2vw, 1.9rem); color: rgba(244, 239, 227, 0.9); }
+    .vh__actions { margin-top: 2.8rem; display: flex; flex-direction: column; align-items: flex-start; }
+    .vh .vh__cta { width: auto; }
+    .vh__meta { text-align: left; font-size: 1.3rem; color: rgba(244, 239, 227, 0.92); text-shadow: 0 1px 10px rgba(40, 22, 11, 0.55); }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .vh__media { animation: vh-focus 1.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .vh__rule { animation: vh-rule 0.9s 0.2s cubic-bezier(0.65, 0, 0.35, 1) both; }
+    .vh__eyebrow-text { animation: vh-fade 0.7s 0.35s ease-out both; }
+    .vh__w > span { animation: vh-rise 0.95s calc(0.5s + var(--i) * 0.085s) cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .vh__sub { animation: vh-up 0.8s 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .vh__actions { animation: vh-up 0.8s 1.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    @supports (animation-timeline: view()) {
+      .vh__parallax { animation: vh-drift linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+      @media screen and (min-width: 750px) {
+        .vh__copy { animation: vh-leave linear both; animation-timeline: view(); animation-range: exit 5% exit 60%; }
+      }
     }
   }
-  .vura-herob__link:hover .vura-herob__img { filter: brightness(0.97); }
-  .vura-herob__text {
-    position: absolute; left: 6%; top: 50%; transform: translateY(-50%);
-    width: 42%; max-width: 640px; z-index: 2; line-height: 1.1;
+  @keyframes vh-focus {
+    from { filter: blur(10px) saturate(0.85); transform: scale(1.07); }
+    to { filter: blur(0) saturate(1); transform: scale(1); }
   }
-  .vura-herob__eyebrow {
-    margin: 0 0 0.55em; font-family: var(--font-body, Inter, sans-serif);
-    text-transform: uppercase; letter-spacing: 0.22em; font-weight: 600;
-    color: var(--vura-terracotta, #8D3B2D); font-size: clamp(0.62rem, 1.45vw, 1.5rem);
-  }
-  .vura-herob__title {
-    margin: 0; font-family: var(--font-display, Georgia, serif); font-weight: 700;
-    color: var(--vura-forest, #162D24); line-height: 1.05; text-wrap: balance;
-    font-size: clamp(1.35rem, 4.7vw, 5rem);
-  }
-  /* Not an <a>: the whole banner is already one, and links cannot nest.
-     Everything visual comes from Dawn's .button plus color-scheme-1, so it is
-     the same object as Add to cart and Checkout. */
-  .vura-herob__cta { margin-top: 1.15em; line-height: 1; }
-  /* The hero's text column is 42% of the viewport, so it shrinks on phones while
-     .button's minimums do not -- which left the CTA wider than the copy above it.
-     Desktop keeps the stock button; small screens scale with the headline. */
-  @media screen and (max-width: 749px) {
-    /* base.css sets the global pill's size with !important, so matching that
-       weight is the only way to scale it down here. */
-    .vura-herob .vura-herob__cta {
-      min-width: 0;
-      min-height: 0;
-      padding: 0.7em 1.3em !important;
-      font-size: clamp(0.62rem, 2.3vw, 1rem) !important;
-      letter-spacing: 0.06em !important;
-      box-shadow: 2px 2px 0 0 var(--vura-terracotta) !important;
-    }
-  }
-  .vura-herob__link:hover .vura-herob__cta { filter: brightness(1.04); }
+  @keyframes vh-rule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes vh-fade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes vh-rise { from { transform: translateY(108%); } to { transform: translateY(0); } }
+  @keyframes vh-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes vh-drift { from { transform: translateY(0) scale(1); } to { transform: translateY(14%) scale(1.06); } }
+  @keyframes vh-leave { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-3rem); } }
 {%- endstyle -%}
 
-<section class="vura-herob">
-  {%- if link != blank -%}<a class="vura-herob__link" href="{{ link }}" aria-label="{{ heading | default: 'VURA' | escape }}">{%- endif -%}
-    <img
-      class="vura-herob__img"
-      src="{{ hero_src }}"
-      alt="{{ heading | default: 'VURA' | escape }}"
-      width="{{ hero_w }}"
-      height="{{ hero_h }}"
-      loading="eager"
-      fetchpriority="high"
-    >
-    {%- if eyebrow != blank or heading != blank -%}
-      <div class="vura-herob__text" data-vura-stagger>
-        {%- if eyebrow != blank -%}<p class="vura-herob__eyebrow" data-vura-reveal="up">{{ eyebrow }}</p>{%- endif -%}
-        {%- if heading != blank -%}<h1 class="vura-herob__title" data-vura-reveal="up">{{ heading }}</h1>{%- endif -%}
-        {%- if cta_label != blank and link != blank -%}
-          <span class="button color-scheme-1 vura-herob__cta" data-vura-reveal="up">{{ cta_label }}</span>
+<section class="vh" id="VuraHero-{{ section.id }}" style="--vh-pos: {% if custom_image != blank %}50% 50%{% else %}66% 50%{% endif %};">
+  <div class="vh__stage">
+    <a class="vh__media" href="{{ link | default: '#' }}" tabindex="-1" aria-hidden="true">
+      <div class="vh__parallax">
+        {%- if custom_image != blank -%}
+          {{ custom_image | image_url: width: 2400 | image_tag:
+            class: 'vh__poster',
+            widths: '750, 1100, 1500, 1920, 2400',
+            sizes: '100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: heading
+          }}
+        {%- else -%}
+          <picture>
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ 'vura-hero-still-sq-720.webp' | asset_url }} 720w, {{ 'vura-hero-still-sq-1080.webp' | asset_url }} 1080w"
+              sizes="100vw"
+              width="1080" height="1080"
+            >
+            <img
+              class="vh__poster"
+              src="{{ 'vura-hero-still-1920.webp' | asset_url }}"
+              srcset="{{ 'vura-hero-still-1280.webp' | asset_url }} 1280w, {{ 'vura-hero-still-1920.webp' | asset_url }} 1920w"
+              sizes="100vw"
+              width="1920" height="1080"
+              alt="A bottle of Vura Fitkari underarm spray standing on raw alum crystals"
+              loading="eager"
+              fetchpriority="high"
+            >
+          </picture>
+        {%- endif -%}
+        {%- if use_loop -%}
+          <video
+            class="vh__video"
+            muted playsinline loop preload="none"
+            disablepictureinpicture disableremoteplayback
+            aria-hidden="true"
+            data-src-wide="{{ 'vura-hero-loop.mp4' | asset_url }}"
+            data-src-sq="{{ 'vura-hero-loop-sq.mp4' | asset_url }}"
+          ></video>
+        {%- endif -%}
+      </div>
+    </a>
+    <div class="vh__scrim" aria-hidden="true"></div>
+  </div>
+
+  <div class="vh__copy">
+    {%- if eyebrow != blank -%}
+      <p class="vh__eyebrow"><span class="vh__rule" aria-hidden="true"></span><span class="vh__eyebrow-text">{{ eyebrow }}</span></p>
+    {%- endif -%}
+    {%- if heading != blank -%}
+      <h1 class="vh__title" aria-label="{{ heading | escape }}">
+        <span aria-hidden="true">
+          {%- for word in words -%}
+            <span class="vh__w"><span style="--i: {{ forloop.index0 }};">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+          {%- endfor -%}
+        </span>
+      </h1>
+    {%- endif -%}
+    {%- if subheading != blank -%}
+      <p class="vh__sub">{{ subheading }}</p>
+    {%- endif -%}
+    {%- if cta_label != blank and link != blank -%}
+      <div class="vh__actions">
+        <a class="button color-scheme-1 vh__cta" href="{{ link }}">{{ cta_label }}</a>
+        {%- if meta_note != blank or hero_product != blank -%}
+          <p class="vh__meta">
+            {%- if hero_product != blank -%}From <strong>{{ hero_product.price_min | money_without_trailing_zeros }}</strong>{% if meta_note != blank %} · {% endif %}{%- endif -%}
+            {{- meta_note -}}
+          </p>
         {%- endif -%}
       </div>
     {%- endif -%}
-  {%- if link != blank -%}</a>{%- endif -%}
+  </div>
+
+  {%- if use_loop -%}
+    <script>
+      (function () {
+        var root = document.getElementById('VuraHero-{{ section.id }}');
+        var video = root && root.querySelector('.vh__video');
+        if (!video) return;
+        var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var saveData = navigator.connection && navigator.connection.saveData;
+        if (calm || saveData || !('IntersectionObserver' in window)) { video.remove(); return; }
+
+        var narrow = window.matchMedia('(max-width: 749px)');
+        var loaded = false;
+        function source() { return narrow.matches ? video.dataset.srcSq : video.dataset.srcWide; }
+        function play() {
+          if (!loaded) { loaded = true; video.src = source(); }
+          var p = video.play();
+          if (p && p.catch) p.catch(function () {});
+        }
+        video.addEventListener('playing', function () { root.classList.add('vh--live'); }, { once: true });
+
+        var io = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) play();
+          else if (loaded) video.pause();
+        }, { threshold: 0.15 });
+
+        // Wait for the page to finish loading so the still stays the LCP and the
+        // loop never competes with the product images for bandwidth.
+        function watch() { io.observe(root); }
+        function arm() {
+          if (window.requestIdleCallback) window.requestIdleCallback(watch, { timeout: 1500 });
+          else setTimeout(watch, 200);
+        }
+        if (document.readyState === 'complete') arm(); else window.addEventListener('load', arm, { once: true });
+
+        narrow.addEventListener('change', function () {
+          if (!loaded) return;
+          video.src = source();
+          play();
+        });
+      })();
+    </script>
+  {%- endif -%}
 </section>
 
 {% schema %}
@@ -99,11 +255,14 @@
   "tag": "section",
   "class": "section",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Hero image", "info": "Wide banner. Uses the bundled vura_hero_banner_light.webp if left empty." },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Introducing" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Fitkari in a spray" },
-    { "type": "url", "id": "link", "label": "Banner link", "info": "The whole banner links here (defaults to the product)." },
-    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Explore the product", "info": "Shown under the heading. Follows the banner link. Leave empty to hide." }
+    { "type": "image_picker", "id": "image", "label": "Hero image", "info": "Leave empty to use the bundled bottle-on-crystals still and its moving-shadow loop. A picked image is shown on its own, without the loop." },
+    { "type": "checkbox", "id": "show_loop", "label": "Play the moving-shadow loop", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Fitkari (alum) underarm spray" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Fitkari, in a spray." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "The alum crystal your nani trusted, now a fine mist. No alcohol. No synthetic fragrance." },
+    { "type": "url", "id": "link", "label": "Button link" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop the spray" },
+    { "type": "text", "id": "meta_note", "label": "Line under the button", "default": "Buy 2, get 1 free · Free shipping", "info": "Shown after the starting price." }
   ],
   "presets": [{ "name": "VURA Hero Banner" }]
 }

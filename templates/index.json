@@ -12,10 +12,10 @@
     "vura-hero-banner": {
       "type": "vura-hero-banner",
       "settings": {
-        "eyebrow": "Introducing",
-        "heading": "Fitkari in a spray",
+        "eyebrow": "Fitkari (alum) underarm spray",
+        "heading": "Fitkari, in a spray.",
         "link": "shopify://products/vura-mineral-underarm-spray",
-        "cta_label": "Explore the product"
+        "cta_label": "Shop the spray"
       }
     },
     "vura-benefits-bar": {
