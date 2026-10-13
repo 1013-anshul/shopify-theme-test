@@ -1,0 +1,92 @@
+{% comment %}
+  Styles for vura-gallery-note (the words on the product photos). Rendered
+  once from product-media-gallery. Every size is a share of the photo's width
+  (cqw) so the layout is the same at any size, with a floor so nothing drops
+  below a readable size on a phone. The play-on-view script that draws the
+  hand marks and holds the gallery lives in vura-proof-slides-assets.
+{% endcomment %}
+<style>
+  @font-face {
+    font-family: 'Vura Caveat';
+    src: url('{{ 'vura-caveat-700.woff2' | asset_url }}') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  .vn {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden;
+    container-type: inline-size;
+    /* The theme rounds the photo, not its frame, so round the words to match. */
+    border-radius: var(--media-radius, 20px);
+    font-family: var(--font-body, Mulish, sans-serif); color: #F4EFE3; text-align: left;
+  }
+  .vn > p, .vn > div, .vn > svg { position: absolute; margin: 0; }
+  .vn p { margin: 0; letter-spacing: 0; }
+  /* base.css hides every empty div; these are drawn with backgrounds only. */
+  .vn .vn-bg, .vn .vn-fade, .vn .vn-rule { display: block !important; }
+
+  .vn-h { font-family: var(--font-display, 'Bree Serif', Georgia, serif); font-weight: 400; font-size: clamp(18px, 5.2cqw, 36px); line-height: 1.06; }
+  .vn-q { font-family: var(--font-display, 'Bree Serif', Georgia, serif); font-weight: 400; font-size: clamp(17px, 5.3cqw, 34px); line-height: 1.15; }
+  .vn-b { font-size: clamp(11.5px, 2.55cqw, 17px); line-height: 1.42; }
+  .vn-s { font-size: clamp(10px, 2.1cqw, 14px); line-height: 1.35; font-weight: 600; }
+  .vn-eyebrow { font-size: clamp(9.5px, 2.1cqw, 14px); font-weight: 800; letter-spacing: 0.18em !important; text-transform: uppercase; color: #FFC03F; }
+  .vn-hand { font-family: 'Vura Caveat', 'Bradley Hand', cursive; font-weight: 700; font-size: clamp(16px, 4.5cqw, 30px); line-height: 1; }
+  .vn-hand--lg { font-size: clamp(19px, 5.8cqw, 38px); }
+  .vn-caps { text-transform: uppercase; letter-spacing: 0.06em !important; font-weight: 700; }
+  .vn-bold { font-weight: 700; }
+  .vn-center { transform: translateX(-50%); white-space: nowrap; }
+
+  .vn-cream { color: #F4EFE3; }
+  .vn-forest { color: #162D24; }
+  .vn-saffron { color: #FFC03F; }
+  .vn-rust { color: #8D3B2D; }
+  .vn-shadow { text-shadow: 0 1px 14px rgba(30, 15, 6, 0.55); }
+
+  .vn-bg { inset: 0; background-size: cover; background-position: center; }
+  .vn-fade--dark { left: 0; right: 0; bottom: 0; height: 26%; background: linear-gradient(0deg, rgba(30, 16, 8, 0.72), rgba(30, 16, 8, 0)); }
+  .vn-fade--left { inset: 0; background: linear-gradient(90deg, rgba(36, 20, 10, 0.62) 0%, rgba(36, 20, 10, 0.42) 30%, rgba(36, 20, 10, 0) 52%); }
+  .vn-panel { left: 0; right: 0; bottom: 0; padding: 4cqw 4.6cqw 4.4cqw; }
+  .vn-panel--forest { background: rgba(22, 45, 36, 0.95); }
+  .vn-panel--cream { padding-top: 10cqw; background: linear-gradient(0deg, rgba(244, 239, 227, 0.97) 0%, rgba(244, 239, 227, 0.93) 68%, rgba(244, 239, 227, 0) 100%); }
+  .vn-panel--bar { padding: 2.4cqw 4.8cqw; background: rgba(14, 33, 24, 0.9); }
+  .vn-panel--bar .vn-b { font-weight: 600; }
+  .vn-rule { height: 1px; background: rgba(244, 239, 227, 0.35); }
+
+  .vn-card { padding: 3cqw 3.6cqw 2.8cqw; border-radius: 2.2cqw; background: rgba(22, 45, 36, 0.93); box-shadow: 0 1.5cqw 5cqw rgba(0, 0, 0, 0.28); }
+  .vn-card--paper { background: rgba(244, 239, 227, 0.9); box-shadow: none; }
+  .vn-paper, .vn-paper-box { background: rgba(244, 239, 227, 0.92); color: #162D24; border-radius: 1.2cqw; }
+  .vn-paper { padding: 0.22em 0.45em 0.12em; }
+  .vn-paper--rust { color: #8D3B2D; }
+  .vn-paper-box { padding: 0.28em 0.42em 0.2em; }
+  .vn-tag { background: #FFC03F; color: #162D24; padding: 0.22em 0.45em 0.1em; border-radius: 1.2cqw; box-shadow: 0 0.6cqw 2cqw rgba(0, 0, 0, 0.25); }
+
+  .vn-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2cqw; }
+  .vn-chip {
+    background: rgba(244, 239, 227, 0.94); color: #162D24; font-weight: 700;
+    font-size: clamp(10px, 2.3cqw, 14px); line-height: 1; padding: 0.62em 0.95em; border-radius: 999px;
+    box-shadow: 0 0.4cqw 1.8cqw rgba(0, 0, 0, 0.16); white-space: nowrap;
+  }
+  .vn-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.6cqw; margin-top: 2.4cqw; }
+  .vn-steps > div > span { display: block; }
+  .vn-num { font-size: clamp(20px, 6.3cqw, 40px); margin-bottom: 0.1em; }
+  .vn-list { margin-top: 3.4cqw; }
+  .vn-list p { margin: 0 0 2cqw; font-size: clamp(11px, 2.35cqw, 16px); line-height: 1.32; }
+  .vn-list b { font-weight: 800; }
+
+  .vn-stars { display: flex; gap: 1.2cqw; }
+  .vn-stars svg { width: clamp(14px, 4.4cqw, 28px); height: auto; fill: #FFC03F; }
+  .vn-mark { overflow: visible; fill: none; stroke: #FFC03F; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .vn-mark--cream { stroke: #F4EFE3; }
+  .vn-tick { display: inline-block; width: 0.85em; height: 0.72em; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.02em; }
+
+  /* The hand marks draw once the photo is on screen (classes set by the script
+     in vura-proof-slides-assets). Without the script they simply show. */
+  .vn-draw { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .vn.is-armed .vn-draw { stroke-dashoffset: 1; }
+  .vn.is-armed.is-playing .vn-draw { animation: vn-draw 0.7s cubic-bezier(0.45, 0, 0.2, 1) 0.5s forwards; }
+  .vn.is-armed.is-playing .vn-draw--late { animation-duration: 0.35s; animation-delay: 1.15s; }
+  @keyframes vn-draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .vn.is-armed .vn-draw { stroke-dashoffset: 0; animation: none; }
+  }
+</style>

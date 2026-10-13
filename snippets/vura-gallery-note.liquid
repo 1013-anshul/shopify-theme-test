@@ -1,0 +1,139 @@
+{% comment %}
+  The words on the product gallery photos. Each photo carries one idea, in the
+  order a first-time buyer asks their questions:
+
+    hero    1  What is it?             the bottle, the three things it is not
+    three   2  Is 3 worth it?          three places a bottle lives; the third is free
+    aha     3  Why does it work?       sweat doesn't smell, bacteria do
+    howto   4  How do I use it?        spray, dry, dress
+            5  Better than roll-on?    the drawn chart (vura-proof-slide)
+    reviews 6  Do people like it?      live Judge.me rating + two verified quotes
+    scale   7  How big is it?          50 ml, sangeet to Monday
+    nani    8  Can I trust it?         the crystal from nani's sink, now a mist
+    inside  9  What's in it?           the four ingredients that do the work
+    gift    10 Anything else?          a gift, and when it arrives
+
+  The text is drawn by the theme over the photo, so Google Shopping and the Meta
+  catalogue still receive clean product images. Every claim here is one the
+  product page already makes (FAQ, ingredients, How it works). Do not add
+  "all day", "stops sweat" or "aluminium-free".
+
+  Text that belongs together sits in one block (.vn-stack, .vn-panel) so it
+  grows with the copy and never overlaps itself on a narrow phone.
+
+  Matched by image file name in product-thumbnail. The reviews slide is not a
+  product image; product-media-gallery inserts it after the chart.
+
+  Accepts:
+  - key: {String} one of the keys above
+  - product: {Object} needed for the live rating on 'reviews'
+{% endcomment %}
+{%- liquid
+  assign hold = 5000
+  case key
+    when 'hero'
+      assign hold = 4500
+    when 'aha', 'inside'
+      assign hold = 6500
+    when 'howto', 'reviews', 'nani'
+      assign hold = 6000
+  endcase
+-%}
+<div class="vn vn--{{ key }}" data-vura-note data-hold="{{ hold }}">
+  {%- case key -%}
+    {%- when 'hero' -%}
+      <div class="vn-stack vn-shadow" style="left:4.8%; top:4.6%;">
+        <p class="vn-eyebrow">Fitkari (alum) underarm mist</p>
+        <p class="vn-h vn-cream" style="margin-top:.3em;">50 ml of the<br>real thing.</p>
+      </div>
+      <p class="vn-hand vn-cream vn-shadow" style="left:4.4%; top:55%; transform:rotate(-4deg);">that's real<br>fitkari</p>
+      <svg class="vn-mark" style="left:11%; top:64.5%; width:11%;" viewBox="0 0 60 70" aria-hidden="true"><path class="vn-draw" pathLength="1" d="M8 4 C 2 24, 10 44, 30 58"/><path class="vn-draw vn-draw--late" pathLength="1" d="M18 56 L31 59 L29 46"/></svg>
+      <div class="vn-chips" style="left:3%; right:3%; bottom:4%;">
+        <span class="vn-chip">No alcohol</span><span class="vn-chip">No synthetic fragrance</span><span class="vn-chip">No white marks</span>
+      </div>
+
+    {%- when 'three' -%}
+      <div class="vn-fade vn-fade--dark"></div>
+      <div class="vn-stack vn-shadow" style="left:4.4%; top:3.6%; right:4%;">
+        <p class="vn-h vn-cream">Three bottles. Six months of fresh.</p>
+        <p class="vn-s vn-cream" style="margin-top:.35em; opacity:.92;">One bottle lasts about 2 months of daily use</p>
+      </div>
+      <p class="vn-hand vn-tag" style="right:3.2%; top:17%; transform:rotate(4deg);">this one's on us</p>
+      <p class="vn-hand vn-cream vn-shadow vn-center" style="left:23%; bottom:5.5%;">home</p>
+      <p class="vn-hand vn-cream vn-shadow vn-center" style="left:50%; bottom:5.5%;">gym bag</p>
+      <p class="vn-hand vn-cream vn-shadow vn-center" style="left:76.5%; bottom:5.5%;">office</p>
+
+    {%- when 'aha' -%}
+      <div class="vn-card" style="right:3%; top:2.6%; width:56%;">
+        <p class="vn-h vn-cream">Sweat doesn't smell.<br><span class="vn-saffron">Bacteria do.</span></p>
+        <p class="vn-b vn-cream" style="margin-top:.6em;">Fitkari makes it hard for them to grow. You still sweat. The smell just never starts.</p>
+      </div>
+      <p class="vn-hand vn-paper" style="left:4%; bottom:17.8%; transform:rotate(-4deg);">this is fitkari<br>(potash alum)</p>
+      <svg class="vn-mark vn-mark--cream" style="left:10.7%; top:84.8%; width:11%;" viewBox="0 0 60 60" aria-hidden="true"><path class="vn-draw" pathLength="1" d="M10 2 C 6 20, 12 34, 30 46"/><path class="vn-draw vn-draw--late" pathLength="1" d="M18 46 L31 47 L28 34"/></svg>
+
+    {%- when 'howto' -%}
+      <p class="vn-hand vn-cream vn-shadow" style="right:4%; top:4%; text-align:right; transform:rotate(-3deg);">gentle enough for<br>right after shaving</p>
+      <div class="vn-panel vn-panel--forest">
+        <p class="vn-h vn-cream">Spray. Dry. Dress.</p>
+        <div class="vn-steps">
+          <div><span class="vn-hand vn-saffron vn-num">1</span><span class="vn-b vn-cream">2–3 sprays on clean, dry underarms</span></div>
+          <div><span class="vn-hand vn-saffron vn-num">2</span><span class="vn-b vn-cream">Let it air-dry. Nothing to rub in.</span></div>
+          <div><span class="vn-hand vn-saffron vn-num">3</span><span class="vn-b vn-cream">Get dressed. No white marks.</span></div>
+        </div>
+      </div>
+
+    {%- when 'reviews' -%}
+      {%- liquid
+        assign rating = product.metafields.reviews.rating.value.rating | default: 5
+        assign rating_count = product.metafields.reviews.rating_count | default: 0
+      -%}
+      <div class="vn-bg" style="background-image:url('{{ 'vura-gallery-reviews-bg.webp' | asset_url }}');"></div>
+      <div class="vn-stack" style="left:6.3%; right:6.3%; top:6.6%;">
+        <div class="vn-stars" aria-hidden="true">
+          {%- for i in (1..5) -%}<svg viewBox="0 0 20 20"><path d="M10 1.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.6 7.7l5.8-.8z"/></svg>{%- endfor -%}
+        </div>
+        <p class="vn-s vn-cream vn-caps" style="margin-top:.7em;">{{ rating | round: 1 }} · {{ rating_count }} reviews</p>
+        <p class="vn-q vn-cream" style="margin-top:.55em;">“Lightweight, dries quickly, and feels very gentle on my skin.”</p>
+        <p class="vn-s vn-cream" style="margin-top:.7em; opacity:.85;">Pranjal · verified buyer</p>
+        <div class="vn-rule" style="margin:4.2cqw 30% 4.2cqw 0;"></div>
+        <p class="vn-hand vn-saffron vn-hand--lg">“Changed my entire routine!”</p>
+        <p class="vn-s vn-cream" style="margin-top:.5em; opacity:.85;">Akhil · verified buyer</p>
+      </div>
+      <p class="vn-s vn-cream" style="left:6.3%; bottom:5.6%; opacity:.7;">Every review is further down this page</p>
+
+    {%- when 'scale' -%}
+      <div class="vn-card vn-card--paper" style="left:3.3%; top:3.3%;">
+        <p class="vn-h vn-forest">Sangeet-ready.<br>Monday-ready.</p>
+        <p class="vn-b vn-forest vn-bold" style="margin-top:.5em;">50 ml. Fits a clutch,<br>a gym bag, a cabin bag.</p>
+      </div>
+      <p class="vn-hand vn-paper vn-hand--lg" style="left:74.8%; top:68.9%; transform:rotate(-8deg);">50 ml</p>
+
+    {%- when 'nani' -%}
+      <p class="vn-h vn-paper-box" style="left:4.8%; top:4%;">Your nani kept it<br>by the sink.</p>
+      <p class="vn-hand vn-paper vn-paper--rust" style="right:5.2%; top:36.7%; transform:rotate(6deg);">nani-approved <svg class="vn-tick" viewBox="0 0 24 20" aria-hidden="true"><path class="vn-draw vn-draw--late" pathLength="1" d="M3 11 L9 17 L21 3"/></svg></p>
+      <div class="vn-panel vn-panel--cream">
+        <p class="vn-b vn-forest vn-bold">No more rubbing a wet crystal. We turned fitkari into a fine mist, so nothing touches your skin but the spray.</p>
+      </div>
+
+    {%- when 'inside' -%}
+      <div class="vn-fade vn-fade--left"></div>
+      <div class="vn-stack vn-shadow" style="left:4.8%; top:4.6%; width:36%;">
+        <p class="vn-h vn-cream">Four things<br>do the work.</p>
+        <div class="vn-list">
+          <p><b class="vn-saffron">Fitkari</b><br>calms odour bacteria</p>
+          <p><b class="vn-saffron">Damask rose water</b><br>tones and refreshes</p>
+          <p><b class="vn-saffron">Aloe vera</b><br>soothes, even after shaving</p>
+          <p><b class="vn-saffron">Glycerin</b><br>keeps skin soft</p>
+        </div>
+      </div>
+      <div class="vn-panel vn-panel--bar">
+        <p class="vn-b vn-cream">No alcohol. No synthetic fragrance: a trace of real rose oil is the only scent. <span class="vn-saffron">Full formula below</span></p>
+      </div>
+
+    {%- when 'gift' -%}
+      <div class="vn-panel vn-panel--cream">
+        <p class="vn-h vn-forest">A gift that says “I care”.<br><span class="vn-rust">Not “you smell”.</span></p>
+        <p class="vn-b vn-forest vn-bold" style="margin-top:.55em;">Dispatched in 24 hours · Free delivery in 4–7 days</p>
+      </div>
+  {%- endcase -%}
+</div>

@@ -60,6 +60,31 @@
       assign proof_kind = 'benefits'
     endif
   endif
+
+  # The words on the other gallery photos (snippets/vura-gallery-note), also
+  # matched by file name. They are drawn over the photo here only, so the
+  # zoom view and the product feeds keep the clean image.
+  assign note = ''
+  if media.media_type == 'image'
+    assign src = media.preview_image.src
+    if src contains 'vura-1-pack-fitkari-spray'
+      assign note = 'hero'
+    elsif src contains 'vura-3-pack-fitkari-spray'
+      assign note = 'three'
+    elsif src contains 'vura-spray-on-alum-crystals'
+      assign note = 'aha'
+    elsif src contains 'underarm_vura'
+      assign note = 'howto'
+    elsif src contains 'vura-spray-in-hand-roses'
+      assign note = 'scale'
+    elsif src contains 'vura-spray-brass-thali-fitkari'
+      assign note = 'nani'
+    elsif src contains 'vura-whats-inside'
+      assign note = 'inside'
+    elsif src contains 'vura-box-festive-hand'
+      assign note = 'gift'
+    endif
+  endif
 -%}
 
 {%- capture sizes -%}
@@ -108,6 +133,9 @@
             sizes: sizes,
             widths: '246, 493, 600, 713, 823, 990, 1100, 1206, 1346, 1426, 1646, 1946'
         }}
+        {%- if note != blank -%}
+          {% render 'vura-gallery-note', key: note, product: product %}
+        {%- endif -%}
       {%- endif -%}
     </div>
     <button

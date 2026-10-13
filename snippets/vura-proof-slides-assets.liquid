@@ -53,9 +53,10 @@
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
 
     // The product gallery advances itself every 3.5 s (slider-component in global.js),
-    // which is about when the chart finishes drawing. Hold it on a proof slide long
-    // enough to draw and be read, then carry on from the next slide. If the shopper
-    // touches or hovers the gallery, its own handlers take over and this backs off.
+    // which is about when the chart finishes drawing. Hold it on a proof slide, or on
+    // a photo with words on it (vura-gallery-note, data-hold), long enough to be read,
+    // then carry on from the next slide. If the shopper touches or hovers the gallery,
+    // its own handlers take over and this backs off.
     function holdGallery(el) {
       var viewer = el.closest('slider-component');
       if (!viewer || typeof viewer.stopAutoplay !== 'function' || !viewer.autoplayInterval) return;
@@ -71,7 +72,7 @@
         if (viewer.autoplayInterval) return;
         if (typeof viewer.nextSlide === 'function') viewer.nextSlide();
         viewer.startAutoplay();
-      }, el.classList.contains('vura-proof--chart') ? 6000 : 5000);
+      }, parseInt(el.getAttribute('data-hold'), 10) || (el.classList.contains('vura-proof--chart') ? 6000 : 5000));
     }
 
     var io = new IntersectionObserver(function (entries) {
@@ -92,7 +93,7 @@
     }, { threshold: [0, 0.55] });
 
     function scan() {
-      document.querySelectorAll('[data-vura-proof]:not([data-vura-proof-seen])').forEach(function (el) {
+      document.querySelectorAll('[data-vura-proof]:not([data-vura-proof-seen]), [data-vura-note]:not([data-vura-proof-seen])').forEach(function (el) {
         el.setAttribute('data-vura-proof-seen', '');
         io.observe(el);
       });

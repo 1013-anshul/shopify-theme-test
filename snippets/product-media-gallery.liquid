@@ -122,6 +122,31 @@
               lazy_load: lazy_load
             %}
           </li>
+          {%- comment -%}
+            Reviews slide (vura-gallery-note 'reviews'): straight after the comparison
+            chart, so peer proof lands before the price decision. It is not a product
+            image, so it never reaches the feeds, and the rating is read live from
+            Judge.me's product metafields.
+          {%- endcomment -%}
+          {%- if media.media_type == 'image'
+            and media.preview_image.src contains 'vura_benefits_2'
+            and product.metafields.reviews.rating_count > 0
+          -%}
+            <li
+              id="Slide-{{ section.id }}-vura-reviews"
+              class="product__media-item grid__item slider__slide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+              data-media-id="{{ section.id }}-vura-reviews"
+            >
+              <div
+                class="product-media-container media-type-image media-fit-{{ section.settings.media_fit }} global-media-settings gradient{% if section.settings.constrain_to_viewport %} constrain-height{% endif %}"
+                style="--ratio: 1; --preview-ratio: 1;"
+              >
+                <div class="product__media media media--transparent">
+                  {% render 'vura-gallery-note', key: 'reviews', product: product %}
+                </div>
+              </div>
+            </li>
+          {%- endif -%}
         {%- endunless -%}
       {%- endfor -%}
     </ul>
@@ -333,6 +358,7 @@
 
 {%- comment -%} Styles and play-on-view script for the animated proof slides (vura-proof-slide). {%- endcomment -%}
 {% render 'vura-proof-slides-assets' %}
+{% render 'vura-gallery-notes-assets' %}
 
 {%- comment -%} VURA: on the product image (>=750px) the cursor is always a left/right arrow based on
    whether it's left or right of centre, and clicking goes to the prev/next image. The lightbox zoom
