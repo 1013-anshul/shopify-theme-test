@@ -86,6 +86,21 @@
   .vn.is-armed.is-playing .vn-draw { animation: vn-draw 0.7s cubic-bezier(0.45, 0, 0.2, 1) 0.5s forwards; }
   .vn.is-armed.is-playing .vn-draw--late { animation-duration: 0.35s; animation-delay: 1.15s; }
   @keyframes vn-draw { to { stroke-dashoffset: 0; } }
+
+  /* Zoom view (product-media / product-media-modal): the photo and its words
+     share one frame, the photo filling it, so the words stay where they are in
+     the gallery. On phones the frame fills the screen width, centred. */
+  .vn-zoom { position: relative; }
+  .vn-zoom__frame {
+    position: relative; width: 100%; max-width: min(100%, calc(100vh - 4rem));
+    margin-inline: auto; overflow: hidden; border-radius: var(--media-radius, 20px);
+  }
+  .vn-zoom__frame > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @media screen and (max-width: 749px) {
+    .product-media-modal__content > .vn-zoom { display: flex !important; align-items: center; justify-content: center; }
+    .vn-zoom__frame { width: min(100vw, 100dvh); max-width: none; border-radius: 0; }
+    .vn-zoom__frame .vn { border-radius: 0; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .vn.is-armed .vn-draw { stroke-dashoffset: 0; animation: none; }
   }

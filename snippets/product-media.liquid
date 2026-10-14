@@ -25,7 +25,32 @@
     endif
   endif
 -%}
-{%- if proof_kind != blank -%}
+{%- comment -%}
+  Photos with words on them (vura-gallery-note) keep their words in the zoom
+  view too, so tapping a slide shows the same thing, bigger. The photo and its
+  words share one square frame (.vn-zoom__frame) so they stay aligned at any size.
+{%- endcomment -%}
+{%- capture note -%}{% render 'vura-gallery-note-key', media: media %}{%- endcapture -%}
+{%- assign note = note | strip -%}
+{%- if note != blank -%}
+  <div
+    class="vn-zoom{% if variant_image %} product__media-item--variant{% endif %}"
+    data-media-id="{{ media.id }}"
+  >
+    <div class="vn-zoom__frame global-media-settings global-media-settings--no-shadow" style="aspect-ratio: {{ media.preview_image.aspect_ratio }};">
+      {{
+        media.preview_image
+        | image_url: width: 2048
+        | image_tag:
+          widths: '550, 1100, 1445, 1680, 2048',
+          sizes: '(min-width: 750px) min(calc(100vw - 22rem), calc(100vh - 4rem)), 100vw',
+          loading: 'lazy',
+          alt: media.alt
+      }}
+      {% render 'vura-gallery-note', key: note, product: product %}
+    </div>
+  </div>
+{%- elsif proof_kind != blank -%}
   <div
     class="vura-proof-modal global-media-settings global-media-settings--no-shadow{% if variant_image %} product__media-item--variant{% endif %}"
     data-media-id="{{ media.id }}"

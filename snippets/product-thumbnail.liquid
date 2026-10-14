@@ -61,31 +61,14 @@
     endif
   endif
 
-  # The words on the other gallery photos (snippets/vura-gallery-note), also
-  # matched by file name. They are drawn over the photo here only, so the
-  # zoom view and the product feeds keep the clean image.
-  assign note = ''
-  if media.media_type == 'image'
-    assign src = media.preview_image.src
-    if src contains 'vura-1-pack-fitkari-spray'
-      assign note = 'hero'
-    elsif src contains 'vura-3-pack-fitkari-spray'
-      assign note = 'three'
-    elsif src contains 'vura-spray-on-alum-crystals'
-      assign note = 'aha'
-    elsif src contains 'underarm_vura'
-      assign note = 'howto'
-    elsif src contains 'vura-spray-in-hand-roses'
-      assign note = 'scale'
-    elsif src contains 'vura-spray-brass-thali-fitkari'
-      assign note = 'nani'
-    elsif src contains 'vura-whats-inside'
-      assign note = 'inside'
-    elsif src contains 'vura-box-festive-hand'
-      assign note = 'gift'
-    endif
-  endif
 -%}
+{%- comment -%}
+  The words on the other gallery photos (snippets/vura-gallery-note). They are
+  drawn over the photo by the theme, here and in the zoom view, so the product
+  feeds keep the clean image.
+{%- endcomment -%}
+{%- capture note -%}{% render 'vura-gallery-note-key', media: media %}{%- endcapture -%}
+{%- assign note = note | strip -%}
 
 {%- capture sizes -%}
   (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | times: media_width | divided_by: desktop_columns | round }}px, (min-width: 990px) calc({{ media_width | times: 100 | divided_by: desktop_columns }}vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / {{ mobile_columns }} - 4rem)

@@ -51,6 +51,17 @@
             render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: variant_image
           endunless
         -%}
+        {%- comment -%} The reviews slide sits after the chart here too, matching the gallery. {%- endcomment -%}
+        {%- if media.media_type == 'image'
+          and media.preview_image.src contains 'vura_benefits_2'
+          and product.metafields.reviews.rating_count > 0
+        -%}
+          <div class="vn-zoom" data-media-id="vura-reviews">
+            <div class="vn-zoom__frame global-media-settings global-media-settings--no-shadow" style="aspect-ratio: 1;">
+              {% render 'vura-gallery-note', key: 'reviews', product: product %}
+            </div>
+          </div>
+        {%- endif -%}
       {%- endfor -%}
     </div>
   </div>

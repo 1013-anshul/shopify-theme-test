@@ -40,6 +40,8 @@
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__info { display: none !important; }
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__inner { padding: 8px 16px !important; justify-content: center !important; gap: 12px !important; }
     .vura-sticky-atc.vura-sticky-atc--minimized .vura-sticky-atc__btn { height: 34px !important; padding: 0 20px !important; font-size: 11px !important; flex: 1 !important; }
+    /* Step aside while the photo zoom view is open; it sat over the bottom of the photo. */
+    body:has(product-modal[open]) .vura-sticky-atc { display: none !important; }
   </style>
   <div class="vura-sticky-atc is-visible" id="VuraStickyAtc">
     <div class="vura-sticky-atc__inner">

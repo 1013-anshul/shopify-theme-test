@@ -1,0 +1,20 @@
+{%- comment -%}
+  Prints the vura-gallery-note key for a product image, or nothing. Shared by
+  the gallery (product-thumbnail) and the zoom view (product-media) so both
+  show the same words on the same photo. Matched by file name: re-uploading a
+  photo under a new name drops its words until the name is added here.
+
+  Usage: {%- capture note -%}{% render 'vura-gallery-note-key', media: media %}{%- endcapture -%}
+{%- endcomment -%}
+{%- if media.media_type == 'image' -%}
+  {%- assign src = media.preview_image.src -%}
+  {%- if src contains 'vura-1-pack-fitkari-spray' -%}hero
+  {%- elsif src contains 'vura-3-pack-fitkari-spray' -%}three
+  {%- elsif src contains 'vura-spray-on-alum-crystals' -%}aha
+  {%- elsif src contains 'underarm_vura' -%}howto
+  {%- elsif src contains 'vura-spray-in-hand-roses' -%}scale
+  {%- elsif src contains 'vura-spray-brass-thali-fitkari' -%}nani
+  {%- elsif src contains 'vura-whats-inside' -%}inside
+  {%- elsif src contains 'vura-box-festive-hand' -%}gift
+  {%- endif -%}
+{%- endif -%}
