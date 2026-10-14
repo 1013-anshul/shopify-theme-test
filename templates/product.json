@@ -129,7 +129,12 @@
     },
     "vura-smell-story": {
       "type": "vura-smell-story",
-      "settings": {}
+      "settings": {
+        "eyebrow": "How it works",
+        "line_1": "Sweat on its own doesn’t smell.",
+        "line_2": "Bacteria on your skin feed on it. That’s the smell.",
+        "line_3": "Fitkari calms them. You still sweat. The smell doesn’t start."
+      }
     },
     "vura-benefits-bar": {
       "type": "vura-benefits-bar",
@@ -426,6 +431,10 @@
     "178523266248565c9e": {
       "type": "apps",
       "blocks": {
+        "judge_me_reviews_medals_ndUMLb": {
+          "type": "shopify://apps/judge-me-reviews/blocks/medals/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
         "judge_me_reviews_review_widget_KWBM3E": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
@@ -437,6 +446,7 @@
         }
       },
       "block_order": [
+        "judge_me_reviews_medals_ndUMLb",
         "judge_me_reviews_review_widget_KWBM3E"
       ],
       "settings": {

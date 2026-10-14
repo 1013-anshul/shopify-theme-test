@@ -12,10 +12,13 @@
     "vura-hero-banner": {
       "type": "vura-hero-banner",
       "settings": {
+        "show_loop": true,
         "eyebrow": "Fitkari (alum) underarm spray",
         "heading": "Fitkari, in a spray.",
+        "subheading": "The alum crystal your nani trusted, now a fine mist. No alcohol. No synthetic fragrance.",
         "link": "shopify://products/vura-mineral-underarm-spray",
-        "cta_label": "Shop the spray"
+        "cta_label": "Shop the spray",
+        "meta_note": "Buy 2, get 1 free · Free shipping"
       }
     },
     "vura-benefits-bar": {
@@ -141,7 +144,7 @@
         "eyebrow": "Every angle",
         "heading": "Take a closer look",
         "text_alignment": "center",
-        "background": "#F8F3E7",
+        "background": "#f8f3e7",
         "padding_top": 56,
         "padding_bottom": 56
       }
@@ -264,42 +267,48 @@
           "type": "reel",
           "settings": {
             "video": "shopify://files/videos/Video-40356.mp4",
-            "caption": ""
+            "caption": "",
+            "link": ""
           }
         },
         "reel_UWBJRd": {
           "type": "reel",
           "settings": {
             "video": "shopify://files/videos/Video-6715.mp4",
-            "caption": ""
+            "caption": "",
+            "link": ""
           }
         },
         "reel_kMWWDh": {
           "type": "reel",
           "settings": {
             "video": "shopify://files/videos/Video-18934.mp4",
-            "caption": ""
+            "caption": "",
+            "link": ""
           }
         },
         "reel_9tphmb": {
           "type": "reel",
           "settings": {
             "video": "shopify://files/videos/Video-91525.mp4",
-            "caption": ""
+            "caption": "",
+            "link": ""
           }
         },
         "reel_4rFTkz": {
           "type": "reel",
           "settings": {
             "video": "shopify://files/videos/Video-43938.mp4",
-            "caption": ""
+            "caption": "",
+            "link": ""
           }
         },
         "reel_QCBXNU": {
           "type": "reel",
           "settings": {
             "video": "shopify://files/videos/Video-11426.mp4",
-            "caption": ""
+            "caption": "",
+            "link": ""
           }
         }
       },
@@ -314,15 +323,15 @@
       "settings": {
         "eyebrow": "",
         "heading": "Follow us on Instagram",
+        "subheading": "Join our community for daily inspiration and a closer look at our creations",
+        "aspect": "3 / 4",
         "card_gap": 8,
         "seconds_per_card": 3,
         "card_width": 340,
         "pause_on_hover": true,
-        "background": "#F8F3E7",
+        "background": "#f8f3e7",
         "padding_top": 56,
         "padding_bottom": 56,
-        "subheading": "Join our community for daily inspiration and a closer look at our creations",
-        "aspect": "3 / 4",
         "button_label": "Visit Instagram",
         "button_link": "https://www.instagram.com/vura.skincare"
       }
@@ -332,8 +341,7 @@
       "settings": {
         "heading": "Buy with confidence",
         "padding_top": 56,
-        "padding_bottom": 56,
-        "color_scheme": "scheme-1"
+        "padding_bottom": 56
       }
     },
     "vura-faq": {
@@ -445,6 +453,21 @@
         "padding_top": 56,
         "padding_bottom": 56
       }
+    },
+    "17919928276904bcde": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_medals_KyRgXQ": {
+          "type": "shopify://apps/judge-me-reviews/blocks/medals/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_medals_KyRgXQ"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
@@ -456,6 +479,7 @@
     "vura-reels",
     "vura-confidence",
     "vura-faq",
-    "vura-closing-cta"
+    "vura-closing-cta",
+    "17919928276904bcde"
   ]
 }
