@@ -1,0 +1,69 @@
+{%- comment -%}
+  Google Customer Reviews opt-in (Merchant Center 5867959600).
+
+  On the Basic plan buyers never reach Shopify's order status page: Razorpay
+  Magic Checkout shows its own thank-you overlay (.razorpay-thank-you-page-container,
+  z-index 2147483647) on top of this page and calls window.onCompleteMagiCheckout
+  with the order. We wait for that overlay before loading Google's script, so the
+  opt-in dialog (same z-index) is added after it and sits on top.
+{%- endcomment -%}
+<script>
+  (function () {
+    var previous = window.onCompleteMagiCheckout;
+
+    window.onCompleteMagiCheckout = function (orderId, amount, order) {
+      try {
+        if (typeof previous === 'function') previous.apply(this, arguments);
+      } catch (e) {}
+      // Razorpay calls this mid-flow; never let an error reach its code.
+      setTimeout(function () {
+        try {
+          vuraGcrOptIn(orderId, order || {});
+        } catch (e) {}
+      }, 0);
+    };
+
+    function vuraGcrOptIn(orderId, order) {
+      var email = (order.customer_details && order.customer_details.email) || '';
+      // Skip missing and placeholder addresses such as 98xxxxxxxx@fastrr.com.
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || /@fastrr\.com$/i.test(email)) return;
+
+      // Delivery takes 4–7 days; Google emails the survey after this date.
+      var eta = new Date(Date.now() + 7 * 864e5);
+      var pad = function (n) {
+        return (n < 10 ? '0' : '') + n;
+      };
+      var options = {
+        merchant_id: 5867959600,
+        order_id: String(order.id || orderId),
+        email: email,
+        delivery_country: 'IN',
+        estimated_delivery_date: eta.getFullYear() + '-' + pad(eta.getMonth() + 1) + '-' + pad(eta.getDate()),
+      };
+
+      var started = false;
+      var observer = new MutationObserver(function () {
+        if (document.querySelector('.razorpay-thank-you-page-container')) start();
+      });
+
+      function start() {
+        if (started) return;
+        started = true;
+        observer.disconnect();
+        window.renderOptIn = function () {
+          window.gapi.load('surveyoptin', function () {
+            window.gapi.surveyoptin.render(options);
+          });
+        };
+        var script = document.createElement('script');
+        script.src = 'https://apis.google.com/js/platform.js?onload=renderOptIn';
+        script.async = true;
+        document.body.appendChild(script);
+      }
+
+      observer.observe(document.body, { childList: true, subtree: true });
+      if (document.querySelector('.razorpay-thank-you-page-container')) start();
+      setTimeout(start, 10000);
+    }
+  })();
+</script>
