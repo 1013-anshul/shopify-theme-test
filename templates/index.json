@@ -454,16 +454,16 @@
         "padding_bottom": 56
       }
     },
-    "17919928276904bcde": {
+    "179199303161b5383b": {
       "type": "apps",
       "blocks": {
-        "judge_me_reviews_medals_KyRgXQ": {
+        "judge_me_reviews_medals_WPybTU": {
           "type": "shopify://apps/judge-me-reviews/blocks/medals/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {}
         }
       },
       "block_order": [
-        "judge_me_reviews_medals_KyRgXQ"
+        "judge_me_reviews_medals_WPybTU"
       ],
       "settings": {
         "include_margins": true
@@ -480,6 +480,6 @@
     "vura-confidence",
     "vura-faq",
     "vura-closing-cta",
-    "17919928276904bcde"
+    "179199303161b5383b"
   ]
 }
