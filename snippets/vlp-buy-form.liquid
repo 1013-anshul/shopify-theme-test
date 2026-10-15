@@ -1,0 +1,18 @@
+{%- comment -%}
+  Buy button for the /pages/fitkari landing page. Same <product-form> as the product page's
+  buy-buttons snippet, so Add to cart runs through product-form.js and opens the cart drawer
+  exactly like the product page does. The page's pack picker sets the .product-variant-id value.
+  Accepts: product, form_id, variant_id, label, button_id
+{%- endcomment -%}
+<product-form class="product-form" data-section-id="{{ form_id }}">
+  <div class="product-form__error-message-wrapper" role="alert" hidden>
+    <span class="product-form__error-message"></span>
+  </div>
+  {%- form 'product', product, id: form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+    <input type="hidden" name="id" value="{{ variant_id }}" class="product-variant-id">
+    <button id="{{ button_id }}" type="submit" name="add" class="btn">
+      <span>{{ label }}</span>
+      {%- render 'loading-spinner' -%}
+    </button>
+  {%- endform -%}
+</product-form>

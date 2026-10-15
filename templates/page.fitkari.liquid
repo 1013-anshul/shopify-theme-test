@@ -41,8 +41,9 @@
 
   assign wa = 'https://wa.me/917875697847?text=Hi%20VURA%2C%20I%20have%20a%20question%20about%20the%20fitkari%20spray'
 -%}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 <style>
-.shopify-section-group-header-group,.shopify-section-group-footer-group{display:none!important}
+.shopify-section-group-header-group:not([id$="__cart-drawer"]),.shopify-section-group-footer-group{display:none!important}
 #MainContent{padding:0!important}
 html{scroll-behavior:smooth}
 .vlp{
@@ -87,6 +88,11 @@ html{scroll-behavior:smooth}
 .vlp .per{font-size:15px;line-height:1.4;color:var(--on-night-2);text-align:left}
 .vlp .per b{color:var(--saffron)}
 .vlp .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;padding:0 24px;border:0;border-radius:999px;background:var(--saffron);color:var(--vura-forest-deep,#0E2118);font:800 16px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform .12s, background-color .12s}
+.vlp product-form{display:block}
+.vlp .btn{position:relative}
+.vlp .btn.loading{color:transparent;pointer-events:none}
+.vlp .btn.loading>.loading__spinner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex}
+.vlp .btn .loading__spinner .path{stroke:var(--vura-forest-deep,#0E2118)}
 .vlp .btn:hover{background:var(--vura-saffron-soft,#F2BD53)}
 .vlp .btn:active{transform:scale(.98)}
 .vlp .btn:focus-visible{outline:3px solid var(--on-night);outline-offset:3px}
@@ -377,7 +383,8 @@ html{scroll-behavior:smooth}
       </label>
     </form>
     <p class="lasts" id="lasts">One bottle lasts about <b>2 months</b> of daily use.</p>
-    <a class="btn" id="buy" href="/cart/add?id={{ v1_id }}&amp;quantity=1">Buy 1 bottle · {{ v1_price }}</a>
+    {%- assign buy_label = 'Buy 1 bottle · ' | append: v1_price -%}
+    {%- render 'vlp-buy-form', product: vlp_product, form_id: 'vlp-form-offer', variant_id: v1_id, label: buy_label, button_id: 'buy' -%}
     <div class="pay">
       <span>UPI or card: no extra charge · <b>Cash on delivery: ₹20 fee</b></span>
       <span>Free delivery in 4–7 days · Ships in 1–2 days</span>
@@ -414,7 +421,7 @@ html{scroll-behavior:smooth}
 <div class="bar" id="bar" role="region" aria-label="Buy">
   <div class="bar-in">
     <div class="p" id="barPrice">{{ v1_price }}<small>1 bottle · Free delivery</small></div>
-    <a class="btn" id="barBuy" href="/cart/add?id={{ v1_id }}&amp;quantity=1">Buy now</a>
+    {%- render 'vlp-buy-form', product: vlp_product, form_id: 'vlp-form-bar', variant_id: v1_id, label: 'Buy now', button_id: 'barBuy' -%}
   </div>
 </div>
 </div>
@@ -425,9 +432,9 @@ html{scroll-behavior:smooth}
   var daily3={{ v3_daily | json }};
   function update(){
     var r=form.querySelector('input:checked'); if(!r) return;
-    var url='/cart/add?id='+r.value+'&quantity=1', price='₹'+Number(r.dataset.price).toLocaleString('en-IN');
-    buy.href=url; barBuy.href=url;
-    buy.textContent='Buy '+r.dataset.name+' · '+price;
+    var price='₹'+Number(r.dataset.price).toLocaleString('en-IN');
+    document.querySelectorAll('.vlp .product-variant-id').forEach(function(i){ i.value=r.value; });
+    buy.querySelector('span').textContent='Buy '+r.dataset.name+' · '+price;
     barPrice.innerHTML=price+'<small>'+r.dataset.name+' · Free delivery</small>';
     lasts.innerHTML=r.id==='p3'?'Three bottles last about <b>6 months</b>. That’s about ₹'+daily3+' a day.':'One bottle lasts about <b>2 months</b> of daily use.';
   }
@@ -460,13 +467,4 @@ html{scroll-behavior:smooth}
     }
   }
 })();
-document.addEventListener('click',function(e){
-  var a=e.target.closest('a[href^="/cart/add?id="]'); if(!a) return;
-  e.preventDefault();
-  var id=parseInt(new URL(a.href,location.origin).searchParams.get('id'),10);
-  a.setAttribute('aria-busy','true');
-  fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:[{id:id,quantity:1}]})})
-    .then(function(r){ if(!r.ok) throw r; location.href='/cart'; })
-    .catch(function(){ location.href=a.href; });
-});
 </script>
