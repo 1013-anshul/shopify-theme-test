@@ -46,26 +46,21 @@
     <style>
       .vura-pack-cell { vertical-align: middle; }
 
-      /* Inline upgrade nudge (below the cart line) */
+      /* Inline 3-Pack nudge (below the cart line). Quiet secondary card: Checkout stays the primary action. */
       .vura-inline-nudge { overflow: hidden; max-height: 0; opacity: 0; transform: translateY(-6px); transition: max-height .4s ease, opacity .35s ease, transform .35s ease, margin .35s ease; margin: 0 1.5rem; }
-      .vura-inline-nudge.show { max-height: 220px; opacity: 1; transform: translateY(0); margin: 0 1.5rem 1.2rem; }
-      .vura-inline-nudge__card { position: relative; display: flex; align-items: center; gap: 12px; background: linear-gradient(180deg, rgba(255,192,63,0.16), rgba(255,192,63,0.08)); border: 1.5px solid rgba(255,192,63,0.55); border-radius: 12px; padding: 13px 15px; }
-      .vura-inline-nudge__icon { flex-shrink: 0; width: 32px; height: 32px; color: var(--vura-terracotta, #8D3B2D); }
-      .vura-inline-nudge__text { flex: 1; min-width: 0; }
-      .vura-inline-nudge__title { font-family: var(--font-body, Inter, sans-serif); font-size: 1.35rem; font-weight: 500; color: #162D24; line-height: 1.25; }
-      .vura-inline-nudge__sub { font-family: var(--font-body, Inter, sans-serif); font-size: 1.15rem; color: #4A5750; line-height: 1.3; }
-      .vura-inline-nudge__btn { position: relative; overflow: hidden; flex-shrink: 0; background: var(--vura-forest, #162D24); color: var(--vura-paper, #F8F3E7); border: 1px solid var(--vura-forest-deep, #0E2118); border-radius: 999px; box-shadow: 2px 2px 0 0 var(--vura-terracotta, #8D3B2D); font-family: var(--font-body, Inter, sans-serif); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 1.15rem; padding: 10px 18px; cursor: pointer; white-space: nowrap; transition: transform .14s cubic-bezier(0.2,0.7,0.2,1), box-shadow .14s ease, background-color .14s ease; animation: vuraNudgeCta 1.8s ease-in-out infinite; }
-      .vura-inline-nudge__btn::after { content: ''; position: absolute; top: 0; left: 0; width: 60%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(248,243,231,0.5) 50%, rgba(255,255,255,0) 100%); transform: translateX(-250%) skewX(-25deg); animation: vuraNudgeShine 2.8s infinite linear; pointer-events: none; }
-      .vura-inline-nudge__btn:hover { background: var(--vura-forest-hover, #234935); transform: translate(-1px, -1px); box-shadow: 3px 3px 0 0 var(--vura-terracotta, #8D3B2D); animation: none; }
-      .vura-inline-nudge__btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 0 var(--vura-terracotta, #8D3B2D); background: var(--vura-forest-deep, #0E2118); animation: none; }
-      .vura-inline-nudge__btn[disabled] { opacity: 0.6; cursor: default; animation: none; box-shadow: 2px 2px 0 0 var(--vura-terracotta, #8D3B2D); }
-      .vura-inline-nudge__btn[disabled]::after { display: none; }
-      @keyframes vuraNudgeCta { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-2px) scale(1.03); } }
-      /* Moved by transform, not `left`, so it never counts as layout shift. +-250% of a 60% strip = the old +-150% of the button. */
-      @keyframes vuraNudgeShine { 0% { transform: translateX(-250%) skewX(-25deg); } 60% { transform: translateX(250%) skewX(-25deg); } 100% { transform: translateX(250%) skewX(-25deg); } }
-      @media (prefers-reduced-motion: reduce) { .vura-inline-nudge__btn { animation: none; } .vura-inline-nudge__btn::after { animation: none; opacity: 0; } }
-      .vura-inline-nudge__dismiss { position: absolute; top: 3px; right: 7px; background: none; border: 0; font-size: 18px; line-height: 1; color: #9AA39D; cursor: pointer; }
-      @media (max-width: 480px) { .vura-inline-nudge__card { flex-wrap: wrap; } .vura-inline-nudge__btn { width: 100%; } }
+      .vura-inline-nudge.show { max-height: 260px; opacity: 1; transform: translateY(0); margin: 0 1.5rem 1.6rem; }
+      .vura-inline-nudge__card { position: relative; display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: 14px; row-gap: 14px; align-items: center; background: #FBF8F0; border: 1px solid rgba(26,42,34,0.14); border-radius: 12px; padding: 14px 14px 14px 14px; }
+      .vura-inline-nudge__thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; display: block; background: var(--vura-paper-deep, #EDE5D2); }
+      .vura-inline-nudge__text { min-width: 0; }
+      .vura-inline-nudge__eyebrow { font-family: var(--font-body, Mulish, sans-serif); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--vura-terracotta, #8D3B2D); line-height: 1.2; }
+      .vura-inline-nudge__title { font-family: var(--font-display, 'Bree Serif', Georgia, serif); font-size: 1.7rem; font-weight: 400; color: var(--vura-paper-ink, #1A2A22); line-height: 1.2; margin-top: 3px; text-wrap: balance; }
+      .vura-inline-nudge__sub { font-family: var(--font-body, Mulish, sans-serif); font-size: 1.25rem; color: var(--vura-paper-ink-muted, #4A5750); line-height: 1.35; margin-top: 2px; }
+      .vura-inline-nudge__btn { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; background: transparent; color: var(--vura-forest, #162D24); border: 1.5px solid var(--vura-forest, #162D24); border-radius: 999px; font-family: var(--font-body, Mulish, sans-serif); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.25rem; padding: 0 18px; cursor: pointer; white-space: nowrap; transition: background-color .14s ease, color .14s ease; }
+      .vura-inline-nudge__btn:hover { background: var(--vura-forest, #162D24); color: var(--vura-paper, #F8F3E7); }
+      .vura-inline-nudge__btn:focus-visible { outline: 2px solid var(--vura-terracotta, #8D3B2D); outline-offset: 3px; }
+      .vura-inline-nudge__btn[disabled] { opacity: 0.55; cursor: default; }
+      .vura-inline-nudge__dismiss { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; display: grid; place-items: center; background: none; border: 0; font-size: 20px; line-height: 1; color: var(--vura-paper-ink-faint, #7A857F); cursor: pointer; }
+      .vura-inline-nudge__dismiss:hover { color: var(--vura-paper-ink, #1A2A22); }
 
       /* Expanding offer-unlock celebration (top of cart) */
       .vura-celebrate { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .5s cubic-bezier(.22,.61,.36,1), opacity .4s ease, margin .5s ease; margin: 0 1.5rem; }
@@ -79,10 +74,9 @@
       /* Mobile: larger, tap-friendly popups */
       @media (max-width: 749px) {
         .vura-inline-nudge, .vura-inline-nudge.show { margin-left: 1.2rem; margin-right: 1.2rem; }
-        .vura-inline-nudge__card { gap: 12px; padding: 14px 15px; }
-        .vura-inline-nudge__title { font-size: 1.55rem; }
+        .vura-inline-nudge__title { font-size: 1.8rem; }
         .vura-inline-nudge__sub { font-size: 1.3rem; }
-        .vura-inline-nudge__btn { min-height: 44px; font-size: 1.4rem; padding: 11px 16px; }
+        .vura-inline-nudge__btn { font-size: 1.3rem; }
         .vura-celebrate.show { margin-left: 1.2rem; margin-right: 1.2rem; }
         .vura-celebrate__card { padding: 15px 16px; gap: 12px; }
         .vura-celebrate__title { font-size: 2.1rem; }
@@ -365,14 +359,25 @@
                 </table>
                 {%- if vura_has_one and vura_has_three_six == false and vura_three_variant -%}
                   <div class="vura-inline-nudge" id="vura-inline-nudge" data-old="{{ vura_one_variant }}" data-new="{{ vura_three_variant.id }}" aria-hidden="true">
+                    {%- liquid
+                      assign vura_three_price = vura_three_variant.price | money_without_trailing_zeros
+                      assign vura_three_each = vura_three_variant.price | divided_by: 3 | money_without_trailing_zeros
+                      assign vura_one_pack = vura_three_variant.product.variants | where: 'title', '1-Pack' | first
+                      assign vura_one_price = vura_one_pack.price | money_without_trailing_zeros
+                    -%}
                     <div class="vura-inline-nudge__card">
                       <button class="vura-inline-nudge__dismiss" id="vura-nudge-dismiss" type="button" aria-label="Dismiss">&times;</button>
-                      <svg class="vura-inline-nudge__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h22v4H5z"/><path d="M7 16v11h18V16"/><path d="M16 12v15"/><path d="M16 12s-5 .6-6.6-1.2C8 9 9 6.4 11 7c2.1.6 5 5 5 5z"/><path d="M16 12s5 .6 6.6-1.2C24 9 23 6.4 21 7c-2.1.6-5 5-5 5z"/></svg>
+                      {%- if vura_three_variant.image -%}
+                        {{ vura_three_variant.image | image_url: width: 168 | image_tag: class: 'vura-inline-nudge__thumb', alt: '', width: 56, height: 56, loading: 'lazy', widths: '56, 112, 168', sizes: '56px' }}
+                      {%- else -%}
+                        <span class="vura-inline-nudge__thumb" aria-hidden="true"></span>
+                      {%- endif -%}
                       <div class="vura-inline-nudge__text">
-                        <div class="vura-inline-nudge__title">Your 3rd bottle is on us</div>
-                        <div class="vura-inline-nudge__sub">Pay for 2 and you get 3 bottles.</div>
+                        <div class="vura-inline-nudge__eyebrow">3rd bottle free</div>
+                        <div class="vura-inline-nudge__title">3 bottles for {{ vura_three_price }}</div>
+                        <div class="vura-inline-nudge__sub">{{ vura_three_each }} a bottle{% if vura_one_pack %}, not {{ vura_one_price }}{% endif %}</div>
                       </div>
-                      <button class="vura-inline-nudge__btn" id="vura-nudge-switch" type="button">Get 1 bottle free</button>
+                      <button class="vura-inline-nudge__btn" id="vura-nudge-switch" type="button">Switch to 3-Pack</button>
                     </div>
                   </div>
                 {%- endif -%}
