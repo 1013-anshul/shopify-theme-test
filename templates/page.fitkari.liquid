@@ -1,0 +1,472 @@
+{%- comment -%}
+  Meta ad landing page for the "Don't punish it for sweating" creative. Lives at /pages/fitkari
+  (a Page with the "fitkari" template). Hides the store header and footer on this page only,
+  and layout/theme.liquid marks it noindex. Uses the site's own type and colour tokens from
+  base.css (Bree Serif / Mulish, forest / saffron / paper). Prices, pack images and the review
+  count come from the product, so they stay right if the product changes. Photos and the reel
+  are theme assets (vlp-*).
+{%- endcomment -%}
+{%- liquid
+  assign vlp_product = all_products['vura-mineral-underarm-spray']
+  assign v1 = nil
+  assign v3 = nil
+  for v in vlp_product.variants
+    if v.title contains '1'
+      assign v1 = v
+    elsif v.title contains '3'
+      assign v3 = v
+    endif
+  endfor
+
+  assign v1_id = v1.id | default: 46001068736746
+  assign v3_id = v3.id | default: 46147186458858
+  assign v1_cents = v1.price | default: 45000
+  assign v3_cents = v3.price | default: 90000
+  assign v1_price = v1_cents | money_without_trailing_zeros
+  assign v3_price = v3_cents | money_without_trailing_zeros
+  assign v3_value = v1_cents | times: 3 | money_without_trailing_zeros
+  assign v3_each = v3_cents | divided_by: 3 | money_without_trailing_zeros
+  assign v1_rupees = v1_cents | divided_by: 100
+  assign v3_rupees = v3_cents | divided_by: 100
+  assign v1_daily = v1_cents | divided_by: 6000.0 | floor
+  assign v3_daily = v3_cents | divided_by: 18000.0 | floor
+
+  assign rating = vlp_product.metafields.reviews.rating.value.rating | default: 5 | times: 1.0
+  assign rating_count = vlp_product.metafields.reviews.rating_count.value | default: vlp_product.metafields.reviews.rating_count | default: 25
+  assign rating_1dp = rating | round: 1
+  assign rating_label = rating_1dp | append: ''
+  unless rating_label contains '.'
+    assign rating_label = rating_label | append: '.0'
+  endunless
+
+  assign wa = 'https://wa.me/917875697847?text=Hi%20VURA%2C%20I%20have%20a%20question%20about%20the%20fitkari%20spray'
+-%}
+<style>
+.shopify-section-group-header-group,.shopify-section-group-footer-group{display:none!important}
+#MainContent{padding:0!important}
+html{scroll-behavior:smooth}
+.vlp{
+  --night:var(--vura-forest,#162D24); --night-2:var(--vura-forest-lift,#1E3A2D); --night-on:#244634; --night-line:var(--vura-hairline,rgba(244,239,227,.22));
+  --saffron:var(--vura-saffron,#FFC03F); --terra:var(--vura-terracotta,#8D3B2D); --terra-tint:var(--vura-terracotta-tint,#F4E9E4); --burgundy:var(--vura-burgundy,#6E1F1A);
+  --paper:var(--vura-paper,#F8F3E7); --card:#FBF8F0; --paper-deep:var(--vura-paper-deep,#EDE5D2);
+  --ink:var(--vura-paper-ink,#1A2A22); --muted:var(--vura-paper-ink-muted,#4A5750); --line:rgba(26,42,34,.14); --leaf:var(--vura-sage,#637746);
+  --on-night:var(--vura-cream,#F4EFE3); --on-night-2:var(--vura-cream-dim,#D9D2C2);
+  --display:var(--font-display,"Bree Serif",Georgia,serif); --body:var(--font-body,"Mulish","Helvetica Neue",system-ui,sans-serif);
+  --gutter:max(20px, calc((100% - 1080px) / 2));
+  margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 var(--body);letter-spacing:normal;-webkit-font-smoothing:antialiased;
+}
+.vlp *{box-sizing:border-box}
+.vlp a{text-decoration:none}
+.vlp .wrap{background:var(--paper);padding-bottom:92px}
+.vlp img{max-width:100%;height:auto;display:block}
+.vlp h1,.vlp h2,.vlp h3{font-family:var(--display);font-weight:400;line-height:1.1;text-wrap:balance;margin:0;letter-spacing:-.005em;color:inherit}
+.vlp h2{font-size:clamp(28px,7.6vw,36px)}
+.vlp p{margin:0}
+.vlp q{quotes:none}
+.vlp section{padding-block:48px;padding-inline:var(--gutter)}
+.vlp .eyebrow{font:700 12px/1.2 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--terra)}
+.vlp .night{background:var(--night);color:var(--on-night)}
+.vlp .night .eyebrow{color:var(--saffron)}
+.vlp .sf{color:var(--saffron)}
+.vlp .head{display:grid;gap:10px;margin-bottom:22px}
+.vlp .strip{background:var(--saffron);color:var(--vura-forest-deep,#0E2118);font:700 13px/1.3 var(--body);letter-spacing:.02em;text-align:center;padding:9px 16px}
+.vlp .top{background:var(--night);display:flex;justify-content:center;padding:16px 20px 2px}
+.vlp .top img{width:72px;height:auto}
+.vlp .hero{padding-top:14px;padding-bottom:34px;text-align:center;display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+.vlp .hero .pre{font:600 17px/1.4 var(--body);color:var(--on-night-2)}
+.vlp .hero h1{font-size:clamp(40px,11.5vw,58px);line-height:1.04;color:var(--on-night)}
+.vlp .shot{position:relative;margin-inline:calc(-1 * var(--gutter));aspect-ratio:780/690;max-width:none;overflow:hidden}
+.vlp .shot img{width:100%;height:100%;object-fit:cover}
+.vlp .shot::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom, rgba(22,45,36,0) 62%, var(--night) 100%)}
+.vlp .hero .line{font:400 21px/1.35 var(--display);color:var(--on-night);text-wrap:balance;margin-top:-30px;position:relative}
+.vlp .stars{color:var(--saffron);letter-spacing:2px}
+.vlp .proof{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;font-size:14.5px;color:var(--on-night-2)}
+.vlp .proof .stars{font-size:16px}
+.vlp .price-row{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap}
+.vlp .v-price{font:400 44px/1 var(--display);color:var(--on-night)}
+.vlp .per{font-size:15px;line-height:1.4;color:var(--on-night-2);text-align:left}
+.vlp .per b{color:var(--saffron)}
+.vlp .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;padding:0 24px;border:0;border-radius:999px;background:var(--saffron);color:var(--vura-forest-deep,#0E2118);font:800 16px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform .12s, background-color .12s}
+.vlp .btn:hover{background:var(--vura-saffron-soft,#F2BD53)}
+.vlp .btn:active{transform:scale(.98)}
+.vlp .btn:focus-visible{outline:3px solid var(--on-night);outline-offset:3px}
+.vlp .bar .btn:focus-visible{outline-color:var(--terra)}
+.vlp .assure{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 16px;font-size:13.5px;color:var(--on-night-2)}
+.vlp .assure span::before{content:"✓ ";color:var(--saffron);font-weight:800}
+.vlp .mini-rev{border-top:1px solid var(--night-line);padding-top:18px;display:grid;gap:6px}
+.vlp .mini-rev q{font:400 18px/1.4 var(--display)}
+.vlp .mini-rev span{font-size:13.5px;color:var(--on-night-2)}
+.vlp .cards{display:grid;gap:10px}
+.vlp .x{display:grid;grid-template-columns:36px minmax(0,1fr);gap:14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.vlp .x i{font-style:normal;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--terra-tint);color:var(--burgundy);font:800 16px/1 var(--body)}
+.vlp .x h3{font-size:22px;margin-bottom:4px}
+.vlp .x p{color:var(--muted);font-size:15px}
+.vlp .fix{margin-top:12px;background:var(--night);color:var(--on-night);border-radius:18px;padding:22px 20px;display:grid;gap:8px}
+.vlp .fix .eyebrow{color:var(--saffron)}
+.vlp .fix h3{font-size:28px}
+.vlp .fix p{color:var(--on-night-2);font-size:15.5px}
+.vlp .watch{display:grid;gap:24px;justify-items:center;text-align:center;padding-top:8px}
+.vlp .watch .head{margin:0;justify-items:center}
+.vlp .points{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:16px;justify-items:center}
+.vlp .points li::before{content:"✓ ";color:var(--leaf);font-weight:800}
+.vlp .vid{position:relative;width:min(100%,330px);aspect-ratio:9/16;border-radius:24px;overflow:hidden;background:var(--night);border:1px solid var(--line)}
+.vlp .vid video{width:100%;height:100%;object-fit:cover;display:block}
+.vlp .sound{position:absolute;right:12px;bottom:12px;border:0;border-radius:999px;padding:9px 14px;background:rgba(14,33,24,.8);color:var(--on-night);font:700 13px/1 var(--body);cursor:pointer}
+.vlp .sound:focus-visible{outline:2px solid var(--saffron);outline-offset:2px}
+.vlp .steps{display:grid;gap:0}
+.vlp .step{display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;padding-bottom:22px;position:relative}
+.vlp .step:not(:last-child)::after{content:"";position:absolute;left:21px;top:46px;bottom:4px;width:2px;background:var(--line)}
+.vlp .step .n{width:44px;height:44px;border-radius:50%;background:var(--night);color:var(--saffron);font:400 20px/44px var(--display);text-align:center}
+.vlp .step h3{font-size:22px;margin:8px 0 4px}
+.vlp .step p{color:var(--muted);font-size:15px}
+.vlp .familiar{display:grid;gap:20px;align-items:center}
+.vlp .familiar img{border-radius:18px;width:100%;aspect-ratio:1/1;object-fit:cover}
+.vlp .familiar p{font-size:17px}
+.vlp .familiar .txt{display:grid;gap:14px}
+.vlp .use-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:center}
+.vlp .use-grid img{border-radius:18px;aspect-ratio:4/5;object-fit:cover;width:100%}
+.vlp .ritual{display:grid;gap:16px}
+.vlp .ritual div{font:400 28px/1.05 var(--display)}
+.vlp .ritual small{display:block;font:500 14px/1.4 var(--body);color:var(--muted);margin-top:5px}
+.vlp .note{margin-top:18px;color:var(--muted);font-size:15px}
+.vlp .chips{display:flex;flex-wrap:wrap;gap:8px}
+.vlp .fits{margin-top:14px}
+.vlp .chips span{background:var(--paper-deep);color:var(--ink);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:600}
+.vlp .reviews{background:var(--card);border-block:1px solid var(--line)}
+.vlp .rev-top{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.vlp .score{font:400 48px/1 var(--display)}
+.vlp .score-meta{font-size:14px;color:var(--muted)}
+.vlp .score-meta .stars{display:block;font-size:18px;color:var(--vura-saffron-deep,#E8A82A)}
+.vlp .rev-photos{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--gutter) 8px;margin-inline:calc(-1 * var(--gutter))}
+.vlp .rev-card{flex:0 0 76%;scroll-snap-align:start;background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.vlp .rev-card img{aspect-ratio:1/1;object-fit:cover;width:100%}
+.vlp .rev-card .t{padding:14px 16px 16px;display:grid;gap:8px}
+.vlp .rev-card q{font-size:15.5px}
+.vlp .who{font-size:13px;color:var(--muted)}
+.vlp .who b{color:var(--ink)}
+.vlp .ok{color:var(--leaf);font-weight:700}
+.vlp .quotes{display:grid;gap:14px;margin-top:20px}
+.vlp .quote{border-left:3px solid var(--saffron);padding:2px 0 2px 14px;display:grid;gap:4px;align-content:start}
+.vlp .quote q{font:400 18px/1.45 var(--display)}
+.vlp .swipe{font-size:13px;color:var(--muted);margin-top:6px}
+.vlp .inside details{margin-top:14px}
+.vlp .packs{display:grid;gap:14px;margin-top:22px}
+.vlp .pack{position:relative;display:grid;grid-template-columns:26px 74px minmax(0,1fr);gap:14px;align-items:center;background:var(--night-2);border:2px solid var(--night-line);border-radius:18px;padding:14px;cursor:pointer;color:var(--on-night);transition:border-color .15s}
+.vlp .pack input{appearance:none;-webkit-appearance:none;width:24px;height:24px;border:2px solid var(--saffron);border-radius:50%;margin:0;display:grid;place-items:center;cursor:pointer;background:transparent}
+.vlp .pack input:checked::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--saffron)}
+.vlp .pack input:focus-visible{outline:3px solid var(--on-night);outline-offset:2px}
+.vlp .pack:has(input:checked){border-color:var(--saffron);background:var(--night-on)}
+.vlp .pack img{width:74px;height:74px;object-fit:cover;border-radius:12px}
+.vlp .pack .nm{font:400 22px/1.1 var(--display)}
+.vlp .pack .pr{font-size:15px;margin-top:5px;color:var(--on-night-2)}
+.vlp .pack .pr b{color:var(--on-night);font-size:17px}
+.vlp .pack .pr s{margin-left:6px}
+.vlp .pack .save{display:inline-block;margin-top:7px;background:var(--saffron);color:var(--vura-forest-deep,#0E2118);font:800 12px/1 var(--body);padding:5px 9px;border-radius:999px}
+.vlp .v-badge{position:absolute;top:-11px;right:14px;background:var(--on-night);color:var(--vura-forest-deep,#0E2118);font:800 11px/1 var(--body);letter-spacing:.1em;padding:6px 10px;border-radius:999px}
+.vlp .unbox{margin:22px 0 0;border-radius:18px;overflow:hidden;position:relative}
+.vlp .unbox img{width:100%;height:auto}
+.vlp .unbox figcaption{position:absolute;left:12px;bottom:12px;background:rgba(14,33,24,.84);color:var(--on-night);font:700 13px/1 var(--body);padding:8px 12px;border-radius:999px}
+.vlp .wa{color:var(--saffron);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.vlp .faq .wa{color:var(--terra)}
+.vlp .lasts{margin-top:16px;font-size:14.5px;color:var(--on-night-2);text-align:center}
+.vlp .lasts b{color:var(--on-night)}
+.vlp .offer .btn{margin-top:18px}
+.vlp .pay{margin-top:14px;display:grid;gap:4px;text-align:center;font-size:13.5px;color:var(--on-night-2)}
+.vlp .pay b{color:var(--saffron)}
+.vlp .faq{display:grid;gap:10px}
+.vlp details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 16px}
+.vlp summary{list-style:none;cursor:pointer;padding:16px 0;font:400 18px/1.3 var(--display);display:flex;justify-content:space-between;gap:12px}
+.vlp summary::-webkit-details-marker{display:none}
+.vlp summary::after{content:"+";font:400 24px/1 var(--body);color:var(--terra)}
+.vlp details[open] summary::after{content:"−"}
+.vlp details p{padding:0 0 16px;color:var(--muted);font-size:15px}
+.vlp summary:focus-visible{outline:2px solid var(--terra);outline-offset:4px;border-radius:4px}
+.vlp .closing{text-align:center;display:grid;gap:16px;padding-block:56px;justify-items:center}
+.vlp .closing h2{font-size:clamp(32px,9vw,46px)}
+.vlp .closing p{color:var(--on-night-2)}
+.vlp .closing .btn{max-width:420px}
+.vlp .foot{text-align:center;color:var(--muted);font-size:13px;padding:24px 20px 8px}
+.vlp .foot a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.vlp .bar{position:fixed;left:0;right:0;bottom:0;z-index:10;margin:0 auto;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));transition:transform .25s ease}
+.vlp .bar.away{transform:translateY(110%)}
+.vlp .bar-in{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.vlp .bar .p{font:400 26px/1 var(--display)}
+.vlp .bar .p small{display:block;font:600 12px/1.3 var(--body);color:var(--muted);margin-top:4px}
+.vlp .bar .btn{min-height:50px;font-size:15px}
+@media (min-width:960px){
+  .vlp section{padding-block:80px}
+  .vlp h2{font-size:42px}
+  .vlp .head{margin-bottom:32px}
+  .vlp .top{padding-top:22px}
+  .vlp .top img{width:84px}
+  .vlp .hero{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);column-gap:56px;row-gap:16px;text-align:left;align-content:center;padding-block:48px 72px}
+  .vlp .hero > *{grid-column:2}
+  .vlp .hero .shot{grid-column:1;grid-row:1 / span 9;margin:0;align-self:center;border-radius:220px 220px 24px 24px;border:2px solid var(--night-line)}
+  .vlp .hero .shot::after{display:none}
+  .vlp .hero .line{margin-top:0}
+  .vlp .hero h1{font-size:64px}
+  .vlp .proof,.vlp .price-row,.vlp .assure{justify-content:flex-start}
+  .vlp .hero .btn{max-width:360px}
+  .vlp .cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .vlp .fix{margin-top:16px;padding:28px 32px;grid-template-columns:auto minmax(0,1fr);column-gap:32px;align-items:center}
+  .vlp .fix .eyebrow{grid-column:1 / -1}
+  .vlp .watch{grid-template-columns:minmax(0,1fr) 340px;column-gap:72px;text-align:left;justify-items:start;align-items:center;padding-top:40px}
+  .vlp .watch .head,.vlp .points{justify-items:start}
+  .vlp .watch .vid{grid-column:2;grid-row:1 / span 2}
+  .vlp .points{font-size:18px}
+  .vlp .steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+  .vlp .step{grid-template-columns:minmax(0,1fr);padding-bottom:0}
+  .vlp .step::after{display:none}
+  .vlp .familiar{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}
+  .vlp .use-grid{gap:56px}
+  .vlp .use-grid img{aspect-ratio:1/1}
+  .vlp .ritual div{font-size:40px}
+  .vlp .rev-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;padding:0;margin:0;gap:20px}
+  .vlp .swipe{display:none}
+  .vlp .quotes{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:32px}
+  .vlp .inside,.vlp .faq{padding-inline:max(20px, calc((100% - 760px) / 2))}
+  .vlp .offer{padding-inline:max(20px, calc((100% - 640px) / 2));text-align:center}
+  .vlp .offer .pack{text-align:left}
+  .vlp .bar-in{grid-template-columns:auto 360px;justify-content:space-between}
+}
+@media (prefers-reduced-motion:reduce){
+  .vlp *{transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+
+<div class="vlp">
+<div class="wrap">
+  <div class="strip">Cash on delivery available · Free delivery across India</div>
+  <div class="top">
+    {%- if settings.logo != blank -%}
+      {{ settings.logo | image_url: width: 240 | image_tag: alt: 'Vura', width: 72, height: 57, loading: 'eager' }}
+    {%- else -%}
+      <span class="sf" style="font:400 32px/1 var(--display)">Vura</span>
+    {%- endif -%}
+  </div>
+
+  <section class="night hero">
+    <p class="pre">Your body works hard for you all day.</p>
+    <h1>Don’t punish it for <span class="sf">sweating.</span></h1>
+    <div class="shot"><img src="{{ 'vlp-hero-sky.jpg' | asset_url }}" alt="A hand holding up the VURA fitkari spray against a blue sky, seen from inside a jacket" width="780" height="690" fetchpriority="high"></div>
+    <p class="line">Fitkari lets it breathe and just takes care of the smell.</p>
+    <div class="proof"><span class="stars" aria-hidden="true">★★★★★</span> {{ rating_label }} · {{ rating_count }} customer reviews</div>
+    <div class="price-row">
+      <span class="v-price">{{ v1_price }}</span>
+      <span class="per">50 ml · lasts about 2 months<br><b>That’s about ₹{{ v1_daily }} a day</b></span>
+    </div>
+    <a class="btn" id="heroBtn" href="#packs">Shop now →</a>
+    <div class="assure"><span>Cash on delivery</span><span>Free delivery</span><span>Ships in 1–2 days</span></div>
+    <div class="mini-rev">
+      <q>It doesn’t try to shut down natural sweat, which is exactly why it feels so natural to wear.</q>
+      <span>Nikhita Rao · verified buyer</span>
+    </div>
+  </section>
+
+  <section class="punish">
+    <div class="head"><span class="eyebrow">What we usually do to our underarms</span><h2>Sweat isn’t the problem. The usual fixes are.</h2></div>
+    <div class="cards">
+      <div class="x"><i aria-hidden="true">✕</i><div><h3>Block it</h3><p>Antiperspirants use aluminium salts to plug your sweat ducts for the day.</p></div></div>
+      <div class="x"><i aria-hidden="true">✕</i><div><h3>Drown it</h3><p>Heavy perfume sprayed over the smell, often with alcohol that burns after a shave.</p></div></div>
+      <div class="x"><i aria-hidden="true">✕</i><div><h3>Leave a mark</h3><p>White streaks on a black tee. Yellow patches on a white shirt.</p></div></div>
+    </div>
+    <div class="fix">
+      <span class="eyebrow">VURA does none of that</span>
+      <h3>Sweat freely. Smell fresh.</h3>
+      <p>A fine mist of fitkari, rose water and aloe. It leaves your sweat alone and works on the smell.</p>
+    </div>
+  </section>
+
+  <section class="watch">
+    <div class="head"><span class="eyebrow">Watch it in use</span><h2>Fitkari ka deodorant, in 20 seconds</h2></div>
+    <ul class="points">
+      <li>A spray, so there’s no stone to break</li>
+      <li>Gentle on skin, even after a shave</li>
+      <li>Spray once and you’re done</li>
+    </ul>
+    <div class="vid">
+      <video id="reel" src="{{ 'vlp-reel.mp4' | asset_url }}" poster="{{ 'vlp-reel-poster.jpg' | asset_url }}" muted loop playsinline preload="none" aria-label="Video of a woman showing how she uses the VURA spray"></video>
+      <button type="button" class="sound" id="soundBtn" aria-pressed="false">Tap for sound</button>
+    </div>
+  </section>
+
+  <section class="reviews">
+    <div class="head" style="margin-bottom:14px">
+      <span class="eyebrow">From people using it</span>
+      <h2>{{ rating_count }} reviews. {% if rating >= 4.95 %}All five stars.{% else %}Rated {{ rating_label }} out of 5.{% endif %}</h2>
+    </div>
+    <div class="rev-top">
+      <div class="score">{{ rating_label }}</div>
+      <div class="score-meta"><span class="stars" aria-hidden="true">★★★★★</span>Reviews since July 2026</div>
+    </div>
+    <div class="rev-photos" tabindex="0" aria-label="Customer reviews with photos">
+      <article class="rev-card">
+        <img src="https://review-images.judgeme.com/vura/1785771641__1000126737__original.jpg?quality=80&width=800" alt="Customer photo holding the VURA box" loading="lazy" width="750" height="1000">
+        <div class="t"><q>No residue, not sticky at all, and it absorbs within seconds.</q><span class="who"><b>Yashasvi</b> · <span class="ok">Verified buyer</span></span></div>
+      </article>
+      <article class="rev-card">
+        <img src="https://review-images.judgeme.com/vura/1785438076__1785438069058-image__original.jpg?quality=80&width=800" alt="Customer photo holding the VURA bottle" loading="lazy" width="750" height="1000">
+        <div class="t"><q>It works like a wonder. It feels refreshing from the moment you spray it.</q><span class="who"><b>Aditya Sharma</b> · <span class="ok">Verified buyer</span></span></div>
+      </article>
+      <article class="rev-card">
+        <img src="https://review-images.judgeme.com/vura/1789908888__1789908879099-image__original.jpg?quality=80&width=800" alt="Customer photo of VURA on a dresser" loading="lazy" width="750" height="1000">
+        <div class="t"><q>Really good product.</q><span class="who"><b>Eksha Narayan</b> · <span class="ok">Verified buyer</span></span></div>
+      </article>
+    </div>
+    <p class="swipe">Swipe for more photos →</p>
+    <div class="quotes">
+      <div class="quote"><q>Lightweight, dries quickly, and feels very gentle on my skin.</q><span class="who"><b>Pranjal</b></span></div>
+      <div class="quote"><q>The atomizer gives an incredibly fine mist, so it feels so light on application.</q><span class="who"><b>Bhavika</b></span></div>
+      <div class="quote"><q>Changed my entire routine! Loved it.</q><span class="who"><b>Akhil</b></span></div>
+    </div>
+  </section>
+
+  <section style="padding-top:48px">
+    <div class="head"><span class="eyebrow">How it works</span><h2>Sweat doesn’t smell. Bacteria do.</h2></div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div><h3>You sweat</h3><p>Fresh sweat has almost no smell. It is how your body cools down.</p></div></div>
+      <div class="step"><span class="n">2</span><div><h3>Bacteria feed on it</h3><p>Bacteria on the skin break sweat down. That is where the smell comes from.</p></div></div>
+      <div class="step"><span class="n">3</span><div><h3>Fitkari calms them</h3><p>Potash alum makes it hard for them to grow. You still sweat, and the smell never starts.</p></div></div>
+    </div>
+  </section>
+
+  <section class="familiar" style="padding-top:8px">
+    <img src="https://cdn.shopify.com/s/files/1/0711/6223/3066/files/vura-spray-brass-thali-fitkari.jpg?v=1791802664&width=900" alt="VURA spray in a brass thali full of raw fitkari crystals" width="1000" height="1000" loading="lazy">
+    <div class="txt">
+      <div class="head" style="margin:0"><span class="eyebrow">Not new. Just easier.</span><h2>The fitkari your nani kept by the sink</h2></div>
+      <p>Barbers still use it after a shave. Our grandparents rubbed a wet block of it under their arms. We put the same mineral into a fine mist, so you never rub a wet rock again.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:8px">
+    <div class="use-grid">
+      <img src="https://cdn.shopify.com/s/files/1/0711/6223/3066/files/underarm_vura.webp?v=1791911930&width=800" alt="Woman spraying VURA on her underarm" width="1000" height="1000" loading="lazy">
+      <div>
+        <div class="ritual">
+          <div>Spray.<small>2–3 sprays on clean, dry underarms</small></div>
+          <div>Dry.<small>Air-dries in seconds. Nothing sticky.</small></div>
+          <div>Dress.<small>No white marks on your clothes</small></div>
+        </div>
+        <p class="note">Gentle enough for right after shaving: no alcohol, with aloe vera and rose water.</p>
+        <div class="chips fits" aria-label="Where people carry it"><span>Gym bag</span><span>Office drawer</span><span>Cabin bag (50 ml)</span><span>After a shave</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="inside">
+    <div class="head"><span class="eyebrow">Nothing hidden</span><h2>Four ingredients do the work</h2></div>
+    <div class="chips"><span>Fitkari (potash alum)</span><span>Damask rose water</span><span>Aloe vera</span><span>Glycerin</span></div>
+    <details><summary>See the full formula</summary><p>Aqua, Rosa Damascena Flower Water, Potassium Alum, Glycerin, Propanediol, Triethyl Citrate, Aloe Barbadensis Leaf Extract, Rosa Damascena Flower Oil, Polysorbate 20, Sodium Benzoate, Potassium Sorbate, Citric Acid. No alcohol, no synthetic fragrance.</p></details>
+  </section>
+
+  <section class="night offer" id="packs">
+    <span class="eyebrow">Choose your pack</span>
+    <h2 style="margin-top:10px">Start with one, or get the third bottle free</h2>
+    <form class="packs" id="packForm">
+      <label class="pack" for="p1">
+        <input type="radio" name="pack" id="p1" value="{{ v1_id }}" data-price="{{ v1_rupees }}" data-name="1 bottle" checked>
+        {%- if v1.image -%}{{ v1.image | image_url: width: 222 | image_tag: alt: '', loading: 'lazy', width: 74, height: 74, widths: '74, 148, 222', sizes: '74px' }}{%- endif -%}
+        <div><div class="nm">1 bottle</div><div class="pr"><b>{{ v1_price }}</b> · about 2 months</div></div>
+      </label>
+      <label class="pack" for="p3">
+        <span class="v-badge">BEST VALUE</span>
+        <input type="radio" name="pack" id="p3" value="{{ v3_id }}" data-price="{{ v3_rupees }}" data-name="3 bottles">
+        {%- if v3.image -%}{{ v3.image | image_url: width: 222 | image_tag: alt: '', loading: 'lazy', width: 74, height: 74, widths: '74, 148, 222', sizes: '74px' }}{%- endif -%}
+        <div><div class="nm">3 bottles</div><div class="pr"><b>{{ v3_price }}</b><s>{{ v3_value }}</s> · about 6 months</div><span class="save">3rd bottle free · {{ v3_each }} each</span></div>
+      </label>
+    </form>
+    <p class="lasts" id="lasts">One bottle lasts about <b>2 months</b> of daily use.</p>
+    <a class="btn" id="buy" href="/cart/add?id={{ v1_id }}&amp;quantity=1">Buy 1 bottle · {{ v1_price }}</a>
+    <div class="pay">
+      <span>UPI or card: no extra charge · <b>Cash on delivery: ₹20 fee</b></span>
+      <span>Free delivery in 4–7 days · Ships in 1–2 days</span>
+      <span>Questions first? <a class="wa" href="{{ wa }}">Chat with us on WhatsApp</a></span>
+    </div>
+    <figure class="unbox">
+      <img src="{{ 'vlp-unboxing.jpg' | asset_url }}" alt="A VURA order: the kraft delivery box printed with वूरा, the product boxes and the spray bottle" width="1200" height="979" loading="lazy">
+      <figcaption>What arrives at your door</figcaption>
+    </figure>
+  </section>
+
+  <section class="faq">
+    <div class="head" style="margin-bottom:8px"><span class="eyebrow">Before you buy</span><h2>Questions people ask</h2></div>
+    <details><summary>Will it stop me sweating?</summary><p>No, and that’s on purpose. VURA works on the smell, not the sweat. Sweating is how your body cools down.</p></details>
+    <details><summary>Does it sting after shaving?</summary><p>There’s no alcohol, and aloe vera keeps it gentle, so most people use it right after shaving. If your skin is cut or very irritated, wait a few hours.</p></details>
+    <details><summary>Will it stain my clothes?</summary><p>No. It’s a clear mist that dries in seconds, so there are no white marks on dark clothes.</p></details>
+    <details><summary>What does it smell like?</summary><p>Very lightly of rose. A trace of real rose oil is the only scent. There’s no synthetic perfume.</p></details>
+    <details><summary>How long does one bottle last?</summary><p>About 2 months with 2–3 sprays on each underarm every day.</p></details>
+    <details><summary>Does it contain aluminium?</summary><p>Fitkari (potassium alum) is a natural mineral that contains aluminium. VURA has no aluminium chlorohydrate, the sweat-blocking salt used in antiperspirants.</p></details>
+    <details><summary>Can I pay cash on delivery?</summary><p>Yes. Choose cash on delivery at checkout for a ₹20 fee. Paying by UPI or card has no extra charge. Delivery is free either way.</p></details>
+    <p style="color:var(--muted);font-size:15px;margin-top:8px">Still unsure? <a class="wa" href="{{ wa }}">Ask us on WhatsApp</a> and a real person will reply.</p>
+  </section>
+
+  <section class="night closing">
+    <h2>Your body sweats for a reason. <span class="sf">Let it.</span></h2>
+    <p>Fitkari takes care of the smell.</p>
+    <a class="btn" href="#packs">Shop now →</a>
+    <div class="assure"><span>Cash on delivery</span><span>Free delivery</span></div>
+  </section>
+
+  <footer class="foot">Made in Bharat · <a href="/">vuraskincare.in</a></footer>
+</div>
+
+<div class="bar" id="bar" role="region" aria-label="Buy">
+  <div class="bar-in">
+    <div class="p" id="barPrice">{{ v1_price }}<small>1 bottle · Free delivery</small></div>
+    <a class="btn" id="barBuy" href="/cart/add?id={{ v1_id }}&amp;quantity=1">Buy now</a>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  var form=document.getElementById('packForm'),buy=document.getElementById('buy'),barBuy=document.getElementById('barBuy'),barPrice=document.getElementById('barPrice'),lasts=document.getElementById('lasts');
+  var daily3={{ v3_daily | json }};
+  function update(){
+    var r=form.querySelector('input:checked'); if(!r) return;
+    var url='/cart/add?id='+r.value+'&quantity=1', price='₹'+Number(r.dataset.price).toLocaleString('en-IN');
+    buy.href=url; barBuy.href=url;
+    buy.textContent='Buy '+r.dataset.name+' · '+price;
+    barPrice.innerHTML=price+'<small>'+r.dataset.name+' · Free delivery</small>';
+    lasts.innerHTML=r.id==='p3'?'Three bottles last about <b>6 months</b>. That’s about ₹'+daily3+' a day.':'One bottle lasts about <b>2 months</b> of daily use.';
+  }
+  form.addEventListener('change',update); update();
+
+  var bar=document.getElementById('bar'), hero=document.getElementById('heroBtn'), offer=document.getElementById('packs');
+  if('IntersectionObserver' in window){
+    var seen={hero:false,offer:false};
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ seen[e.target===hero?'hero':'offer']=e.isIntersecting; });
+      bar.classList.toggle('away', seen.hero||seen.offer);
+    });
+    io.observe(hero); io.observe(offer);
+  }
+
+  var reel=document.getElementById('reel'), snd=document.getElementById('soundBtn');
+  if(reel&&snd){
+    snd.addEventListener('click',function(){
+      reel.muted=!reel.muted; snd.setAttribute('aria-pressed',String(!reel.muted));
+      snd.textContent=reel.muted?'Tap for sound':'Sound on';
+      var p=reel.play(); if(p&&p.catch) p.catch(function(){});
+    });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){ reel.preload='auto'; var p=reel.play(); if(p&&p.catch)p.catch(function(){}); }
+          else reel.pause();
+        });
+      },{threshold:.4,rootMargin:'200px 0px'}).observe(reel);
+    }
+  }
+})();
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a[href^="/cart/add?id="]'); if(!a) return;
+  e.preventDefault();
+  var id=parseInt(new URL(a.href,location.origin).searchParams.get('id'),10);
+  a.setAttribute('aria-busy','true');
+  fetch('/cart/add.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:[{id:id,quantity:1}]})})
+    .then(function(r){ if(!r.ok) throw r; location.href='/cart'; })
+    .catch(function(){ location.href=a.href; });
+});
+</script>
