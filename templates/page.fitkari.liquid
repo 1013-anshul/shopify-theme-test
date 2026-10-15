@@ -129,11 +129,13 @@ html{scroll-behavior:smooth}
 .vlp .familiar img{border-radius:18px;width:100%;aspect-ratio:1/1;object-fit:cover}
 .vlp .familiar p{font-size:17px}
 .vlp .familiar .txt{display:grid;gap:14px}
-.vlp .use-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:center}
-.vlp .use-grid img{border-radius:18px;aspect-ratio:4/5;object-fit:cover;width:100%}
-.vlp .ritual{display:grid;gap:16px}
-.vlp .ritual div{font:400 28px/1.05 var(--display)}
-.vlp .ritual small{display:block;font:500 14px/1.4 var(--body);color:var(--muted);margin-top:5px}
+.vlp .use{display:grid;gap:22px;padding-top:24px}
+.vlp .use .head{margin:0}
+.vlp .use-img{border-radius:18px;width:100%;aspect-ratio:1/1;object-fit:cover}
+.vlp .ritual{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.vlp .ritual li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.vlp .ritual b{font:400 26px/1 var(--display)}
+.vlp .ritual span{color:var(--muted);font-size:15px;line-height:1.45}
 .vlp .note{margin-top:18px;color:var(--muted);font-size:15px}
 .vlp .chips{display:flex;flex-wrap:wrap;gap:8px}
 .vlp .fits{margin-top:14px}
@@ -154,6 +156,19 @@ html{scroll-behavior:smooth}
 .vlp .quotes{display:grid;gap:14px;margin-top:20px}
 .vlp .quote{border-left:3px solid var(--saffron);padding:2px 0 2px 14px;display:grid;gap:4px;align-content:start}
 .vlp .quote q{font:400 18px/1.45 var(--display)}
+.vlp .rev-card p{font-size:15.5px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.vlp .rev-all{margin-top:28px}
+.vlp .rev-all[hidden],.vlp .quotes[hidden],.vlp .swipe[hidden],.vlp .rev-more[hidden]{display:none}
+.vlp .rev-all h3{font-size:24px;margin-bottom:6px}
+.vlp .rev-list{list-style:none;margin:0;padding:0}
+.vlp .rv{padding:16px 0;border-bottom:1px solid var(--line);display:grid;gap:6px;break-inside:avoid}
+.vlp .rv[hidden]{display:none}
+.vlp .rv-top{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px;color:var(--muted)}
+.vlp .rv-top .stars{color:var(--vura-saffron-deep,#E8A82A);font-size:15px}
+.vlp .rv p{font-size:15.5px;line-height:1.55}
+.vlp .rev-more{display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;margin-top:20px;background:transparent;color:var(--ink);border:1.5px solid var(--ink);border-radius:999px;font:800 14px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.vlp .rev-more:hover{background:var(--ink);color:var(--paper)}
+.vlp .rev-more:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
 .vlp .swipe{font-size:13px;color:var(--muted);margin-top:6px}
 .vlp .inside details{margin-top:14px}
 .vlp .packs{display:grid;gap:14px;margin-top:22px}
@@ -224,12 +239,19 @@ html{scroll-behavior:smooth}
   .vlp .step{grid-template-columns:minmax(0,1fr);padding-bottom:0}
   .vlp .step::after{display:none}
   .vlp .familiar{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}
-  .vlp .use-grid{gap:56px}
-  .vlp .use-grid img{aspect-ratio:1/1}
-  .vlp .ritual div{font-size:40px}
+  .vlp .use{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"img head" "img body";column-gap:56px;row-gap:24px;align-items:center;padding-top:40px}
+  .vlp .use-img{grid-area:img}
+  .vlp .use .head{grid-area:head;align-self:end}
+  .vlp .use-body{grid-area:body;align-self:start}
+  .vlp .ritual li{grid-template-columns:120px minmax(0,1fr);padding:16px 0}
+  .vlp .ritual b{font-size:32px}
   .vlp .rev-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;padding:0;margin:0;gap:20px}
   .vlp .swipe{display:none}
   .vlp .quotes{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:32px}
+  .vlp .rev-photos.many{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+  .vlp .rev-photos.many .rev-card{flex:0 0 calc((100% - 40px) / 3)}
+  .vlp .rev-list{columns:2;column-gap:48px}
+  .vlp .rev-more{max-width:360px;margin-inline:auto}
   .vlp .inside,.vlp .faq{padding-inline:max(20px, calc((100% - 760px) / 2))}
   .vlp .offer{padding-inline:max(20px, calc((100% - 640px) / 2));text-align:center}
   .vlp .offer .pack{text-align:left}
@@ -266,7 +288,7 @@ html{scroll-behavior:smooth}
     <div class="assure"><span>Cash on delivery</span><span>Free delivery</span><span>Ships in 1–2 days</span></div>
     <div class="mini-rev">
       <q>It doesn’t try to shut down natural sweat, which is exactly why it feels so natural to wear.</q>
-      <span>Nikhita Rao · verified buyer</span>
+      <span>Nikhita Rao · customer review</span>
     </div>
   </section>
 
@@ -306,10 +328,10 @@ html{scroll-behavior:smooth}
       <div class="score">{{ rating_label }}</div>
       <div class="score-meta"><span class="stars" aria-hidden="true">★★★★★</span>Reviews since July 2026</div>
     </div>
-    <div class="rev-photos" tabindex="0" aria-label="Customer reviews with photos">
+    <div class="rev-photos" id="revPhotos" tabindex="0" aria-label="Customer reviews with photos">
       <article class="rev-card">
         <img src="https://review-images.judgeme.com/vura/1785771641__1000126737__original.jpg?quality=80&width=800" alt="Customer photo holding the VURA box" loading="lazy" width="750" height="1000">
-        <div class="t"><q>No residue, not sticky at all, and it absorbs within seconds.</q><span class="who"><b>Yashasvi</b> · <span class="ok">Verified buyer</span></span></div>
+        <div class="t"><q>No residue, not sticky at all, and it absorbs within seconds.</q><span class="who"><b>Yashasvi</b></span></div>
       </article>
       <article class="rev-card">
         <img src="https://review-images.judgeme.com/vura/1785438076__1785438069058-image__original.jpg?quality=80&width=800" alt="Customer photo holding the VURA bottle" loading="lazy" width="750" height="1000">
@@ -317,14 +339,19 @@ html{scroll-behavior:smooth}
       </article>
       <article class="rev-card">
         <img src="https://review-images.judgeme.com/vura/1789908888__1789908879099-image__original.jpg?quality=80&width=800" alt="Customer photo of VURA on a dresser" loading="lazy" width="750" height="1000">
-        <div class="t"><q>Really good product.</q><span class="who"><b>Eksha Narayan</b> · <span class="ok">Verified buyer</span></span></div>
+        <div class="t"><q>Really good product.</q><span class="who"><b>Eksha Narayan</b></span></div>
       </article>
     </div>
-    <p class="swipe">Swipe for more photos →</p>
-    <div class="quotes">
+    <p class="swipe" id="revSwipe">Swipe for more photos →</p>
+    <div class="quotes" id="revQuotes">
       <div class="quote"><q>Lightweight, dries quickly, and feels very gentle on my skin.</q><span class="who"><b>Pranjal</b></span></div>
       <div class="quote"><q>The atomizer gives an incredibly fine mist, so it feels so light on application.</q><span class="who"><b>Bhavika</b></span></div>
       <div class="quote"><q>Changed my entire routine! Loved it.</q><span class="who"><b>Akhil</b></span></div>
+    </div>
+    <div class="rev-all" id="revAll" hidden>
+      <h3 id="revAllHead">More reviews</h3>
+      <ul class="rev-list" id="revList"></ul>
+      <button type="button" class="rev-more" id="revMore" hidden>Show all reviews</button>
     </div>
   </section>
 
@@ -345,18 +372,17 @@ html{scroll-behavior:smooth}
     </div>
   </section>
 
-  <section style="padding-top:8px">
-    <div class="use-grid">
-      <img src="https://cdn.shopify.com/s/files/1/0711/6223/3066/files/underarm_vura.webp?v=1791911930&width=800" alt="Woman spraying VURA on her underarm" width="1000" height="1000" loading="lazy">
-      <div>
-        <div class="ritual">
-          <div>Spray.<small>2–3 sprays on clean, dry underarms</small></div>
-          <div>Dry.<small>Air-dries in seconds. Nothing sticky.</small></div>
-          <div>Dress.<small>No white marks on your clothes</small></div>
-        </div>
-        <p class="note">Gentle enough for right after shaving: no alcohol, with aloe vera and rose water.</p>
-        <div class="chips fits" aria-label="Where people carry it"><span>Gym bag</span><span>Office drawer</span><span>Cabin bag (50 ml)</span><span>After a shave</span></div>
-      </div>
+  <section class="use">
+    <div class="head"><span class="eyebrow">How to use it</span><h2>Done before your shirt is on</h2></div>
+    <img class="use-img" src="https://cdn.shopify.com/s/files/1/0711/6223/3066/files/underarm_vura.webp?v=1791911930&width=900" alt="Woman spraying VURA on her underarm" width="1000" height="1000" loading="lazy">
+    <div class="use-body">
+      <ol class="ritual">
+        <li><b>Spray.</b><span>2–3 sprays on clean, dry underarms</span></li>
+        <li><b>Dry.</b><span>Air-dries in seconds. Nothing sticky.</span></li>
+        <li><b>Dress.</b><span>No white marks on your clothes</span></li>
+      </ol>
+      <p class="note">Gentle enough for right after shaving: no alcohol, with aloe vera and rose water.</p>
+      <div class="chips fits" aria-label="Where people carry it"><span>Gym bag</span><span>Office drawer</span><span>Cabin bag (50 ml)</span><span>After a shave</span></div>
     </div>
   </section>
 
@@ -466,5 +492,61 @@ html{scroll-behavior:smooth}
       },{threshold:.4,rootMargin:'200px 0px'}).observe(reel);
     }
   }
+})();
+
+(function(){
+  /* Every review, live from Judge.me's public widget feed (same data as the product page). The
+     hand-picked cards above stay as the fallback if it fails. */
+  var PRODUCT_ID={{ vlp_product.id | default: 8661904720106 | json }}, SHOW=6;
+  var url='https://judge.me/reviews/reviews_for_widget?url=wcfiv7-82.myshopify.com&shop_domain=wcfiv7-82.myshopify.com&platform=shopify&page=1&per_page=100&product_id='+PRODUCT_ID;
+  function text(html){ return (new DOMParser().parseFromString(html||'','text/html').body.textContent||'').replace(/\s+/g,' ').trim(); }
+  function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+  function who(r){
+    var w=el('span','who'); w.appendChild(el('b',null,r.reviewer_name||'VURA customer'));
+    if(r.verified_buyer){ w.appendChild(document.createTextNode(' · ')); w.appendChild(el('span','ok','Verified buyer')); }
+    return w;
+  }
+  function month(d){ try{ return new Date(d).toLocaleDateString('en-IN',{month:'short',year:'numeric'}); }catch(e){ return ''; } }
+  fetch(url).then(function(r){ if(!r.ok) throw r; return r.json(); }).then(function(d){
+    var all=(d.reviews||[]).filter(function(r){ return text(r.body_html); });
+    if(!all.length) return;
+    var withPics=all.filter(function(r){ return r.pictures_urls && r.pictures_urls.length; });
+    var rest=all.filter(function(r){ return !(r.pictures_urls && r.pictures_urls.length); });
+
+    if(withPics.length){
+      var strip=document.getElementById('revPhotos'); strip.innerHTML='';
+      withPics.forEach(function(r){
+        var a=el('article','rev-card'), img=el('img');
+        img.src=(r.pictures_urls[0].huge||r.pictures_urls[0].original).replace(/width=\d+/,'width=700');
+        img.alt='Photo from '+(r.reviewer_name||'a customer')+'’s review'; img.loading='lazy'; img.width=700; img.height=700;
+        var t=el('div','t'); t.appendChild(el('p',null,text(r.body_html))); t.appendChild(who(r));
+        a.appendChild(img); a.appendChild(t); strip.appendChild(a);
+      });
+      strip.classList.toggle('many', withPics.length>3);
+      document.getElementById('revSwipe').hidden = withPics.length<2;
+    }
+    document.getElementById('revQuotes').hidden=true;
+
+    var list=document.getElementById('revList'), more=document.getElementById('revMore');
+    rest.forEach(function(r,i){
+      var li=el('li','rv'), top=el('div','rv-top');
+      var st=el('span','stars',new Array((r.rating||5)+1).join('★')); st.setAttribute('aria-label',(r.rating||5)+' out of 5 stars');
+      top.appendChild(st); top.appendChild(el('span',null,month(r.created_at)));
+      li.appendChild(top); li.appendChild(el('p',null,text(r.body_html))); li.appendChild(who(r));
+      if(i>=SHOW) li.hidden=true;
+      list.appendChild(li);
+    });
+    if(rest.length){
+      document.getElementById('revAllHead').textContent=withPics.length?'More reviews':'All reviews';
+      document.getElementById('revAll').hidden=false;
+      if(rest.length>SHOW){
+        more.hidden=false; more.textContent='Show '+(rest.length-SHOW)+' more reviews';
+        more.addEventListener('click',function(){
+          list.querySelectorAll('.rv[hidden]').forEach(function(li){ li.hidden=false; });
+          more.hidden=true;
+        });
+      }
+    }
+  }).catch(function(){});
 })();
 </script>
