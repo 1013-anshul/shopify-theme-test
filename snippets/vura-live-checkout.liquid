@@ -1,0 +1,96 @@
+{%- comment -%}
+  Live checkout tracking for the abandoned-carts tools (Cloudflare Worker "vura-cart-webhook").
+
+  Razorpay Magic Checkout runs in an iframe from api.razorpay.com and posts each step to
+  this page as {source:"frame", event:"event", data:{event:"mx-analytics", data:{...}}}:
+  initiate, user_data / contact_input_entered (phone), address_added, payment_page_reached,
+  payment_failed, checkout_abandoned (window closed without paying), and so on. Each step
+  carries the Razorpay order_id, phone, email, name, city, line items and totals (paise).
+  We forward the useful fields to the Worker with sendBeacon, so a checkout shows up in
+  seconds instead of waiting for Razorpay's abandoned-checkout webhook (4–74 min).
+
+  Never interferes with checkout: listen only, every call wrapped in try/catch.
+{%- endcomment -%}
+<script>
+  (function () {
+    var URL = 'https://vura-cart-webhook.vuratest.workers.dev/live/284b3a2e56cf285b29aa6b90';
+    var KEEP = {
+      initiate: 1, contact_input_entered: 1, otp_submitted: 1, otp_skipped: 1, user_data: 1,
+      address_selected: 1, address_added: 1, address_info_submitted: 1, shipping_selected: 1,
+      payment_page_reached: 1, coupon_applied: 1, payment_initiated: 1, payment_failed: 1,
+      checkout_abandoned: 1, purchase: 1
+    };
+    var lastSig = {};
+    var currentOrder = '';
+    var utm = '';
+
+    function send(payload) {
+      try {
+        var body = JSON.stringify(payload);
+        if (navigator.sendBeacon && navigator.sendBeacon(URL, new Blob([body], { type: 'text/plain' }))) return;
+        fetch(URL, { method: 'POST', body: body, keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'text/plain' } });
+      } catch (e) {}
+    }
+
+    // Razorpay stores the shopper's UTM tags on the cart as rzp_3p_utm.
+    function loadUtm() {
+      try {
+        fetch('/cart.js', { credentials: 'same-origin' })
+          .then(function (r) { return r.json(); })
+          .then(function (c) { utm = (c && c.attributes && c.attributes.rzp_3p_utm) || ''; })
+          .catch(function () {});
+      } catch (e) {}
+    }
+
+    window.addEventListener('message', function (e) {
+      try {
+        if (!/^https:\/\/([a-z0-9-]+\.)*razorpay\.com$/.test(e.origin)) return;
+        var o = e.data;
+        if (typeof o === 'string') o = JSON.parse(o);
+        if (!o || o.event !== 'event' || !o.data || o.data.event !== 'mx-analytics') return;
+        var d = o.data.data || {};
+        if (!d.event || !KEEP[d.event] || !d.order_id) return;
+
+        // user_data repeats on every screen; only send it when something changed.
+        var sig = d.event + '|' + (d.phone || '') + '|' + (d.email || '') + '|' + (d.latestTotal || '');
+        if (d.event === 'user_data' && lastSig[d.order_id] === sig) return;
+        lastSig[d.order_id] = sig;
+        currentOrder = d.order_id;
+        if (d.event === 'initiate') loadUtm();
+
+        send({
+          event: d.event,
+          order_id: d.order_id,
+          phone: d.phone || '',
+          email: d.email || '',
+          first_name: d.first_name || '',
+          last_name: d.last_name || '',
+          city: d.city || '',
+          state: d.state || '',
+          total: d.totalAmount,
+          latest_total: d.latestTotal,
+          coupon: d.appliedCouponCode || '',
+          source_screen: d.source_screen || '',
+          payment_mode: d.paymentMethod || d.paymentMode || '',
+          items: (d.lineItems || []).slice(0, 10).map(function (i) {
+            return { name: i.name, variant_id: i.variant_id, qty: i.quantity, price: i.offer_price != null ? i.offer_price : i.price };
+          }),
+          page: location.pathname,
+          ref: (document.referrer || '').slice(0, 200),
+          utm: utm
+        });
+      } catch (err) {}
+    });
+
+    // Paid: Magic Checkout calls this before its thank-you screen. Chain any existing handler.
+    var previous = window.onCompleteMagiCheckout;
+    window.onCompleteMagiCheckout = function () {
+      try {
+        if (typeof previous === 'function') previous.apply(this, arguments);
+      } catch (e) {}
+      try {
+        if (currentOrder) send({ event: 'purchase', order_id: currentOrder, page: location.pathname, utm: utm });
+      } catch (e) {}
+    };
+  })();
+</script>
