@@ -412,6 +412,7 @@
     },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -431,10 +432,6 @@
     "178523266248565c9e": {
       "type": "apps",
       "blocks": {
-        "judge_me_reviews_medals_ndUMLb": {
-          "type": "shopify://apps/judge-me-reviews/blocks/medals/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {}
-        },
         "judge_me_reviews_review_widget_KWBM3E": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
@@ -446,7 +443,6 @@
         }
       },
       "block_order": [
-        "judge_me_reviews_medals_ndUMLb",
         "judge_me_reviews_review_widget_KWBM3E"
       ],
       "settings": {
