@@ -171,12 +171,7 @@
                     <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                   </div>
                 {%- endif -%}
-                {%- comment -%} Tax status is shown by the branded "MRP (Incl. of all taxes)" note in price.liquid; only surface the shipping policy here so we don't repeat the tax line. {%- endcomment -%}
-                {%- if shop.shipping_policy.body != blank -%}
-                  <div class="product__tax caption rte">
-                    {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                  </div>
-                {%- endif -%}
+                {%- comment -%} Tax status is shown by the branded "MRP (Incl. of all taxes)" note in price.liquid, and shipping by the "Free shipping · Delivered in 4–7 days" line in the buy box, so Dawn's automatic shipping-policy line is left out here. {%- endcomment -%}
                 <div {{ block.shopify_attributes }}>
                   {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
                   {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
