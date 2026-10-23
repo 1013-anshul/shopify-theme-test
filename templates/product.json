@@ -79,9 +79,9 @@
         "collapsible_tab_shipping": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Shipping and returns",
+            "heading": "Shipping, payment and returns",
             "icon": "truck",
-            "content": "<p><strong>Shipping:</strong> Orders ship within 1–2 business days and are delivered in 4–7 days across India, with free shipping on every order.</p><p><strong>Returns:</strong> We accept returns on unopened items only, within 7 days of delivery.</p>",
+            "content": "<p><strong>Shipping:</strong> Orders ship within 1–2 business days and are delivered in 4–7 days across India, with free shipping on every order.</p><p><strong>Payment:</strong> Pay by UPI or card at no extra charge, or choose cash on delivery and pay when it arrives (₹20 extra).</p><p><strong>Returns:</strong> We accept returns on unopened items only, within 7 days of delivery.</p>",
             "page": ""
           }
         },
@@ -386,6 +386,13 @@
             "answer": "<p>We ship your order within 1–2 business days. Delivery anywhere in India takes 4 to 7 days, and shipping is free on every order.</p>"
           }
         },
+        "faq_9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I pay cash on delivery?",
+            "answer": "<p>Yes. Choose cash on delivery at checkout and pay when your order reaches you. Cash on delivery costs ₹20 extra. UPI and card payments have no extra charge, and delivery is free either way.</p>"
+          }
+        },
         "faq_7": {
           "type": "faq_item",
           "settings": {
@@ -402,6 +409,7 @@
         "faq_4",
         "faq_5",
         "faq_6",
+        "faq_9",
         "faq_7"
       ],
       "settings": {

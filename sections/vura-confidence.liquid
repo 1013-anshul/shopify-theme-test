@@ -37,7 +37,7 @@
   /* ── Grid ── */
   .vura-confidence__grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 32px;
   }
 
@@ -87,8 +87,8 @@
     }
 
     .vura-confidence__grid {
-      grid-template-columns: 1fr;
-      gap: 28px;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 16px;
     }
 
     .vura-confidence__item {
@@ -98,7 +98,8 @@
 
   @media screen and (min-width: 750px) and (max-width: 989px) {
     .vura-confidence__grid {
-      gap: 24px;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 24px;
     }
   }
 </style>
@@ -111,6 +112,19 @@
     </header>
 
     <div class="vura-confidence__grid" data-vura-stagger>
+      {%- comment -%} Cash on Delivery {%- endcomment -%}
+      <article class="vura-confidence__item" data-vura-reveal="up">
+        <div class="vura-confidence__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+            <circle cx="12" cy="12" r="2.5"></circle>
+            <path d="M6 12h.01M18 12h.01"></path>
+          </svg>
+        </div>
+        <h3 class="vura-confidence__title">Cash on delivery</h3>
+        <p class="vura-confidence__subtitle">Pay when your order reaches you</p>
+      </article>
+
       {%- comment -%} Fast Shipping {%- endcomment -%}
       <article class="vura-confidence__item" data-vura-reveal="up">
         <div class="vura-confidence__icon">

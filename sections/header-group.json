@@ -14,6 +14,13 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "a0": {
+          "type": "announcement",
+          "settings": {
+            "text": "Cash on delivery available · Free delivery across India",
+            "link": ""
+          }
+        },
         "a1": {
           "type": "announcement",
           "settings": {
@@ -37,6 +44,7 @@
         }
       },
       "block_order": [
+        "a0",
         "a1",
         "a2",
         "a3"

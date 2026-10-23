@@ -18,7 +18,7 @@
         "subheading": "The alum crystal your nani trusted, now a fine mist. No alcohol. No synthetic fragrance.",
         "link": "shopify://products/vura-mineral-underarm-spray",
         "cta_label": "Shop the spray",
-        "meta_note": "Buy 2, get 1 free · Free shipping"
+        "meta_note": "Buy 2, get 1 free · Free shipping · Cash on delivery"
       }
     },
     "vura-benefits-bar": {
@@ -379,7 +379,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How does the Buy 2, Get 1 offer work?",
-            "answer": "<p>Pick the <strong>3-Pack</strong> and you pay for two bottles and get three, so ₹700 in total. You do not need a code, the price already includes it. The 6-Pack works the same way, where you pay for four.</p>"
+            "answer": "<p>Pick the <strong>3-Pack</strong> and you pay for two bottles and get three, so ₹900 in total. You do not need a code, the price already includes it.</p>"
           }
         },
         "faq_6": {
@@ -387,6 +387,13 @@
           "settings": {
             "question": "When will my order arrive?",
             "answer": "<p>We ship your order within 1–2 business days. Delivery anywhere in India takes 4 to 7 days, and shipping is free on every order.</p>"
+          }
+        },
+        "faq_9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I pay cash on delivery?",
+            "answer": "<p>Yes. Choose cash on delivery at checkout and pay when your order reaches you. Cash on delivery costs ₹20 extra. UPI and card payments have no extra charge, and delivery is free either way.</p>"
           }
         },
         "faq_7": {
@@ -404,6 +411,7 @@
         "faq_4",
         "faq_5",
         "faq_6",
+        "faq_9",
         "faq_7"
       ],
       "settings": {

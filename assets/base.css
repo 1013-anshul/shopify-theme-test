@@ -4123,27 +4123,6 @@ details-disclosure > details {
   line-height: 44px !important;
 }
 
-/* 3. Announcement Slider */
-.vura-cart-announcements {
-  background: #0E2118 !important; /* Vura Forest Green */
-  color: #ffffff !important;
-  padding: 4px 16px !important;
-  height: 28px !important;
-  border-radius: 4px !important;
-  margin: 0 0 10px !important; /* Snap to consistent left/right grid */
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  border: 0 none !important;
-  box-shadow: none !important;
-  flex-shrink: 0 !important;
-}
-
-.vura-announcement-slide {
-  line-height: 20px !important;
-}
-
 /* 5. Desktop Only Compact Flex Cart Items Layout */
 @media screen and (min-width: 750px) {
   .cart-items {
@@ -4515,49 +4494,6 @@ details-disclosure > details {
   border-radius: 6px !important;
 }
 
-/* Announcement Slider Auto-Slide Keyframe Animation */
-.vura-cart-announcements {
-  height: 28px !important;
-  overflow: hidden !important;
-  position: relative !important;
-  border-radius: 4px !important;
-  flex-shrink: 0 !important;
-}
-
-.vura-announcement-slider {
-  display: flex !important;
-  flex-direction: row !important;
-  width: 300% !important;
-  animation: vuraAnnounceSlide 9s infinite ease-in-out !important;
-}
-
-.vura-announcement-slide {
-  width: 33.333% !important;
-  flex: 0 0 33.333% !important;
-  height: 20px !important;
-  line-height: 20px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-}
-
-@keyframes vuraAnnounceSlide {
-  0%, 28% {
-    transform: translateX(0);
-  }
-  33%, 61% {
-    transform: translateX(-33.333%);
-  }
-  66%, 94% {
-    transform: translateX(-66.666%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
 /* Trust Badges & SSL Checkout Styling */
 .vura-cart-trust-badges {
   margin-top: 12px !important;
@@ -4662,11 +4598,6 @@ details-disclosure > details {
 .cart-drawer .cart__login-paragraph,
 .cart-drawer .cart__login-paragraph a {
   color: #1A2A22 !important;
-}
-
-/* Breathing room under the drawer header */
-.vura-cart-announcements {
-  margin: 8px 16px 10px !important;
 }
 
 /* ===== VURA Cart Drawer Redesigned Styles ===== */

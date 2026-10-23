@@ -42,25 +42,20 @@
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
 
-    {%- comment -%} VURA: pack dropdown + inline upgrade nudge + expanding offer-unlock celebration {%- endcomment -%}
+    {%- comment -%} VURA: trust badges under the header + expanding offer-unlock celebration {%- endcomment -%}
     <style>
       .vura-pack-cell { vertical-align: middle; }
 
-      /* Inline 3-Pack nudge (below the cart line). Quiet secondary card: Checkout stays the primary action. */
-      .vura-inline-nudge { overflow: hidden; max-height: 0; opacity: 0; transform: translateY(-6px); transition: max-height .4s ease, opacity .35s ease, transform .35s ease, margin .35s ease; margin: 0 1.5rem; }
-      .vura-inline-nudge.show { max-height: 260px; opacity: 1; transform: translateY(0); margin: 0 1.5rem 1.6rem; }
-      .vura-inline-nudge__card { position: relative; display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: 14px; row-gap: 14px; align-items: center; background: #FBF8F0; border: 1px solid rgba(26,42,34,0.14); border-radius: 12px; padding: 14px 14px 14px 14px; }
-      .vura-inline-nudge__thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; display: block; background: var(--vura-paper-deep, #EDE5D2); }
-      .vura-inline-nudge__text { min-width: 0; }
-      .vura-inline-nudge__eyebrow { font-family: var(--font-body, Mulish, sans-serif); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--vura-terracotta, #8D3B2D); line-height: 1.2; }
-      .vura-inline-nudge__title { font-family: var(--font-display, 'Bree Serif', Georgia, serif); font-size: 1.7rem; font-weight: 400; color: var(--vura-paper-ink, #1A2A22); line-height: 1.2; margin-top: 3px; text-wrap: balance; }
-      .vura-inline-nudge__sub { font-family: var(--font-body, Mulish, sans-serif); font-size: 1.25rem; color: var(--vura-paper-ink-muted, #4A5750); line-height: 1.35; margin-top: 2px; }
-      .vura-inline-nudge__btn { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; background: transparent; color: var(--vura-forest, #162D24); border: 1.5px solid var(--vura-forest, #162D24); border-radius: 999px; font-family: var(--font-body, Mulish, sans-serif); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.25rem; padding: 0 18px; cursor: pointer; white-space: nowrap; transition: background-color .14s ease, color .14s ease; }
-      .vura-inline-nudge__btn:hover { background: var(--vura-forest, #162D24); color: var(--vura-paper, #F8F3E7); }
-      .vura-inline-nudge__btn:focus-visible { outline: 2px solid var(--vura-terracotta, #8D3B2D); outline-offset: 3px; }
-      .vura-inline-nudge__btn[disabled] { opacity: 0.55; cursor: default; }
-      .vura-inline-nudge__dismiss { position: absolute; top: 4px; right: 4px; width: 32px; height: 32px; display: grid; place-items: center; background: none; border: 0; font-size: 20px; line-height: 1; color: var(--vura-paper-ink-faint, #7A857F); cursor: pointer; }
-      .vura-inline-nudge__dismiss:hover { color: var(--vura-paper-ink, #1A2A22); }
+      /* Trust badges: cash on delivery leads, then delivery, dispatch and formula. */
+      .vura-cart-badges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 8px 0 14px; flex-shrink: 0; }
+      .vura-cart-badge { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; padding: 9px 4px 8px; border-radius: 10px; background: rgba(99,119,70,0.06); border: 1px solid rgba(99,119,70,0.16); font-family: var(--font-body, Mulish, sans-serif); color: #3D4B22; line-height: 1.25; }
+      .vura-cart-badge svg { display: block; width: 20px; height: 20px; flex-shrink: 0; margin-bottom: 1px; color: var(--vura-sage, #637746); }
+      .vura-cart-badge__title { font-size: 1.25rem; font-weight: 800; }
+      .vura-cart-badge__sub { font-size: 1.2rem; color: var(--vura-paper-ink-muted, #4A5750); }
+      .vura-cart-badge--cod { grid-column: 1 / -1; flex-direction: row; gap: 12px; text-align: left; padding: 12px 16px; background: var(--vura-forest, #162D24); border-color: var(--vura-forest, #162D24); color: var(--vura-paper, #F8F3E7); }
+      .vura-cart-badge--cod svg { width: 28px; height: 28px; margin: 0; color: var(--vura-saffron, #FFC03F); }
+      .vura-cart-badge--cod .vura-cart-badge__title { display: block; font-family: var(--font-display, 'Bree Serif', Georgia, serif); font-size: 1.7rem; font-weight: 400; line-height: 1.2; }
+      .vura-cart-badge--cod .vura-cart-badge__sub { display: block; color: var(--vura-cream-dim, #D9D2C2); font-size: 1.25rem; margin-top: 1px; }
 
       /* Expanding offer-unlock celebration (top of cart) */
       .vura-celebrate { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .5s cubic-bezier(.22,.61,.36,1), opacity .4s ease, margin .5s ease; margin: 0 1.5rem; }
@@ -73,10 +68,6 @@
 
       /* Mobile: larger, tap-friendly popups */
       @media (max-width: 749px) {
-        .vura-inline-nudge, .vura-inline-nudge.show { margin-left: 1.2rem; margin-right: 1.2rem; }
-        .vura-inline-nudge__title { font-size: 1.8rem; }
-        .vura-inline-nudge__sub { font-size: 1.3rem; }
-        .vura-inline-nudge__btn { font-size: 1.3rem; }
         .vura-celebrate.show { margin-left: 1.2rem; margin-right: 1.2rem; }
         .vura-celebrate__card { padding: 15px 16px; gap: 12px; }
         .vura-celebrate__title { font-size: 2.1rem; }
@@ -133,14 +124,31 @@
           <span class="close-text">&times;</span>
         </button>
       </div>
-      <!-- VURA Cart Drawer Announcement Slider -->
-      <div class="vura-cart-announcements">
-        <div class="vura-announcement-slider">
-          <div class="vura-announcement-slide">Take the 3-Pack and your 3rd bottle is free</div>
-          <div class="vura-announcement-slide">Ships in 1–2 days · Free delivery in 4–7 days</div>
-          <div class="vura-announcement-slide">No aluminium salts, kind to your skin</div>
-        </div>
-      </div>
+      <!-- VURA Cart Drawer Trust Badges -->
+      <ul class="vura-cart-badges list-unstyled" role="list" aria-label="Delivery and payment">
+        <li class="vura-cart-badge vura-cart-badge--cod">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>
+          <span>
+            <span class="vura-cart-badge__title">Cash on delivery available</span>
+            <span class="vura-cart-badge__sub">Pay when your order reaches you</span>
+          </span>
+        </li>
+        <li class="vura-cart-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 4h14v12H1z"/><path d="M15 8h4l3 3.5V16h-7z"/><circle cx="5.5" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>
+          <span class="vura-cart-badge__title">Free delivery</span>
+          <span class="vura-cart-badge__sub">in 4–7 days</span>
+        </li>
+        <li class="vura-cart-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          <span class="vura-cart-badge__title">Ships in</span>
+          <span class="vura-cart-badge__sub">1–2 days</span>
+        </li>
+        <li class="vura-cart-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+          <span class="vura-cart-badge__title">No aluminium</span>
+          <span class="vura-cart-badge__sub">salts</span>
+        </li>
+      </ul>
       <form
         action="{{ routes.cart_url }}"
         id="CartDrawer-Form"
@@ -156,24 +164,6 @@
             {%- if cart != empty -%}
               {%- comment -%} Bundle savings now live in the pack-size variants; the Buy-2-Get-1 progress/unlock UI was removed. {%- endcomment -%}
               <div class="drawer__cart-items-wrapper">
-                {%- liquid
-                  assign vura_has_one = false
-                  assign vura_has_three_six = false
-                  assign vura_one_variant = nil
-                  for it in cart.items
-                    if it.variant.title == '1-Pack'
-                      assign vura_has_one = true
-                      assign vura_one_variant = it.variant_id
-                    endif
-                    if it.variant.title == '3-Pack' or it.variant.title == '6-Pack'
-                      assign vura_has_three_six = true
-                    endif
-                  endfor
-                  assign vura_three_variant = nil
-                  if cart.items.first
-                    assign vura_three_variant = cart.items.first.product.variants | where: 'title', '3-Pack' | first
-                  endif
-                -%}
                 {%- comment -%} VURA offer-unlock celebration — JS expands this on the unlock transition {%- endcomment -%}
                 <div class="vura-celebrate" id="vura-celebrate" aria-hidden="true">
                   <div class="vura-celebrate__card">
@@ -357,30 +347,6 @@
                     {%- endfor -%}
                   </tbody>
                 </table>
-                {%- if vura_has_one and vura_has_three_six == false and vura_three_variant -%}
-                  <div class="vura-inline-nudge" id="vura-inline-nudge" data-old="{{ vura_one_variant }}" data-new="{{ vura_three_variant.id }}" aria-hidden="true">
-                    {%- liquid
-                      assign vura_three_price = vura_three_variant.price | money_without_trailing_zeros
-                      assign vura_three_each = vura_three_variant.price | divided_by: 3 | money_without_trailing_zeros
-                      assign vura_one_pack = vura_three_variant.product.variants | where: 'title', '1-Pack' | first
-                      assign vura_one_price = vura_one_pack.price | money_without_trailing_zeros
-                    -%}
-                    <div class="vura-inline-nudge__card">
-                      <button class="vura-inline-nudge__dismiss" id="vura-nudge-dismiss" type="button" aria-label="Dismiss">&times;</button>
-                      {%- if vura_three_variant.image -%}
-                        {{ vura_three_variant.image | image_url: width: 168 | image_tag: class: 'vura-inline-nudge__thumb', alt: '', width: 56, height: 56, loading: 'lazy', widths: '56, 112, 168', sizes: '56px' }}
-                      {%- else -%}
-                        <span class="vura-inline-nudge__thumb" aria-hidden="true"></span>
-                      {%- endif -%}
-                      <div class="vura-inline-nudge__text">
-                        <div class="vura-inline-nudge__eyebrow">3rd bottle free</div>
-                        <div class="vura-inline-nudge__title">3 bottles for {{ vura_three_price }}</div>
-                        <div class="vura-inline-nudge__sub">{{ vura_three_each }} a bottle{% if vura_one_pack %}, not {{ vura_one_price }}{% endif %}</div>
-                      </div>
-                      <button class="vura-inline-nudge__btn" id="vura-nudge-switch" type="button">Switch to 3-Pack</button>
-                    </div>
-                  </div>
-                {%- endif -%}
               </div>
             {%- endif -%}
             <p id="CartDrawer-LiveRegionText" class="visually-hidden" role="status"></p>
@@ -505,17 +471,12 @@
     if (window.__vuraCartPackUX) return;
     window.__vuraCartPackUX = true;
 
-    var R = window.routes || {};
-    var CART_URL = R.cart_url || '/cart';
-    var UPDATE_URL = R.cart_update_url || '/cart/update.js';
-
     function drawerEl() { return document.querySelector('cart-drawer'); }
     function isOpen() { var d = drawerEl(); return !!(d && d.classList.contains('active')); }
     function el(id) { return document.getElementById(id); }
     function lineEls() { return Array.prototype.slice.call(document.querySelectorAll('#CartDrawer-CartItems .cart-item')); }
     function packs() { return lineEls().map(function (l) { return (l.getAttribute('data-pack') || '').trim(); }); }
     function has3or6() { return packs().some(function (p) { return p === '3-Pack' || p === '6-Pack'; }); }
-    function hasOnly1() { var p = packs(); return p.indexOf('1-Pack') !== -1 && !has3or6(); }
 
     /* ---- celebration: expanding in-cart banner ---- */
     function celebrate() {
@@ -527,68 +488,11 @@
       }
     }
 
-    /* ---- inline nudge (revealed ~2s after the drawer opens) ---- */
-    function showNudge() { var n = el('vura-inline-nudge'); if (n) n.classList.add('show'); }
-    function hideNudge() { var n = el('vura-inline-nudge'); if (n) n.classList.remove('show'); }
-    var nudgeTimer;
-    // Arm the 2s reveal on discrete triggers (drawer open / after a swap) — NOT on every
-    // evaluate, or drawer mutations would keep resetting it and it would never show.
-    function armNudge() {
-      clearTimeout(nudgeTimer);
-      if (window.__vuraNudgeDismissed) return;
-      nudgeTimer = setTimeout(function () {
-        if (hasOnly1() && isOpen() && !window.__vuraNudgeDismissed) showNudge();
-      }, 2000);
-    }
-
     function evaluate() {
       var now3 = has3or6();
       if (!now3) window.__vuraCelebrated = false;
       if (now3 && isOpen() && !window.__vuraCelebrated) { celebrate(); window.__vuraCelebrated = true; }
-      if (!(hasOnly1() && isOpen())) hideNudge();
     }
-
-    /* ---- swap the line's variant (atomic; no empty-cart flash) ---- */
-    function refreshDrawer() {
-      return fetch(CART_URL + '?section_id=cart-drawer')
-        .then(function (r) { return r.text(); })
-        .then(function (html) {
-          var doc = new DOMParser().parseFromString(html, 'text/html');
-          var ni = doc.querySelector('#CartDrawer-CartItems'), ci = document.querySelector('#CartDrawer-CartItems');
-          if (ni && ci) ci.innerHTML = ni.innerHTML;
-          var nf = doc.querySelector('.cart-drawer__footer'), cf = document.querySelector('.cart-drawer__footer');
-          if (nf && cf) cf.innerHTML = nf.innerHTML;
-          evaluate();
-          armNudge();
-        });
-    }
-    function swapVariant(oldId, newId) {
-      if (!oldId || !newId || String(oldId) === String(newId)) return Promise.resolve();
-      var updates = {};
-      updates[oldId] = 0;
-      updates[newId] = 1;
-      return fetch(UPDATE_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ updates: updates }) })
-        .then(function () { return refreshDrawer(); })
-        .catch(function () { refreshDrawer(); });
-    }
-
-
-    /* Nudge button (Switch to 3-Pack) + dismiss */
-    document.addEventListener('click', function (e) {
-      var sw = e.target && e.target.closest && e.target.closest('#vura-nudge-switch');
-      if (sw) {
-        e.preventDefault();
-        var n = el('vura-inline-nudge');
-        if (n) { sw.disabled = true; hideNudge(); swapVariant(n.getAttribute('data-old'), n.getAttribute('data-new')); }
-        return;
-      }
-      if (e.target && e.target.closest && e.target.closest('#vura-nudge-dismiss')) {
-        e.preventDefault();
-        window.__vuraNudgeDismissed = true;
-        clearTimeout(nudgeTimer);
-        hideNudge();
-      }
-    });
 
     var evalTimer;
     function scheduleEval() { clearTimeout(evalTimer); evalTimer = setTimeout(evaluate, 70); }
@@ -598,8 +502,8 @@
       var d = drawerEl();
       if (!d) return;
       new MutationObserver(function () {
-        if (d.classList.contains('active')) { scheduleEval(); armNudge(); }
-        else { clearTimeout(nudgeTimer); hideNudge(); var c = el('vura-celebrate'); if (c) c.classList.remove('show'); }
+        if (d.classList.contains('active')) scheduleEval();
+        else { var c = el('vura-celebrate'); if (c) c.classList.remove('show'); }
       }).observe(d, { attributes: true, attributeFilter: ['class'] });
       new MutationObserver(scheduleEval).observe(d, { childList: true, subtree: true });
     }
