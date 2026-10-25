@@ -3,7 +3,8 @@
 
 The facts, from /policies/shipping-policy:
   - Shipping is free on every order (no threshold, no "calculated at checkout").
-  - Orders ship within 1–2 business days.
+  - Orders ship within 24 hours (the cart badge) or 1–2 business days (the policy page); update the policy
+    page in Shopify admin so the two agree.
   - Delivery takes 4–7 days.
   - Cash on delivery is available for ₹20 extra (UPI and cards have no extra charge).
 
@@ -30,10 +31,8 @@ RULES = [
      r'(?<!cash on )(shipping|delivery) (charges?|fees?|costs?) (of |is |are )?(rs\.?|₹)\s*\d'
      r'|(rs\.?|₹)\s*\d+\s*(shipping|delivery)'
      r'|free (shipping|delivery) (on orders )?(above|over|on orders over)'),
-    ('Orders ship in 1–2 business days, not 24 hours or same/next day',
-     r'(dispatch|ship|process|pack|sent out|send out)\w*[^.]{0,40}\b(24|twenty[- ]four)\s*(hours|hrs|hr|h)\b'
-     r'|\b(24|twenty[- ]four)[- ]?(hours?|hrs|hr|h)\s+(dispatch|shipping)'
-     r'|(same|next)[- ]day (dispatch|shipping|delivery)'),
+    ('Orders ship within 24 hours or 1–2 business days, not same/next day',
+     r'(same|next)[- ]day (dispatch|shipping|delivery)'),
     ('Cash on delivery costs ₹20 extra, no other amount',
      r'(cash on delivery|\bcod\b)[^.]{0,60}?(₹|rs\.?)\s*(?!20\b)\d+'
      r'|(₹|rs\.?)\s*(?!20\b)\d+\s*(cod|cash on delivery)\b'),
