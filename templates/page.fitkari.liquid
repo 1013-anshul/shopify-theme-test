@@ -28,8 +28,6 @@
   assign v3_each = v3_cents | divided_by: 3 | money_without_trailing_zeros
   assign v1_rupees = v1_cents | divided_by: 100
   assign v3_rupees = v3_cents | divided_by: 100
-  assign v1_daily = v1_cents | divided_by: 6000.0 | floor
-  assign v3_daily = v3_cents | divided_by: 18000.0 | floor
 
   assign rating = vlp_product.metafields.reviews.rating.value.rating | default: 5 | times: 1.0
   assign rating_count = vlp_product.metafields.reviews.rating_count.value | default: vlp_product.metafields.reviews.rating_count | default: 25
@@ -282,7 +280,7 @@ html{scroll-behavior:smooth}
     <div class="proof"><span class="stars" aria-hidden="true">★★★★★</span> {{ rating_label }} · {{ rating_count }} customer reviews</div>
     <div class="price-row">
       <span class="v-price">{{ v1_price }}</span>
-      <span class="per">50 ml · lasts about 2 months<br><b>That’s about ₹{{ v1_daily }} a day</b></span>
+      <span class="per">50 ml<br><b>Lasts about 1 month</b></span>
     </div>
     <a class="btn" id="heroBtn" href="#packs">Shop now →</a>
     <div class="assure"><span>Cash on delivery</span><span>Free delivery</span><span>Ships in 1–2 days</span></div>
@@ -399,16 +397,16 @@ html{scroll-behavior:smooth}
       <label class="pack" for="p1">
         <input type="radio" name="pack" id="p1" value="{{ v1_id }}" data-price="{{ v1_rupees }}" data-name="1 bottle" checked>
         {%- if v1.image -%}{{ v1.image | image_url: width: 222 | image_tag: alt: '', loading: 'lazy', width: 74, height: 74, widths: '74, 148, 222', sizes: '74px' }}{%- endif -%}
-        <div><div class="nm">1 bottle</div><div class="pr"><b>{{ v1_price }}</b> · about 2 months</div></div>
+        <div><div class="nm">1 bottle</div><div class="pr"><b>{{ v1_price }}</b> · about 1 month</div></div>
       </label>
       <label class="pack" for="p3">
         <span class="v-badge">BEST VALUE</span>
         <input type="radio" name="pack" id="p3" value="{{ v3_id }}" data-price="{{ v3_rupees }}" data-name="3 bottles">
         {%- if v3.image -%}{{ v3.image | image_url: width: 222 | image_tag: alt: '', loading: 'lazy', width: 74, height: 74, widths: '74, 148, 222', sizes: '74px' }}{%- endif -%}
-        <div><div class="nm">3 bottles</div><div class="pr"><b>{{ v3_price }}</b><s>{{ v3_value }}</s> · about 6 months</div><span class="save">3rd bottle free · {{ v3_each }} each</span></div>
+        <div><div class="nm">3 bottles</div><div class="pr"><b>{{ v3_price }}</b><s>{{ v3_value }}</s> · about 3 months</div><span class="save">3rd bottle free · {{ v3_each }} each</span></div>
       </label>
     </form>
-    <p class="lasts" id="lasts">One bottle lasts about <b>2 months</b> of daily use.</p>
+    <p class="lasts" id="lasts">One bottle lasts about <b>1 month</b> of daily use.</p>
     {%- assign buy_label = 'Buy 1 bottle · ' | append: v1_price -%}
     {%- render 'vlp-buy-form', product: vlp_product, form_id: 'vlp-form-offer', variant_id: v1_id, label: buy_label, button_id: 'buy' -%}
     <div class="pay">
@@ -428,7 +426,7 @@ html{scroll-behavior:smooth}
     <details><summary>Does it sting after shaving?</summary><p>There’s no alcohol, and aloe vera keeps it gentle, so most people use it right after shaving. If your skin is cut or very irritated, wait a few hours.</p></details>
     <details><summary>Will it stain my clothes?</summary><p>No. It’s a clear mist that dries in seconds, so there are no white marks on dark clothes.</p></details>
     <details><summary>What does it smell like?</summary><p>Very lightly of rose. A trace of real rose oil is the only scent. There’s no synthetic perfume.</p></details>
-    <details><summary>How long does one bottle last?</summary><p>About 2 months with 2–3 sprays on each underarm every day.</p></details>
+    <details><summary>How long does one bottle last?</summary><p>About 1 month with 2–3 sprays on each underarm every day.</p></details>
     <details><summary>Does it contain aluminium?</summary><p>Fitkari (potassium alum) is a natural mineral that contains aluminium. VURA has no aluminium chlorohydrate, the sweat-blocking salt used in antiperspirants.</p></details>
     <details><summary>Can I pay cash on delivery?</summary><p>Yes. Choose cash on delivery at checkout for a ₹20 fee. Paying by UPI or card has no extra charge. Delivery is free either way.</p></details>
     <p style="color:var(--muted);font-size:15px;margin-top:8px">Still unsure? <a class="wa" href="{{ wa }}">Ask us on WhatsApp</a> and a real person will reply.</p>
@@ -455,14 +453,13 @@ html{scroll-behavior:smooth}
 <script>
 (function(){
   var form=document.getElementById('packForm'),buy=document.getElementById('buy'),barBuy=document.getElementById('barBuy'),barPrice=document.getElementById('barPrice'),lasts=document.getElementById('lasts');
-  var daily3={{ v3_daily | json }};
   function update(){
     var r=form.querySelector('input:checked'); if(!r) return;
     var price='₹'+Number(r.dataset.price).toLocaleString('en-IN');
     document.querySelectorAll('.vlp .product-variant-id').forEach(function(i){ i.value=r.value; });
     buy.querySelector('span').textContent='Buy '+r.dataset.name+' · '+price;
     barPrice.innerHTML=price+'<small>'+r.dataset.name+' · Free delivery</small>';
-    lasts.innerHTML=r.id==='p3'?'Three bottles last about <b>6 months</b>. That’s about ₹'+daily3+' a day.':'One bottle lasts about <b>2 months</b> of daily use.';
+    lasts.innerHTML=r.id==='p3'?'Three bottles last about <b>3 months</b> of daily use.':'One bottle lasts about <b>1 month</b> of daily use.';
   }
   form.addEventListener('change',update); update();
 
