@@ -75,7 +75,16 @@
           class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           {{ block.shopify_attributes }}
         >
-          {{ article.content }}
+          {%- comment -%} Posts tagged "product-card" get the product card before their first heading. {%- endcomment -%}
+          {%- if article.tags contains 'product-card' -%}
+            {%- assign vura_parts = article.content | split: '<h2' -%}
+            {%- for part in vura_parts -%}
+              {%- unless forloop.first -%}<h2{%- endunless -%}{{ part }}
+              {%- if forloop.first -%}{%- render 'vura-article-product-card', article: article -%}{%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {{ article.content }}
+          {%- endif -%}
         </div>
 
       {%- when 'share' -%}

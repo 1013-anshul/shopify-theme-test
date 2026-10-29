@@ -219,6 +219,106 @@
   color: var(--vura-forest, #162D24);
 }
 
+/* Product card before the first heading of posts tagged "product-card"
+   (snippets/vura-article-product-card.liquid). Selectors start with the content
+   wrapper so they beat Dawn's .rte link and image rules. */
+.article-template__content .vura-pc {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 1.4rem 1.6rem;
+  align-items: start;
+  margin: 2.8rem 0 3.6rem;
+  padding: 1.6rem;
+  border: 1px solid rgba(22, 45, 36, 0.14);
+  border-radius: 12px;
+  background: var(--vura-paper, #F8F3E7);
+}
+.article-template__content .vura-pc__media {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--vura-paper-deep, #EDE5D2);
+}
+.article-template__content .vura-pc__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  object-fit: cover;
+}
+.article-template__content .vura-pc__body > p {
+  margin: 0;
+}
+.article-template__content .vura-pc__eyebrow {
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vura-terracotta, #8D3B2D);
+}
+.article-template__content .vura-pc__title {
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 1.9rem;
+  line-height: 1.2;
+}
+.article-template__content .vura-pc__title a {
+  color: var(--vura-forest, #162D24);
+  text-decoration: none;
+}
+.article-template__content .vura-pc__text {
+  margin-top: 0.6rem;
+  margin-bottom: 0.2rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: var(--vura-paper-ink-muted, #4A5750);
+}
+.article-template__content .vura-pc__meta {
+  margin-top: 0.6rem;
+  font-size: 1.35rem;
+  line-height: 1.45;
+  font-weight: 600;
+  color: var(--vura-forest, #162D24);
+}
+.article-template__content .vura-pc__star {
+  color: var(--vura-saffron-deep, #E8A82A);
+}
+.article-template__content .vura-pc__btn {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.6rem;
+  padding: 0 2.4rem;
+  border-radius: var(--buttons-radius-outset, 6px);
+  background: var(--vura-forest, #162D24);
+  color: var(--vura-paper, #F8F3E7);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background-color var(--duration-short, 100ms) ease;
+}
+.article-template__content .vura-pc__btn:hover {
+  background: var(--vura-forest-hover, #234935);
+  color: var(--vura-paper, #F8F3E7);
+}
+@media screen and (min-width: 750px) {
+  .article-template__content .vura-pc {
+    grid-template-columns: 132px 1fr;
+    padding: 2rem;
+    column-gap: 2.4rem;
+  }
+  .article-template__content .vura-pc__btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
 /* Comparison tables inside articles. Dawn ships only `table-layout: fixed`, so
    without this a table reads as loose, borderless text on a phone. */
 .article-template__content table {

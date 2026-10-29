@@ -1,0 +1,35 @@
+{%- comment -%}
+  Product card inside a Journal post, placed just before the first heading.
+  main-article.liquid renders it only for articles tagged "product-card".
+  The links carry utm_source=journal, so an order that started on a post shows
+  up as journal / blog_card / <post handle> in the order's UTM attributes.
+{%- endcomment -%}
+{%- assign pc_product = all_products['vura-mineral-underarm-spray'] -%}
+{%- if pc_product != blank and pc_product.available -%}
+  {%- capture pc_url -%}{{ pc_product.url }}?utm_source=journal&utm_medium=blog_card&utm_campaign={{ article.handle | split: '/' | last }}{%- endcapture -%}
+  {%- assign pc_rating = pc_product.metafields.reviews.rating.value -%}
+  {%- assign pc_count = pc_product.metafields.reviews.rating_count.value | default: 0 -%}
+  {%- assign pc_pack = nil -%}
+  {%- for v in pc_product.variants -%}
+    {%- if v.title contains '3' -%}{%- assign pc_pack = v -%}{%- endif -%}
+  {%- endfor -%}
+  <aside class="vura-pc" aria-label="The spray we make">
+    <a class="vura-pc__media" href="{{ pc_url }}" tabindex="-1" aria-hidden="true">
+      {{- pc_product.featured_image | image_url: width: 320 | image_tag: loading: 'lazy', widths: '160, 240, 320', sizes: '(min-width: 750px) 132px, 92px', alt: '' -}}
+    </a>
+    <div class="vura-pc__body">
+      <p class="vura-pc__eyebrow">What we make</p>
+      <p class="vura-pc__title"><a href="{{ pc_url }}">Vura Fitkari (Alum) Underarm Spray</a></p>
+      <p class="vura-pc__text">Fitkari in a 50 ml touch-free mist. 12 ingredients, no drying alcohol, no synthetic fragrance.</p>
+      {%- if pc_count > 0 and pc_rating -%}
+        <p class="vura-pc__meta"><span class="vura-pc__star" aria-hidden="true">★</span> {{ pc_rating.rating | round: 1 }} · {{ pc_count }} reviews</p>
+      {%- endif -%}
+      {%- capture pc_price -%}
+        {{- pc_product.price_min | money_without_trailing_zeros -}}
+        {%- if pc_pack %} · 3 for {{ pc_pack.price | money_without_trailing_zeros }}{% endif -%}
+      {%- endcapture -%}
+      <p class="vura-pc__meta">{{ pc_price | strip }} · Free delivery</p>
+    </div>
+    <a class="vura-pc__btn" href="{{ pc_url }}">Shop the spray</a>
+  </aside>
+{%- endif -%}
