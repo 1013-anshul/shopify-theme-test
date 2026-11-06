@@ -254,7 +254,64 @@
     },
     "vura-reels": {
       "type": "vura-reels",
-      "disabled": true,
+      "blocks": {
+        "reel_dUq4hJ": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-40356.mp4",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "reel_UWBJRd": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-6715.mp4",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "reel_kMWWDh": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-18934.mp4",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "reel_9tphmb": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-91525.mp4",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "reel_4rFTkz": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-43938.mp4",
+            "caption": "",
+            "link": ""
+          }
+        },
+        "reel_QCBXNU": {
+          "type": "reel",
+          "settings": {
+            "video": "shopify://files/videos/Video-11426.mp4",
+            "caption": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "reel_dUq4hJ",
+        "reel_UWBJRd",
+        "reel_kMWWDh",
+        "reel_9tphmb",
+        "reel_4rFTkz",
+        "reel_QCBXNU"
+      ],
       "settings": {
         "eyebrow": "In real life",
         "heading": "See it in use",

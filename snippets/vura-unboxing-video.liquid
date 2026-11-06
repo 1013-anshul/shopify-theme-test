@@ -1,0 +1,63 @@
+{%- comment -%}
+  The unboxing video (assets/vura-unboxing.mp4, 540×960, 1.7 MB) in one of three places.
+  - placement: 'slide' (product gallery, slide 2), 'card' (product page, under the pack
+    picker) or 'deck' (homepage "Take a closer look" deck)
+  - section_id: the parent section's id ('slide' and 'deck')
+  - animate: true to add the theme's reveal-on-scroll classes ('slide')
+
+  It plays muted inline while on screen, from a poster that is the clip's own first
+  frame, so the start is invisible. A tap opens it full-screen with sound
+  (assets/vura-unboxing.js). On Save-Data or reduced motion it shows the poster and a
+  play button instead.
+{%- endcomment -%}
+{%- liquid
+  assign mp4 = 'vura-unboxing.mp4' | asset_url
+  assign poster = 'vura-unboxing-poster.jpg' | asset_url
+  assign speaker = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h3l4-3.5v11L6 12H3z" fill="currentColor"/><path d="M13.5 7a4.5 4.5 0 0 1 0 6M15.8 5a7.5 7.5 0 0 1 0 10"/></svg>'
+-%}
+{%- capture video_el -%}
+  <video muted playsinline loop preload="none" poster="{{ poster }}" data-src="{{ mp4 }}" width="540" height="960" aria-label="Vura spray being unboxed outdoors"></video>
+{%- endcapture -%}
+{%- capture assets -%}
+  {{ 'vura-unboxing.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'vura-unboxing.js' | asset_url }}" defer></script>
+{%- endcapture -%}
+
+{%- case placement -%}
+  {%- when 'slide' -%}
+    <li
+      id="Slide-{{ section_id }}-vura-unboxing"
+      class="product__media-item grid__item slider__slide{% if animate %} scroll-trigger animate--fade-in{% endif %}"
+      data-media-id="{{ section_id }}-vura-unboxing"
+    >
+      {{ assets }}
+      <div class="vgs" data-vvid-scope data-vvid-open role="button" tabindex="0" aria-label="Watch the unboxing video with sound" data-vura-note data-hold="16500">
+        <div class="vvid" data-vvid data-vvid-warm="load">{{ video_el }}</div>
+        <div class="vgs__copy">
+          <p class="vgs__eyebrow">Unboxed · 0:16</p>
+          <p class="vgs__h">The real bottle, in real light.</p>
+          <p class="vgs__hand">no studio, no render</p>
+          <span class="vgs__btn">{{ speaker }}Sound on</span>
+        </div>
+      </div>
+    </li>
+
+  {%- when 'card' -%}
+    {{ assets }}
+    <div class="vtc" data-vvid-scope data-vvid-open role="button" tabindex="0" aria-label="Watch the unboxing video with sound">
+      <div class="vvid" data-vvid>{{ video_el }}<p class="vtc__dur" aria-hidden="true">0:16</p></div>
+      <div class="vtc__copy">
+        <p class="vtc__eyebrow">See it before you buy</p>
+        <p class="vtc__h">The real box and bottle, out in daylight.</p>
+        <span class="vtc__btn">{{ speaker }}Watch with sound</span>
+      </div>
+    </div>
+
+  {%- when 'deck' -%}
+    <li class="vura-gallery__card vura-gallery__card--video" data-vvid-scope>
+      {{ assets }}
+      <div class="vvid" data-vvid data-vvid-deck data-vvid-zone="#vura-gallery-{{ section_id }}">{{ video_el }}</div>
+      <p class="vdk__tag">Unboxed</p>
+      <button type="button" class="vdk__btn" data-vvid-open>{{ speaker }}Watch with sound</button>
+    </li>
+{%- endcase -%}

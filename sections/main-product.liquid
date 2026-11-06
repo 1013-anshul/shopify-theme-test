@@ -315,6 +315,10 @@
                   show_pickup_availability: true
                 -%}
 
+                {%- if product.handle == 'vura-mineral-underarm-spray' -%}
+                  {% render 'vura-unboxing-video', placement: 'card' %}
+                {%- endif -%}
+
                 <!-- Buy Box Incentives -->
                 <div class="product-buy-box-incentives" style="margin-top: 1rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; font-family: var(--font-body); font-size: 12px; color: var(--text-on-paper-muted, #4A5750);">
                   <div style="display: flex; align-items: center; gap: 8px;">

@@ -84,6 +84,17 @@
             lazy_load: false
           %}
         </li>
+        {%- comment -%}
+          Unboxing video as slide 2: real hands, real bottle, outdoors. Not product
+          media, so it never reaches the feeds. Only on this product's own page.
+        {%- endcomment -%}
+        {%- if template.name == 'product' and product.handle == 'vura-mineral-underarm-spray' and limit == null -%}
+          {% render 'vura-unboxing-video',
+            placement: 'slide',
+            section_id: section.id,
+            animate: settings.animations_reveal_on_scroll
+          %}
+        {%- endif -%}
       {%- endif -%}
       {%- for media in product.media -%}
         {% if media_position >= limit

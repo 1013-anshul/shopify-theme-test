@@ -148,6 +148,13 @@
               }}
             </a>
           </li>
+          {%- comment -%}
+            Unboxing video as the 4th card: the scroll-driven wheel brings card 3–4 to the
+            front when the section is centred on screen, so this is the one people see.
+          {%- endcomment -%}
+          {%- if forloop.index == 3 and gallery_product.handle == 'vura-mineral-underarm-spray' -%}
+            {% render 'vura-unboxing-video', placement: 'deck', section_id: section.id %}
+          {%- endif -%}
         {%- endfor -%}
       {%- else -%}
         {%- for i in (1..4) -%}

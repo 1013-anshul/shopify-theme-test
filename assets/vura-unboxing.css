@@ -1,0 +1,104 @@
+/* Vura unboxing video: shared player + its three placements
+   (snippets/vura-unboxing-video, assets/vura-unboxing.js).
+   Mobile first. The poster is the clip's exact first frame, so the switch from
+   still to playing video can't be seen. */
+@font-face {
+  font-family: 'Vura Caveat';
+  src: url('vura-caveat-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+.vvid { position: relative; overflow: hidden; background: #162D24; }
+.vvid video { display: block; width: 100%; height: 100%; object-fit: cover; background: transparent; }
+/* Only when autoplay is off (Save-Data, reduced motion, iOS Low Power Mode). */
+.vvid__play {
+  display: none; position: absolute; inset: 0; margin: auto;
+  width: 52px; height: 52px; border-radius: 50%; border: 0;
+  background: rgba(22, 45, 36, 0.72); color: #F4EFE3;
+  align-items: center; justify-content: center; cursor: pointer;
+}
+.vvid--tap .vvid__play { display: flex; }
+.vvid__play svg { width: 20px; height: 20px; margin-left: 3px; }
+
+/* ---------- Full-screen player (sound on) ---------- */
+html.vvid-lock, html.vvid-lock body { overflow: hidden !important; }
+.vvid-ov {
+  position: fixed; inset: 0; z-index: 2147483000;
+  background: #0E1C16; display: none; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .18s ease-out;
+}
+.vvid-ov.is-open { display: flex; }
+.vvid-ov.is-shown { opacity: 1; }
+.vvid-ov video { width: 100%; height: 100%; max-width: calc(100dvh * 9 / 16); object-fit: contain; background: #0E1C16; }
+/* Portrait phones are taller than 9:16: fill the screen like a Reel. */
+@media (max-aspect-ratio: 9/16) { .vvid-ov video { object-fit: cover; max-width: none; } }
+.vvid-ov__bar {
+  position: absolute; top: max(10px, env(safe-area-inset-top)); left: 12px; right: 12px;
+  height: 3px; border-radius: 3px; background: rgba(244, 239, 227, 0.28); overflow: hidden;
+}
+.vvid-ov__bar i { display: block; height: 100%; width: 0; background: #F4EFE3; }
+.vvid-ov__btn {
+  position: absolute; width: 44px; height: 44px; border: 0; border-radius: 50%;
+  background: rgba(14, 28, 22, 0.55); color: #F4EFE3; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent;
+}
+.vvid-ov__btn svg { width: 20px; height: 20px; }
+.vvid-ov__x { top: calc(max(10px, env(safe-area-inset-top)) + 12px); right: 10px; }
+.vvid-ov__mute { bottom: calc(max(14px, env(safe-area-inset-bottom)) + 8px); right: 10px; }
+@media (prefers-reduced-motion: reduce) { .vvid-ov { transition: none; } }
+
+/* ---------- 1. Product gallery, slide 2 ---------- */
+/* Dawn's gallery CSS resets display on slide children, hence !important. */
+.vgs {
+  position: relative; aspect-ratio: 1 / 1; width: 100%; box-sizing: border-box;
+  border-radius: var(--media-radius, 20px); overflow: hidden; background: #162D24;
+  display: grid !important; grid-template-columns: auto 1fr; grid-template-rows: 100%;
+  gap: clamp(12px, 4cqw, 22px); padding: clamp(10px, 3.4cqw, 18px);
+  container-type: inline-size; cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.vgs .vvid { height: 100%; aspect-ratio: 9 / 16; border-radius: calc(var(--media-radius, 20px) - 8px); }
+.vgs__copy { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding-right: 4px; color: #F4EFE3; }
+.vgs__eyebrow { margin: 0 0 .7em; font: 800 clamp(9.5px, 2.9cqw, 13px)/1 Mulish, sans-serif; letter-spacing: .18em; text-transform: uppercase; color: #FFC03F; }
+.vgs__h { margin: 0; font-family: var(--font-display, 'Bree Serif', Georgia, serif); font-weight: 400; font-size: clamp(19px, 6.6cqw, 34px); line-height: 1.06; color: #F4EFE3; }
+.vgs__hand { margin: .55em 0 0; font: 700 clamp(17px, 5.6cqw, 28px)/1 'Vura Caveat', 'Bradley Hand', cursive; color: #F4EFE3; opacity: .85; transform: rotate(-3deg); transform-origin: left; }
+.vgs__btn {
+  margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  border-radius: 999px; background: #F4EFE3; color: #162D24; font: 700 13px/1 Mulish, sans-serif; padding: 10px 13px 10px 11px;
+}
+.vgs__btn svg { width: 16px; height: 16px; flex: 0 0 16px; }
+@container (max-width: 300px) {
+  .vgs__btn { font-size: 11px; padding: 8px 10px 8px 9px; gap: 5px; }
+  .vgs__btn svg { width: 13px; height: 13px; flex-basis: 13px; }
+  .vgs__eyebrow { letter-spacing: .12em; }
+}
+
+/* ---------- 2. Product page card, under the pack picker ---------- */
+.vtc {
+  display: flex; gap: 14px; align-items: stretch; margin: 14px 0 4px; padding: 10px; border-radius: 16px;
+  background: #EFE6D2; color: #162D24; cursor: pointer; -webkit-tap-highlight-color: transparent; text-align: left;
+}
+.vtc .vvid { flex: 0 0 auto; width: 96px; aspect-ratio: 9 / 16; border-radius: 10px; }
+.vtc__dur { position: absolute; left: 6px; bottom: 6px; margin: 0; padding: 3px 5px; border-radius: 4px; background: rgba(14, 28, 22, .7); color: #F4EFE3; font: 700 10.5px/1 Mulish, sans-serif; pointer-events: none; }
+.vtc__copy { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: 4px 4px 4px 0; }
+.vtc__eyebrow { margin: 0 0 6px; font: 800 10.5px/1 Mulish, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #8D3B2D; }
+.vtc__h { margin: 0; font-family: var(--font-display, 'Bree Serif', Georgia, serif); font-weight: 400; font-size: 19px; line-height: 1.15; color: #162D24; }
+.vtc__btn {
+  margin-top: 12px; align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap;
+  border-radius: 999px; background: #162D24; color: #F4EFE3; font: 700 13px/1 Mulish, sans-serif; padding: 10px 14px;
+}
+.vtc__btn svg { width: 15px; height: 15px; }
+
+/* ---------- 3. Homepage "Take a closer look" deck ---------- */
+.vura-gallery__card--video .vvid { width: 100%; aspect-ratio: 3 / 4; }
+.vdk__tag {
+  position: absolute; left: 12px; top: 12px; margin: 0; padding: .42em .6em .32em; border-radius: 6px;
+  background: #FFC03F; color: #162D24; font: 800 10.5px/1 Mulish, sans-serif; letter-spacing: .14em; text-transform: uppercase;
+}
+.vdk__btn {
+  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; border: 0; border-radius: 999px;
+  background: rgba(244, 239, 227, .94); color: #162D24; font: 700 13px/1 Mulish, sans-serif; padding: 10px 14px;
+  cursor: pointer; box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+}
+.vdk__btn svg { width: 15px; height: 15px; }
