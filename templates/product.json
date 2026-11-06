@@ -517,13 +517,13 @@
   },
   "order": [
     "main",
-    "vura-smell-story",
     "vura-benefits-bar",
     "vura-reels",
     "vura-confidence",
     "vura-ingredients",
     "vura-faq",
     "related-products",
-    "178523266248565c9e"
+    "178523266248565c9e",
+    "vura-smell-story"
   ]
 }
