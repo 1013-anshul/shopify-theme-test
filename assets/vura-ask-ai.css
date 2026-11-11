@@ -17,17 +17,21 @@
 }
 .vai__sub { margin-top: 7px !important; font-size: 14px; line-height: 1.45; color: rgba(244, 239, 227, .78); }
 
-/* Questions */
-.vai__qs { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0 14px; }
+/* Questions: an even 2-column grid with the same gap as the app buttons, so the chip
+   edges line up with the buttons below at every width. */
+.vai__qs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 15px 0 14px; }
 .vai__q {
   appearance: none; -webkit-appearance: none; margin: 0; cursor: pointer;
-  min-height: 36px; padding: 8px 13px; border-radius: 999px;
+  width: 100%; min-width: 0; min-height: 38px; padding: 8px 10px; border-radius: 999px;
+  text-align: center;
   border: 1px solid rgba(244, 239, 227, .3); background: transparent; color: #F4EFE3;
   font: 600 13px/1.1 var(--font-body), 'Mulish', sans-serif; letter-spacing: 0;
   -webkit-tap-highlight-color: transparent;
   transition: background-color var(--t-fast, 140ms) ease-out, color var(--t-fast, 140ms) ease-out, border-color var(--t-fast, 140ms) ease-out;
 }
 .vai__q:hover { border-color: rgba(244, 239, 227, .6); }
+/* Small phones (320 px): keep each question on one line. */
+@container (max-width: 270px) { .vai__q { font-size: 12px; padding: 8px 6px; } }
 .vai__q[aria-checked="true"] { background: #FFC03F; border-color: #FFC03F; color: #162D24; }
 .vai__q:focus-visible, .vai__app:focus-visible, .vai__copy:focus-visible {
   outline: 2px solid #FFC03F; outline-offset: 2px; box-shadow: none;
