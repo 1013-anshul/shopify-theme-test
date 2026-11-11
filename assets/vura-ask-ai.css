@@ -1,0 +1,66 @@
+/* "Ask AI about Vura" card on the product page (snippets/vura-ask-ai.liquid).
+   Forest card on the paper page, so it reads as its own moment under the trust badges.
+   Mobile first; 4 app buttons in a row once the card is 480px wide inside. */
+.vai {
+  margin: 22px 0 8px; padding: 18px 16px 14px; border-radius: 18px;
+  background: #162D24; color: #F4EFE3; container-type: inline-size;
+  font-family: var(--font-body), 'Mulish', system-ui, sans-serif;
+}
+.vai p { margin: 0; }
+.vai__eyebrow {
+  font: 800 11px/1 var(--font-body), 'Mulish', sans-serif; letter-spacing: .18em;
+  text-transform: uppercase; color: #FFC03F;
+}
+.vai__h {
+  margin-top: 10px !important; font-family: var(--font-display, 'Bree Serif'), Georgia, serif;
+  font-weight: 400; font-size: clamp(21px, 7cqw, 27px); line-height: 1.1; color: #F4EFE3;
+}
+.vai__sub { margin-top: 7px !important; font-size: 14px; line-height: 1.45; color: rgba(244, 239, 227, .78); }
+
+/* Questions */
+.vai__qs { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0 14px; }
+.vai__q {
+  appearance: none; -webkit-appearance: none; margin: 0; cursor: pointer;
+  min-height: 36px; padding: 8px 13px; border-radius: 999px;
+  border: 1px solid rgba(244, 239, 227, .3); background: transparent; color: #F4EFE3;
+  font: 600 13px/1.1 var(--font-body), 'Mulish', sans-serif; letter-spacing: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--t-fast, 140ms) ease-out, color var(--t-fast, 140ms) ease-out, border-color var(--t-fast, 140ms) ease-out;
+}
+.vai__q:hover { border-color: rgba(244, 239, 227, .6); }
+.vai__q[aria-checked="true"] { background: #FFC03F; border-color: #FFC03F; color: #162D24; }
+.vai__q:focus-visible, .vai__app:focus-visible, .vai__copy:focus-visible {
+  outline: 2px solid #FFC03F; outline-offset: 2px; box-shadow: none;
+}
+
+/* Apps */
+.vai__apps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@container (min-width: 480px) { .vai__apps { grid-template-columns: repeat(4, 1fr); } }
+.vai__app {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 10px; border-radius: 12px;
+  background: #F4EFE3; color: #162D24; text-decoration: none;
+  font: 700 14px/1 var(--font-body), 'Mulish', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--t-fast, 140ms) var(--ease-out, ease-out), background-color var(--t-fast, 140ms) ease-out;
+}
+.vai__app:hover { background: #FFFFFF; color: #162D24; }
+.vai__app:active { transform: scale(.97); }
+.vai__app svg { width: 18px; height: 18px; flex: 0 0 18px; }
+.vai__app span { white-space: nowrap; }
+
+/* Footer: hint + copy */
+.vai__foot { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 11px; }
+.vai__note { font-size: 12px; line-height: 1.4; color: rgba(244, 239, 227, .66); }
+.vai__note.is-done { color: #FFC03F; }
+.vai__copy {
+  appearance: none; -webkit-appearance: none; flex: 0 0 auto; margin: 0; padding: 0; border: 0;
+  background: none; cursor: pointer; color: #F4EFE3; white-space: nowrap;
+  font: 700 12px/1.4 var(--font-body), 'Mulish', sans-serif;
+  text-decoration: underline; text-decoration-color: rgba(244, 239, 227, .4); text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vai__q, .vai__app { transition: none; }
+  .vai__app:active { transform: none; }
+}
