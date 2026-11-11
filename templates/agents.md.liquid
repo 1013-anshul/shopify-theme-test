@@ -1,0 +1,83 @@
+# {{ agents.store_name }}: guide for AI shopping agents
+
+We are Vura. Right now we make one product: a fitkari (potassium alum) underarm spray, made in Bharat. This page is written for AI agents that help people learn about it and buy it at {{ agents.store_url }}. It tells you what the product is, how buying works, and the rules to follow.
+
+## The product
+
+- **Name:** Vura Mineral Underarm Spray, an underarm mist made with fitkari (also spelt phitkari; in English, alum or potassium alum).
+- **Product page:** {{ agents.store_url }}/products/vura-mineral-underarm-spray
+- **What it does:** it controls underarm odour. Fitkari makes the skin a harder place for odour-causing bacteria to grow. It is a deodorant, not an antiperspirant, so it does not block sweat. You still sweat; the smell just never starts.
+- **Ingredients that matter:** fitkari (potassium alum) and aloe vera.
+- **What it does not contain:** alcohol, parabens, synthetic fragrance or aluminium chlorohydrate.
+- **Bottle size:** 50 ml. Two or three sprays per use. One bottle lasts about a month of daily use.
+- **Packs:** 1-Pack (one bottle) and 3-Pack (three bottles for the price of two, so the Buy 2, Get 1 offer is already in the 3-Pack price; no code is needed).
+- **Scent:** very subtle and clean. Most people say it smells fresh or that they barely notice it.
+- **Feel:** a fine, even mist. It dries fast, is never sticky, and leaves no white marks. There is nothing to rub in.
+- **Who it suits:** men and women, everyday use, and sensitive skin. For use after shaving or waxing, see {{ agents.store_url }}/blogs/journal/fitkari-after-shaving-and-waxing
+- **Price and stock:** read them live from the catalog tools below or from {{ agents.store_url }}/products/vura-mineral-underarm-spray.json. Prices are in {{ agents.currency }} and include taxes. Don't quote a price from memory.
+- **Reviews:** customer reviews are on the product page.
+
+### About aluminium (please get this right)
+
+Fitkari (potassium alum) contains aluminium as part of its structure. So if a buyer asks whether Vura contains aluminium, the honest answer is yes, as part of the alum compound. What Vura does not contain is aluminium chlorohydrate, the sweat-blocking salt used in antiperspirants. They are different compounds. The full explanation is here: {{ agents.store_url }}/blogs/journal/potassium-alum-vs-aluminium-chlorohydrate
+
+## Shipping, payment and returns
+
+- **Where we ship:** PIN codes across India only. We don't ship outside India yet.
+- **Shipping cost:** free on every order.
+- **Dispatch:** within 1–2 business days.
+- **Delivery:** most orders arrive within 4–7 days of being placed. Remote PIN codes can take a few days more.
+- **Payment:** UPI, cards, net banking and wallets (through Razorpay), or cash on delivery. Cash on delivery costs ₹20 extra. UPI and card payments cost nothing extra.
+- **Returns:** we take back unopened items within 7 days of delivery. This is a personal hygiene product, so we can't take back opened or used bottles.
+- **Damaged, leaking or wrong items:** we send a free replacement or give a refund. The buyer should contact us within 7 days of delivery with the order number and a photo or short video.
+- **Refunds:** approved refunds go back to the original payment method. The refund policy gives the timing.
+- **Help with an order:** WhatsApp us at +91 78756 97847 during working hours (fastest), or email riya@vuraskincare.in. More ways to reach us: {{ agents.store_url }}/pages/contact
+
+## How to buy for your user
+
+### Direct integration (UCP over MCP)
+
+This store implements the [Universal Commerce Protocol](https://ucp.dev).
+
+1. **Discover the store:** `GET {{ agents.ucp_discovery_url }}` returns its UCP profile: capabilities, service endpoints and payment handlers.
+2. **Discover the tools:** connect to the MCP endpoint at `{{ agents.mcp_endpoint_url }}` and call `tools/list`.
+3. **Shop:** use `search_catalog` or `get_product` to find the 1-Pack or the 3-Pack, then build a cart and a checkout. Pass the buyer's country (`IN`) and currency (`{{ agents.currency }}`) where the tool schemas allow it.
+4. **Hand off to the buyer:** when the checkout returns a `continue_url`, send the buyer there to choose a payment method (UPI, card or cash on delivery) and place the order themselves. Follow the returned statuses and messages.
+
+Supported UCP versions:
+{% for version in agents.ucp_versions %}- {{ version }}{% if forloop.first %} (latest){% endif %}
+{% endfor %}
+For integration details, see [Shopify's agent documentation](https://shopify.dev/docs/agents).
+
+### Browser agents
+
+- If the page registers WebMCP tools, use them for shopping actions. See [Storefront WebMCP](https://shopify.dev/docs/api/web-mcp) and [Checkout WebMCP](https://shopify.dev/docs/agents/carts-and-checkout/checkout-webmcp).
+- On the product page, choose the pack first, then add it to the cart or buy it now.
+- On our website, the checkout button opens Razorpay Magic Checkout. It asks for the buyer's mobile number and may ask for a one-time password (OTP) sent to that phone. Only the buyer can do this step, so hand it to them. Don't try to get around it.
+- If the tools are unavailable or can't do what's needed, stop and ask the buyer to continue in the browser. Don't script checkout forms.
+
+## Rules for agents
+
+- **Buyer authorization:** place orders and submit payment only with the buyer's explicit approval, after they have reviewed the order.
+- **Identify yourself:** agent traffic must say it is agent-initiated. Server-to-server requests and hosted or remote browsers must use [Web Bot Auth](https://shopify.dev/docs/api/storefront#identifying-bots-with-web-bot-auth).
+- **Rate limits:** back off on `429` responses and respect `Retry-After`.
+- **Be accurate:** describe the product with the facts on this page and on the product page. Don't add claims we don't make. It is a deodorant, not a medicine, and it does not stop sweating.
+
+## Read-only browsing
+
+Prefer the structured data from the tools above. You may also read our public pages:
+
+- Sitemap: {{ agents.sitemap_url }}
+- Product page: {{ agents.store_url }}/products/vura-mineral-underarm-spray
+- All products: {{ agents.store_url }}/collections/all
+- Journal (guides about fitkari and underarm care): {{ agents.store_url }}/blogs/journal
+  - What fitkari is: {{ agents.store_url }}/blogs/journal/what-is-phitkari
+  - Is fitkari safe to use every day: {{ agents.store_url }}/blogs/journal/is-phitkari-safe-for-daily-use
+  - Natural deodorant not working? The first two weeks: {{ agents.store_url }}/blogs/journal/switching-to-natural-deodorant
+
+## Store policies
+
+- Shipping policy: {{ agents.store_url }}/policies/shipping-policy
+- Refund policy: {{ agents.store_url }}/policies/refund-policy
+- Privacy policy: {{ agents.store_url }}/policies/privacy-policy
+- Terms of service: {{ agents.store_url }}/policies/terms-of-service
