@@ -193,6 +193,12 @@
               endif
             endif
             assign label = block.settings.caption | default: 'Play video'
+            # Search engines read only the img alt (the button's aria-label
+            # still wins for screen readers), so never leave the poster blank.
+            assign poster_alt = vid.alt
+            if poster_alt == blank
+              assign poster_alt = 'Vura Fitkari underarm spray in use, Instagram reel ' | append: forloop.index
+            endif
           -%}
           {%- if card_src != blank -%}
             <button
@@ -207,7 +213,7 @@
                 <img
                   class="vura-reels__poster"
                   src="{{ vid.preview_image | image_url: width: 480 }}"
-                  alt=""
+                  alt="{{ poster_alt | escape }}"
                   width="{{ card_w }}"
                   height="{{ card_w | times: 4 | divided_by: 3 }}"
                   loading="lazy"
