@@ -55,7 +55,7 @@
         "b5": {
           "type": "benefit",
           "settings": {
-            "label": "No aluminium salts",
+            "label": "No aluminium chlorohydrate",
             "icon": "shield"
           }
         },
@@ -172,7 +172,7 @@
         "pitch": {
           "type": "text",
           "settings": {
-            "text": "We made this for sensitive underarms. Fitkari does the work, with no aluminium salts and no synthetic fragrance. You spray it on without touching your skin, it dries quickly, and it leaves no white marks on your clothes.",
+            "text": "We made this for sensitive underarms. Fitkari does the work, with no aluminium chlorohydrate and no synthetic fragrance. You spray it on without touching your skin, it dries quickly, and it leaves no white marks on your clothes.",
             "text_style": "body"
           }
         },
@@ -372,7 +372,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Does it contain aluminium chlorohydrate?",
-            "answer": "<p>No. We use potassium alum, which you may know as fitkari (also spelt phitkari). It is a natural mineral salt and it is not the same as the aluminium compounds in conventional antiperspirants.</p>"
+            "answer": "<p>No. We use potassium alum, which you may know as fitkari (also spelt phitkari). It is a natural mineral salt. Fitkari does contain aluminium as part of its structure, but it is a different compound from aluminium chlorohydrate, the sweat-blocking salt in antiperspirants. It works on odour, not on sweat.</p>"
           }
         },
         "faq_5": {
@@ -433,7 +433,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Fitkari keeps you fresh, and your skin gets a break. No aluminium salts, no white marks, no synthetic fragrance.</p>"
+            "text": "<p>Fitkari keeps you fresh, and your skin gets a break. No aluminium chlorohydrate, no white marks, no synthetic fragrance.</p>"
           }
         },
         "button": {
