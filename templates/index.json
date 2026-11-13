@@ -97,7 +97,7 @@
         "b11": {
           "type": "benefit",
           "settings": {
-            "label": "For everyone, every day",
+            "label": "For men and women, every day",
             "icon": "check"
           }
         },
@@ -118,6 +118,7 @@
       },
       "block_order": [
         "b1",
+        "b11",
         "b2",
         "b3",
         "b4",
@@ -127,7 +128,6 @@
         "b8",
         "b9",
         "b10",
-        "b11",
         "b12",
         "b13"
       ],
@@ -354,6 +354,13 @@
             "answer": "<p>Yes. We use natural Fitkari (potassium alum) and aloe vera, both of which are known for being gentle. There are no harsh chemicals, no alcohol and no synthetic fragrance.</p>"
           }
         },
+        "faq_10": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is Vura for men or women?",
+            "answer": "<p>Both. Vura is one formula for men and women, and everyone uses it the same way: 2 to 3 sprays on clean, dry underarms.</p>"
+          }
+        },
         "faq_2": {
           "type": "faq_item",
           "settings": {
@@ -406,6 +413,7 @@
       },
       "block_order": [
         "faq_1",
+        "faq_10",
         "faq_2",
         "faq_3",
         "faq_4",
