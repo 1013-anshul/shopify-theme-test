@@ -1,0 +1,230 @@
+{%- comment -%}
+  VURA Journal links: the newest Journal articles as a plain list of links.
+  Updates itself: every newly published article appears here on its own,
+  so Google finds new posts from the pages it visits most (homepage, product page).
+  Articles tagged with the "Hide tag" setting are skipped.
+{%- endcomment -%}
+
+{%- liquid
+  assign journal = blogs[section.settings.blog_handle]
+  assign hide_tag = section.settings.hide_tag | strip | downcase
+  assign shown = 0
+-%}
+
+{%- if journal and journal.articles_count > 0 -%}
+<style>
+  #VuraJournal-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background: var(--vura-paper, #F8F3E7);
+    color: var(--vura-paper-ink, #1A2A22);
+    border-top: 1px solid var(--border-on-paper, rgba(26,42,34,0.16));
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__eyebrow {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--vura-paper-ink-muted, #4A5750);
+    margin: 0 0 12px;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__heading {
+    font-family: var(--font-display, 'Roca One', Georgia, serif);
+    font-size: clamp(24px, 3.4vw, 36px);
+    line-height: 1.15;
+    color: var(--vura-paper-ink, #1A2A22);
+    margin: 0;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-on-paper, rgba(26,42,34,0.16));
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__item {
+    border-bottom: 1px solid var(--border-on-paper, rgba(26,42,34,0.16));
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__link {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 14px 0;
+    text-decoration: none;
+    color: var(--vura-paper-ink, #1A2A22);
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.45;
+    transition: color 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__link:hover {
+    color: var(--vura-terracotta, #8D3B2D);
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__link:focus-visible {
+    outline: 2px solid var(--vura-terracotta, #8D3B2D);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__num {
+    flex-shrink: 0;
+    min-width: 22px;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--vura-paper-ink-muted, #4A5750);
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__title {
+    flex: 1;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__date {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--vura-paper-ink-muted, #4A5750);
+    white-space: nowrap;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__all {
+    display: inline-block;
+    margin-top: 24px;
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--vura-terracotta, #8D3B2D);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  #VuraJournal-{{ section.id }} .vura-journal__footer {
+    text-align: center;
+  }
+  @media (min-width: 750px) {
+    #VuraJournal-{{ section.id }} .vura-journal__list {
+      column-count: 2;
+      column-gap: 48px;
+      border-top: 0;
+    }
+    #VuraJournal-{{ section.id }} .vura-journal__item {
+      break-inside: avoid;
+    }
+    #VuraJournal-{{ section.id }} .vura-journal__header {
+      margin-bottom: 36px;
+    }
+  }
+</style>
+
+<section id="VuraJournal-{{ section.id }}" class="vura-journal" aria-labelledby="VuraJournalHeading-{{ section.id }}">
+  <div class="vura-journal__container">
+    <header class="vura-journal__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="vura-journal__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="vura-journal__heading" id="VuraJournalHeading-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+    </header>
+
+    <ol class="vura-journal__list">
+      {%- for article in journal.articles -%}
+        {%- if shown >= section.settings.post_limit -%}{%- break -%}{%- endif -%}
+        {%- if hide_tag != blank -%}
+          {%- assign tags_lower = article.tags | join: '|' | downcase | split: '|' -%}
+          {%- if tags_lower contains hide_tag -%}{%- continue -%}{%- endif -%}
+        {%- endif -%}
+        {%- assign shown = shown | plus: 1 -%}
+        <li class="vura-journal__item">
+          <a class="vura-journal__link" href="{{ article.url }}">
+            <span class="vura-journal__num" aria-hidden="true">{{ shown | prepend: '0' | slice: -2, 2 }}</span>
+            <span class="vura-journal__title">{{ article.title | escape }}</span>
+            <time class="vura-journal__date" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%-d %b' }}</time>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ol>
+
+    <div class="vura-journal__footer">
+      <a class="vura-journal__all" href="{{ journal.url }}">{{ section.settings.all_label | escape }} &rarr;</a>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "VURA Journal links",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "blog_handle",
+      "label": "Blog handle",
+      "default": "journal"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small line above the heading",
+      "default": "Latest articles"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "From the Journal"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Number of articles",
+      "default": 10
+    },
+    {
+      "type": "text",
+      "id": "hide_tag",
+      "label": "Hide articles with this tag",
+      "info": "Tag an article with this word in Shopify to keep it out of this list.",
+      "default": "hide-from-shop"
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "Link to all articles",
+      "default": "Read all articles"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "VURA Journal links"
+    }
+  ]
+}
+{% endschema %}

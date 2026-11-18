@@ -484,6 +484,19 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "vura-journal-links": {
+      "type": "vura-journal-links",
+      "settings": {
+        "blog_handle": "journal",
+        "eyebrow": "Latest articles",
+        "heading": "From the Journal",
+        "post_limit": 10,
+        "hide_tag": "hide-from-shop",
+        "all_label": "Read all articles",
+        "padding_top": 48,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
@@ -495,6 +508,7 @@
     "vura-reels",
     "vura-confidence",
     "vura-faq",
+    "vura-journal-links",
     "vura-closing-cta",
     "179199303161b5383b"
   ]
